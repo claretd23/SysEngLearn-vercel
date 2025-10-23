@@ -13,7 +13,6 @@ import UserHome from "./pages/UserHome";
 import AdminRoute from "./components/AdminRoute";
 import EjercicioRouter from "./pages/ejercicios/EjercicioRouter";
 import InicioA1 from './pages/niveles/InicioA1';
-import InicioA2 from './pages/niveles/InicioA2';
 import InicioB1 from './pages/niveles/InicioB1';
 import InicioB2 from './pages/niveles/InicioB2';
 import InicioC1 from './pages/niveles/InicioC1';
@@ -44,7 +43,6 @@ function App() {
 
         {/* Rutas por niveles */}
         <Route path="/inicio/A1" element={<InicioA1 />} />
-        <Route path="/inicio/A2" element={<InicioA2 />} />
         <Route path="/inicio/B1" element={<InicioB1 />} />
         <Route path="/inicio/B2" element={<InicioB2 />} />
         <Route path="/inicio/C1" element={<InicioC1 />} />

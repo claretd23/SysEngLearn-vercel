@@ -2,7 +2,7 @@ import axios from 'axios';
 import type { AxiosResponse } from 'axios'; 
 
 // URL base de la API de usuarios
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api/users';
+const API_BASE_URL = import.meta.env.VITE_API_URL + '/api/users';
 
 // Interfaces para tipado de datos
 interface User {

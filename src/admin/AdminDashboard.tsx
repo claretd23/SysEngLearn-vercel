@@ -1,47 +1,37 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { AuthContext } from '../contexts/AuthContext'; // Contexto para obtener el token de autenticación
+import { AuthContext } from '../contexts/AuthContext';
 import '../styles/AdminDashboard.css';
 
 export default function AdminDashboard() {
-  const { token } = useContext(AuthContext); // Extraer el token del contexto de autenticación
+  const { token } = useContext(AuthContext);
 
-  //  lista de usuarios
+  // URL de la API (usa variable de entorno en producción)
+  const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+
   const [users, setUsers] = useState<any[]>([]);
-  
-  // Estado del formulario para crear usuario
   const [form, setForm] = useState({
     name: '',
     email: '',
     password: '',
-    role: 'user', // Valor por defecto "user"
-    level: 'A1',  // Nivel por defecto
+    role: 'user',
+    level: 'A1',
   });
-
-  // Estado de carga (para cuando se envía el formulario)
   const [loading, setLoading] = useState(false);
-
-  // Estado para marcar qué usuario se está eliminando
   const [deletingId, setDeletingId] = useState<string | null>(null);
 
-  // useEffect para cargar usuarios 
   useEffect(() => {
     fetchUsers();
   }, []);
 
-
-
-
-  // Obtener lista de usuarios desde el backend
+  // Obtener lista de usuarios
   const fetchUsers = async () => {
     try {
-      const res = await fetch('http://localhost:5000/api/users', {
-        headers: { Authorization: `Bearer ${token}` }, // Enviamos token en headers
+      const res = await fetch(`${API_URL}/api/users`, {
+        headers: { Authorization: `Bearer ${token}` },
       });
-
       if (!res.ok) throw new Error(`Error ${res.status}: ${res.statusText}`);
-
       const data = await res.json();
-      setUsers(data); // Guardamos usuarios
+      setUsers(data);
     } catch (error) {
       console.error('Error en fetchUsers:', error);
     }
@@ -50,74 +40,69 @@ export default function AdminDashboard() {
   // Manejo de cambios en inputs y selects
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
-
-    // Si el campo es "role", controlamos si se muestra "level"
     if (name === 'role') {
       setForm((prevForm) => ({
         ...prevForm,
         role: value,
-        level: value === 'user' ? prevForm.level : '', // Solo los alumnos tienen nivel
+        level: value === 'user' ? prevForm.level : '',
       }));
     } else {
       setForm({ ...form, [name]: value });
     }
   };
 
-
-
-  // Manejar envío de formulario (crear usuario nuevo)
+  // Crear usuario nuevo
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setLoading(true); // Activar estado de carga
+    setLoading(true);
 
     try {
-      const res = await fetch('/api/users/admin/create', {
+      const res = await fetch(`${API_URL}/api/users/admin/create`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`, // Autenticación con token
+          Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify(form), // Datos del nuevo usuario
+        body: JSON.stringify(form),
       });
 
       if (!res.ok) throw new Error('Error al agregar usuario');
 
-      await fetchUsers(); // actualizar lista de usuarios
-      // Reiniciar formulario
+      await fetchUsers();
       setForm({ name: '', email: '', password: '', role: 'user', level: 'A1' });
     } catch (error: any) {
       alert(error.message);
     }
 
-    setLoading(false); 
+    setLoading(false);
   };
-
 
   // Eliminar usuario
   const handleDelete = async (id: string) => {
-    if (!window.confirm('¿Estás seguro de eliminar este usuario?')) return; // Confirmación
-    setDeletingId(id); // Marcar usuario en proceso de eliminación
+    if (!window.confirm('¿Estás seguro de eliminar este usuario?')) return;
+    setDeletingId(id);
 
     try {
-      const res = await fetch(`/api/users/${id}`, {
+      const res = await fetch(`${API_URL}/api/users/${id}`, {
         method: 'DELETE',
-        headers: { Authorization: `Bearer ${token}` }, // Autenticación
+        headers: { Authorization: `Bearer ${token}` },
       });
-
       if (!res.ok) throw new Error('No se pudo eliminar el usuario');
-
-      await fetchUsers(); // actualizar lista después de eliminar
+      await fetchUsers();
     } catch (error: any) {
       alert(error.message);
     }
 
     setDeletingId(null);
   };
+
   return (
     <div className="admin-container">
       <div className="card">
         <div style={{ width: '100%' }}>
-        <div className='titulo'>  <h2 id="heading">USUARIOS</h2> </div>
+          <div className='titulo'>
+            <h2 id="heading">USUARIOS</h2>
+          </div>
 
           <form className="form" onSubmit={handleSubmit}>
             <div className="field">

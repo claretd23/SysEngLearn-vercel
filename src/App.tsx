@@ -32,8 +32,8 @@ function HomeRedirect() {
 function App() {
   return (
       <Routes>
-        {}
-        <Route path="/" element={<HomeRedirect />} />
+        {/* Redirección por defecto */}
+        <Route path="/" element={<Navigate to="/login" />} />
 
         {/* Rutas públicas */}
         <Route path="/login" element={<Login />} />

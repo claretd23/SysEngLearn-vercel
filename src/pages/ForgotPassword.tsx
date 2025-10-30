@@ -50,13 +50,13 @@ function ForgotPassword() {
             {/* Botón de envío */}
             <div className="Fbtn">
               <button type="submit" className="button1">
-                Enviar enlace
+                Send link
               </button>
             </div>
 
             {/* Link para iniciar sesión */}
             <p className="info-text">
-              ¿Ya tienes cuenta? <a href="/login">Inicia sesión</a>
+              Do you already have an account?<a href="/login">Log in</a>
             </p>
 
             {/* Mensaje de feedback */}

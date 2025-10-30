@@ -22,7 +22,7 @@ function ResetPassword() {
 
     // Validación: las contraseñas deben coincidir
     if (newPassword !== confirmPassword) {
-      setError('❌ Las contraseñas no coinciden');
+      setError('❌ The passwords do not match');
       return;
     }
 
@@ -33,17 +33,17 @@ function ResetPassword() {
         newPassword
       });
 
-      setMessage('✅ Contraseña actualizada correctamente');
+      setMessage('✅ Password successfully updated');
       // Redirige a login después de 3 segundos
       setTimeout(() => navigate('/login'), 3000);
     } catch (err: any) {
       // Muestra error si falla la petición
-      setError(err.response?.data?.message || '❌ Error al cambiar la contraseña');
+      setError(err.response?.data?.message || '❌ Error changing password');
     }
   };
 
   // Si no hay token, muestra mensaje de error
-  if (!token) return <p className="info-text">❌ Token inválido o no proporcionado.</p>;
+  if (!token) return <p className="info-text">❌Invalid or not provided token.</p>;
 
   return (
     <div className="main-container forgot-container">
@@ -92,7 +92,7 @@ function ResetPassword() {
 
             {/* Botón enviar */}
             <div className="Fbtn">
-              <button type="submit" className="button1">Cambiar contraseña</button>
+              <button type="submit" className="button1">Change password </button>
             </div>
 
             {/* Mensajes de éxito o error */}

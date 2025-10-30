@@ -270,3 +270,55 @@ html, body {
   }
 }
 
+@media (max-width: 768px) {
+  .semanas-wrapper {
+    display: flex;
+    flex-direction: row;
+    overflow-x: auto; /* scroll horizontal */
+    gap: 1rem;
+    padding: 0 1rem;
+    scroll-snap-type: x mandatory;
+  }
+
+  .tarjeta-semana {
+    min-width: 280px; /* ancho de cada semana */
+    flex: 0 0 auto; 
+    scroll-snap-align: start;
+    padding: 1rem;
+  }
+
+  .tema-bloque {
+    padding: 0.5rem;
+  }
+
+  .ejercicio-boton {
+    flex: 1 1 100%;
+    font-size: 0.85rem;
+    padding: 0.4rem 0;
+  }
+
+  .titulo {
+    font-size: 1.4rem;
+    padding: 0.4rem 0.8rem;
+  }
+
+  .logo {
+    width: 180px;
+    margin-bottom: 1rem;
+  }
+
+  .cerrar-sesion-boton {
+    font-size: 0.8rem;
+    padding: 0.3rem 0.6rem;
+  }
+}
+@media (max-width: 400px) {
+  .tarjeta-semana {
+    min-width: 240px; /* ancho más pequeño para pantallas muy pequeñas */
+  }
+
+  .ejercicio-boton {
+    font-size: 0.8rem;
+    padding: 0.3rem 0;
+  }
+}

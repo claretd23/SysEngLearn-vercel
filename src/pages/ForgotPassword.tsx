@@ -49,7 +49,8 @@ function ForgotPassword() {
 
             {/* Botón de envío */}
             <div className="Fbtn">
-              <button type="submit" className="button1">
+              <button type="submit" className="Fbutton1">
+
                 Send link
               </button>
             </div>

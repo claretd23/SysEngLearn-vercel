@@ -28,7 +28,8 @@ export default function InicioA1() {
     const fetchProgreso = async () => {
       try {
         const token = localStorage.getItem("token");
-        const res = await fetch("http://localhost:5000/api/progreso/A1", {
+        const res = await fetch(`${import.meta.env.VITE_API_URL}/api/progreso/A1`, {
+
           headers: { Authorization: `Bearer ${token}` },
         });
         if (!res.ok) {

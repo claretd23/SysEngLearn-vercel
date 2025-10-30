@@ -1,198 +1,245 @@
-/* ================================
-   ESTILOS GENERALES - NIVEL A1
-   ================================ */
-
-body {
-  background-color: #f0f4ff;
-  font-family: "Poppins", sans-serif;
-  margin: 0;
-  padding: 0;
+/* Contenedor principal centrado */
+.porcentaje-completado {
+  font-size: 0.85rem;
+  color: #4caf50;
+  font-weight: bold;
+  margin-top: 0.3rem;
 }
 
-/* Contenedor principal */
-.inicio1-container {
+.a1-container {
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 20px;
+  padding: 2rem;
+  min-height: 100vh;
+  background-color: #f5f5f5;
+  box-sizing: border-box;
+  place-items: center;
+  max-width: 1200px; 
+  width: 100%;
 }
 
 /* Logo */
 .logo {
-  width: 240px;
-  max-width: 80%;
-  margin-bottom: 15px;
+  width: 400px;
+  margin-bottom: 1rem;
 }
 
-/* Título principal */
-.nivel-titulo {
-  font-size: 1.6rem;
-  background-color: #d8d9f7;
+/* Título */
+.titulo {
+  font-size: 2rem;
   color: #222a5c;
-  padding: 8px 20px;
-  border-radius: 10px;
-  font-weight: 700;
-  margin-bottom: 30px;
+  background-color: #bab9ee;
+  padding: 0.5rem 1.5rem;
+  border-radius: 12px;
   text-align: center;
+  margin-bottom: 2rem;
 }
 
-/* Contenedor de semanas */
-.semanas-container {
+/* Contenedor de las semanas */
+.semanas-wrapper {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 25px;
-  justify-content: center;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2rem;
   width: 100%;
   max-width: 1200px;
+  margin: 0 auto;
 }
 
 /* Tarjeta de cada semana */
-.card {
-  background-color: white;
-  border-radius: 15px;
-  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1);
-  padding: 15px;
+.tarjeta-semana {
+  background: #ffffff;
+  border-radius: 16px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  padding: 1.5rem;
+  text-align: center;
   transition: transform 0.2s ease;
 }
 
-.card:hover {
-  transform: translateY(-3px);
+.tarjeta-semana:hover {
+  transform: translateY(-5px);
 }
 
-/* Título de semana */
-.card h3 {
+/* Título de la semana */
+.semana-titulo {
+  font-size: 1.3rem;
   color: #222a5c;
-  font-size: 1.2rem;
-  margin-bottom: 10px;
-  text-align: center;
+  margin-bottom: 1rem;
 }
 
-/* Subtítulos de temas */
-.tema {
-  background-color: #f6f7fb;
+/* Temas y botones */
+.temas-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+}
+
+.tema-bloque {
+  background-color: #f2f4f6;
+  padding: 0.75rem;
   border-radius: 10px;
-  padding: 10px;
-  margin-bottom: 15px;
-  text-align: center;
 }
 
-/* Texto dentro del tema */
-.tema h4 {
-  color: #1f2a5c;
-  font-size: 1rem;
-  margin-bottom: 5px;
+.tema-nombre {
+  font-weight: bold;
+  color: #2f3d98;
+  margin-bottom: 0.5rem;
 }
 
-/* Progreso */
-.tema p {
-  color: #228b22;
-  font-weight: 500;
-  margin-bottom: 8px;
+/* Botones */
+.botones-ejercicios {
+  display: flex;
+  justify-content: center;
+  gap: 0.5rem;
 }
 
-/* Botones de actividades */
-.activity-button {
-  background: linear-gradient(90deg, #aabc36, #8fa028);
-  border: none;
+.ejercicio-boton {
+  background-color: #656b3a;
   color: white;
+  padding: 0.4rem 0.8rem;
   border-radius: 8px;
-  padding: 8px 10px;
-  margin: 4px;
-  width: 90%;
-  font-size: 0.9rem;
-  font-weight: 500;
+  text-decoration: none;
+  font-weight: 600;
+  transition: background-color 0.3s ease;
+}
+
+.ejercicio-boton:hover {
+  background-color: #9aaa2f;
+}
+
+/* Botón flotante */
+.boton-arriba {
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  background-color: #0d0246;
+  color: #fff;
+  border: none;
+  border-radius: 50%;
+  padding: 0.6rem 0.9rem;
+  font-size: 1.5rem;
   cursor: pointer;
-  transition: background 0.3s ease;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.3);
+  transition: background-color 0.3s ease;
+  z-index: 999;
 }
 
-.activity-button:hover {
-  background: linear-gradient(90deg, #8fa028, #aabc36);
+.boton-arriba:hover {
+  background-color: #c4d273;
+}
+.contenido-centrado {
+  max-width: 1300px;
+  width: 100%;
+  margin: 0 auto;
 }
 
-/* Botón de cerrar sesión */
-.logout-button {
-  position: absolute;
-  top: 20px;
-  right: 20px;
-  background-color: #222a5c;
+.pagina-wrapper {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+
+html, body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  background-color: #f5f5f5;
+  display: flex;
+  justify-content: center;
+}
+
+.cerrar-sesion-boton {
+  align-self: flex-end;
+  background-color: #a92517;
   color: white;
   border: none;
+  padding: 0.5rem 1rem;
   border-radius: 8px;
-  padding: 6px 12px;
-  font-size: 0.9rem;
   font-weight: bold;
   cursor: pointer;
-  transition: background 0.3s ease;
+  margin-bottom: 1rem;
+  transition: background-color 0.3s ease;
 }
 
-.logout-button:hover {
-  background-color: #aabc36;
-  color: #222a5c;
+.cerrar-sesion-boton:hover {
+  background-color: #c0392b;
 }
 
-/* ================================
-   RESPONSIVE DESIGN
-   ================================ */
+.ejercicio-boton.completado {
+  background-color: #140181;
+  color: white;
+  border-color: #4caf50;
+}
 
-/* Móviles */
+
 @media (max-width: 768px) {
-  .inicio1-container {
-    padding: 15px;
-  }
-
-  .nivel-titulo {
-    font-size: 1.3rem;
-    padding: 6px 15px;
-    margin-bottom: 20px;
-  }
-
-  .semanas-container {
-    grid-template-columns: 1fr; /* Una columna en móvil */
-    gap: 18px;
-  }
-
-  .card {
-    width: 100%;
-    max-width: 380px;
-    margin: 0 auto;
-  }
-
-  .card h3 {
-    font-size: 1.1rem;
-  }
-
-  .activity-button {
-    font-size: 0.85rem;
-    padding: 7px;
+  .a1-container {
+    padding: 0.5rem;
+    margin: 0;
     width: 100%;
   }
-}
 
-/* Tablets medianas */
-@media (min-width: 769px) and (max-width: 1024px) {
-  .semanas-container {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 20px;
+  .logo {
+    width: 150px;
+    margin: 0.5rem auto;
+  }
+
+  .titulo {
+    font-size: 1.2rem;
+    width: 90%;
+    margin: 0.5rem auto;
+    padding: 0.5rem;
+  }
+
+  .semanas-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    padding: 0.5rem;
+    margin: 0;
+  }
+
+  .tarjeta-semana {
+    width: 100%;
+    margin: 0 0 0.5rem 0;
+    padding: 1rem;
+  }
+
+  .tema-bloque {
+    margin: 0.5rem 0;
+  }
+
+  .botones-ejercicios {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .ejercicio-boton {
+    width: 100%;
+    padding: 0.8rem;
+    margin: 0.2rem 0;
+    font-size: 1rem;
+  }
+
+  .cerrar-sesion-boton {
+    position: fixed;
+    top: 10px;
+    right: 10px;
+    padding: 0.5rem 1rem;
+    font-size: 0.9rem;
+    z-index: 1000;
+  }
+
+  .tema-nombre {
+    font-size: 1rem;
+    margin-bottom: 0.3rem;
+  }
+
+  .porcentaje-completado {
+    font-size: 0.8rem;
+    margin: 0.2rem 0;
   }
 }
-/* Escritorio pequeño */
-@media (min-width: 1025px) and (max-width: 1280px) {
-  .semanas-container {
-    grid-template-columns: repeat(3, 1fr);
-    gap: 22px;
-  }
-} /* Escritorio grande */
-@media (min-width: 1281px) {            
-
-  .semanas-container {
-    grid-template-columns: repeat(4, 1fr);
-    gap: 25px;
-  }
-}
-
-
-
-
-
-
-

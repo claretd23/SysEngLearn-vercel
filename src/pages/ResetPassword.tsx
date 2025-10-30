@@ -28,9 +28,9 @@ function ResetPassword() {
 
     try {
       // Llamada al backend para cambiar la contraseña
-      const res = await axios.post('http://localhost:5000/api/users/reset-password', {
-        token,
-        newPassword
+    const res = await axios.post(`${import.meta.env.VITE_API_URL}/api/users/reset-password`, {
+      token,
+      newPassword
       });
 
       setMessage('✅ Password successfully updated');

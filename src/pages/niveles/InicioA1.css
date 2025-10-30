@@ -175,3 +175,24 @@ body {
     gap: 20px;
   }
 }
+/* Escritorio pequeño */
+@media (min-width: 1025px) and (max-width: 1280px) {
+  .semanas-container {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 22px;
+  }
+} /* Escritorio grande */
+@media (min-width: 1281px) {            
+
+  .semanas-container {
+    grid-template-columns: repeat(4, 1fr);
+    gap: 25px;
+  }
+}
+
+
+
+
+
+
+

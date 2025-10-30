@@ -12,7 +12,7 @@ function ForgotPassword() {
     e.preventDefault();
     try {
       // Petición al backend para enviar enlace de recuperación
-      await axios.post('http://localhost:5000/api/users/forgot-password', { email });
+      await axios.post(`${import.meta.env.VITE_API_URL}/api/users/forgot-password`, { email });
       setMessage('📩 Se envió un enlace a tu correo electrónico.');
     } catch (error) {
       console.error(error);

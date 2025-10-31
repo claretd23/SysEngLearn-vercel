@@ -243,3 +243,196 @@ html, body {
     margin: 0.2rem 0;
   }
 }
+
+/* ===== Estilo general móvil ===== */
+html, body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  min-height: 100vh;
+  background-color: #f5f5f5;
+  font-family: "Poppins", sans-serif;
+  display: flex;
+  justify-content: center;
+}
+
+/* ===== Contenedor principal ===== */
+.a1-container {
+  width: 100%;
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  box-sizing: border-box;
+}
+
+/* ===== Logo ===== */
+.logo {
+  width: 120px;
+  margin: 1rem auto;
+}
+
+/* ===== Título ===== */
+.titulo {
+  background-color: #bab9ee;
+  color: #222a5c;
+  font-size: 1.2rem;
+  font-weight: 600;
+  text-align: center;
+  padding: 0.6rem 1rem;
+  border-radius: 10px;
+  width: 90%;
+  margin-bottom: 1rem;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* ===== Botón cerrar sesión ===== */
+.cerrar-sesion-boton {
+  position: fixed;
+  top: 10px;
+  right: 10px;
+  background-color: #a92517;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  font-weight: bold;
+  padding: 0.4rem 0.8rem;
+  cursor: pointer;
+  z-index: 1000;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+}
+
+.cerrar-sesion-boton:hover {
+  background-color: #c0392b;
+}
+
+/* ===== Contenedor de semanas ===== */
+.semanas-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  width: 100%;
+  margin-bottom: 4rem;
+}
+
+/* ===== Tarjeta de cada semana ===== */
+.tarjeta-semana {
+  background-color: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  padding: 1rem;
+  text-align: center;
+}
+
+/* ===== Título de la semana ===== */
+.semana-titulo {
+  color: #222a5c;
+  font-size: 1.1rem;
+  font-weight: bold;
+  margin-bottom: 0.8rem;
+}
+
+/* ===== Temas ===== */
+.temas-container {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+}
+
+.tema-bloque {
+  background-color: #f2f4f6;
+  border-radius: 8px;
+  padding: 0.8rem;
+  text-align: left;
+}
+
+.tema-nombre {
+  font-weight: 600;
+  color: #2f3d98;
+  font-size: 1rem;
+  margin-bottom: 0.3rem;
+}
+
+/* ===== Porcentaje de completado ===== */
+.porcentaje-completado {
+  font-size: 0.8rem;
+  color: #4caf50;
+  font-weight: bold;
+}
+
+/* ===== Botones de ejercicios ===== */
+.botones-ejercicios {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  margin-top: 0.5rem;
+}
+
+.ejercicio-boton {
+  background-color: #656b3a;
+  color: white;
+  text-decoration: none;
+  border-radius: 8px;
+  padding: 0.7rem;
+  font-weight: 600;
+  font-size: 0.95rem;
+  text-align: center;
+  transition: background-color 0.3s ease;
+}
+
+.ejercicio-boton:hover {
+  background-color: #9aaa2f;
+}
+
+/* ===== Ejercicio completado ===== */
+.ejercicio-boton.completado {
+  background-color: #140181;
+  color: white;
+  border: 2px solid #4caf50;
+}
+
+/* ===== Botón flotante "ir arriba" ===== */
+.boton-arriba {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background-color: #0d0246;
+  color: #fff;
+  border: none;
+  border-radius: 50%;
+  padding: 0.7rem 0.9rem;
+  font-size: 1.3rem;
+  cursor: pointer;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.3);
+  z-index: 999;
+}
+
+.boton-arriba:hover {
+  background-color: #c4d273;
+}
+
+/* ===== Ajustes para pantallas muy pequeñas (320-400px) ===== */
+@media (max-width: 400px) {
+  .titulo {
+    font-size: 1rem;
+    padding: 0.4rem 0.6rem;
+  }
+
+  .tema-nombre {
+    font-size: 0.9rem;
+  }
+
+  .ejercicio-boton {
+    font-size: 0.85rem;
+    padding: 0.6rem;
+  }
+
+  .semana-titulo {
+    font-size: 1rem;
+  }
+
+  .logo {
+    width: 100px;
+  }
+}

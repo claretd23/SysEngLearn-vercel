@@ -1,3 +1,22 @@
+/* ELIMINAR fondo negro en toda la pantalla */
+html, body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  min-height: 100vh;
+  background: linear-gradient(180deg, #f0f4ff 0%, #f5f5f5 100%);
+  font-family: "Poppins", sans-serif;
+}
+
+/* Asegurar que el contenedor principal llene el alto */
+.pagina-wrapper {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  background: linear-gradient(180deg, #f0f4ff 0%, #f5f5f5 100%);
+}
+
 /* ===== BASE (MÓVIL) ===== */
 html, body {
   margin: 0;

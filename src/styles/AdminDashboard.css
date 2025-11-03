@@ -5,6 +5,7 @@
   background-color: #f5f7fa;
   min-height: 100vh;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  position: relative; /* 🔹 necesario para posicionar el botón logout */
 }
 
 .card {
@@ -107,12 +108,30 @@ tr:hover {
   background-color: #f1f1f1;
 }
 
-
-.titulo{
+.titulo {
   background-color: #9aaa2f;
 }
 
+/* 🔹 BOTÓN DE CERRAR SESIÓN */
+.logout-button {
+  position: absolute;
+  top: 1.5rem;
+  right: 2rem;
+  background-color: #9aaa2f;
+  color: white;
+  border: none;
+  padding: 0.6rem 1.2rem;
+  border-radius: 10px;
+  font-size: 0.95rem;
+  cursor: pointer;
+  font-weight: 500;
+  transition: background-color 0.3s, transform 0.2s;
+}
 
+.logout-button:hover {
+  background-color: #bcd03c;
+  transform: scale(1.05);
+}
 
 
 /* 🎯 INTERFAZ MÓVIL ADMIN */
@@ -190,6 +209,16 @@ tr:hover {
     font-weight: bold;
     font-size: 1.1rem;
     margin-bottom: 1rem;
+  }
+
+  /* 📱 Botón de logout adaptado para móvil */
+  .logout-button {
+    position: static;
+    width: 100%;
+    margin-bottom: 1rem;
+    font-size: 1rem;
+    padding: 0.8rem;
+    background-color: #9aaa2f;
   }
 }
 

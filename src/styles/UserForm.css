@@ -143,3 +143,29 @@
     margin-top: 0.8em;
   }
 }
+/* Estilos específicos para la página de restablecimiento de contraseña */
+.main-container {     
+  background: #f0f2f5;
+  padding: 2em;
+}                 
+
+.card {
+  max-width: 400px;
+  width: 100%;
+}
+.logo-image {
+  max-width: 150px;
+}
+.Fform {
+  gap: 1em;
+}
+.button1 {
+  background-color: #bcd03c;
+}
+.button1:hover {
+  background-color: #9aaa2f;
+}
+.info-text {
+  font-size: 0.9em;
+  color: #222a5c;
+}

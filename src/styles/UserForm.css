@@ -50,3 +50,96 @@
   margin-top: 1em;
   color: #333;
 }
+.main-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: #222a5c;
+}
+
+.card {
+  background-color: white;
+  border-radius: 20px;
+  padding: 2em;
+  box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.2);
+  width: 350px;
+}
+
+.logo-image {
+  width: 120px;
+  margin-bottom: 1em;
+}
+
+.Fform {
+  display: flex;
+  flex-direction: column;
+  gap: 1em;
+}
+
+.Finput-field {
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+}
+
+.button1 {
+  background-color: #bcd03c;
+  color: white;
+  border: none;
+  padding: 10px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.2s;
+}
+
+.button1:hover {
+  background-color: #9aaa2f;
+  transform: scale(1.03);
+}
+
+.info-text {
+  font-size: 0.9em;
+  text-align: center;
+  margin-top: 1em;
+  color: #333;
+}
+
+/* 🔹 INTERFAZ MÓVIL */
+@media (max-width: 480px) {
+  .main-container {
+    height: auto;
+    padding: 2rem 1rem;
+    background-color: #222a5c;
+  }
+
+  .card {
+    width: 100%;
+    max-width: 340px;
+    padding: 1.5em;
+    border-radius: 16px;
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.25);
+  }
+
+  .logo-image {
+    width: 90px;
+    margin-bottom: 1em;
+    align-self: center;
+  }
+
+  .Finput-field {
+    font-size: 1rem;
+    padding: 12px;
+  }
+
+  .button1 {
+    padding: 12px;
+    font-size: 1rem;
+    border-radius: 10px;
+  }
+
+  .info-text {
+    font-size: 0.85em;
+    margin-top: 0.8em;
+  }
+}

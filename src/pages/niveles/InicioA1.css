@@ -73,7 +73,7 @@ html, body {
 .tarjeta-semana {
   background-color: #ffffff;
   border-radius: 12px;
-  box-shadow: 0 2px 6px rgba(202, 128, 128, 0.1);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
   padding: 1rem;
   text-align: center;
 }
@@ -206,5 +206,64 @@ html, body {
 
   .porcentaje-completado {
     font-size: 0.9rem;
+  }
+}
+
+/* NAV ENTRE SEMANAS */
+.botones-navegacion {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 1.5rem;
+  gap: 1rem;
+}
+
+.btn-nav {
+  background-color: #aabc37;
+  color: white;
+  border: none;
+  border-radius: 12px;
+  padding: 0.6rem 1rem;
+  font-weight: bold;
+  transition: background-color 0.3s ease;
+  font-size: 0.95rem;
+}
+
+.btn-nav:hover {
+  background-color: #9aaa2f;
+}
+
+.btn-nav.prev {
+  background-color: #222a5c;
+}
+
+.btn-nav.prev:hover {
+  background-color: #2f3879;
+}
+
+/* 📱 En móvil: muestra solo una semana y centra los botones */
+@media (max-width: 768px) {
+  .semanas-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .tarjeta-semana {
+    width: 100%;
+    max-width: 380px;
+    background: #ffffff;
+    border-radius: 1rem;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    padding: 1.2rem;
+  }
+
+  .botones-navegacion {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .btn-nav {
+    width: 80%;
+    text-align: center;
   }
 }

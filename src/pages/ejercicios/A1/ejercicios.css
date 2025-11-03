@@ -374,3 +374,69 @@
 
 
 
+
+
+
+
+
+/* === Ajustes responsive SOLO para el ejercicio de matching (con .opcion-btn) === */
+@media (max-width: 768px) {
+  /* Aplica solo dentro del contenedor de ejercicio que tenga botones .opcion-btn */
+  .tarjeta-ejercicio:has(.opcion-btn) {
+    padding: 1rem;
+    min-height: auto;
+  }
+
+  .tarjeta-ejercicio:has(.opcion-btn) .titulo-ejercicio {
+    font-size: 2rem;
+  }
+
+  .tarjeta-ejercicio:has(.opcion-btn) .instruccion-ejercicio {
+    font-size: 1rem;
+    text-align: center;
+  }
+
+  .tarjeta-ejercicio:has(.opcion-btn) .opcion-btn {
+    min-width: 120px !important;
+    font-size: 0.85rem !important;
+    padding: 0.4rem 0.6rem !important;
+    margin: 0.25rem !important;
+    white-space: normal !important;
+    line-height: 1.2;
+  }
+
+  .tarjeta-ejercicio:has(.opcion-btn) .botones-siguiente {
+    margin-top: 0.8rem !important;
+  }
+
+  .tarjeta-ejercicio:has(.opcion-btn) .ejercicio-btn {
+    font-size: 1rem !important;
+    padding: 0.6rem 1.4rem !important;
+  }
+
+  .tarjeta-ejercicio:has(.opcion-btn) .finalizado {
+    font-size: 1.1rem !important;
+    padding: 1.5rem !important;
+  }
+}
+
+/* Pantallas pequeñas (<480px) */
+@media (max-width: 480px) {
+  .tarjeta-ejercicio:has(.opcion-btn) .titulo-ejercicio {
+    font-size: 1.6rem;
+  }
+
+  .tarjeta-ejercicio:has(.opcion-btn) .instruccion-ejercicio {
+    font-size: 0.9rem !important;
+  }
+
+  .tarjeta-ejercicio:has(.opcion-btn) .opcion-btn {
+    min-width: 100px !important;
+    font-size: 0.8rem !important;
+    padding: 0.35rem 0.5rem !important;
+  }
+
+  .tarjeta-ejercicio:has(.opcion-btn) {
+    padding: 0.8rem !important;
+  }
+}

@@ -440,3 +440,58 @@
     padding: 0.8rem !important;
   }
 }
+
+
+/* 🎨 Mejora visual de botones en interfaz móvil (colores agradables y legibles) */
+@media (max-width: 768px) {
+  /* Solo afecta botones de ejercicios dentro de .tarjeta-ejercicio */
+  .tarjeta-ejercicio button,
+  .tarjeta-ejercicio .matching-btn,
+  .tarjeta-ejercicio .opcion-btn {
+    background-color: #f8f9fb !important;
+    color: #222a5c !important;
+    border: 1px solid #aabc36 !important;
+    transition: all 0.25s ease-in-out;
+  }
+
+  /* Efecto al presionar o pasar el dedo (hover / active) */
+  .tarjeta-ejercicio button:hover:not(:disabled),
+  .tarjeta-ejercicio .matching-btn:hover:not(:disabled),
+  .tarjeta-ejercicio .opcion-btn:hover:not(:disabled),
+  .tarjeta-ejercicio button:active:not(:disabled) {
+    background-color: #aabc36 !important;
+    color: #fff !important;
+    border-color: #aabc36 !important;
+  }
+
+  /* Deshabilitados (pares correctos o incorrectos) */
+  .tarjeta-ejercicio button:disabled,
+  .tarjeta-ejercicio .opcion-btn:disabled {
+    opacity: 0.85;
+    background-color: #d6d9e0 !important;
+    color: #555 !important;
+    border: 1px solid #ccc !important;
+  }
+
+  /* Asegurar buena legibilidad del texto en botones pequeños */
+  .tarjeta-ejercicio button,
+  .tarjeta-ejercicio .opcion-btn {
+    font-weight: 600 !important;
+  }
+}
+
+/* Versión para pantallas muy pequeñas */
+@media (max-width: 480px) {
+  .tarjeta-ejercicio button,
+  .tarjeta-ejercicio .matching-btn,
+  .tarjeta-ejercicio .opcion-btn {
+    background-color: #f8f9fb !important;
+    color: #222a5c !important;
+    border: 1px solid #aabc36 !important;
+    font-size: 0.85rem !important;
+    padding: 0.4rem 0.6rem !important;
+  }
+}
+.info-text a:hover {
+  color: #737fa1; /* Azul más claro al pasar el mouse */
+}

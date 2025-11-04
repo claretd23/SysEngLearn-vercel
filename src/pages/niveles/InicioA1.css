@@ -97,7 +97,7 @@ html, body {
 
 /* BLOQUE DE CADA TEMA */
 .tema-bloque {
-  background-color: #f2f4f6;  /* Gris muy claro */
+  background-color: #ccd2d8;  /* Gris muy claro */
   border-radius: 8px;
   padding: 0.7rem;
   text-align: left;
@@ -106,7 +106,7 @@ html, body {
 /* Nombre del tema (ej. "ARTICLES", "VERB TO BE") */
 .tema-nombre {
   font-weight: 600;
-  color: #2f3d98;             /* Azul medio */
+  color: #121313;             
   font-size: 0.95rem;
   margin-bottom: 0.3rem;
 }
@@ -114,7 +114,7 @@ html, body {
 /* PORCENTAJE DE COMPLETADO*/
 .porcentaje-completado {
   font-size: 0.8rem;
-  color: #4caf50;             /* Verde del progreso */
+  color: #1d4327;             /* Verde del progreso */
   font-weight: bold;
 }
 
@@ -263,10 +263,7 @@ VERSIÓN DE ESCRITORIO  (Se aplica cuando la pantalla es más ancha de 769px)
   background-color: #306e5b;
 }
 
-/* ===========================================================
-   📱 ADAPTACIÓN FINAL PARA MÓVILES
-   (Pantallas de 768px o menos)
-   =========================================================== */
+/* ADAPTACIÓN FINAL PARA MÓVILES (Pantallas de 768px o menos)*/
 @media (max-width: 768px) {
 
   /* Las semanas se muestran una bajo otra */

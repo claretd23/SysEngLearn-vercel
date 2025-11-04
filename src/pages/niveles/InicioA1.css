@@ -141,8 +141,8 @@ html, body {
 }
 
 .ejercicio-boton {
-  background-color: #656b3a;
-  color: white;
+  background-color: #dedfd4;
+  color: rgb(49, 47, 47);
   text-decoration: none;
   border-radius: 8px;
   padding: 0.8rem;

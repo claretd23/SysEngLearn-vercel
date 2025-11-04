@@ -21,7 +21,7 @@ const semanas = [
 export default function InicioA1() {
   const [ejerciciosCompletados, setEjerciciosCompletados] = useState<string[]>([]);
   const [mostrarBoton, setMostrarBoton] = useState(false);
-  const [semanaActual, setSemanaActual] = useState(0); // 👈 control de la semana visible
+  const [semanaActual, setSemanaActual] = useState(0); //  control de la semana visible
 
   useEffect(() => {
     const fetchProgreso = async () => {

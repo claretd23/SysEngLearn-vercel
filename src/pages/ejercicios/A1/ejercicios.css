@@ -76,7 +76,7 @@
   gap: 1.5rem;
 }
 
-/* Imagen circular del ejercicio (por ejemplo, persona o icono) */
+/* Imagen circular del ejercicio (persona o icono) */
 .ejercicio-img {
   width: 180px;
   height: 180px;
@@ -99,7 +99,7 @@
 
 /* Efecto hover del botón de audio */
 .btn-audio:hover {
-  background-color: #aabc36;  /* Verde institucional */
+  background-color: #cbccc7;  /* Verde institucional */
   color: #222a5c;
   transform: scale(1.1);      /* Aumenta ligeramente el tamaño */
 }

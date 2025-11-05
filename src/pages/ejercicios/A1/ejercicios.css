@@ -99,7 +99,7 @@
 
 /* Efecto hover del botón de audio */
 .btn-audio:hover {
-  background-color: #cbccc7;  /* Verde institucional */
+  background-color: #cbccc7;  /* gris */
   color: #222a5c;
   transform: scale(1.1);      /* Aumenta ligeramente el tamaño */
 }
@@ -128,7 +128,7 @@
   max-width: 300px;
   padding: 10px 12px;
   font-size: 1.1rem;
-  border: 2px solid #74b709;  /* Verde */
+  border: 2px solid #656564;  /* gris */
   border-radius: 8px;
   text-align: center;
   transition: border 0.3s, box-shadow 0.3s;
@@ -136,7 +136,7 @@
 
 /* Efecto al enfocar el input */
 .input-respuesta:focus {
-  border-color: #aabc36;
+  border-color: #323330;
   box-shadow: 0 0 8px #aabc36aa;
 }
 
@@ -180,7 +180,7 @@
   padding: 1rem 2rem;
   border-radius: 10px;
   border: none;
-  background-image: linear-gradient(163deg, #aabc36 0%, #373c5e 90%);
+  background-image: linear-gradient(163deg, #c2c3ba 0%, #373c5e 90%);
   color: #ffffff;
   font-size: 1.3rem;
   font-weight: 600;

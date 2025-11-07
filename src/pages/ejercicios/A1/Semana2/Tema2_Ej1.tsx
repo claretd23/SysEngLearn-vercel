@@ -4,15 +4,17 @@ import "../ejercicios.css";
 
 export default function Tema2_Ej1() {
   const { nivel, semana, tema, ejercicio } = useParams();
-  const id = `${nivel}-${semana}-${tema}-${ejercicio}`;
   const navigate = useNavigate();
+  const id = `${nivel}-${semana}-${tema}-${ejercicio}`;
 
+  // === ESTADOS ===
   const [respuesta, setRespuesta] = useState<string | null>(null);
   const [inputValue, setInputValue] = useState("");
   const [correctas, setCorrectas] = useState(0);
   const [index, setIndex] = useState(0);
   const [finalizado, setFinalizado] = useState(false);
 
+  // === LISTA DE EJERCICIOS ===
   const ejercicios = [
     { oracion: "I have ___ orange in my bag.", correcta: "an" },
     { oracion: "She wants to buy ___ apple and ___ banana.", correcta: "an, a" },
@@ -28,6 +30,7 @@ export default function Tema2_Ej1() {
 
   const actual = ejercicios[index];
 
+  // === GUARDAR PROGRESO EN BACKEND Y LOCALSTORAGE ===
   const guardarProgreso = async () => {
     try {
       const token = localStorage.getItem("token");
@@ -39,10 +42,12 @@ export default function Tema2_Ej1() {
         },
         body: JSON.stringify({ nivel, semana, tema, ejercicio }),
       });
+
       if (res.ok) {
         const completados = JSON.parse(
           localStorage.getItem("ejercicios_completados") || "[]"
         );
+
         if (!completados.includes(id)) {
           completados.push(id);
           localStorage.setItem(
@@ -56,47 +61,55 @@ export default function Tema2_Ej1() {
     }
   };
 
+  // === VERIFICAR RESPUESTA ===
   const verificar = () => {
     if (!inputValue.trim()) return;
 
-    // caso especial: varias respuestas (ej: "an, a")
     const respuestaUsuario = inputValue.trim().toLowerCase().replace(/\s+/g, "");
     const correcta = actual.correcta.toLowerCase().replace(/\s+/g, "");
 
     if (respuestaUsuario === correcta) {
-      setRespuesta("✅ Correct!");
+      setRespuesta(`✅ Correct! The answer is "${actual.correcta}".`);
       setCorrectas((prev) => prev + 1);
     } else {
       setRespuesta(`❌ Incorrect. The correct answer is "${actual.correcta}".`);
     }
   };
 
+  // === SIGUIENTE PREGUNTA ===
   const siguiente = () => {
     setRespuesta(null);
     setInputValue("");
     setIndex((prev) => prev + 1);
   };
 
+  // === FINALIZAR EJERCICIO ===
   const manejarFinalizacion = async () => {
     await guardarProgreso();
     setFinalizado(true);
     setTimeout(() => navigate(`/inicio/${nivel}`), 2500);
   };
 
+  // === MENSAJE FINAL ===
   if (finalizado) {
     return (
       <div className="finalizado" style={{ fontSize: "1.3rem" }}>
         <h2>✅ You have completed the exercise!</h2>
         <p>
-          Correct answers: <strong>{correctas} / {ejercicios.length}</strong>
+          Correct answers:{" "}
+          <strong>
+            {correctas} / {ejercicios.length}
+          </strong>
         </p>
         <p>Redirecting to the start of the level...</p>
       </div>
     );
   }
 
+  // === INTERFAZ PRINCIPAL ===
   return (
     <div className="ejercicio-container">
+      {/* HEADER */}
       <header className="ejercicio-header">
         <h1 className="titulo-ejercicio">EXERCISE 1</h1>
         <p className="progreso-ejercicio">
@@ -104,15 +117,19 @@ export default function Tema2_Ej1() {
         </p>
       </header>
 
+      {/* CONTENIDO DEL EJERCICIO */}
       <section className="tarjeta-ejercicio" style={{ textAlign: "center" }}>
+        {/* Instrucción solo visible en la primera pregunta */}
         {index === 0 && (
           <div className="instruccion-box" style={{ fontSize: "1.3rem" }}>
             <p className="instruccion-ejercicio">
-              Write the correct article (a, an, or the) in the blank space.
+              Write the correct article (<strong>a</strong>,{" "}
+              <strong>an</strong>, or <strong>the</strong>) in the blank space.
             </p>
           </div>
         )}
 
+        {/* ORACIÓN */}
         <p
           style={{
             fontSize: "1.3rem",
@@ -123,6 +140,7 @@ export default function Tema2_Ej1() {
           {actual.oracion}
         </p>
 
+        {/* INPUT Y BOTÓN */}
         {!respuesta && (
           <div
             style={{
@@ -162,6 +180,7 @@ export default function Tema2_Ej1() {
           </div>
         )}
 
+        {/* FEEDBACK */}
         {respuesta && (
           <p
             className={`respuesta-feedback ${
@@ -173,6 +192,7 @@ export default function Tema2_Ej1() {
           </p>
         )}
 
+        {/* BOTONES DE NAVEGACIÓN */}
         <div className="botones-siguiente" style={{ marginTop: "1rem" }}>
           {respuesta && index < ejercicios.length - 1 && (
             <button
@@ -183,6 +203,7 @@ export default function Tema2_Ej1() {
               Next question
             </button>
           )}
+
           {respuesta && index === ejercicios.length - 1 && (
             <button
               onClick={manejarFinalizacion}

@@ -139,12 +139,12 @@ export default function InicioA1() {
         <div className="botones-navegacion">
           {semanaActual > 0 && (
             <button onClick={handlePrev} className="btn-nav prev">
-              ⬅️ Semana anterior
+              ⬅️ previous week
             </button>
           )}
           {semanaActual < semanas.length - 1 && (
             <button onClick={handleNext} className="btn-nav next">
-              Siguiente semana ➡️
+              Next week ➡️
             </button>
           )}
         </div>

@@ -510,3 +510,24 @@
 .info-text a:hover {
   color: #737fa1; /* Cambia a un azul más claro al pasar el mouse */
 }
+
+
+
+/* === IMÁGENES RECTANGULARES (EJERCICIOS CON ILUSTRACIONES, EJ: GATO EN LAS CAJAS) === */
+.tarjeta-ejercicio img.imagen-completa {
+  width: 100%;
+  max-width: 350px;       /* Tamaño máximo para mantener buena proporción */
+  height: auto;
+  border-radius: 10px;    /* Bordes suaves, no circulares */
+  object-fit: contain;    /* Muestra la imagen completa sin recortar */
+  border: none;           /* Sin borde gris */
+  margin: 1rem auto;
+  background-color: #fff; /* Fondo neutro por si la imagen tiene transparencia */
+}
+
+/* Ajuste responsivo */
+@media (max-width: 768px) {
+  .tarjeta-ejercicio img.imagen-completa {
+    max-width: 280px;
+  }
+}

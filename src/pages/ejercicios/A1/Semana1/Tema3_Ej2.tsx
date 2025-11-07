@@ -14,21 +14,26 @@ export default function Tema1_Ej2_Ordinals() {
   const [finalizado, setFinalizado] = useState(false);
   const [yaCompletado, setYaCompletado] = useState(false);
 
-  const ejercicios = useMemo(() => [
-    { imagen: "/img/cat-boxes.PNG", pregunta: "There are three boxes. The cat is in the ___ box.", correcta: "first" },
-    { imagen: "/img/red-chair.png", pregunta: "Four chairs are in a row. The red chair is the ___ one.", correcta: "second" },
-    { imagen: "/img/green-apple.png", pregunta: "Five apples on a table. The green apple is the ___ one.", correcta: "third" },
-    { imagen: "/img/backpack-girl.png", pregunta: "Three students in line. The girl with a backpack is the ___ student.", correcta: "second" },
-    { imagen: "/img/blue-book.png", pregunta: "Six books on a shelf. The blue book is the ___ book.", correcta: "fourth" },
-    { imagen: "/img/yellow-car.png", pregunta: "Three cars in a parking lot. The yellow car is the ___ car.", correcta: "third" },
-    { imagen: "/img/long-pencil.png", pregunta: "Four pencils on the desk. The long pencil is the ___ one.", correcta: "first" },
-    { imagen: "/img/big-ball.png", pregunta: "Five balls in a row. The big ball is the ___ one.", correcta: "fifth" },
-    { imagen: "/img/tea-cup.png", pregunta: "Three cups on the table. The cup with tea is the ___ one.", correcta: "first" },
-    { imagen: "/img/left-door.png", pregunta: "Two doors. The door on the left is the ___ door.", correcta: "first" },
-  ], []);
+  // 🔹 Ejercicios con imágenes y respuestas correctas
+  const ejercicios = useMemo(
+    () => [
+      { imagen: "/img/cat-boxes.PNG", pregunta: "There are three boxes. The cat is in the ___ box.", correcta: "first" },
+      { imagen: "/img/red-chair.PNG", pregunta: "Four chairs are in a row. The red chair is the ___ one.", correcta: "second" },
+      { imagen: "/img/green-apple.PNG", pregunta: "Five apples on a table. The green apple is the ___ one.", correcta: "third" },
+      { imagen: "/img/backpack-girl.png", pregunta: "Three students in line. The girl with a backpack is the ___ student.", correcta: "second" },
+      { imagen: "/img/blue-book.png", pregunta: "Six books on a shelf. The blue book is the ___ book.", correcta: "fourth" },
+      { imagen: "/img/yellow-car.PNG", pregunta: "Three cars in a parking lot. The yellow car is the ___ car.", correcta: "third" },
+      { imagen: "/img/long-pencil.png", pregunta: "Four pencils on the desk. The long pencil is the ___ one.", correcta: "first" },
+      { imagen: "/img/big-ball.png", pregunta: "Five balls in a row. The big ball is the ___ one.", correcta: "fifth" },
+      { imagen: "/img/tea-cup.png", pregunta: "Three cups on the table. The cup with tea is the ___ one.", correcta: "first" },
+      { imagen: "/img/left-door.png", pregunta: "Two doors. The door on the left is the ___ door.", correcta: "first" },
+    ],
+    []
+  );
 
   const actual = ejercicios[index];
 
+  // 🔹 Verificar si el usuario ya completó el ejercicio
   useEffect(() => {
     const checkProgreso = async () => {
       try {
@@ -48,6 +53,7 @@ export default function Tema1_Ej2_Ordinals() {
     checkProgreso();
   }, [id, nivel, semana, tema, ejercicio]);
 
+  // 🔹 Guardar progreso al finalizar
   const guardarProgreso = async () => {
     try {
       const token = localStorage.getItem("token");
@@ -71,6 +77,7 @@ export default function Tema1_Ej2_Ordinals() {
     }
   };
 
+  // 🔹 Verifica respuesta
   const verificar = () => {
     const respuestaUsuario = inputValue.trim().toLowerCase();
     if (!respuestaUsuario) return;
@@ -94,23 +101,23 @@ export default function Tema1_Ej2_Ordinals() {
     setTimeout(() => navigate(`/inicio/${nivel}`), 2500);
   };
 
-  // 🔹 Estado si ya estaba hecho
+  // 🔹 Si ya completó el ejercicio
   if (yaCompletado) {
     return (
-      <div className="finalizado" style={{ fontSize: "1.3rem" }}>
+      <div className="finalizado">
         <h2>✅ You have already completed this exercise.</h2>
         <p>You cannot answer it again.</p>
-        <button onClick={() => navigate(`/inicio/${nivel}`)} className="ejercicio-btn" style={{ fontSize: "1.2rem", padding: "0.8rem 2rem" }}>
+        <button onClick={() => navigate(`/inicio/${nivel}`)} className="ejercicio-btn">
           Go back to level start
         </button>
       </div>
     );
   }
 
-  // 🔹 Estado si terminó
+  // 🔹 Pantalla de finalización
   if (finalizado) {
     return (
-      <div className="finalizado" style={{ fontSize: "1.3rem" }}>
+      <div className="finalizado">
         <h2>✅ You have completed the exercise!</h2>
         <p>
           Correct answers: <strong>{correctas} / {ejercicios.length}</strong>
@@ -120,7 +127,7 @@ export default function Tema1_Ej2_Ordinals() {
     );
   }
 
-  // 🔹 Ejercicio en curso
+  // 🔹 Ejercicio activo
   return (
     <div className="ejercicio-container">
       <header className="ejercicio-header">
@@ -131,61 +138,59 @@ export default function Tema1_Ej2_Ordinals() {
       </header>
 
       <section className="tarjeta-ejercicio" style={{ textAlign: "center" }}>
-        {/* Caja de instrucción solo en la primera */}
+        {/* Instrucción solo en la primera pregunta */}
         {index === 0 && (
-          <div className="instruccion-box" style={{ fontSize: "1.3rem" }}>
+          <div className="instruccion-box">
             <p className="instruccion-ejercicio">
               Look at the picture and write the correct ordinal number.
             </p>
           </div>
         )}
 
-        {/* Imagen */}
+        {/* Imagen del ejercicio */}
         <img
           src={actual.imagen}
           alt="Exercise reference"
-          style={{ maxWidth: "350px", margin: "1rem auto", display: "block", borderRadius: "12px" }}
+          className="imagen-completa"
         />
 
         {/* Pregunta */}
-        <p
-          className="pregunta-ejercicio"
-          style={{ marginBottom: "1rem", fontSize: "1.4rem", fontWeight: 500 }}
-        >
+        <p className="pregunta-ejercicio">
           {respuesta ? actual.pregunta.replace("___", actual.correcta) : actual.pregunta}
         </p>
 
-        {/* Input y botón Check alineados */}
-        <div style={{ display: "flex", justifyContent: "center", alignItems: "center", gap: "1rem", margin: "1.5rem 0" }}>
+        {/* Input + botón Check */}
+        <div className="input-contenedor">
           <input
             type="text"
             value={inputValue}
             onChange={(e) => setInputValue(e.target.value)}
             className="input-respuesta"
             placeholder="Write the ordinal..."
-            style={{ fontSize: "1.3rem", padding: "0.8rem 1rem", flex: 1, borderRadius: "8px", border: "1px solid #ccc" }}
           />
           {!respuesta && (
-            <button onClick={verificar} className="ejercicio-btn" style={{ fontSize: "1.3rem", padding: "0.8rem 2rem", borderRadius: "8px" }}>
+            <button onClick={verificar} className="ejercicio-btn">
               Check
             </button>
           )}
         </div>
 
+        {/* Feedback */}
         {respuesta && (
-          <p className={`respuesta-feedback ${respuesta.startsWith("✅") ? "correcta" : "incorrecta"}`} style={{ fontSize: "1.3rem", margin: "1rem 0" }}>
+          <p className={`respuesta-feedback ${respuesta.startsWith("✅") ? "correcta" : "incorrecta"}`}>
             {respuesta}
           </p>
         )}
 
+        {/* Botones siguientes */}
         <div className="botones-siguiente">
           {respuesta && index < ejercicios.length - 1 && (
-            <button onClick={siguiente} className="ejercicio-btn" style={{ fontSize: "1.3rem", padding: "0.8rem 2rem" }}>
+            <button onClick={siguiente} className="ejercicio-btn">
               Next question
             </button>
           )}
           {respuesta && index === ejercicios.length - 1 && (
-            <button onClick={manejarFinalizacion} className="ejercicio-btn" style={{ fontSize: "1.3rem", padding: "0.8rem 2rem" }}>
+            <button onClick={manejarFinalizacion} className="ejercicio-btn">
               Finish
             </button>
           )}

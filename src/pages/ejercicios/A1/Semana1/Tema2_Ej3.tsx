@@ -98,7 +98,7 @@ export default function Tema1_Ej3_Listening() {
             {index === 0 && (
               <div className="instruccion-box">
                 <p className="instruccion-ejercicio">
-                  Listen to the audio and write the number in figures.
+                  Listen to the audio and write the number in numerals..
                 </p>
               </div>
             )}
@@ -128,7 +128,7 @@ export default function Tema1_Ej3_Listening() {
                   value={inputValue}
                   onChange={(e) => setInputValue(e.target.value)}
                   className="input-respuesta"
-                  placeholder="Write the number in figures..."
+                  placeholder="Write the number in numerals...."
                   style={{
                     fontSize: "1.2rem",
                     padding: "0.6rem 1rem",

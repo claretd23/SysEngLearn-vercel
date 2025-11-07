@@ -15,7 +15,7 @@ export default function Tema1_Ej2_Ordinals() {
   const [yaCompletado, setYaCompletado] = useState(false);
 
   const ejercicios = useMemo(() => [
-    { imagen: "/img/cat-boxes.png", pregunta: "There are three boxes. The cat is in the ___ box.", correcta: "first" },
+    { imagen: "/img/cat-boxes.PNG", pregunta: "There are three boxes. The cat is in the ___ box.", correcta: "first" },
     { imagen: "/img/red-chair.png", pregunta: "Four chairs are in a row. The red chair is the ___ one.", correcta: "second" },
     { imagen: "/img/green-apple.png", pregunta: "Five apples on a table. The green apple is the ___ one.", correcta: "third" },
     { imagen: "/img/backpack-girl.png", pregunta: "Three students in line. The girl with a backpack is the ___ student.", correcta: "second" },

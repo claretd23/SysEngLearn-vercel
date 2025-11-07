@@ -114,7 +114,7 @@ export default function Tema1_Ej3() {
       {!finalizado ? (
         <>
           <header className="ejercicio-header">
-            <h1 className="titulo-ejercicio">LISTENING EXERCISE</h1>
+            <h1 className="titulo-ejercicio">EXERCISE 3</h1>
           </header>
 
           <section className="tarjeta-ejercicio">

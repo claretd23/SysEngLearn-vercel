@@ -11,7 +11,7 @@ export default function Tema1_Ej2_Ordinals() {
   const [inputValue, setInputValue] = useState("");
   const [correctas, setCorrectas] = useState(0);
   const [index, setIndex] = useState(0);
-  const [finalizado, setFinalizado] = useState(false);
+  const [finalizado, setFinalizado ] = useState(false);
   const [yaCompletado, setYaCompletado] = useState(false);
 
   // 🔹 Ejercicios con imágenes y respuestas correctas
@@ -25,8 +25,8 @@ export default function Tema1_Ej2_Ordinals() {
       { imagen: "/img/yellow-car.PNG", pregunta: "Three cars in a parking lot. The yellow car is the ___ car.", correcta: "third" },
       { imagen: "/img/long-pencil.png", pregunta: "Four pencils on the desk. The long pencil is the ___ one.", correcta: "first" },
       { imagen: "/img/big-ball.png", pregunta: "Five balls in a row. The big ball is the ___ one.", correcta: "fifth" },
-      { imagen: "/img/tea-cup.png", pregunta: "Three cups on the table. The cup with tea is the ___ one.", correcta: "first" },
-      { imagen: "/img/left-door.png", pregunta: "Two doors. The door on the left is the ___ door.", correcta: "first" },
+      { imagen: "/img/tea-cup.png", pregunta: "Three cups on the table. The cup with tea is the ___ one.", correcta: "second" },
+      { imagen: "/img/left-door.png", pregunta: "Two doors. The ___ door is brown.", correcta: "first" },
     ],
     []
   );

@@ -13,7 +13,7 @@ const semanas = [
   { semana: 7, temas: ["POSSESSIVE ADJECTIVES ", "POSSESSIVE PRONOUNS", "OBJECT PRONOUNS"] },
   { semana: 8, temas: ["HOW MUCH?", "HOW MANY?", "IS THERE/ARE THERE?"] },
   { semana: 9, temas: ["WH QUESTIONS SIMPLE PRESENT", "HAVE GOT: DO YOU HAVE?", "THIS/THESE/THAT/THOSE"] },
-  { semana: 10, temas: ["WANT/WOULD LIKE","PRESENT CONTINUOUS", "CAN, CAN´T: ABILITY, POSSIBILITY,PERMISSION"] },
+  { semana: 10, temas: ["WANT/WOULD LIKE", "PRESENT CONTINUOUS", "CAN, CAN´T: ABILITY, POSSIBILITY,PERMISSION"] },
   { semana: 11, temas: ["WHOSE POSSESSIVES (S'-S')", "FAMILY TREE", "WEATHER"] },
   { semana: 12, temas: ["TELL THE TIME ", "FUTURE (GOING TO)", "FUTURE (WILL)"] },
 ];
@@ -21,7 +21,17 @@ const semanas = [
 export default function InicioA1() {
   const [ejerciciosCompletados, setEjerciciosCompletados] = useState<string[]>([]);
   const [mostrarBoton, setMostrarBoton] = useState(false);
-  const [semanaActual, setSemanaActual] = useState(0); //  control de la semana visible
+
+  // ✅ Mantiene la semana actual en localStorage
+  const [semanaActual, setSemanaActual] = useState(() => {
+    const semanaGuardada = localStorage.getItem("semanaActualA1");
+    return semanaGuardada ? parseInt(semanaGuardada) : 0;
+  });
+
+  useEffect(() => {
+    // Guarda cada vez que cambia
+    localStorage.setItem("semanaActualA1", semanaActual.toString());
+  }, [semanaActual]);
 
   useEffect(() => {
     const fetchProgreso = async () => {

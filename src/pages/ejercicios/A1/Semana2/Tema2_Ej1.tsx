@@ -18,7 +18,7 @@ export default function Tema2_Ej1() {
   // === LISTA DE EJERCICIOS ===
   const ejercicios = [
     { oracion: "I have ___ orange in my bag.", correcta: "an" },
-    { oracion: "She wants to buy ___ apple and ___ banana.", correcta: "an, a" },
+    { oracion: "She wants to buy ___ apple and banana.", correcta: "an" },
     { oracion: "There is ___ cat on the roof.", correcta: "a" },
     { oracion: "He is ___ honest man.", correcta: "an" },
     { oracion: "I saw ___ elephant at the zoo.", correcta: "an" },

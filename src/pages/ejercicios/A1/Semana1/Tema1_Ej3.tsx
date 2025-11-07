@@ -65,7 +65,7 @@ const ejercicios = [
   },
   {
     audios: [
-      { src: "/audios/sem1/Tema1/ñ.mp3", img: "/img/M5.png" },
+      { src: "/audios/sem1/Tema1/ej3-6a.mp3", img: "/img/M5.png" },
       { src: "/audios/sem1/Tema1/ej3-6b.mp3", img: "/img/M6.png" },
       { src: "/audios/sem1/Tema1/ej3-6c.mp3", img: "/img/M5.png" },
     ],

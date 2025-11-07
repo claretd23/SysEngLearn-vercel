@@ -13,17 +13,18 @@ export default function Tema3_Ej1() {
   const [index, setIndex] = useState(0);
   const [finalizado, setFinalizado] = useState(false);
 
+  
   const ejercicios = [
-    { texto: "Monday is the ___ day of the week.", correcta: "first" },
-    { texto: "Sunday is the ___ day of the week.", correcta: "seventh" },
-    { texto: "January is the ___ month of the year.", correcta: "first" },
-    { texto: "December is the ___ month of the year.", correcta: "twelfth" },
-    { texto: "My birthday is on the ___ of March.", correcta: "third" },
-    { texto: "Today is the ___ of April.", correcta: "fifth" },
-    { texto: "February is the ___ month of the year.", correcta: "second" },
-    { texto: "August is the ___ month of the year.", correcta: "eighth" },
-    { texto: "Tuesday is the ___ day of the week.", correcta: "second" },
-    { texto: "October is the ___ month of the year.", correcta: "tenth" },
+    { texto: "Monday is the 1st day of the week.", correcta: "first" },
+    { texto: "Sunday is the 7th day of the week.", correcta: "seventh" },
+    { texto: "January is the 1st month of the year.", correcta: "first" },
+    { texto: "December is the 12th month of the year.", correcta: "twelfth" },
+    { texto: "My birthday is on the 3rd of March.", correcta: "third" },
+    { texto: "Today is the 5th of April.", correcta: "fifth" },
+    { texto: "February is the 2nd month of the year.", correcta: "second" },
+    { texto: "August is the 8th month of the year.", correcta: "eighth" },
+    { texto: "Tuesday is the 2nd day of the week.", correcta: "second" },
+    { texto: "October is the 10th month of the year.", correcta: "tenth" },
   ];
 
   const actual = ejercicios[index];
@@ -61,7 +62,7 @@ export default function Tema3_Ej1() {
       setRespuesta("✅ Correct!");
       setCorrectas((prev) => prev + 1);
     } else {
-      setRespuesta(`❌ Incorrect`);
+      setRespuesta(`❌ Incorrect. The correct answer is "${actual.correcta}".`);
     }
   };
 
@@ -80,16 +81,12 @@ export default function Tema3_Ej1() {
     }, 3000);
   };
 
-  const mostrarTexto = respuesta
-    ? actual.texto.replace("___", actual.correcta)
-    : actual.texto;
-
   return (
     <div className="ejercicio-container">
       {!finalizado ? (
         <>
           <header className="ejercicio-header">
-            <h1 className="titulo-ejercicio">EXERCISE</h1>
+            <h1 className="titulo-ejercicio">EXERCISE 1</h1>
             <p className="progreso-ejercicio">
               Question {index + 1} of {ejercicios.length}
             </p>
@@ -99,7 +96,8 @@ export default function Tema3_Ej1() {
             {index === 0 && (
               <div className="instruccion-box">
                 <p className="instruccion-ejercicio" style={{ fontSize: "1.3rem" }}>
-                  Complete the sentences with the correct ordinal number (first, second, third, etc.).
+                  Write the ordinal number in words (first, second, third, etc.)
+                  according to the number in the sentence.
                 </p>
               </div>
             )}
@@ -108,7 +106,7 @@ export default function Tema3_Ej1() {
               className="pregunta-ejercicio"
               style={{ fontSize: "1.5rem", margin: "1rem 0", fontWeight: 500 }}
             >
-              {mostrarTexto}
+              {actual.texto}
             </p>
 
             {!respuesta && (
@@ -127,13 +125,14 @@ export default function Tema3_Ej1() {
                   value={inputValue}
                   onChange={(e) => setInputValue(e.target.value)}
                   className="input-respuesta"
-                  placeholder="Write the ordinal number..."
+                  placeholder="Write the word (e.g. first, second, third...)"
                   style={{
                     fontSize: "1.3rem",
                     padding: "0.8rem 1rem",
                     flex: 1,
                     borderRadius: "8px",
                     border: "1px solid #ccc",
+                    textAlign: "center",
                   }}
                 />
                 <button

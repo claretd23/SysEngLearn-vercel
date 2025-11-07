@@ -110,7 +110,7 @@ export default function Tema1_Ej2() {
                   className="instruccion-ejercicio"
                   style={{ fontSize: "1.2rem" }}
                 >
-                  Complete the sentences by writing the number in figures.
+                  Complete the sentences by writing the number in numerals.
                 </p>
               </div>
             )}
@@ -143,7 +143,7 @@ export default function Tema1_Ej2() {
                   value={inputValue}
                   onChange={(e) => setInputValue(e.target.value)}
                   className="input-respuesta"
-                  placeholder="Write the number in figures..."
+                  placeholder="Write the number in numerals...."
                   style={{ fontSize: "1.2rem", padding: "0.6rem 1rem" }}
                 />
                 <button

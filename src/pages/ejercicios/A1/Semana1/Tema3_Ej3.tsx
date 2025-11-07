@@ -93,17 +93,18 @@ export default function Tema3_Ej3() {
     audioRefs.current[0]?.play();
   };
 
-  const verificar = () => {
-    const respuestaUsuario = inputValue.trim().toLowerCase();
-    if (!respuestaUsuario) return;
+const verificar = () => {
+  const respuestaUsuario = inputValue.trim().toLowerCase();
+  if (!respuestaUsuario) return;
 
-    if (respuestaUsuario === actual.correcta.toLowerCase()) {
-      setRespuesta("✅ Correct!");
-      setCorrectas((prev) => prev + 1);
-    } else {
-      setRespuesta("❌ Incorrect.");
-    }
-  };
+  if (respuestaUsuario === actual.correcta.toLowerCase()) {
+    setRespuesta(`✅ Correct! The answer is "${actual.correcta}".`);
+    setCorrectas((prev) => prev + 1);
+  } else {
+    setRespuesta(`❌ Incorrect. The correct answer is "${actual.correcta}".`);
+  }
+};
+
 
   const siguiente = () => {
     setRespuesta(null);

@@ -13,6 +13,7 @@ export default function Tema2_Ej1() {
   const [correctas, setCorrectas] = useState(0);
   const [index, setIndex] = useState(0);
   const [finalizado, setFinalizado] = useState(false);
+  const [mostrarOracionCompleta, setMostrarOracionCompleta] = useState(false);
 
   // === LISTA DE EJERCICIOS ===
   const ejercicios = [
@@ -30,7 +31,7 @@ export default function Tema2_Ej1() {
 
   const actual = ejercicios[index];
 
-  // === GUARDAR PROGRESO EN BACKEND Y LOCALSTORAGE ===
+  // === GUARDAR PROGRESO ===
   const guardarProgreso = async () => {
     try {
       const token = localStorage.getItem("token");
@@ -47,7 +48,6 @@ export default function Tema2_Ej1() {
         const completados = JSON.parse(
           localStorage.getItem("ejercicios_completados") || "[]"
         );
-
         if (!completados.includes(id)) {
           completados.push(id);
           localStorage.setItem(
@@ -68,22 +68,25 @@ export default function Tema2_Ej1() {
     const respuestaUsuario = inputValue.trim().toLowerCase().replace(/\s+/g, "");
     const correcta = actual.correcta.toLowerCase().replace(/\s+/g, "");
 
+    setMostrarOracionCompleta(true);
+
     if (respuestaUsuario === correcta) {
-      setRespuesta(`✅ Correct! The answer is "${actual.correcta}".`);
+      setRespuesta("✅ Correct!");
       setCorrectas((prev) => prev + 1);
     } else {
-      setRespuesta(`❌ Incorrect. The correct answer is "${actual.correcta}".`);
+      setRespuesta(`❌ Incorrect.`);
     }
   };
 
-  // === SIGUIENTE PREGUNTA ===
+  // === SIGUIENTE ===
   const siguiente = () => {
     setRespuesta(null);
     setInputValue("");
     setIndex((prev) => prev + 1);
+    setMostrarOracionCompleta(false);
   };
 
-  // === FINALIZAR EJERCICIO ===
+  // === FINALIZAR ===
   const manejarFinalizacion = async () => {
     await guardarProgreso();
     setFinalizado(true);
@@ -106,10 +109,15 @@ export default function Tema2_Ej1() {
     );
   }
 
-  // === INTERFAZ PRINCIPAL ===
+  // === MOSTRAR ORACIÓN CON RESPUESTA ===
+  const oracionMostrada = mostrarOracionCompleta
+    ? actual.oracion.replace(/___/g, actual.correcta)
+    : actual.oracion;
+
+  // === INTERFAZ ===
   return (
     <div className="ejercicio-container">
-      {/* HEADER */}
+      {/* Header */}
       <header className="ejercicio-header">
         <h1 className="titulo-ejercicio">EXERCISE 1</h1>
         <p className="progreso-ejercicio">
@@ -117,9 +125,9 @@ export default function Tema2_Ej1() {
         </p>
       </header>
 
-      {/* CONTENIDO DEL EJERCICIO */}
+      {/* Tarjeta */}
       <section className="tarjeta-ejercicio" style={{ textAlign: "center" }}>
-        {/* Instrucción solo visible en la primera pregunta */}
+        {/* Instrucción inicial */}
         {index === 0 && (
           <div className="instruccion-box" style={{ fontSize: "1.3rem" }}>
             <p className="instruccion-ejercicio">
@@ -129,7 +137,7 @@ export default function Tema2_Ej1() {
           </div>
         )}
 
-        {/* ORACIÓN */}
+        {/* Oración */}
         <p
           style={{
             fontSize: "1.3rem",
@@ -137,10 +145,10 @@ export default function Tema2_Ej1() {
             whiteSpace: "pre-line",
           }}
         >
-          {actual.oracion}
+          {oracionMostrada}
         </p>
 
-        {/* INPUT Y BOTÓN */}
+        {/* Input y botón */}
         {!respuesta && (
           <div
             style={{
@@ -180,7 +188,7 @@ export default function Tema2_Ej1() {
           </div>
         )}
 
-        {/* FEEDBACK */}
+        {/* Feedback */}
         {respuesta && (
           <p
             className={`respuesta-feedback ${
@@ -192,7 +200,7 @@ export default function Tema2_Ej1() {
           </p>
         )}
 
-        {/* BOTONES DE NAVEGACIÓN */}
+        {/* Botones de navegación */}
         <div className="botones-siguiente" style={{ marginTop: "1rem" }}>
           {respuesta && index < ejercicios.length - 1 && (
             <button
@@ -203,7 +211,6 @@ export default function Tema2_Ej1() {
               Next question
             </button>
           )}
-
           {respuesta && index === ejercicios.length - 1 && (
             <button
               onClick={manejarFinalizacion}

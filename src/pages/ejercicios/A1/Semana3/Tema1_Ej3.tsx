@@ -36,8 +36,8 @@ export default function Tema1_Ej3() {
       { audioSrc: "/audios/audio5.mp3", respuesta: "My birthday is on July 20th." },// When is your birthday?
       { audioSrc: "/audios/audio6.mp3", respuesta: "It’s 4567-8923." },            // What’s your phone number?
       { audioSrc: "/audios/audio7.mp3", respuesta: "I live at 15 Green Avenue." }, // Where do you live?
-      { audioSrc: "/audios/audio8.mp3", respuesta: "My favourite hobby is reading." }, // What’s your favourite hobby?
-      { audioSrc: "/audios/audio9.mp3", respuesta: "My favourite singer is Shakira." }, // Who is your favourite singer?
+      { audioSrc: "/audios/audio8.mp3", respuesta: "My favourite hobby is reading." }, // What is your favorite hobby?
+      { audioSrc: "/audios/audio9.mp3", respuesta: "My favourite singer is Shakira." }, // Who is your favorite singer?
       { audioSrc: "/audios/audio10.mp3", respuesta: "I’m fine, thank you." },      // How are you?
     ];
     setEjercicios(shuffleArray(lista));

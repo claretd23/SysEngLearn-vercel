@@ -1,8 +1,8 @@
 import { useParams, useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useState, useMemo, useRef } from "react";
 import "../ejercicios.css";
 
-export default function Tema_Greetings_Ej1() {
+export default function Tema2_Ej3() {
   const { nivel, semana, tema, ejercicio } = useParams();
   const id = `${nivel}-${semana}-${tema}-${ejercicio}`;
   const navigate = useNavigate();
@@ -13,72 +13,53 @@ export default function Tema_Greetings_Ej1() {
   const [index, setIndex] = useState(0);
   const [finalizado, setFinalizado] = useState(false);
 
-  const ejercicios = [
-    { pregunta: 'A: ______, how are you today?\nB: I’m fine, thanks.', opciones: ["Good night", "Good morning", "Goodbye"], correcta: "Good morning" },
-    { pregunta: 'A: Hi, Emma!\nB: ______, Alex!', opciones: ["Fine, thanks", "Hello", "See you"], correcta: "Hello" },
-    { pregunta: 'A: Good evening, Mr. Smith.\nB: ______, Anna.', opciones: ["Good evening", "Good morning", "Bye"], correcta: "Good evening" },
-    { pregunta: 'A: ______, nice to meet you.\nB: Nice to meet you too.', opciones: ["Hello", "See you", "Good night"], correcta: "Hello" },
-    { pregunta: 'A: See you tomorrow!\nB: ______.', opciones: ["Good afternoon", "Goodbye", "Good night"], correcta: "Goodbye" },
-    { pregunta: 'A: Good night, Mom.\nB: ______, sleep well.', opciones: ["Good night", "Good morning", "Bye"], correcta: "Good night" },
-    { pregunta: 'A: Hi, how’s it going?\nB: ______.', opciones: ["Very well, thanks", "Hello", "See you"], correcta: "Very well, thanks" },
-    { pregunta: 'A: Good afternoon, students.\nB: ______, teacher.', opciones: ["Good afternoon", "Good morning", "Good evening"], correcta: "Good afternoon" },
-    { pregunta: 'A: Bye, have a nice day!\nB: ______.', opciones: ["Good morning", "Thank you, you too", "Hello"], correcta: "Thank you, you too" },
-    { pregunta: 'A: Hello, Sarah. This is my friend, John.\nB: ______.', opciones: ["Nice to meet you", "Goodbye", "See you tomorrow"], correcta: "Nice to meet you" },
-  ];
+  const ejercicios = useMemo(
+    () => [
+      { audio: "/audios/sem2/q1.mp3", pregunta: "I need _ orange.", opciones: ["a", "an", "the"], correcta: "an" },
+      { audio: "/audios/sem2/q2.mp3", pregunta: "He is _ actor.", opciones: ["a", "an", "the"], correcta: "an" },
+      { audio: "/audios/sem2/q3.mp3", pregunta: "I saw _ cat in the garden.", opciones: ["the", "a", "an"], correcta: "a" },
+      { audio: "/audios/sem2/q4.mp3", pregunta: "She has _ old book.", opciones: ["a", "the", "an"], correcta: "an" },
+      { audio: "/audios/sem2/q5.mp3", pregunta: "They are at _ airport.", opciones: ["an", "the", "a"], correcta: "the" },
+      { audio: "/audios/sem2/q6.mp3", pregunta: "Look! It’s _ elephant!", opciones: ["a", "the", "an"], correcta: "an" },
+      { audio: "/audios/sem2/q7.mp3", pregunta: "We had _ amazing dinner.", opciones: ["a", "the", "an"], correcta: "an" },
+      { audio: "/audios/sem2/q8.mp3", pregunta: "_ sun is shining.", opciones: ["A", "An", "The"], correcta: "The" },
+      { audio: "/audios/sem2/q9.mp3", pregunta: "He bought _ umbrella.", opciones: ["a", "an", "the"], correcta: "an" },
+      { audio: "/audios/sem2/q10.mp3", pregunta: "I want to watch _ movie tonight.", opciones: ["the", "a", "an"], correcta: "a" },
+    ],
+    []
+  );
 
   const actual = ejercicios[index];
+  const audioRef = useRef<HTMLAudioElement | null>(null);
 
-  const guardarProgreso = async () => {
-    const completados = JSON.parse(localStorage.getItem("ejercicios_completados") || "[]");
-    if (!completados.includes(id)) {
-      completados.push(id);
-      localStorage.setItem("ejercicios_completados", JSON.stringify(completados));
-    }
-
-    try {
-      const token = localStorage.getItem("token");
-      const res = await fetch("http://localhost:5000/api/progreso", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify({ nivel, semana, tema, ejercicio }),
-      });
-
-      if (!res.ok) console.error("Error al guardar progreso:", res.statusText);
-    } catch (error) {
-      console.error("Error al guardar el progreso:", error);
-    }
+  const playAudio = () => {
+    audioRef.current?.play();
   };
 
   const verificar = () => {
     if (!opcionSeleccionada) return;
 
-    const dialogoCompletado = actual.pregunta.replace("______", opcionSeleccionada);
+    // Reemplazar el guión bajo por la palabra seleccionada o correcta
+    const oracionCompletada = actual.pregunta.replace(/_+/, opcionSeleccionada);
+    const oracionCorrecta = actual.pregunta.replace(/_+/, actual.correcta);
 
     if (opcionSeleccionada === actual.correcta) {
-      setRespuesta(`✅ Correct!\n\n${dialogoCompletado}`);
+      setRespuesta(`✅ Correct!\n\n${oracionCompletada}`);
       setCorrectas((prev) => prev + 1);
     } else {
-      const dialogoCorrecto = actual.pregunta.replace("______", actual.correcta);
-      setRespuesta(`❌ Incorrect.\nThe answer is "${actual.correcta}".\n\n${dialogoCorrecto}`);
+      setRespuesta(`❌ Incorrect.\nThe answer is "${actual.correcta}".\n\n${oracionCorrecta}`);
     }
   };
 
   const siguiente = () => {
     setRespuesta(null);
     setOpcionSeleccionada(null);
-    setIndex(index + 1);
+    setIndex((prev) => prev + 1);
   };
 
   const manejarFinalizacion = async () => {
-    await guardarProgreso();
     setFinalizado(true);
-    setTimeout(() => {
-      navigate(`/inicio/${nivel}`);
-      window.location.reload();
-    }, 3000);
+    setTimeout(() => navigate(`/inicio/${nivel}`), 3000);
   };
 
   return (
@@ -86,7 +67,7 @@ export default function Tema_Greetings_Ej1() {
       {!finalizado ? (
         <>
           <header className="ejercicio-header">
-            <h1 className="titulo-ejercicio">EXERCISE 1</h1>
+            <h1 className="titulo-ejercicio">EXERCISE 3</h1>
             <p className="progreso-ejercicio">
               Question {index + 1} of {ejercicios.length}
             </p>
@@ -94,13 +75,25 @@ export default function Tema_Greetings_Ej1() {
 
           <section className="tarjeta-ejercicio" style={{ textAlign: "center", fontSize: "1.3rem", padding: "2rem" }}>
             {/* Instrucción */}
-            <div className="instruccion-box" style={{ marginBottom: "1.5rem" }}>
-              <p className="instruccion-ejercicio">
-                Read the dialogue and choose the correct greeting or response.
-              </p>
-            </div>
+            {index === 0 && (
+              <div className="instruccion-box" style={{ marginBottom: "1.5rem" }}>
+                <p className="instruccion-ejercicio">
+                  Listen carefully and choose the correct article (a, an, the).
+                </p>
+              </div>
+            )}
 
-            {/* Diálogo */}
+            {/* Botón audio */}
+            <button
+              className="btn-audio"
+              style={{ fontSize: "2rem", margin: "1rem 0" }}
+              onClick={playAudio}
+            >
+              🔊
+            </button>
+            <audio ref={audioRef} src={actual.audio} />
+
+            {/* Oración o feedback */}
             <div
               className="dialogo-box"
               style={{
@@ -110,7 +103,7 @@ export default function Tema_Greetings_Ej1() {
                 padding: "1.5rem",
                 margin: "1rem auto",
                 maxWidth: "600px",
-                textAlign: "left",
+                textAlign: "center",
                 fontStyle: "italic",
                 whiteSpace: "pre-line",
               }}
@@ -120,13 +113,16 @@ export default function Tema_Greetings_Ej1() {
 
             {/* Opciones */}
             {!respuesta && (
-              <div className="opciones-ejercicio" style={{ display: "flex", flexDirection: "column", gap: "1rem", alignItems: "center", marginBottom: "1rem" }}>
+              <div
+                className="opciones-ejercicio"
+                style={{ display: "flex", flexDirection: "column", gap: "1rem", alignItems: "center", marginBottom: "1rem" }}
+              >
                 {actual.opciones.map((op, i) => (
                   <button
                     key={i}
                     className={`opcion-btn ${opcionSeleccionada === op ? "seleccionada" : ""}`}
                     onClick={() => setOpcionSeleccionada(op)}
-                    style={{ fontSize: "1.2rem", padding: "0.8rem 1.5rem", minWidth: "200px" }}
+                    style={{ fontSize: "1.2rem", padding: "0.8rem 1.5rem", minWidth: "220px" }}
                   >
                     {op}
                   </button>
@@ -156,7 +152,7 @@ export default function Tema_Greetings_Ej1() {
               </p>
             )}
 
-            {/* Botones siguiente / finalizar */}
+            {/* Botones de siguiente / finalizar */}
             <div className="botones-siguiente" style={{ display: "flex", justifyContent: "center", gap: "1rem", marginTop: "1rem" }}>
               {respuesta && index < ejercicios.length - 1 && (
                 <button

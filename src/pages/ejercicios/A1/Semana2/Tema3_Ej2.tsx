@@ -14,18 +14,18 @@ export default function Tema3_Ej2() {
   const [finalizado, setFinalizado] = useState(false);
 
   // ✅ Ejercicios en forma negativa con abreviación
-  const ejercicios = [
-    { texto: "I ___ a student.", correcta: ["am not"] },
-    { texto: "He ___ tall.", correcta: ["is not", "isn't"] },
-    { texto: "We ___ friends.", correcta: ["are not", "aren't"] },
-    { texto: "You ___ very kind.", correcta: ["are not", "aren't"] },
-    { texto: "She ___ from London.", correcta: ["is not", "isn't"] },
-    { texto: "They ___ at school.", correcta: ["are not", "aren't"] },
-    { texto: "My name ___ David.", correcta: ["is not", "isn't"] },
-    { texto: "I ___ happy today.", correcta: ["am not"] },
-    { texto: "The cat ___ on the sofa.", correcta: ["is not", "isn't"] },
-    { texto: "You ___ my classmates.", correcta: ["are not", "aren't"] },
-  ];
+ const ejercicios = [
+  { texto: "I ___ a student.", correcta: ["am not"] },
+  { texto: "He ___ tall.", correcta: ["is not", "isn't"] },
+  { texto: "We ___ friends.", correcta: ["are not", "aren't"] },
+  { texto: "You ___ very kind.", correcta: ["are not", "aren't"] },
+  { texto: "She ___ from London.", correcta: ["is not", "isn't"] },
+  { texto: "They ___ at school.", correcta: ["are not", "aren't"] },
+  { texto: "My name ___ David.", correcta: ["is not", "isn't"] },
+  { texto: "I ___ happy today.", correcta: ["am not"] },
+  { texto: "The cat ___ on the sofa.", correcta: ["is not", "isn't"] },
+  { texto: "You ___ my classmates.", correcta: ["are not", "aren't"] },
+];
 
   const actual = ejercicios[index];
 
@@ -55,23 +55,25 @@ export default function Tema3_Ej2() {
     }
   };
 
-  const verificar = () => {
-    const respuestaUsuario = inputValue.trim().toLowerCase();
-    if (!respuestaUsuario) return;
+const verificar = () => {
+  const respuestaUsuario = inputValue.trim().toLowerCase().replace("’", "'");
 
-    // ✅ Se acepta cualquier forma correcta
-    const esCorrecta = actual.correcta.some(
-      (c) => c.toLowerCase() === respuestaUsuario
-    );
+  if (!respuestaUsuario) return;
 
-    if (esCorrecta) {
-      setRespuesta("✅ Correct!");
-      setCorrectas((prev) => prev + 1);
-    } else {
-      setRespuesta("❌ Incorrect");
-      setInputValue(actual.correcta[0]); // muestra la forma completa por defecto
-    }
-  };
+  const esCorrecta = actual.correcta.some(
+    (c) =>
+      c.toLowerCase() === respuestaUsuario ||
+      c.toLowerCase().replace("'", "") === respuestaUsuario.replace("'", "")
+  );
+
+  if (esCorrecta) {
+    setRespuesta("✅ Correct!");
+    setCorrectas((prev) => prev + 1);
+  } else {
+    setRespuesta("❌ Incorrect");
+    setInputValue(actual.correcta[0]);
+  }
+};
 
   const siguiente = () => {
     setRespuesta(null);

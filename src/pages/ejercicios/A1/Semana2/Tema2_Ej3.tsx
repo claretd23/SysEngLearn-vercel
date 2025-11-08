@@ -58,6 +58,14 @@ export default function Tema2_Ej3() {
     }
   };
 
+  // === Reproducir audio ===
+  const playAudio = () => {
+    if (audioRef.current) {
+      audioRef.current.currentTime = 0;
+      audioRef.current.play();
+    }
+  };
+
   // === Verificar respuesta ===
   const verificar = () => {
     if (!opcionSeleccionada) return;
@@ -90,14 +98,6 @@ export default function Tema2_Ej3() {
     }, 3000);
   };
 
-  // === Reproducir audio ===
-  const reproducirAudio = () => {
-    if (audioRef.current) {
-      audioRef.current.currentTime = 0;
-      audioRef.current.play();
-    }
-  };
-
   return (
     <div className="ejercicio-container">
       {!finalizado ? (
@@ -120,17 +120,25 @@ export default function Tema2_Ej3() {
               </p>
             </div>
 
-            {/* Audio */}
-            <div style={{ marginBottom: "1.5rem" }}>
-              <audio ref={audioRef} src={actual.audio} />
-              <button
-                onClick={reproducirAudio}
-                className="ejercicio-btn"
-                style={{ fontSize: "1.1rem", padding: "0.6rem 1.5rem" }}
-              >
-                ▶️ Play Audio
-              </button>
-            </div>
+            {/* Botón audio */}
+            <button
+              className="btn-audio"
+              style={{
+                fontSize: "2.5rem",
+                margin: "1rem 0",
+                background: "none",
+                border: "none",
+                cursor: "pointer",
+                transition: "transform 0.2s",
+              }}
+              onClick={playAudio}
+              onMouseDown={(e) => (e.currentTarget.style.transform = "scale(0.9)")}
+              onMouseUp={(e) => (e.currentTarget.style.transform = "scale(1)")}
+              onMouseLeave={(e) => (e.currentTarget.style.transform = "scale(1)")}
+            >
+              🔊
+            </button>
+            <audio ref={audioRef} src={actual.audio} />
 
             {/* Oración */}
             <div

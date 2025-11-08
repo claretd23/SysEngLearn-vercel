@@ -86,19 +86,20 @@ export default function Tema2_Ej3() {
     audioRef.current?.play();
   };
 
-const verificar = () => {
-  if (!opcionSeleccionada) return;
+ const verificar = () => {
+    if (!opcionSeleccionada) return;
 
-  // Completar la oración con la opción correcta (no con la seleccionada)
-  const oracionCompletada = actual.pregunta.replace("_", actual.correcta);
+    const oracionCompletada = actual.pregunta.replace("___", opcionSeleccionada);
 
-  if (opcionSeleccionada === actual.correcta) {
-    setRespuesta(`✅ Correct! ${oracionCompletada}`);
-    setCorrectas((prev) => prev + 1);
-  } else {
-    setRespuesta(`❌ Incorrect. The correct answer is "${actual.correcta}".\n${oracionCompletada}`);
-  }
-};
+    if (opcionSeleccionada === actual.correcta) {
+      setRespuesta(`✅ Correct!\n\n${oracionCompletada}`);
+      setCorrectas((prev) => prev + 1);
+    } else {
+      const oracionCorrecta = actual.pregunta.replace("___", actual.correcta);
+      setRespuesta(`❌ Incorrect.\nThe answer is "${actual.correcta}".\n\n${oracionCorrecta}`);
+    }
+  };
+
 
   const siguiente = () => {
     setRespuesta(null);

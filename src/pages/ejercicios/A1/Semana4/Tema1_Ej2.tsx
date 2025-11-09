@@ -13,7 +13,7 @@ export default function Tema1_Ej2() {
   const [index, setIndex] = useState(0);
   const [finalizado, setFinalizado] = useState(false);
 
-  // ✅ Lista de ejercicios
+  //  Lista de ejercicios
   const ejercicios = [
     { texto: "She ______ English at school every day.", correcta: ["studies"] },
     { texto: "They ______ football in the park on Saturdays.", correcta: ["play"] },
@@ -29,7 +29,7 @@ export default function Tema1_Ej2() {
 
   const actual = ejercicios[index];
 
-  // ✅ Guardar progreso
+  //  Guardar progreso
   const guardarProgreso = async () => {
     const completados = JSON.parse(localStorage.getItem("ejercicios_completados") || "[]");
     if (!completados.includes(id)) {
@@ -56,7 +56,7 @@ export default function Tema1_Ej2() {
     }
   };
 
-  // ✅ Verificar respuesta
+  //  Verificar respuesta
   const verificar = () => {
     const respuestaUsuario = inputValue.trim().toLowerCase();
     if (!respuestaUsuario) return;
@@ -66,22 +66,22 @@ export default function Tema1_Ej2() {
     );
 
     if (esCorrecta) {
-      setRespuesta("✅ Correct!");
+      setRespuesta(" Correct!");
       setCorrectas((prev) => prev + 1);
     } else {
-      setRespuesta("❌ Incorrect");
+      setRespuesta(" Incorrect");
       setInputValue(actual.correcta[0]);
     }
   };
 
-  // ✅ Siguiente pregunta
+  //  Siguiente pregunta
   const siguiente = () => {
     setRespuesta(null);
     setInputValue("");
     setIndex(index + 1);
   };
 
-  // ✅ Finalización y redirección
+  //  Finalización y redirección
   const manejarFinalizacion = async () => {
     await guardarProgreso();
     setFinalizado(true);
@@ -91,7 +91,7 @@ export default function Tema1_Ej2() {
     }, 3000);
   };
 
-  // ✅ Mostrar la respuesta correcta cuando se verifica
+  //  Mostrar la respuesta correcta cuando se verifica
   const mostrarTexto = respuesta
     ? actual.texto.replace("______", actual.correcta[0])
     : actual.texto;
@@ -201,9 +201,9 @@ export default function Tema1_Ej2() {
           </section>
         </>
       ) : (
-        // ✅ Pantalla final
+        //  Pantalla final
         <div className="finalizado" style={{ fontSize: "1.3rem" }}>
-          <h2>✅ You have completed the exercise!</h2>
+          <h2> You have completed the exercise!</h2>
           <p>
             Correct answers:{" "}
             <strong>

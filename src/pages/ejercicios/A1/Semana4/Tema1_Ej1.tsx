@@ -82,10 +82,10 @@ export default function Tema1_Ej1() {
     const esCorrecta = respuestaUsuario.toLowerCase() === correcta;
 
     if (esCorrecta) {
-      setRespuesta("✅ Correct!");
+      setRespuesta(" Correct!");
       setCorrectas((prev) => prev + 1);
     } else {
-      setRespuesta("❌ Incorrect.");
+      setRespuesta(" Incorrect.");
       // Mostrar la versión correcta acomodada
       const ordenCorrecto = actual.correcta
         .replace(".", "")
@@ -235,7 +235,7 @@ export default function Tema1_Ej1() {
         </>
       ) : (
         <div className="finalizado" style={{ fontSize: "1.3rem" }}>
-          <h2>✅ You have completed the exercise!</h2>
+          <h2> You have completed the exercise!</h2>
           <p>
             Correct answers:{" "}
             <strong>

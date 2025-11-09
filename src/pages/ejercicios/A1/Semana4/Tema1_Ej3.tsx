@@ -15,46 +15,16 @@ export default function Tema1_Ej3() {
 
   const ejercicios = useMemo(
     () => [
-      {
-        audio: "/audios/sem4/order1.mp3",
-        correcta: "Anna drinks tea in the kitchen every morning",
-      },
-      {
-        audio: "/audios/sem4/order2.mp3",
-        correcta: "Tom plays football in the park on Sunday",
-      },
-      {
-        audio: "/audios/sem4/order3.mp3",
-        correcta: "She studies English at school every day",
-      },
-      {
-        audio: "/audios/sem4/order4.mp3",
-        correcta: "Peter watches TV in his room at night",
-      },
-      {
-        audio: "/audios/sem4/order5.mp3",
-        correcta: "My mom cooks dinner in the kitchen every evening",
-      },
-      {
-        audio: "/audios/sem4/order6.mp3",
-        correcta: "We listen to music at school on Monday",
-      },
-      {
-        audio: "/audios/sem4/order7.mp3",
-        correcta: "Paul does homework in his room every afternoon",
-      },
-      {
-        audio: "/audios/sem4/order8.mp3",
-        correcta: "Emma reads a book in the garden every day",
-      },
-      {
-        audio: "/audios/sem4/order9.mp3",
-        correcta: "The teacher teaches math in the classroom every morning",
-      },
-      {
-        audio: "/audios/sem4/order10.mp3",
-        correcta: "My dad drinks coffee in the living room every morning",
-      },
+      { audio: "/audios/sem4/order1.mp3", correcta: "Anna drinks tea in the kitchen every morning" },
+      { audio: "/audios/sem4/order2.mp3", correcta: "Tom plays football in the park on Sunday" },
+      { audio: "/audios/sem4/order3.mp3", correcta: "She studies English at school every day" },
+      { audio: "/audios/sem4/order4.mp3", correcta: "Peter watches TV in his room at night" },
+      { audio: "/audios/sem4/order5.mp3", correcta: "My mom cooks dinner in the kitchen every evening" },
+      { audio: "/audios/sem4/order6.mp3", correcta: "We listen to music at school on Monday" },
+      { audio: "/audios/sem4/order7.mp3", correcta: "Paul does homework in his room every afternoon" },
+      { audio: "/audios/sem4/order8.mp3", correcta: "Emma reads a book in the garden every day" },
+      { audio: "/audios/sem4/order9.mp3", correcta: "The teacher teaches math in the classroom every morning" },
+      { audio: "/audios/sem4/order10.mp3", correcta: "My dad drinks coffee in the living room every morning" },
     ],
     []
   );
@@ -67,6 +37,7 @@ export default function Tema1_Ej3() {
   };
 
   const verificar = () => {
+    // Normalizamos ambas respuestas para ignorar mayúsculas/minúsculas y espacios extra
     const respuestaNormalizada = respuestaUsuario.trim().toLowerCase().replace(/\s+/g, " ");
     const correctaNormalizada = actual.correcta.trim().toLowerCase().replace(/\s+/g, " ");
 
@@ -74,10 +45,10 @@ export default function Tema1_Ej3() {
       setRespuesta("Correct!");
       setCorrectas((prev) => prev + 1);
     } else {
-      setRespuesta(` Incorrect.`);
+      setRespuesta("Incorrect.");
     }
 
-    // Autocompletar con la oración correcta
+    // Autocompletar con la oración correcta para mostrarla
     setRespuestaUsuario(actual.correcta);
   };
 
@@ -95,7 +66,7 @@ export default function Tema1_Ej3() {
   if (finalizado) {
     return (
       <div className="finalizado" style={{ fontSize: "1.3rem" }}>
-        <h2> You have completed the exercise!</h2>
+        <h2>You have completed the exercise!</h2>
         <p>
           Correct answers: <strong>{correctas} / {ejercicios.length}</strong>
         </p>
@@ -117,12 +88,13 @@ export default function Tema1_Ej3() {
         {index === 0 && (
           <div className="instruccion-box" style={{ fontSize: "1.3rem" }}>
             <p className="instruccion-ejercicio">
-              Listen to the audio. The words are mixed. Write them in the correct order: 
+              Listen to the audio. The words are mixed. Write them in the correct order:
               <br /> <strong>S + V + O + Place + Time</strong>.
             </p>
           </div>
         )}
 
+        {/* Botón de audio */}
         <button
           className="btn-audio"
           style={{ fontSize: "2rem", margin: "1rem 0" }}
@@ -132,10 +104,6 @@ export default function Tema1_Ej3() {
         </button>
 
         <audio ref={audioRef} src={actual.audio} />
-
-        <p style={{ fontSize: "1.2rem", margin: "1rem 0" }}>
-          <strong>Words:</strong> {actual.desorden}
-        </p>
 
         <div style={{ marginBottom: "1rem" }}>
           <input
@@ -158,11 +126,14 @@ export default function Tema1_Ej3() {
 
         {respuesta && (
           <p
-            className={`respuesta-feedback ${respuesta.startsWith("Correcta") ? "correcta" : "incorrecta"}`}
+            className={`respuesta-feedback ${
+              respuesta.startsWith("Correct") ? "correcta" : "incorrecta"
+            }`}
             style={{
               fontSize: "1.2rem",
               margin: "0.5rem 0 1rem 0",
-              color: respuesta.startsWith("Correcta") ? "green" : "red",
+              color: respuesta.startsWith("Correct") ? "#2ecc71" : "#e74c3c",
+              fontWeight: "bold",
               minHeight: "1.5rem",
             }}
           >

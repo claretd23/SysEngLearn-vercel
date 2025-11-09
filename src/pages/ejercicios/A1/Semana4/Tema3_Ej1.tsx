@@ -96,10 +96,10 @@ export default function Tema3_Ej1() {
     if (!opcionSeleccionada) return;
 
     if (opcionSeleccionada === actual.correcta) {
-      setRespuesta(`✅ Correct!`);
+      setRespuesta(` Correct!`);
       setCorrectas((prev) => prev + 1);
     } else {
-      setRespuesta(`❌ Incorrect. Correct answer: ${actual.correcta}`);
+      setRespuesta(` Correct answer: ${actual.correcta}`);
     }
   };
 
@@ -188,7 +188,7 @@ export default function Tema3_Ej1() {
         </>
       ) : (
         <div className="finalizado" style={{ fontSize: "1.3rem" }}>
-          <h2>✅ You have completed the exercise!</h2>
+          <h2> You have completed the exercise!</h2>
           <p>Correct answers: <strong>{correctas} / {ejercicios.length}</strong></p>
           <p>Redirecting to the start of the level...</p>
         </div>

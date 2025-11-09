@@ -53,17 +53,42 @@ export default function Tema3_Ej2() {
     }
   };
 
+  /** 
+   * 🔍 Normaliza texto para comparar respuestas
+   * - pasa a minúsculas
+   * - elimina espacios dobles
+   * - reemplaza contracciones equivalentes
+   */
+  const normalizar = (texto: string) => {
+    return texto
+      .trim()
+      .toLowerCase()
+      .replace(/\s+/g, " ")
+      // normaliza contracciones equivalentes
+      .replace(/’/g, "'") // reemplaza apóstrofos especiales
+      .replace(/\bisnt\b/g, "isn't")
+      .replace(/\baren't\b/g, "aren't")
+      .replace(/\bcan't\b/g, "cannot")
+      .replace(/\bdon't\b/g, "do not")
+      .replace(/\bdoesn't\b/g, "does not")
+      .replace(/\bwasnt\b/g, "wasn't")
+      .replace(/\bwerent\b/g, "weren't")
+      .replace(/\bcannot\b/g, "can't"); // cubre equivalentes inversos
+  };
+
   const verificar = () => {
-    const respuestaUsuario = inputValue.trim().toLowerCase();
+    const respuestaUsuario = normalizar(inputValue);
     if (!respuestaUsuario) return;
 
-    const esCorrecta = actual.correcta.some(c => c.toLowerCase() === respuestaUsuario);
+    const esCorrecta = actual.correcta.some(
+      c => normalizar(c) === respuestaUsuario
+    );
 
     if (esCorrecta) {
-      setRespuesta("✅ Correct!");
+      setRespuesta(" Correct!");
       setCorrectas(prev => prev + 1);
     } else {
-      setRespuesta(`❌ Incorrect. Correct answer: ${actual.correcta[0]}`);
+      setRespuesta(` Correct answer: ${actual.correcta[0]}`);
       setInputValue(actual.correcta[0]);
     }
   };
@@ -88,8 +113,10 @@ export default function Tema3_Ej2() {
       {!finalizado ? (
         <>
           <header className="ejercicio-header">
-            <h1 className="titulo-ejercicio">EXERCISE 2 </h1>
-            <p className="progreso-ejercicio">Question {index + 1} of {ejercicios.length}</p>
+            <h1 className="titulo-ejercicio">EXERCISE 2</h1>
+            <p className="progreso-ejercicio">
+              Question {index + 1} of {ejercicios.length}
+            </p>
           </header>
 
           <section className="tarjeta-ejercicio" style={{ textAlign: "center" }}>
@@ -113,26 +140,41 @@ export default function Tema3_Ej2() {
                   placeholder="Write your answer..."
                   style={{ fontSize: "1.3rem", padding: "0.8rem 1rem", borderRadius: "8px", border: "1px solid #ccc", flex: 1 }}
                 />
-                <button onClick={verificar} className="ejercicio-btn" style={{ fontSize: "1.3rem", padding: "0.8rem 2rem", borderRadius: "8px" }}>
+                <button
+                  onClick={verificar}
+                  className="ejercicio-btn"
+                  style={{ fontSize: "1.3rem", padding: "0.8rem 2rem", borderRadius: "8px" }}
+                >
                   Check
                 </button>
               </div>
             )}
 
             {respuesta && (
-              <p className={`respuesta-feedback ${respuesta.startsWith("✅") ? "correcta" : "incorrecta"}`} style={{ fontSize: "1.3rem", margin: "1rem 0" }}>
+              <p
+                className={`respuesta-feedback ${respuesta.startsWith("✅") ? "correcta" : "incorrecta"}`}
+                style={{ fontSize: "1.3rem", margin: "1rem 0" }}
+              >
                 {respuesta}
               </p>
             )}
 
             <div style={{ display: "flex", justifyContent: "center", gap: "1rem", marginTop: "1rem" }}>
               {respuesta && index < ejercicios.length - 1 && (
-                <button onClick={siguiente} className="ejercicio-btn" style={{ fontSize: "1.3rem", padding: "0.8rem 2rem", borderRadius: "8px" }}>
+                <button
+                  onClick={siguiente}
+                  className="ejercicio-btn"
+                  style={{ fontSize: "1.3rem", padding: "0.8rem 2rem", borderRadius: "8px" }}
+                >
                   Next question
                 </button>
               )}
               {respuesta && index === ejercicios.length - 1 && (
-                <button onClick={manejarFinalizacion} className="ejercicio-btn" style={{ fontSize: "1.3rem", padding: "0.8rem 2rem", borderRadius: "8px" }}>
+                <button
+                  onClick={manejarFinalizacion}
+                  className="ejercicio-btn"
+                  style={{ fontSize: "1.3rem", padding: "0.8rem 2rem", borderRadius: "8px" }}
+                >
                   Finish
                 </button>
               )}
@@ -141,8 +183,10 @@ export default function Tema3_Ej2() {
         </>
       ) : (
         <div className="finalizado" style={{ fontSize: "1.3rem" }}>
-          <h2>✅ You have completed the exercise!</h2>
-          <p>Correct answers: <strong>{correctas} / {ejercicios.length}</strong></p>
+          <h2> You have completed the exercise!</h2>
+          <p>
+            Correct answers: <strong>{correctas} / {ejercicios.length}</strong>
+          </p>
           <p>Redirecting to the start of the level...</p>
         </div>
       )}

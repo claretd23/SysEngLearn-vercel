@@ -161,13 +161,16 @@ export default function Tema2_Ej2() {
                 </button>
               </div>
             )}
-
-            {respuesta && (
-              <p className={`respuesta-feedback ${respuesta.startsWith("✅") ? "correcta" : "incorrecta"}`} style={{ fontSize: "1.3rem", margin: "1rem 0" }}>
-                {respuesta.split("\n")[0]}
-              </p>
-            )}
-
+              {respuesta && (
+                <p
+                  className={`respuesta-feedback ${
+                    respuesta.startsWith("Correct!") ? "correcta" : "incorrecta"
+                  }`}
+                  style={{ fontSize: "1.3rem", margin: "1rem 0" }}
+                >
+                  {respuesta.split("\n")[0]}
+                </p>
+              )}
             <div className="botones-siguiente">
               {respuesta && index < ejercicios.length - 1 && (
                 <button onClick={siguiente} className="ejercicio-btn" style={{ fontSize: "1.3rem", padding: "0.8rem 2rem" }}>

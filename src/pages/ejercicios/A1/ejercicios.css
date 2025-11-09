@@ -531,3 +531,14 @@
     max-width: 280px;
   }
 }
+
+/* === COLORES UNIVERSALES DE RETROALIMENTACIÓN === */
+.respuesta-feedback.correcta {
+  color: #007bff; /* Azul principal */
+  font-weight: 600;
+}
+
+.respuesta-feedback.incorrecta {
+  color: #007bff; /* Azul también, para mantener consistencia */
+  font-weight: 600;
+}

@@ -58,11 +58,11 @@ export default function Tema2_Ej2() {
     const oracionCompletada = actual.pregunta.replace("___", opcionSeleccionada);
 
     if (opcionSeleccionada === actual.correcta) {
-      setRespuesta(`✅ Correct!\n\n${oracionCompletada}`);
+      setRespuesta(` Correct!\n\n${oracionCompletada}`);
       setCorrectas((prev) => prev + 1);
     } else {
       const oracionCorrecta = actual.pregunta.replace("___", actual.correcta);
-      setRespuesta(`❌ Incorrect.\nThe answer is "${actual.correcta}".\n\n${oracionCorrecta}`);
+      setRespuesta(`The answer is "${actual.correcta}".\n\n${oracionCorrecta}`);
     }
   };
 

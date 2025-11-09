@@ -73,11 +73,11 @@ export default function Tema2_Ej3() {
     const oracionCompletada = actual.pregunta.replace("_", opcionSeleccionada);
 
     if (opcionSeleccionada === actual.correcta) {
-      setRespuesta(`✅ Correct!\n\n${oracionCompletada}`);
+      setRespuesta(`Correct!\n\n${oracionCompletada}`);
       setCorrectas((prev) => prev + 1);
     } else {
       const oracionCorrecta = actual.pregunta.replace("_", actual.correcta);
-      setRespuesta(`❌ Incorrect.\n\n${oracionCorrecta}`);
+      setRespuesta(` Incorrect.\n\n${oracionCorrecta}`);
     }
   };
 

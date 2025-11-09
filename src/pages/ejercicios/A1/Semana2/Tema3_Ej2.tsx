@@ -67,10 +67,10 @@ const verificar = () => {
   );
 
   if (esCorrecta) {
-    setRespuesta("✅ Correct!");
+    setRespuesta(" Correct!");
     setCorrectas((prev) => prev + 1);
   } else {
-    setRespuesta("❌ Incorrect");
+    setRespuesta(" Incorrect");
     setInputValue(actual.correcta[0]);
   }
 };

@@ -57,10 +57,10 @@ export default function Tema3_Ej1() {
     if (!respuestaUsuario) return;
 
     if (respuestaUsuario === actual.correcta.toLowerCase()) {
-      setRespuesta("✅ Correct!");
+      setRespuesta(" Correct!");
       setCorrectas((prev) => prev + 1);
     } else {
-      setRespuesta("❌ Incorrect");
+      setRespuesta(" Incorrect");
       setInputValue(actual.correcta); // autocompleta con la respuesta correcta
     }
   };

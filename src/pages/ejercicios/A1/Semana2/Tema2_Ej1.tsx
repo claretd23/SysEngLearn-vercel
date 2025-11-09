@@ -71,10 +71,10 @@ export default function Tema2_Ej1() {
     setMostrarOracionCompleta(true);
 
     if (respuestaUsuario === correcta) {
-      setRespuesta("✅ Correct!");
+      setRespuesta(" Correct!");
       setCorrectas((prev) => prev + 1);
     } else {
-      setRespuesta(`❌ Incorrect.`);
+      setRespuesta(` Incorrect.`);
     }
   };
 

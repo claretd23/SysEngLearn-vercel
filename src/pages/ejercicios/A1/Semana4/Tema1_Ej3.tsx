@@ -17,43 +17,43 @@ export default function Tema1_Ej3() {
     () => [
       {
         audio: "/audios/sem4/order1.mp3",
-        correcta: "Anna drinks tea in the kitchen every morning.",
+        correcta: "Anna drinks tea in the kitchen every morning",
       },
       {
         audio: "/audios/sem4/order2.mp3",
-        correcta: "Tom plays football in the park on Sunday.",
+        correcta: "Tom plays football in the park on Sunday",
       },
       {
         audio: "/audios/sem4/order3.mp3",
-        correcta: "She studies English at school every day.",
+        correcta: "She studies English at school every day",
       },
       {
         audio: "/audios/sem4/order4.mp3",
-        correcta: "Peter watches TV in his room at night.",
+        correcta: "Peter watches TV in his room at night",
       },
       {
         audio: "/audios/sem4/order5.mp3",
-        correcta: "My mom cooks dinner in the kitchen every evening.",
+        correcta: "My mom cooks dinner in the kitchen every evening",
       },
       {
         audio: "/audios/sem4/order6.mp3",
-        correcta: "We listen to music at school on Monday.",
+        correcta: "We listen to music at school on Monday",
       },
       {
         audio: "/audios/sem4/order7.mp3",
-        correcta: "Paul does homework in his room every afternoon.",
+        correcta: "Paul does homework in his room every afternoon",
       },
       {
         audio: "/audios/sem4/order8.mp3",
-        correcta: "Emma reads a book in the garden every day.",
+        correcta: "Emma reads a book in the garden every day",
       },
       {
         audio: "/audios/sem4/order9.mp3",
-        correcta: "The teacher teaches math in the classroom every morning.",
+        correcta: "The teacher teaches math in the classroom every morning",
       },
       {
         audio: "/audios/sem4/order10.mp3",
-        correcta: "My dad drinks coffee in the living room every morning.",
+        correcta: "My dad drinks coffee in the living room every morning",
       },
     ],
     []

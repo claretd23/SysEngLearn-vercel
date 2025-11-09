@@ -62,10 +62,10 @@ export default function Tema2_Ej2() {
     );
 
     if (esCorrecta) {
-      setRespuesta("✅ Correct!");
+      setRespuesta(" Correct!");
       setCorrectas((prev) => prev + 1);
     } else {
-      setRespuesta("❌ Incorrect");
+      setRespuesta(" Incorrect");
       setInputValue(actual.correcta[0]);
     }
   };
@@ -188,7 +188,7 @@ export default function Tema2_Ej2() {
         </>
       ) : (
         <div className="finalizado" style={{ fontSize: "1.3rem" }}>
-          <h2>✅ You have completed the exercise!</h2>
+          <h2> You have completed the exercise!</h2>
           <p>
             Correct answers: <strong>{correctas} / {ejercicios.length}</strong>
           </p>

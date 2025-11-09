@@ -80,24 +80,27 @@ export default function Tema1_Ej1() {
     const correcta = actual.correcta.replace(".", "").toLowerCase();
     const esCorrecta = respuestaUsuario.toLowerCase() === correcta;
 
-    if (esCorrecta) {
-      setRespuesta("Correct!");
-      setCorrectas((prev) => prev + 1);
-    } else {
-      setRespuesta("Incorrect.");
-      const ordenCorrecto = actual.correcta
-        .replace(".", "")
-        .split(" ")
-        .reduce<string[]>((acc, word) => {
-          const frase = actual.desordenadas.find((f) =>
-            f.toLowerCase().includes(word.toLowerCase())
-          );
-          if (frase && !acc.includes(frase)) acc.push(frase);
-          return acc;
-        }, []);
-      setPalabras(ordenCorrecto);
-    }
-  };
+if (esCorrecta) {
+  setRespuesta("Correct!");
+  setCorrectas((prev) => prev + 1);
+} else {
+  setRespuesta("Incorrect");
+}
+
+// Reordenar palabras siempre (correcto o incorrecto)
+const ordenCorrecto = actual.correcta
+  .replace(".", "")
+  .split(" ")
+  .reduce<string[]>((acc, word) => {
+    const frase = actual.desordenadas.find((f) =>
+      f.toLowerCase().includes(word.toLowerCase())
+    );
+    if (frase && !acc.includes(frase)) acc.push(frase);
+    return acc;
+  }, []);
+
+setPalabras(ordenCorrecto);
+
 
   const siguiente = () => {
     setRespuesta(null);
@@ -219,7 +222,7 @@ export default function Tema1_Ej1() {
 
                 {respuesta === "Incorrect." && (
                   <p style={{ fontSize: "1.2rem", marginBottom: "1rem" }}>
-                    <strong>{actual.correcta}</strong>
+
                   </p>
                 )}
 

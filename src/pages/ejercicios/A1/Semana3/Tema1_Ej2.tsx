@@ -21,8 +21,8 @@ export default function Tema1_Ej2() {
     { pregunta: "When’s your birthday?", opciones: ["My birthday is on July 20th.", "My favorite singer is Taylor Swift.", "I’m from Canada."], correcta: "My birthday is on July 20th." },
     { pregunta: "What’s your phone number?", opciones: ["It’s 4567-8923.", "I’m fine, thank you.", "I live in Madrid."], correcta: "It’s 4567-8923." },
     { pregunta: "What’s your address?", opciones: ["I live at 15 Green Avenue.", "I’m 16 years old.", "My favorite sport is basketball."], correcta: "I live at 15 Green Avenue." },
-    { pregunta: "What’s your favorite hobby?", opciones: ["My favorite hobby is reading.", "I’m from Brazil.", "I live at 20 Main Street."], correcta: "My favourite hobby is reading." },
-    { pregunta: "Who’s your favorite singer?", opciones: ["My favorite singer is Billie Eillish.", "I’m fine, thanks.", "I’m 12 years old."], correcta: "My favourite singer is Billie Eillish." },
+    { pregunta: "What’s your favorite hobby?", opciones: ["My favorite hobby is reading.", "I’m from Brazil.", "I live at 20 Main Street."], correcta: "My favorite hobby is reading." },
+    { pregunta: "Who’s your favorite singer?", opciones: ["My favorite singer is Billie Eillish.", "I’m fine, thanks.", "I’m 12 years old."], correcta: "My favorite singer is Billie Eillish." },
     { pregunta: "Hello. How are you?", opciones: ["My birthday is in December.", "I’m fine, thank you.", "My name is Michael."], correcta: "I’m fine, thank you." },
   ];
 

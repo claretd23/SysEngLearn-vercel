@@ -202,17 +202,16 @@ export default function Tema2_Ej1() {
                 Check
               </button>
             )}
-
-            {/* Feedback */}
             {respuesta && (
               <p
-                className={`respuesta-feedback ${respuesta.startsWith("✅") ? "correcta" : "incorrecta"}`}
+                className={`respuesta-feedback ${
+                  respuesta.startsWith("Correct!") ? "correcta" : "incorrecta"
+                }`}
                 style={{ fontSize: "1.3rem", margin: "1rem 0" }}
               >
                 {respuesta.split("\n")[0]}
               </p>
             )}
-
             {/* Botones siguiente / finalizar */}
             <div
               className="botones-siguiente"

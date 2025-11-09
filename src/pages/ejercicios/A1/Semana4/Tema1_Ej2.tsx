@@ -13,6 +13,9 @@ export default function Tema1_Ej2() {
   const [index, setIndex] = useState(0);
   const [finalizado, setFinalizado] = useState(false);
 
+  const API_URL = import.meta.env.VITE_API_URL; // Variable de entorno para backend
+  const token = localStorage.getItem("token");
+
   const ejercicios = [
     { texto: "She ______ English at school every day.", correcta: ["studies"] },
     { texto: "They ______ football in the park on Saturdays.", correcta: ["play"] },
@@ -29,15 +32,17 @@ export default function Tema1_Ej2() {
   const actual = ejercicios[index];
 
   const guardarProgreso = async () => {
+    // Guardar localmente
     const completados = JSON.parse(localStorage.getItem("ejercicios_completados") || "[]");
     if (!completados.includes(id)) {
       completados.push(id);
       localStorage.setItem("ejercicios_completados", JSON.stringify(completados));
     }
 
+    // Guardar en backend
+    if (!token) return;
     try {
-      const token = localStorage.getItem("token");
-      const res = await fetch("http://localhost:5000/api/progreso", {
+      const res = await fetch(`${API_URL}/api/progreso`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -45,12 +50,9 @@ export default function Tema1_Ej2() {
         },
         body: JSON.stringify({ nivel, semana, tema, ejercicio }),
       });
-
-      if (!res.ok) {
-        console.error("Error al guardar progreso:", res.statusText);
-      }
-    } catch (error) {
-      console.error("Error al guardar el progreso:", error);
+      if (!res.ok) console.error("Error al guardar progreso:", res.statusText);
+    } catch (err) {
+      console.error("Error al guardar progreso:", err);
     }
   };
 
@@ -67,23 +69,23 @@ export default function Tema1_Ej2() {
       setCorrectas((prev) => prev + 1);
     } else {
       setRespuesta("Incorrect.");
-      setInputValue(actual.correcta[0]);
+      setInputValue(actual.correcta[0]); // mostrar la respuesta correcta
     }
   };
 
-  const siguiente = () => {
+  const siguiente = async () => {
     setRespuesta(null);
     setInputValue("");
-    setIndex(index + 1);
-  };
-
-  const manejarFinalizacion = async () => {
-    await guardarProgreso();
-    setFinalizado(true);
-    setTimeout(() => {
-      navigate(`/inicio/${nivel}`);
-      window.location.reload();
-    }, 3000);
+    await guardarProgreso(); // guardar después de cada ejercicio
+    if (index + 1 < ejercicios.length) {
+      setIndex(index + 1);
+    } else {
+      setFinalizado(true);
+      setTimeout(() => {
+        navigate(`/inicio/${nivel}`);
+        window.location.reload();
+      }, 3000);
+    }
   };
 
   const mostrarTexto = respuesta
@@ -166,43 +168,29 @@ export default function Tema1_Ej2() {
                 style={{
                   fontSize: "1.3rem",
                   margin: "1rem 0",
-                  color: respuesta === "Correct!" ? "green" : "red",
+                  color: respuesta === "Correct!" ? "#0D6EFD" : "#DC3545",
                 }}
               >
                 {respuesta}
               </p>
             )}
 
-            <div className="botones-siguiente">
-              {respuesta && index < ejercicios.length - 1 && (
-                <button
-                  onClick={siguiente}
-                  className="ejercicio-btn"
-                  style={{ fontSize: "1.3rem", padding: "0.8rem 2rem" }}
-                >
-                  Next question
-                </button>
-              )}
-              {respuesta && index === ejercicios.length - 1 && (
-                <button
-                  onClick={manejarFinalizacion}
-                  className="ejercicio-btn"
-                  style={{ fontSize: "1.3rem", padding: "0.8rem 2rem" }}
-                >
-                  Finish
-                </button>
-              )}
-            </div>
+            {respuesta && (
+              <button
+                onClick={siguiente}
+                className="ejercicio-btn"
+                style={{ fontSize: "1.3rem", padding: "0.8rem 2rem", marginTop: "1rem" }}
+              >
+                {index === ejercicios.length - 1 ? "Finish" : "Next question"}
+              </button>
+            )}
           </section>
         </>
       ) : (
         <div className="finalizado" style={{ fontSize: "1.3rem" }}>
-          <h2> You have completed the exercise!</h2>
+          <h2>You have completed the exercise!</h2>
           <p>
-            Correct answers:{" "}
-            <strong>
-              {correctas} / {ejercicios.length}
-            </strong>
+            Correct answers: <strong>{correctas} / {ejercicios.length}</strong>
           </p>
           <p>Redirecting to the start of the level...</p>
         </div>

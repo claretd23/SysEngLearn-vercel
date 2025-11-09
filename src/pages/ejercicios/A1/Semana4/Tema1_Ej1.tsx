@@ -13,6 +13,9 @@ export default function Tema1_Ej1() {
   const [correctas, setCorrectas] = useState(0);
   const [finalizado, setFinalizado] = useState(false);
 
+  const API_URL = import.meta.env.VITE_API_URL; // variable de entorno para Vercel
+  const token = localStorage.getItem("token");
+
   const ejercicios = [
     {
       desordenadas: ["plays", "in the park", "football", "Tom", "every Sunday"],
@@ -87,7 +90,7 @@ export default function Tema1_Ej1() {
       setRespuesta("Incorrect");
     }
 
-    // Reordenar siempre las palabras (correcto o incorrecto)
+    // Reordenar palabras siempre
     const ordenCorrecto = actual.correcta
       .replace(".", "")
       .split(" ")
@@ -101,25 +104,17 @@ export default function Tema1_Ej1() {
     setPalabras(ordenCorrecto);
   };
 
-  const siguiente = () => {
-    setRespuesta(null);
-    if (index + 1 < ejercicios.length) {
-      setIndex(index + 1);
-    } else {
-      manejarFinalizacion();
-    }
-  };
-
   const guardarProgreso = async () => {
+    // Guardar en localStorage
     const completados = JSON.parse(localStorage.getItem("ejercicios_completados") || "[]");
     if (!completados.includes(id)) {
       completados.push(id);
       localStorage.setItem("ejercicios_completados", JSON.stringify(completados));
     }
 
+    // Guardar en backend
+    if (!token) return;
     try {
-      const token = localStorage.getItem("token");
-      const API_URL = import.meta.env.VITE_API_URL;
       await fetch(`${API_URL}/api/progreso`, {
         method: "POST",
         headers: {
@@ -133,13 +128,18 @@ export default function Tema1_Ej1() {
     }
   };
 
-  const manejarFinalizacion = async () => {
-    await guardarProgreso();
-    setFinalizado(true);
-    setTimeout(() => {
-      navigate(`/inicio/${nivel}`);
-      window.location.reload();
-    }, 3000);
+  const siguiente = async () => {
+    setRespuesta(null);
+    await guardarProgreso(); // ✅ Guardar después de cada ejercicio
+    if (index + 1 < ejercicios.length) {
+      setIndex(index + 1);
+    } else {
+      setFinalizado(true);
+      setTimeout(() => {
+        navigate(`/inicio/${nivel}`);
+        window.location.reload();
+      }, 3000);
+    }
   };
 
   return (

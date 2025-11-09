@@ -141,7 +141,7 @@ export default function Tema3_Ej3() {
         )}
 
         {index === 0 && (
-          <audio ref={audioRef} src="/audios/sem3/emma-story.mp3" />
+          <audio ref={audioRef} src="/audios/sem2/emma-story.mp3" />
         )}
 
         <h2 style={{ fontSize: "1.4rem", marginBottom: "1rem" }}>{actual.pregunta}</h2>

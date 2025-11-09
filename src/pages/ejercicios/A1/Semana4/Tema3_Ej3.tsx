@@ -16,56 +16,16 @@ export default function Tema1_Ej4() {
   // === LISTA DE EJERCICIOS CON AUDIO ===
   const ejercicios = useMemo(
     () => [
-      {
-        audio: "/audios/sem4/mc1.mp3",
-        opciones: ["Yes, I am.", "No, he isn’t.", "Yes, she does."],
-        correcta: "Yes, I am.",
-      },
-      {
-        audio: "/audios/sem4/mc2.mp3",
-        opciones: ["Yes, he is.", "No, he isn’t.", "No, they aren’t."],
-        correcta: "No, he isn’t.",
-      },
-      {
-        audio: "/audios/sem4/mc3.mp3",
-        opciones: ["Yes, I do.", "No, I don’t.", "No, I’m not."],
-        correcta: "No, I don’t.",
-      },
-      {
-        audio: "/audios/sem4/mc4.mp3",
-        opciones: ["Yes, she is.", "No, she doesn’t.", "Yes, he does."],
-        correcta: "Yes, she is.",
-      },
-      {
-        audio: "/audios/sem4/mc5.mp3",
-        opciones: ["No, they aren’t.", "No, they don’t.", "Yes, they are."],
-        correcta: "No, they don’t.",
-      },
-      {
-        audio: "/audios/sem4/mc6.mp3",
-        opciones: ["Yes, they do.", "No, they don’t.", "Yes, they are."],
-        correcta: "Yes, they are.",
-      },
-      {
-        audio: "/audios/sem4/mc7.mp3",
-        opciones: ["Yes, she does.", "No, she isn’t.", "Yes, she is."],
-        correcta: "Yes, she does.",
-      },
-      {
-        audio: "/audios/sem4/mc8.mp3",
-        opciones: ["Yes, I do.", "No, I’m not.", "Yes, I does."],
-        correcta: "No, I’m not.",
-      },
-      {
-        audio: "/audios/sem4/mc9.mp3",
-        opciones: ["Yes, I am.", "No, I’m not.", "Yes, I do."],
-        correcta: "Yes, I do.",
-      },
-      {
-        audio: "/audios/sem4/mc10.mp3",
-        opciones: ["Yes, it is.", "No, it isn’t.", "Yes, they are."],
-        correcta: "No, it isn’t.",
-      },
+      { audio: "/audios/sem4/mc1.mp3", opciones: ["Yes, I am.", "No, he isn’t.", "Yes, she does."], correcta: "Yes, I am." },
+      { audio: "/audios/sem4/mc2.mp3", opciones: ["Yes, he is.", "No, he isn’t.", "No, they aren’t."], correcta: "No, he isn’t." },
+      { audio: "/audios/sem4/mc3.mp3", opciones: ["Yes, I do.", "No, I don’t.", "No, I’m not."], correcta: "No, I don’t." },
+      { audio: "/audios/sem4/mc4.mp3", opciones: ["Yes, she is.", "No, she doesn’t.", "Yes, he does."], correcta: "Yes, she is." },
+      { audio: "/audios/sem4/mc5.mp3", opciones: ["No, they aren’t.", "No, they don’t.", "Yes, they are."], correcta: "No, they don’t." },
+      { audio: "/audios/sem4/mc6.mp3", opciones: ["Yes, they do.", "No, they don’t.", "Yes, they are."], correcta: "Yes, they are." },
+      { audio: "/audios/sem4/mc7.mp3", opciones: ["Yes, she does.", "No, she isn’t.", "Yes, she is."], correcta: "Yes, she does." },
+      { audio: "/audios/sem4/mc8.mp3", opciones: ["Yes, I do.", "No, I’m not.", "Yes, I does."], correcta: "No, I’m not." },
+      { audio: "/audios/sem4/mc9.mp3", opciones: ["Yes, I am.", "No, I’m not.", "Yes, I do."], correcta: "Yes, I do." },
+      { audio: "/audios/sem4/mc10.mp3", opciones: ["Yes, it is.", "No, it isn’t.", "Yes, they are."], correcta: "No, it isn’t." },
     ],
     []
   );
@@ -79,11 +39,12 @@ export default function Tema1_Ej4() {
 
   const verificar = () => {
     if (!seleccion) return;
+
     if (seleccion === actual.correcta) {
       setRespuesta("Correct!");
       setCorrectas((prev) => prev + 1);
     } else {
-      setRespuesta("Incorrect.");
+      setRespuesta(`Incorrect.\nCorrect answer: ${actual.correcta}`);
     }
   };
 
@@ -103,10 +64,7 @@ export default function Tema1_Ej4() {
       <div className="finalizado" style={{ fontSize: "1.3rem" }}>
         <h2>You have completed the exercise!</h2>
         <p>
-          Correct answers:{" "}
-          <strong>
-            {correctas} / {ejercicios.length}
-          </strong>
+          Correct answers: <strong>{correctas} / {ejercicios.length}</strong>
         </p>
         <p>Redirecting to the start of the level...</p>
       </div>
@@ -155,11 +113,9 @@ export default function Tema1_Ej4() {
             <button
               key={opcion}
               onClick={() => setSeleccion(opcion)}
-              className={`opcion-btn ${
-                seleccion === opcion ? "seleccionada" : ""
-              }`}
+              className={`opcion-btn ${seleccion === opcion ? "seleccionada" : ""}`}
               disabled={!!respuesta}
-                style={{
+              style={{
                 fontSize: "1.2rem",
                 padding: "0.5rem 1rem",
                 width: "250px",
@@ -176,20 +132,19 @@ export default function Tema1_Ej4() {
         {/* === FEEDBACK === */}
         {respuesta && (
           <p
-            className={`respuesta-feedback ${
-              respuesta === "Correct!" ? "correcta" : "incorrecta"
-            }`}
+            className={`respuesta-feedback ${respuesta.startsWith("Correct") ? "correcta" : "incorrecta"}`}
             style={{
               fontSize: "1.2rem",
               margin: "1rem 0",
-              color: respuesta === "Correct!" ? "green" : "red",
+              color: respuesta.startsWith("Correct") ? "#2ecc71" : "#e74c3c",
+              fontWeight: "bold",
             }}
           >
-            {respuesta}
+            {respuesta.split("\n")[0]}
           </p>
         )}
 
-        {/* === BOTONES DE NAVEGACIÓN === */}
+        {/* === BOTÓN CHECK === */}
         {!respuesta && seleccion && (
           <button
             onClick={verificar}
@@ -200,29 +155,21 @@ export default function Tema1_Ej4() {
           </button>
         )}
 
+        {/* === BOTONES SIGUIENTE / FINALIZAR === */}
         {respuesta && index < ejercicios.length - 1 && (
           <button
             onClick={siguiente}
             className="ejercicio-btn"
-            style={{
-              fontSize: "1.3rem",
-              padding: "0.8rem 2rem",
-              marginTop: "1rem",
-            }}
+            style={{ fontSize: "1.3rem", padding: "0.8rem 2rem", marginTop: "1rem" }}
           >
             Next question
           </button>
         )}
-
         {respuesta && index === ejercicios.length - 1 && (
           <button
             onClick={manejarFinalizacion}
             className="ejercicio-btn"
-            style={{
-              fontSize: "1.3rem",
-              padding: "0.8rem 2rem",
-              marginTop: "1rem",
-            }}
+            style={{ fontSize: "1.3rem", padding: "0.8rem 2rem", marginTop: "1rem" }}
           >
             Finish
           </button>

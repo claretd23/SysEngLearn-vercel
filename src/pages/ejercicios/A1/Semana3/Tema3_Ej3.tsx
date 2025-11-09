@@ -69,10 +69,10 @@ export default function Tema3_Ej3() {
   const verificar = () => {
     const respuestaNormalizada = respuestaUsuario.trim().toLowerCase();
     if (respuestaNormalizada === actual.correcta.toLowerCase()) {
-      setRespuesta("✅ Correct!");
+      setRespuesta(" Correct!");
       setCorrectas((prev) => prev + 1);
     } else {
-      setRespuesta(`❌ Incorrect. The answer is "${actual.correcta}".`);
+      setRespuesta(`The answer is "${actual.correcta}".`);
     }
   };
 
@@ -90,7 +90,7 @@ export default function Tema3_Ej3() {
   if (finalizado) {
     return (
       <div className="finalizado" style={{ fontSize: "1.3rem" }}>
-        <h2>✅ You have completed the exercise!</h2>
+        <h2> You have completed the exercise!</h2>
         <p>
           Correct answers: <strong>{correctas} / {ejercicios.length}</strong>
         </p>

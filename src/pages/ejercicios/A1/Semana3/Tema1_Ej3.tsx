@@ -82,10 +82,10 @@ export default function Tema3_Ej3() {
     if (!opcionSeleccionada) return;
 
     if (opcionSeleccionada === actual.correcta) {
-      setRespuesta("✅ Correct!");
+      setRespuesta(" Correct!");
       setCorrectas((prev) => prev + 1);
     } else {
-      setRespuesta(`❌ The correct answer is: "${actual.correcta}".`);
+      setRespuesta(`Correct answer: "${actual.correcta}".`);
     }
   };
 

@@ -159,14 +159,13 @@ export default function Tema1_Ej4() {
                 seleccion === opcion ? "seleccionada" : ""
               }`}
               disabled={!!respuesta}
-              style={{
+                style={{
                 fontSize: "1.2rem",
-                padding: "0.8rem 2rem",
-                borderRadius: "10px",
+                padding: "0.5rem 1rem",
+                width: "250px",
+                borderRadius: "8px",
                 border: "1px solid #ccc",
-                cursor: "pointer",
-                backgroundColor:
-                  seleccion === opcion ? "#bcd03c" : "#fff",
+                textAlign: "center",
               }}
             >
               {opcion}

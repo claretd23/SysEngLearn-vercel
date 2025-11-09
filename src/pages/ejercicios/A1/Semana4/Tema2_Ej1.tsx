@@ -13,6 +13,9 @@ export default function Tema2_Ej1() {
   const [index, setIndex] = useState(0);
   const [finalizado, setFinalizado] = useState(false);
 
+  const API_URL = import.meta.env.VITE_API_URL;
+  const token = localStorage.getItem("token");
+
   const ejercicios = [
     {
       pregunta: "My teacher is very ______. She always helps me when I have problems.",
@@ -75,9 +78,9 @@ export default function Tema2_Ej1() {
       localStorage.setItem("ejercicios_completados", JSON.stringify(completados));
     }
 
+    if (!token) return;
     try {
-      const token = localStorage.getItem("token");
-      const res = await fetch("http://localhost:5000/api/progreso", {
+      const res = await fetch(`${API_URL}/api/progreso`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -85,10 +88,9 @@ export default function Tema2_Ej1() {
         },
         body: JSON.stringify({ nivel, semana, tema, ejercicio }),
       });
-
       if (!res.ok) console.error("Error al guardar progreso:", res.statusText);
-    } catch (error) {
-      console.error("Error al guardar el progreso:", error);
+    } catch (err) {
+      console.error("Error al guardar progreso:", err);
     }
   };
 
@@ -106,19 +108,19 @@ export default function Tema2_Ej1() {
     }
   };
 
-  const siguiente = () => {
+  const siguiente = async () => {
+    await guardarProgreso();
     setRespuesta(null);
     setOpcionSeleccionada(null);
-    setIndex(index + 1);
-  };
-
-  const manejarFinalizacion = async () => {
-    await guardarProgreso();
-    setFinalizado(true);
-    setTimeout(() => {
-      navigate(`/inicio/${nivel}`);
-      window.location.reload();
-    }, 3000);
+    if (index + 1 < ejercicios.length) {
+      setIndex(index + 1);
+    } else {
+      setFinalizado(true);
+      setTimeout(() => {
+        navigate(`/inicio/${nivel}`);
+        window.location.reload();
+      }, 2500);
+    }
   };
 
   return (
@@ -132,47 +134,35 @@ export default function Tema2_Ej1() {
             </p>
           </header>
 
-          <section
-            className="tarjeta-ejercicio"
-            style={{ textAlign: "center", fontSize: "1.3rem", padding: "2rem" }}
-          >
-            {/* Instrucción */}
+          <section className="tarjeta-ejercicio" style={{ textAlign: "center", fontSize: "1.3rem", padding: "2rem" }}>
             <div className="instruccion-box" style={{ marginBottom: "1.5rem" }}>
               <p className="instruccion-ejercicio">
                 Multiple Choice: Choose the <b>correct adjective</b> to complete each sentence.
               </p>
             </div>
 
-            {/* Oración */}
-            <div
-              className="oracion-box"
-              style={{
-                backgroundColor: "#f4f6fa",
-                borderLeft: "5px solid #222a5c",
-                borderRadius: "8px",
-                padding: "1.5rem",
-                margin: "1rem auto",
-                maxWidth: "650px",
-                textAlign: "left",
-                fontStyle: "italic",
-                whiteSpace: "pre-line",
-              }}
-            >
+            <div className="oracion-box" style={{
+              backgroundColor: "#f4f6fa",
+              borderLeft: "5px solid #222a5c",
+              borderRadius: "8px",
+              padding: "1.5rem",
+              margin: "1rem auto",
+              maxWidth: "650px",
+              textAlign: "left",
+              fontStyle: "italic",
+              whiteSpace: "pre-line",
+            }}>
               <p>{respuesta ? respuesta.split("\n").slice(1).join("\n") : actual.pregunta}</p>
             </div>
 
-            {/* Opciones */}
             {!respuesta && (
-              <div
-                className="opciones-ejercicio"
-                style={{
-                  display: "flex",
-                  flexDirection: "column",
-                  gap: "1rem",
-                  alignItems: "center",
-                  marginBottom: "1rem",
-                }}
-              >
+              <div className="opciones-ejercicio" style={{
+                display: "flex",
+                flexDirection: "column",
+                gap: "1rem",
+                alignItems: "center",
+                marginBottom: "1rem",
+              }}>
                 {actual.opciones.map((op, i) => (
                   <button
                     key={i}
@@ -186,77 +176,41 @@ export default function Tema2_Ej1() {
               </div>
             )}
 
-            {/* Botón Check */}
             {!respuesta && (
               <button
                 onClick={verificar}
                 className="ejercicio-btn"
                 disabled={!opcionSeleccionada}
-                style={{
-                  fontSize: "1.3rem",
-                  padding: "0.8rem 2rem",
-                  marginBottom: "1rem",
-                  borderRadius: "8px",
-                }}
+                style={{ fontSize: "1.3rem", padding: "0.8rem 2rem", marginBottom: "1rem", borderRadius: "8px" }}
               >
                 Check
               </button>
             )}
 
-            {/* Feedback (Correct / Incorrect) */}
             {respuesta && (
-              <p
-                className={`respuesta-feedback ${
-                  respuesta.startsWith("Correct!") ? "correcta" : "incorrecta"
-                }`}
-                style={{
-                  fontSize: "1.3rem",
-                  margin: "1rem 0",
-                  color: respuesta.startsWith("Correct!") ? "#2ecc71" : "#e74c3c", // 💚 verde / ❤️ rojo
-                  fontWeight: "bold",
-                }}
-              >
+              <p className={`respuesta-feedback ${respuesta.startsWith("Correct!") ? "correcta" : "incorrecta"}`}
+                style={{ fontSize: "1.3rem", margin: "1rem 0", color: respuesta.startsWith("Correct!") ? "#0D6EFD" : "#DC3545", fontWeight: "bold" }}>
                 {respuesta.split("\n")[0]}
               </p>
             )}
 
-            {/* Botones siguiente / finalizar */}
-            <div
-              className="botones-siguiente"
-              style={{
-                display: "flex",
-                justifyContent: "center",
-                gap: "1rem",
-                marginTop: "1rem",
-              }}
-            >
-              {respuesta && index < ejercicios.length - 1 && (
+            {respuesta && (
+              <div className="botones-siguiente" style={{ display: "flex", justifyContent: "center", gap: "1rem", marginTop: "1rem" }}>
                 <button
                   onClick={siguiente}
                   className="ejercicio-btn"
                   style={{ fontSize: "1.3rem", padding: "0.8rem 2rem", borderRadius: "8px" }}
                 >
-                  Next question
+                  {index === ejercicios.length - 1 ? "Finish" : "Next question"}
                 </button>
-              )}
-              {respuesta && index === ejercicios.length - 1 && (
-                <button
-                  onClick={manejarFinalizacion}
-                  className="ejercicio-btn"
-                  style={{ fontSize: "1.3rem", padding: "0.8rem 2rem", borderRadius: "8px" }}
-                >
-                  Finish
-                </button>
-              )}
-            </div>
+              </div>
+            )}
           </section>
         </>
       ) : (
         <div className="finalizado" style={{ fontSize: "1.3rem" }}>
           <h2>You have completed the exercise!</h2>
-          <p>
-            Correct answers: <strong>{correctas} / {ejercicios.length}</strong>
-          </p>
+          <p>Correct answers: <strong>{correctas} / {ejercicios.length}</strong></p>
           <p>Redirecting to the start of the level...</p>
         </div>
       )}

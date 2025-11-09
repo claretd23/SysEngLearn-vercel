@@ -13,6 +13,9 @@ export default function Tema1_Ej3() {
   const [index, setIndex] = useState(0);
   const [finalizado, setFinalizado] = useState(false);
 
+  const API_URL = import.meta.env.VITE_API_URL;
+  const token = localStorage.getItem("token");
+
   const ejercicios = useMemo(
     () => [
       { audio: "/audios/sem4/order1.mp3", correcta: "Anna drinks tea in the kitchen every morning" },
@@ -36,143 +39,156 @@ export default function Tema1_Ej3() {
     audioRef.current?.play();
   };
 
-  const verificar = () => {
-    // Normalizamos ambas respuestas para ignorar mayúsculas/minúsculas y espacios extra
-    const respuestaNormalizada = respuestaUsuario.trim().toLowerCase().replace(/\s+/g, " ");
-    const correctaNormalizada = actual.correcta.trim().toLowerCase().replace(/\s+/g, " ");
+  const guardarProgreso = async () => {
+    // Guardar en localStorage
+    const completados = JSON.parse(localStorage.getItem("ejercicios_completados") || "[]");
+    if (!completados.includes(id)) {
+      completados.push(id);
+      localStorage.setItem("ejercicios_completados", JSON.stringify(completados));
+    }
 
-    if (respuestaNormalizada === correctaNormalizada) {
+    // Guardar en backend
+    if (!token) return;
+    try {
+      const res = await fetch(`${API_URL}/api/progreso`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ nivel, semana, tema, ejercicio }),
+      });
+      if (!res.ok) console.error("Error al guardar progreso:", res.statusText);
+    } catch (err) {
+      console.error("Error al guardar progreso:", err);
+    }
+  };
+
+  const verificar = () => {
+    const normalizada = respuestaUsuario.trim().toLowerCase().replace(/\s+/g, " ");
+    const correcta = actual.correcta.trim().toLowerCase().replace(/\s+/g, " ");
+
+    if (normalizada === correcta) {
       setRespuesta("Correct!");
       setCorrectas((prev) => prev + 1);
     } else {
       setRespuesta("Incorrect.");
     }
 
-    // Autocompletar con la oración correcta para mostrarla
+    // Autocompletar con la respuesta correcta
     setRespuestaUsuario(actual.correcta);
   };
 
-  const siguiente = () => {
+  const siguiente = async () => {
     setRespuesta(null);
     setRespuestaUsuario("");
-    setIndex((prev) => prev + 1);
+    await guardarProgreso(); //  Guardar al avanzar
+    if (index + 1 < ejercicios.length) {
+      setIndex(index + 1);
+    } else {
+      setFinalizado(true);
+      setTimeout(() => {
+        navigate(`/inicio/${nivel}`);
+        window.location.reload();
+      }, 2500);
+    }
   };
-
-  const manejarFinalizacion = async () => {
-    setFinalizado(true);
-    setTimeout(() => navigate(`/inicio/${nivel}`), 2500);
-  };
-
-  if (finalizado) {
-    return (
-      <div className="finalizado" style={{ fontSize: "1.3rem" }}>
-        <h2>You have completed the exercise!</h2>
-        <p>
-          Correct answers: <strong>{correctas} / {ejercicios.length}</strong>
-        </p>
-        <p>Redirecting to the start of the level...</p>
-      </div>
-    );
-  }
 
   return (
     <div className="ejercicio-container">
-      <header className="ejercicio-header">
-        <h1 className="titulo-ejercicio">EXERCISE 3</h1>
-        <p className="progreso-ejercicio">
-          Question {index + 1} of {ejercicios.length}
-        </p>
-      </header>
-
-      <section className="tarjeta-ejercicio" style={{ textAlign: "center" }}>
-        {index === 0 && (
-          <div className="instruccion-box" style={{ fontSize: "1.3rem" }}>
-            <p className="instruccion-ejercicio">
-              Listen to the audio. The words are mixed. Write them in the correct order:
-              <br /> <strong>S + V + O + Place + Time</strong>.
+      {!finalizado ? (
+        <>
+          <header className="ejercicio-header">
+            <h1 className="titulo-ejercicio">EXERCISE 3</h1>
+            <p className="progreso-ejercicio">
+              Question {index + 1} of {ejercicios.length}
             </p>
-          </div>
-        )}
+          </header>
 
-        {/* Botón de audio */}
-        <button
-          className="btn-audio"
-          style={{ fontSize: "2rem", margin: "1rem 0" }}
-          onClick={playAudio}
-        >
-          🔊
-        </button>
+          <section className="tarjeta-ejercicio" style={{ textAlign: "center" }}>
+            {index === 0 && (
+              <div className="instruccion-box" style={{ fontSize: "1.3rem" }}>
+                <p className="instruccion-ejercicio">
+                  Listen to the audio. Write the words in the correct order:
+                  <br /> <strong>S + V + O + Place + Time</strong>.
+                </p>
+              </div>
+            )}
 
-        <audio ref={audioRef} src={actual.audio} />
+            <button
+              className="btn-audio"
+              style={{ fontSize: "2rem", margin: "1rem 0" }}
+              onClick={playAudio}
+            >
+              🔊
+            </button>
+            <audio ref={audioRef} src={actual.audio} />
 
-        <div style={{ marginBottom: "1rem" }}>
-          <input
-            type="text"
-            placeholder="Write the correct sentence..."
-            value={respuestaUsuario}
-            onChange={(e) => setRespuestaUsuario(e.target.value)}
-            className="input-ejercicio"
-            style={{
-              fontSize: "1.2rem",
-              padding: "0.5rem 1rem",
-              width: "450px",
-              borderRadius: "8px",
-              border: "1px solid #ccc",
-              textAlign: "center",
-            }}
-            onKeyDown={(e) => e.key === "Enter" && verificar()}
-          />
-        </div>
+            <div style={{ marginBottom: "1rem" }}>
+              <input
+                type="text"
+                placeholder="Write the correct sentence..."
+                value={respuestaUsuario}
+                onChange={(e) => setRespuestaUsuario(e.target.value)}
+                className="input-ejercicio"
+                style={{
+                  fontSize: "1.2rem",
+                  padding: "0.5rem 1rem",
+                  width: "450px",
+                  borderRadius: "8px",
+                  border: "1px solid #ccc",
+                  textAlign: "center",
+                }}
+                onKeyDown={(e) => e.key === "Enter" && verificar()}
+              />
+            </div>
 
-        {respuesta && (
-          <p
-            className={`respuesta-feedback ${
-              respuesta.startsWith("Correct") ? "correcta" : "incorrecta"
-            }`}
-            style={{
-              fontSize: "1.2rem",
-              margin: "0.5rem 0 1rem 0",
-              color: respuesta.startsWith("Correct") ? "#2ecc71" : "#e74c3c",
-              fontWeight: "bold",
-              minHeight: "1.5rem",
-            }}
-          >
-            {respuesta}
+            {respuesta && (
+              <p
+                className={`respuesta-feedback ${respuesta.startsWith("Correct") ? "correcta" : "incorrecta"}`}
+                style={{
+                  fontSize: "1.2rem",
+                  margin: "0.5rem 0 1rem 0",
+                  color: respuesta.startsWith("Correct") ? "#0D6EFD" : "#DC3545",
+                  fontWeight: "bold",
+                  minHeight: "1.5rem",
+                }}
+              >
+                {respuesta}
+              </p>
+            )}
+
+            {!respuesta && (
+              <button
+                onClick={verificar}
+                className="ejercicio-btn"
+                disabled={!respuestaUsuario.trim()}
+                style={{ fontSize: "1.3rem", padding: "0.8rem 2rem" }}
+              >
+                Check
+              </button>
+            )}
+
+            {respuesta && (
+              <button
+                onClick={siguiente}
+                className="ejercicio-btn"
+                style={{ fontSize: "1.3rem", padding: "0.8rem 2rem", marginTop: "1rem" }}
+              >
+                {index === ejercicios.length - 1 ? "Finish" : "Next question"}
+              </button>
+            )}
+          </section>
+        </>
+      ) : (
+        <div className="finalizado" style={{ fontSize: "1.3rem" }}>
+          <h2>You have completed the exercise!</h2>
+          <p>
+            Correct answers: <strong>{correctas} / {ejercicios.length}</strong>
           </p>
-        )}
-
-        {!respuesta && (
-          <button
-            onClick={verificar}
-            className="ejercicio-btn"
-            disabled={!respuestaUsuario.trim()}
-            style={{ fontSize: "1.3rem", padding: "0.8rem 2rem" }}
-          >
-            Check
-          </button>
-        )}
-
-        <div className="botones-siguiente" style={{ marginTop: "1rem" }}>
-          {respuesta && index < ejercicios.length - 1 && (
-            <button
-              onClick={siguiente}
-              className="ejercicio-btn"
-              style={{ fontSize: "1.3rem", padding: "0.8rem 2rem" }}
-            >
-              Next question
-            </button>
-          )}
-          {respuesta && index === ejercicios.length - 1 && (
-            <button
-              onClick={manejarFinalizacion}
-              className="ejercicio-btn"
-              style={{ fontSize: "1.3rem", padding: "0.8rem 2rem" }}
-            >
-              Finish
-            </button>
-          )}
+          <p>Redirecting to the start of the level...</p>
         </div>
-      </section>
+      )}
     </div>
   );
 }

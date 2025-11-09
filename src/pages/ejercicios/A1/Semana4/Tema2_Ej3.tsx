@@ -1,179 +1,242 @@
 import { useParams, useNavigate } from "react-router-dom";
-import { useState, useEffect } from "react";
+import { useState, useRef } from "react";
 import "../ejercicios.css";
 
-interface Pregunta {
-  pregunta: string;
-  opciones: string[];
-  respuesta: string;
-}
-
-export default function Tema2_Ej3() {
+export default function Tema3_Ej2() {
   const { nivel, semana, tema, ejercicio } = useParams();
   const id = `${nivel}-${semana}-${tema}-${ejercicio}`;
   const navigate = useNavigate();
 
-  const [preguntaActual, setPreguntaActual] = useState(0);
-  const [seleccion, setSeleccion] = useState<string | null>(null);
-  const [puntaje, setPuntaje] = useState(0);
-  const [mostrarResultado, setMostrarResultado] = useState(false);
-  const [mensaje, setMensaje] = useState("");
+  const [index, setIndex] = useState(0);
+  const [respuesta, setRespuesta] = useState<string | null>(null);
+  const [opcionSeleccionada, setOpcionSeleccionada] = useState<string | null>(null);
+  const [correctas, setCorrectas] = useState(0);
+  const [finalizado, setFinalizado] = useState(false);
 
-  const preguntas: Pregunta[] = [
+  const audioRef = useRef<HTMLAudioElement | null>(null);
+
+  const playAudio = () => {
+    audioRef.current?.play();
+  };
+
+  const ejercicios = [
     {
-      pregunta: "1️⃣ How does Lucas feel on Monday?",
+      pregunta: "How does Lucas feel on Monday?",
       opciones: ["Happy", "Tired", "Excited"],
-      respuesta: "Tired",
+      correcta: "Tired",
     },
     {
-      pregunta: "2️⃣ Why does Lucas feel happy on Tuesday?",
+      pregunta: "Why does Lucas feel happy on Tuesday?",
       opciones: [
         "Because he finishes his homework",
         "Because his best friend visits him",
         "Because he goes to a concert",
       ],
-      respuesta: "Because his best friend visits him",
+      correcta: "Because his best friend visits him",
     },
     {
-      pregunta: "3️⃣ How does Emma feel today?",
+      pregunta: "How does Emma feel today?",
       opciones: ["Worried", "Angry", "Bored"],
-      respuesta: "Worried",
+      correcta: "Worried",
     },
     {
-      pregunta: "4️⃣ Why does Emma feel worried?",
+      pregunta: "Why does Emma feel worried?",
       opciones: [
         "Because she has an exam",
         "Because she lost her phone",
         "Because she is late",
       ],
-      respuesta: "Because she has an exam",
+      correcta: "Because she has an exam",
     },
     {
-      pregunta: "5️⃣ What other emotion does Emma feel?",
+      pregunta: "What other emotion does Emma feel?",
       opciones: ["Excited", "Sad", "Nervous"],
-      respuesta: "Excited",
+      correcta: "Excited",
     },
     {
-      pregunta: "6️⃣ Why does Daniel feel angry?",
+      pregunta: "Why does Daniel feel angry?",
       opciones: [
         "Because he can’t find his keys",
         "Because he’s hungry",
         "Because he failed a test",
       ],
-      respuesta: "Because he can’t find his keys",
+      correcta: "Because he can’t find his keys",
     },
     {
-      pregunta: "7️⃣ How does Daniel feel about his work?",
+      pregunta: "How does Daniel feel about his work?",
       opciones: ["Relaxed", "Stressed", "Happy"],
-      respuesta: "Stressed",
+      correcta: "Stressed",
     },
     {
-      pregunta: "8️⃣ What do they usually do on Saturday?",
+      pregunta: "What do they usually do on Saturday?",
       opciones: [
         "They go shopping.",
         "They stay home and watch movies.",
         "They go to school.",
       ],
-      respuesta: "They stay home and watch movies.",
+      correcta: "They stay home and watch movies.",
     },
     {
-      pregunta: "9️⃣ How do they feel on weekends?",
+      pregunta: "How do they feel on weekends?",
       opciones: ["Relaxed", "Angry", "Bored"],
-      respuesta: "Relaxed",
+      correcta: "Relaxed",
     },
     {
-      pregunta: "🔟 Why do they feel happy on Sunday?",
+      pregunta: "Why do they feel happy on Sunday?",
       opciones: [
         "Because they spend time with their families",
         "Because they have no homework",
         "Because they go to a concert",
       ],
-      respuesta: "Because they spend time with their families",
+      correcta: "Because they spend time with their families",
     },
   ];
 
-  // Manejo de selección de respuesta
-  const manejarSeleccion = (opcion: string) => {
-    setSeleccion(opcion);
-    if (opcion === preguntas[preguntaActual].respuesta) {
-      setPuntaje((prev) => prev + 1);
-      setMensaje("✅ Correct!");
+  const actual = ejercicios[index];
+
+  const verificar = () => {
+    if (!opcionSeleccionada) return;
+
+    if (opcionSeleccionada === actual.correcta) {
+      setRespuesta(" Correct!");
+      setCorrectas((prev) => prev + 1);
     } else {
-      setMensaje(`❌ Incorrect. The correct answer is: ${preguntas[preguntaActual].respuesta}`);
+      setRespuesta(` Correct answer: "${actual.correcta}".`);
     }
   };
 
-  // Siguiente pregunta
   const siguiente = () => {
-    setSeleccion(null);
-    setMensaje("");
-    if (preguntaActual < preguntas.length - 1) {
-      setPreguntaActual((prev) => prev + 1);
-    } else {
-      setMostrarResultado(true);
-      guardarProgreso();
-    }
+    setRespuesta(null);
+    setOpcionSeleccionada(null);
+    setIndex((prev) => prev + 1);
   };
 
-  // Guardar progreso (simulado)
-  const guardarProgreso = () => {
-    const progreso = JSON.parse(localStorage.getItem("progreso") || "{}");
-    progreso[id] = { completado: true, puntaje };
-    localStorage.setItem("progreso", JSON.stringify(progreso));
+  const manejarFinalizacion = async () => {
+    setFinalizado(true);
+    setTimeout(() => navigate(`/inicio/${nivel}`), 3000);
   };
+
+  if (finalizado) {
+    return (
+      <div className="finalizado" style={{ fontSize: "1.3rem" }}>
+        <h2>You have completed the listening exercise!</h2>
+        <p>
+          Correct answers:{" "}
+          <strong>
+            {correctas} / {ejercicios.length}
+          </strong>
+        </p>
+        <p>Redirecting to the start of the level...</p>
+      </div>
+    );
+  }
 
   return (
     <div className="ejercicio-container">
-      <h2>🎧 Listening: "How We Feel This Week"</h2>
+      <header className="ejercicio-header">
+        <h1 className="titulo-ejercicio">EXERCISE 3</h1>
+        <p className="progreso-ejercicio">
+          Question {index + 1} of {ejercicios.length}
+        </p>
+      </header>
 
-      <audio controls>
-        <source
-          src="/audios/how_we_feel_this_week.mp3"
-          type="audio/mpeg"
-        />
-        Your browser does not support the audio element.
-      </audio>
+      <section className="tarjeta-ejercicio" style={{ textAlign: "center" }}>
+        {index === 0 && (
+          <div className="instruccion-box" style={{ fontSize: "1.2rem", marginBottom: "1rem" }}>
+            <p>
+              🎧 Listen carefully to the audio and choose the correct answer for each question.
+              <br />
+              You can replay the audio if needed.
+            </p>
+          </div>
+        )}
 
-      {!mostrarResultado ? (
-        <div className="pregunta-card">
-          <p className="pregunta-text">{preguntas[preguntaActual].pregunta}</p>
+        {/* === AUDIO === */}
+        <button
+          className="btn-audio"
+          style={{ fontSize: "2rem", margin: "1rem 0" }}
+          onClick={playAudio}
+        >
+          🔊
+        </button>
+        <audio ref={audioRef} src="/audios/sem4/Listening2.mp3" />
 
-          <div className="opciones-container">
-            {preguntas[preguntaActual].opciones.map((opcion, index) => (
+        {/* === PREGUNTA === */}
+        <h2 style={{ fontSize: "1.4rem", marginBottom: "1rem", color: "#222a5c" }}>
+          {actual.pregunta}
+        </h2>
+
+        {/* === OPCIONES === */}
+        {!respuesta && (
+          <div
+            className="opciones-ejercicio"
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              gap: "0.8rem",
+              alignItems: "center",
+              marginBottom: "1rem",
+            }}
+          >
+            {actual.opciones.map((op, i) => (
               <button
-                key={index}
-                className={`opcion-btn ${
-                  seleccion === opcion
-                    ? opcion === preguntas[preguntaActual].respuesta
-                      ? "correcta"
-                      : "incorrecta"
-                    : ""
-                }`}
-                onClick={() => manejarSeleccion(opcion)}
-                disabled={!!seleccion}
+                key={i}
+                className={`opcion-btn ${opcionSeleccionada === op ? "seleccionada" : ""}`}
+                onClick={() => setOpcionSeleccionada(op)}
+                style={{ fontSize: "1.1rem", padding: "0.6rem 1.4rem", minWidth: "280px" }}
               >
-                {opcion}
+                {op}
               </button>
             ))}
           </div>
+        )}
 
-          {mensaje && <p className="mensaje">{mensaje}</p>}
+        {/* === BOTÓN CHECK === */}
+        {!respuesta && (
+          <button
+            onClick={verificar}
+            className="ejercicio-btn"
+            disabled={!opcionSeleccionada}
+            style={{ fontSize: "1.2rem", padding: "0.7rem 2rem", borderRadius: "8px" }}
+          >
+            Check
+          </button>
+        )}
 
-          {seleccion && (
-            <button className="siguiente-btn" onClick={siguiente}>
-              {preguntaActual < preguntas.length - 1 ? "Next ➡️" : "Finish 🏁"}
+        {/* === FEEDBACK === */}
+        {respuesta && (
+          <p
+            className={`respuesta-feedback ${
+              respuesta.startsWith("✅") ? "correcta" : "incorrecta"
+            }`}
+            style={{ fontSize: "1.2rem", margin: "1rem 0" }}
+          >
+            {respuesta}
+          </p>
+        )}
+
+        {/* === BOTONES SIGUIENTE / FINALIZAR === */}
+        <div className="botones-siguiente" style={{ marginTop: "1rem" }}>
+          {respuesta && index < ejercicios.length - 1 && (
+            <button
+              onClick={siguiente}
+              className="ejercicio-btn"
+              style={{ fontSize: "1.2rem", padding: "0.7rem 2rem" }}
+            >
+              Next question
+            </button>
+          )}
+          {respuesta && index === ejercicios.length - 1 && (
+            <button
+              onClick={manejarFinalizacion}
+              className="ejercicio-btn"
+              style={{ fontSize: "1.2rem", padding: "0.7rem 2rem" }}
+            >
+              Finish
             </button>
           )}
         </div>
-      ) : (
-        <div className="resultado-final">
-          <h3>✅ You finished the exercise!</h3>
-          <p>
-            Your score: {puntaje} / {preguntas.length}
-          </p>
-          <button onClick={() => navigate(-1)}>⬅️ Back to Level</button>
-        </div>
-      )}
+      </section>
     </div>
   );
 }

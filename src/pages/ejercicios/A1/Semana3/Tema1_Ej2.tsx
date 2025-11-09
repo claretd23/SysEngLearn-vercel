@@ -57,10 +57,10 @@ export default function Tema1_Ej2() {
 
     // Mensaje correcto o incorrecto
     if (opcionSeleccionada === actual.correcta) {
-      setMensaje("✅ Correct!");
+      setMensaje(" Correct!");
       setCorrectas((prev) => prev + 1);
     } else {
-      setMensaje("❌ Incorrect");
+      setMensaje(" Incorrect");
     }
   };
 
@@ -191,7 +191,7 @@ export default function Tema1_Ej2() {
         </>
       ) : (
         <div className="finalizado" style={{ fontSize: "1.3rem" }}>
-          <h2>✅ You have completed the exercise!</h2>
+          <h2> You have completed the exercise!</h2>
           <p>
             Correct answers: <strong>{correctas} / {ejercicios.length}</strong>
           </p>

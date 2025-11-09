@@ -95,14 +95,14 @@ export default function Tema2_Ej1() {
   const verificar = () => {
     if (!opcionSeleccionada) return;
 
-    const oracionCompletada = actual.pregunta.replace("___", opcionSeleccionada);
+    const oracionCompletada = actual.pregunta.replace("______", opcionSeleccionada);
 
     if (opcionSeleccionada === actual.correcta) {
-      setRespuesta(` Correct!\n\n${oracionCompletada}`);
+      setRespuesta(`Correct!\n\n${oracionCompletada}`);
       setCorrectas((prev) => prev + 1);
     } else {
       const oracionCorrecta = actual.pregunta.replace("______", actual.correcta);
-      setRespuesta(` Incorrect.\n\n${oracionCorrecta}`);
+      setRespuesta(`Incorrect.\n\n${oracionCorrecta}`);
     }
   };
 
@@ -126,7 +126,7 @@ export default function Tema2_Ej1() {
       {!finalizado ? (
         <>
           <header className="ejercicio-header">
-            <h1 className="titulo-ejercicio">EXERCISE 1 </h1>
+            <h1 className="titulo-ejercicio">EXERCISE 1</h1>
             <p className="progreso-ejercicio">
               Question {index + 1} of {ejercicios.length}
             </p>
@@ -202,16 +202,24 @@ export default function Tema2_Ej1() {
                 Check
               </button>
             )}
+
+            {/* Feedback (Correct / Incorrect) */}
             {respuesta && (
               <p
                 className={`respuesta-feedback ${
                   respuesta.startsWith("Correct!") ? "correcta" : "incorrecta"
                 }`}
-                style={{ fontSize: "1.3rem", margin: "1rem 0" }}
+                style={{
+                  fontSize: "1.3rem",
+                  margin: "1rem 0",
+                  color: respuesta.startsWith("Correct!") ? "#2ecc71" : "#e74c3c", // 💚 verde / ❤️ rojo
+                  fontWeight: "bold",
+                }}
               >
                 {respuesta.split("\n")[0]}
               </p>
             )}
+
             {/* Botones siguiente / finalizar */}
             <div
               className="botones-siguiente"
@@ -245,7 +253,7 @@ export default function Tema2_Ej1() {
         </>
       ) : (
         <div className="finalizado" style={{ fontSize: "1.3rem" }}>
-          <h2> You have completed the exercise!</h2>
+          <h2>You have completed the exercise!</h2>
           <p>
             Correct answers: <strong>{correctas} / {ejercicios.length}</strong>
           </p>

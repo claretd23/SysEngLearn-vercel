@@ -13,7 +13,9 @@ export default function Tema3_Ej3() {
   const [index, setIndex] = useState(0);
   const [finalizado, setFinalizado] = useState(false);
 
-  // === LISTA DE EJERCICIOS CON AUDIO ===
+  const API_URL = import.meta.env.VITE_API_URL;
+  const token = localStorage.getItem("token");
+
   const ejercicios = useMemo(
     () => [
       { audio: "/audios/sem4/mc1.mp3", opciones: ["Yes, I am.", "No, he isn’t.", "Yes, she does."], correcta: "Yes, I am." },
@@ -37,6 +39,31 @@ export default function Tema3_Ej3() {
     audioRef.current?.play();
   };
 
+  const guardarProgreso = async () => {
+    // Guardar en localStorage
+    const completados = JSON.parse(localStorage.getItem("ejercicios_completados") || "[]");
+    if (!completados.includes(id)) {
+      completados.push(id);
+      localStorage.setItem("ejercicios_completados", JSON.stringify(completados));
+    }
+
+    // Guardar en backend
+    if (!token) return;
+    try {
+      const res = await fetch(`${API_URL}/api/progreso`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ nivel, semana, tema, ejercicio }),
+      });
+      if (!res.ok) console.error("Error al guardar progreso:", res.statusText);
+    } catch (err) {
+      console.error("Error al guardar progreso:", err);
+    }
+  };
+
   const verificar = () => {
     if (!seleccion) return;
 
@@ -48,15 +75,19 @@ export default function Tema3_Ej3() {
     }
   };
 
-  const siguiente = () => {
+  const siguiente = async () => {
     setRespuesta(null);
     setSeleccion(null);
-    setIndex((prev) => prev + 1);
-  };
-
-  const manejarFinalizacion = () => {
-    setFinalizado(true);
-    setTimeout(() => navigate(`/inicio/${nivel}`), 2500);
+    await guardarProgreso();
+    if (index + 1 < ejercicios.length) {
+      setIndex(index + 1);
+    } else {
+      setFinalizado(true);
+      setTimeout(() => {
+        navigate(`/inicio/${nivel}`);
+        window.location.reload();
+      }, 2500);
+    }
   };
 
   if (finalizado) {
@@ -89,7 +120,6 @@ export default function Tema3_Ej3() {
           </div>
         )}
 
-        {/* === BOTÓN DE AUDIO === */}
         <button
           className="btn-audio"
           style={{ fontSize: "2rem", margin: "1rem 0" }}
@@ -99,7 +129,6 @@ export default function Tema3_Ej3() {
         </button>
         <audio ref={audioRef} src={actual.audio} />
 
-        {/* === OPCIONES === */}
         <div
           className="opciones-container"
           style={{
@@ -129,22 +158,21 @@ export default function Tema3_Ej3() {
           ))}
         </div>
 
-        {/* === FEEDBACK === */}
         {respuesta && (
           <p
             className={`respuesta-feedback ${respuesta.startsWith("Correct") ? "correcta" : "incorrecta"}`}
             style={{
               fontSize: "1.2rem",
               margin: "1rem 0",
-              color: respuesta.startsWith("Correct") ? "#2ecc71" : "#e74c3c",
+              color: respuesta.startsWith("Correct") ? "#0D6EFD" : "#DC3545",
               fontWeight: "bold",
+              minHeight: "1.5rem",
             }}
           >
             {respuesta.split("\n")[0]}
           </p>
         )}
 
-        {/* === BOTÓN CHECK === */}
         {!respuesta && seleccion && (
           <button
             onClick={verificar}
@@ -155,23 +183,13 @@ export default function Tema3_Ej3() {
           </button>
         )}
 
-        {/* === BOTONES SIGUIENTE / FINALIZAR === */}
-        {respuesta && index < ejercicios.length - 1 && (
+        {respuesta && (
           <button
             onClick={siguiente}
             className="ejercicio-btn"
             style={{ fontSize: "1.3rem", padding: "0.8rem 2rem", marginTop: "1rem" }}
           >
-            Next question
-          </button>
-        )}
-        {respuesta && index === ejercicios.length - 1 && (
-          <button
-            onClick={manejarFinalizacion}
-            className="ejercicio-btn"
-            style={{ fontSize: "1.3rem", padding: "0.8rem 2rem", marginTop: "1rem" }}
-          >
-            Finish
+            {index === ejercicios.length - 1 ? "Finish" : "Next question"}
           </button>
         )}
       </section>

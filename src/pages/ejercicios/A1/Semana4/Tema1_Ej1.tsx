@@ -58,7 +58,6 @@ export default function Tema1_Ej1() {
 
   const actual = ejercicios[index];
 
-  // Mezclar palabras al cargar o cambiar de oración
   useEffect(() => {
     const mezcladas = [...actual.desordenadas].sort(() => Math.random() - 0.5);
     setPalabras(mezcladas);
@@ -82,16 +81,14 @@ export default function Tema1_Ej1() {
     const esCorrecta = respuestaUsuario.toLowerCase() === correcta;
 
     if (esCorrecta) {
-      setRespuesta(" Correct!");
+      setRespuesta("Correct!");
       setCorrectas((prev) => prev + 1);
     } else {
-      setRespuesta(" Incorrect.");
-      // Mostrar la versión correcta acomodada
+      setRespuesta("Incorrect.");
       const ordenCorrecto = actual.correcta
         .replace(".", "")
         .split(" ")
         .reduce<string[]>((acc, word) => {
-          // unir frases que existan en desordenadas (p.ej. "in the park")
           const frase = actual.desordenadas.find((f) =>
             f.toLowerCase().includes(word.toLowerCase())
           );
@@ -147,9 +144,7 @@ export default function Tema1_Ej1() {
       {!finalizado ? (
         <>
           <header className="ejercicio-header">
-            <h1 className="titulo-ejercicio">
-              EXERCISE 1
-            </h1>
+            <h1 className="titulo-ejercicio">EXERCISE 1</h1>
             <p className="progreso-ejercicio">
               Question {index + 1} of {ejercicios.length}
             </p>
@@ -211,17 +206,23 @@ export default function Tema1_Ej1() {
               <>
                 <p
                   className={`respuesta-feedback ${
-                    respuesta.startsWith("✅") ? "correcta" : "incorrecta"
+                    respuesta === "Correct!" ? "correcta" : "incorrecta"
                   }`}
-                  style={{ fontSize: "1.2rem", margin: "1rem 0" }}
+                  style={{
+                    fontSize: "1.2rem",
+                    margin: "1rem 0",
+                    color: respuesta === "Correct!" ? "green" : "red",
+                  }}
                 >
                   {respuesta}
                 </p>
-                {respuesta.startsWith("❌") && (
+
+                {respuesta === "Incorrect." && (
                   <p style={{ fontSize: "1.2rem", marginBottom: "1rem" }}>
                     <strong>{actual.correcta}</strong>
                   </p>
                 )}
+
                 <button
                   onClick={siguiente}
                   className="ejercicio-btn"

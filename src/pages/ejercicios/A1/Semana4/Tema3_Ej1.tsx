@@ -96,10 +96,10 @@ export default function Tema3_Ej1() {
     if (!opcionSeleccionada) return;
 
     if (opcionSeleccionada === actual.correcta) {
-      setRespuesta(` Correct!`);
+      setRespuesta("Correct!");
       setCorrectas((prev) => prev + 1);
     } else {
-      setRespuesta(` Correct answer: ${actual.correcta}`);
+      setRespuesta(`Correct answer: ${actual.correcta}`);
     }
   };
 
@@ -123,31 +123,59 @@ export default function Tema3_Ej1() {
       {!finalizado ? (
         <>
           <header className="ejercicio-header">
-            <h1 className="titulo-ejercicio">EXERCISE 1 </h1>
+            <h1 className="titulo-ejercicio">EXERCISE 1</h1>
             <p className="progreso-ejercicio">
               Question {index + 1} of {ejercicios.length}
             </p>
           </header>
 
-          <section className="tarjeta-ejercicio" style={{ textAlign: "center", fontSize: "1.3rem", padding: "2rem" }}>
+          <section
+            className="tarjeta-ejercicio"
+            style={{ textAlign: "center", fontSize: "1.3rem", padding: "2rem" }}
+          >
             <div className="instruccion-box" style={{ marginBottom: "1.5rem" }}>
               <p className="instruccion-ejercicio">
                 Choose the correct short answer to complete the question.
               </p>
             </div>
 
-            <p className="pregunta-ejercicio" style={{ fontSize: "1.5rem", margin: "1rem 0", fontWeight: 500 }}>
+            <p
+              className="pregunta-ejercicio"
+              style={{
+                fontSize: "1.5rem",
+                margin: "1rem 0",
+                fontWeight: 500,
+              }}
+            >
               {actual.pregunta}
             </p>
 
             {!respuesta && (
-              <div className="opciones-ejercicio" style={{ display: "flex", flexDirection: "column", gap: "1rem", alignItems: "center", marginBottom: "1rem" }}>
+              <div
+                className="opciones-ejercicio"
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  gap: "1rem",
+                  alignItems: "center",
+                  marginBottom: "1rem",
+                }}
+              >
                 {actual.opciones.map((op, i) => (
                   <button
                     key={i}
-                    className={`opcion-btn ${opcionSeleccionada === op ? "seleccionada" : ""}`}
+                    className={`opcion-btn ${
+                      opcionSeleccionada === op ? "seleccionada" : ""
+                    }`}
                     onClick={() => setOpcionSeleccionada(op)}
-                    style={{ fontSize: "1.2rem", padding: "0.8rem 1.5rem", minWidth: "200px" }}
+                    style={{
+                      fontSize: "1.2rem",
+                      padding: "0.8rem 1.5rem",
+                      minWidth: "200px",
+                      borderRadius: "8px",
+                      border: "1px solid #ccc",
+                      cursor: "pointer",
+                    }}
                   >
                     {op}
                   </button>
@@ -160,26 +188,66 @@ export default function Tema3_Ej1() {
                 onClick={verificar}
                 className="ejercicio-btn"
                 disabled={!opcionSeleccionada}
-                style={{ fontSize: "1.3rem", padding: "0.8rem 2rem", marginBottom: "1rem", borderRadius: "8px" }}
+                style={{
+                  fontSize: "1.3rem",
+                  padding: "0.8rem 2rem",
+                  marginBottom: "1rem",
+                  borderRadius: "8px",
+                }}
               >
                 Check
               </button>
             )}
 
+            {/* === FEEDBACK === */}
             {respuesta && (
-              <p className={`respuesta-feedback ${respuesta.startsWith("✅") ? "correcta" : "incorrecta"}`} style={{ fontSize: "1.3rem", margin: "1rem 0" }}>
+              <p
+                className={`respuesta-feedback ${
+                  respuesta === "Correct!" ? "correcta" : "incorrecta"
+                }`}
+                style={{
+                  fontSize: "1.2rem",
+                  margin: "1rem 0",
+                  color: respuesta === "Correct!" ? "green" : "red",
+                }}
+              >
                 {respuesta}
               </p>
             )}
 
-            <div className="botones-siguiente" style={{ display: "flex", justifyContent: "center", gap: "1rem", marginTop: "1rem" }}>
+            {/* === BOTONES DE NAVEGACIÓN === */}
+            <div
+              className="botones-siguiente"
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                gap: "1rem",
+                marginTop: "1rem",
+              }}
+            >
               {respuesta && index < ejercicios.length - 1 && (
-                <button onClick={siguiente} className="ejercicio-btn" style={{ fontSize: "1.3rem", padding: "0.8rem 2rem", borderRadius: "8px" }}>
+                <button
+                  onClick={siguiente}
+                  className="ejercicio-btn"
+                  style={{
+                    fontSize: "1.3rem",
+                    padding: "0.8rem 2rem",
+                    borderRadius: "8px",
+                  }}
+                >
                   Next question
                 </button>
               )}
               {respuesta && index === ejercicios.length - 1 && (
-                <button onClick={manejarFinalizacion} className="ejercicio-btn" style={{ fontSize: "1.3rem", padding: "0.8rem 2rem", borderRadius: "8px" }}>
+                <button
+                  onClick={manejarFinalizacion}
+                  className="ejercicio-btn"
+                  style={{
+                    fontSize: "1.3rem",
+                    padding: "0.8rem 2rem",
+                    borderRadius: "8px",
+                  }}
+                >
                   Finish
                 </button>
               )}
@@ -188,8 +256,13 @@ export default function Tema3_Ej1() {
         </>
       ) : (
         <div className="finalizado" style={{ fontSize: "1.3rem" }}>
-          <h2> You have completed the exercise!</h2>
-          <p>Correct answers: <strong>{correctas} / {ejercicios.length}</strong></p>
+          <h2>You have completed the exercise!</h2>
+          <p>
+            Correct answers:{" "}
+            <strong>
+              {correctas} / {ejercicios.length}
+            </strong>
+          </p>
           <p>Redirecting to the start of the level...</p>
         </div>
       )}

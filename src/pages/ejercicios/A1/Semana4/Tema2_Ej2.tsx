@@ -28,6 +28,11 @@ export default function Tema2_Ej2() {
 
   const actual = ejercicios[index];
 
+  const limpiarTexto = (texto: string) => {
+    // Reemplaza los guiones por la palabra y elimina el texto entre paréntesis
+    return texto.replace(/_+/g, "").replace(/\([^)]*\)/g, "").trim();
+  };
+
   const guardarProgreso = async () => {
     const completados = JSON.parse(localStorage.getItem("ejercicios_completados") || "[]");
     if (!completados.includes(id)) {
@@ -60,11 +65,16 @@ export default function Tema2_Ej2() {
       (c) => c.toLowerCase() === respuestaUsuario.toLowerCase()
     );
 
+    const textoReemplazado = actual.texto.replace(/_+/g, respuestaUsuario).replace(/\([^)]*\)/g, "");
+
     if (esCorrecta) {
-      setRespuesta(`Correct!\n\n${actual.texto.replace(/_+/g, respuestaUsuario)}`);
+      setRespuesta(`Correct!\n\n${textoReemplazado}`);
       setCorrectas((prev) => prev + 1);
     } else {
-      setRespuesta(`Incorrect.\n\n${actual.texto.replace(/_+/g, actual.correcta[0])}`);
+      const textoIncorrecto = actual.texto
+        .replace(/_+/g, actual.correcta[0])
+        .replace(/\([^)]*\)/g, "");
+      setRespuesta(`Incorrect.\n\n${textoIncorrecto}`);
       setInputValue(actual.correcta[0]);
     }
   };
@@ -85,7 +95,7 @@ export default function Tema2_Ej2() {
   };
 
   const mostrarTexto = respuesta
-    ? actual.texto.replace(/_+/g, actual.correcta[0])
+    ? limpiarTexto(actual.texto.replace(/_+/g, actual.correcta[0]))
     : actual.texto;
 
   return (

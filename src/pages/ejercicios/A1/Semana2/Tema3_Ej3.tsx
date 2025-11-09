@@ -13,103 +13,64 @@ export default function Tema3_Ej3() {
   const [index, setIndex] = useState(0);
   const [finalizado, setFinalizado] = useState(false);
 
-  const ejercicios = useMemo(
+  // === NUEVOS DATOS DEL EJERCICIO ===
+  const preguntas = useMemo(
     () => [
       {
-        audio: "/audios/sem2/q11.mp3",
-        opciones: [
-          "He is my English teacher at school",
-          "She is my English teacher at school",
-          "They are my English teachers at school",
-        ],
-        correcta: "He is my English teacher at school",
+        pregunta: "What is Emma’s job?",
+        opciones: ["She is a doctor.", "She is a teacher.", "She is an engineer."],
+        correcta: "She is a teacher.",
       },
       {
-        audio: "/audios/sem2/q12.mp3",
-        opciones: [
-          "I am very happy today",
-          "He is very happy today",
-          "We are very happy today",
-        ],
-        correcta: "I am very happy today",
+        pregunta: "Where does Emma work?",
+        opciones: ["At a hospital.", "At a restaurant.", "At a school."],
+        correcta: "At a school.",
       },
       {
-        audio: "/audios/sem2/q13.mp3",
-        opciones: [
-          "They are students in this class",
-          "They is students in this class",
-          "They am students in this class",
-        ],
-        correcta: "They are students in this class",
+        pregunta: "What is Tom’s job?",
+        opciones: ["He is a doctor.", "He is a teacher.", "He is a student."],
+        correcta: "He is a doctor.",
       },
       {
-        audio: "/audios/sem2/q14.mp3",
-        opciones: [
-          "She is my best friend",
-          "He is my best friend",
-          "I am my best friend",
-        ],
-        correcta: "She is my best friend",
+        pregunta: "Where does Tom work?",
+        opciones: ["At a school.", "At a hospital.", "At a company."],
+        correcta: "At a hospital.",
       },
       {
-        audio: "/audios/sem2/q15.mp3",
-        opciones: [
-          "We are brothers, not cousins",
-          "We is brothers, not cousins",
-          "We am brothers, not cousins",
-        ],
-        correcta: "We are brothers, not cousins",
+        pregunta: "What does Lucy do?",
+        opciones: ["She is a chef.", "She is a nurse.", "She is a driver."],
+        correcta: "She is a chef.",
       },
       {
-        audio: "/audios/sem2/q16.mp3",
-        opciones: [
-          "You are my new classmate",
-          "You is my new classmate",
-          "You am my new classmate",
-        ],
-        correcta: "You are my new classmate",
+        pregunta: "Where does Lucy work?",
+        opciones: ["At a restaurant.", "At a hospital.", "At a company."],
+        correcta: "At a restaurant.",
       },
       {
-        audio: "/audios/sem2/q17.mp3",
-        opciones: [
-          "The dog is very small and cute",
-          "The dogs are very small and cute",
-          "The dog am very small and cute",
-        ],
-        correcta: "The dog is very small and cute",
+        pregunta: "How old is David?",
+        opciones: ["He is 20 years old.", "He is 25 years old.", "He is 18 years old."],
+        correcta: "He is 20 years old.",
       },
       {
-        audio: "/audios/sem2/q18.mp3",
-        opciones: [
-          "I am from Spain, but I live in Mexico",
-          "He is from Spain, but he lives in Mexico",
-          "We are from Spain, but we live in Mexico",
-        ],
-        correcta: "I am from Spain, but I live in Mexico",
+        pregunta: "What do Emma’s parents do?",
+        opciones: ["They are doctors.", "They are engineers.", "They are teachers."],
+        correcta: "They are engineers.",
       },
       {
-        audio: "/audios/sem2/q19.mp3",
-        opciones: [
-          "She is a doctor at the hospital",
-          "She are a doctor at the hospital",
-          "She am a doctor at the hospital",
-        ],
-        correcta: "She is a doctor at the hospital",
+        pregunta: "Where do Emma’s parents work?",
+        opciones: ["In a big company.", "In a restaurant.", "In a hospital."],
+        correcta: "In a big company.",
       },
       {
-        audio: "/audios/sem2/q20.mp3",
-        opciones: [
-          "They are at school right now",
-          "They is at school right now",
-          "They am at school right now",
-        ],
-        correcta: "They are at school right now",
+        pregunta: "What does Mr. Brown do?",
+        opciones: ["He is a driver.", "He is a chef.", "He is a student."],
+        correcta: "He is a driver.",
       },
     ],
     []
   );
 
-  const actual = ejercicios[index];
+  const actual = preguntas[index];
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
   const playAudio = () => {
@@ -123,7 +84,7 @@ export default function Tema3_Ej3() {
       setRespuesta("✅ Correct!");
       setCorrectas((prev) => prev + 1);
     } else {
-      setRespuesta(` The correct answer is \n\n"${actual.correcta}".`);
+      setRespuesta(`❌ The correct answer is:\n"${actual.correcta}"`);
     }
   };
 
@@ -133,7 +94,7 @@ export default function Tema3_Ej3() {
     setIndex((prev) => prev + 1);
   };
 
-  const manejarFinalizacion = async () => {
+  const manejarFinalizacion = () => {
     setFinalizado(true);
     setTimeout(() => navigate(`/inicio/${nivel}`), 2500);
   };
@@ -143,7 +104,7 @@ export default function Tema3_Ej3() {
       <div className="finalizado" style={{ fontSize: "1.3rem" }}>
         <h2>✅ You have completed the exercise!</h2>
         <p>
-          Correct answers: <strong>{correctas} / {ejercicios.length}</strong>
+          Correct answers: <strong>{correctas} / {preguntas.length}</strong>
         </p>
         <p>Redirecting to the start of the level...</p>
       </div>
@@ -153,30 +114,37 @@ export default function Tema3_Ej3() {
   return (
     <div className="ejercicio-container">
       <header className="ejercicio-header">
-        <h1 className="titulo-ejercicio">EXERCISE 3 </h1>
+        <h1 className="titulo-ejercicio">EXERCISE 3</h1>
         <p className="progreso-ejercicio">
-          Question {index + 1} of {ejercicios.length}
+          Question {index + 1} of {preguntas.length}
         </p>
       </header>
 
       <section className="tarjeta-ejercicio" style={{ textAlign: "center" }}>
+        {/* Instrucciones y audio solo la primera vez */}
         {index === 0 && (
           <div className="instruccion-box" style={{ fontSize: "1.3rem" }}>
             <p className="instruccion-ejercicio">
-              Listen carefully and choose the correct sentence.
+              Listen to the audio and answer the questions.
             </p>
           </div>
         )}
 
-        <button
-          className="btn-audio"
-          style={{ fontSize: "2rem", margin: "1rem 0" }}
-          onClick={playAudio}
-        >
-          🔊
-        </button>
+        {index === 0 && (
+          <button
+            className="btn-audio"
+            style={{ fontSize: "2rem", margin: "1rem 0" }}
+            onClick={playAudio}
+          >
+            🔊
+          </button>
+        )}
 
-        <audio ref={audioRef} src={actual.audio} />
+        {index === 0 && (
+          <audio ref={audioRef} src="/audios/sem3/emma-story.mp3" />
+        )}
+
+        <h2 style={{ fontSize: "1.4rem", marginBottom: "1rem" }}>{actual.pregunta}</h2>
 
         {!respuesta && (
           <div
@@ -216,14 +184,14 @@ export default function Tema3_Ej3() {
         {respuesta && (
           <p
             className={`respuesta-feedback ${respuesta.startsWith("✅") ? "correcta" : "incorrecta"}`}
-            style={{ fontSize: "1.3rem", margin: "1rem 0" }}
+            style={{ fontSize: "1.3rem", margin: "1rem 0", whiteSpace: "pre-line" }}
           >
             {respuesta}
           </p>
         )}
 
         <div className="botones-siguiente" style={{ marginTop: "1rem" }}>
-          {respuesta && index < ejercicios.length - 1 && (
+          {respuesta && index < preguntas.length - 1 && (
             <button
               onClick={siguiente}
               className="ejercicio-btn"
@@ -232,7 +200,7 @@ export default function Tema3_Ej3() {
               Next question
             </button>
           )}
-          {respuesta && index === ejercicios.length - 1 && (
+          {respuesta && index === preguntas.length - 1 && (
             <button
               onClick={manejarFinalizacion}
               className="ejercicio-btn"

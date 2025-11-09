@@ -13,7 +13,6 @@ export default function Tema1_Ej2() {
   const [index, setIndex] = useState(0);
   const [finalizado, setFinalizado] = useState(false);
 
-  //  Lista de ejercicios
   const ejercicios = [
     { texto: "She ______ English at school every day.", correcta: ["studies"] },
     { texto: "They ______ football in the park on Saturdays.", correcta: ["play"] },
@@ -29,7 +28,6 @@ export default function Tema1_Ej2() {
 
   const actual = ejercicios[index];
 
-  //  Guardar progreso
   const guardarProgreso = async () => {
     const completados = JSON.parse(localStorage.getItem("ejercicios_completados") || "[]");
     if (!completados.includes(id)) {
@@ -56,7 +54,6 @@ export default function Tema1_Ej2() {
     }
   };
 
-  //  Verificar respuesta
   const verificar = () => {
     const respuestaUsuario = inputValue.trim().toLowerCase();
     if (!respuestaUsuario) return;
@@ -66,22 +63,20 @@ export default function Tema1_Ej2() {
     );
 
     if (esCorrecta) {
-      setRespuesta(" Correct!");
+      setRespuesta("Correct!");
       setCorrectas((prev) => prev + 1);
     } else {
-      setRespuesta(" Incorrect");
+      setRespuesta("Incorrect.");
       setInputValue(actual.correcta[0]);
     }
   };
 
-  //  Siguiente pregunta
   const siguiente = () => {
     setRespuesta(null);
     setInputValue("");
     setIndex(index + 1);
   };
 
-  //  Finalización y redirección
   const manejarFinalizacion = async () => {
     await guardarProgreso();
     setFinalizado(true);
@@ -91,7 +86,6 @@ export default function Tema1_Ej2() {
     }, 3000);
   };
 
-  //  Mostrar la respuesta correcta cuando se verifica
   const mostrarTexto = respuesta
     ? actual.texto.replace("______", actual.correcta[0])
     : actual.texto;
@@ -108,7 +102,6 @@ export default function Tema1_Ej2() {
           </header>
 
           <section className="tarjeta-ejercicio" style={{ textAlign: "center" }}>
-            {/* Instrucción visible solo en la primera pregunta */}
             {index === 0 && (
               <div className="instruccion-box">
                 <p className="instruccion-ejercicio" style={{ fontSize: "1.3rem" }}>
@@ -119,7 +112,6 @@ export default function Tema1_Ej2() {
               </div>
             )}
 
-            {/* Oración actual */}
             <p
               className="pregunta-ejercicio"
               style={{ fontSize: "1.5rem", margin: "1rem 0", fontWeight: 500 }}
@@ -127,7 +119,6 @@ export default function Tema1_Ej2() {
               {mostrarTexto}
             </p>
 
-            {/* Input + botón Check */}
             {!respuesta && (
               <div
                 className="opciones-ejercicio"
@@ -167,17 +158,21 @@ export default function Tema1_Ej2() {
               </div>
             )}
 
-            {/* Feedback */}
             {respuesta && (
               <p
-                className={`respuesta-feedback ${respuesta.startsWith("✅") ? "correcta" : "incorrecta"}`}
-                style={{ fontSize: "1.3rem", margin: "1rem 0" }}
+                className={`respuesta-feedback ${
+                  respuesta === "Correct!" ? "correcta" : "incorrecta"
+                }`}
+                style={{
+                  fontSize: "1.3rem",
+                  margin: "1rem 0",
+                  color: respuesta === "Correct!" ? "green" : "red",
+                }}
               >
                 {respuesta}
               </p>
             )}
 
-            {/* Botones siguiente o finalizar */}
             <div className="botones-siguiente">
               {respuesta && index < ejercicios.length - 1 && (
                 <button
@@ -201,7 +196,6 @@ export default function Tema1_Ej2() {
           </section>
         </>
       ) : (
-        //  Pantalla final
         <div className="finalizado" style={{ fontSize: "1.3rem" }}>
           <h2> You have completed the exercise!</h2>
           <p>

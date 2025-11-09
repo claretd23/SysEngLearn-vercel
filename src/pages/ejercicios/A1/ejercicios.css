@@ -534,11 +534,11 @@
 
 /* === COLORES UNIVERSALES DE RETROALIMENTACIÓN === */
 .respuesta-feedback.correcta {
-  color: #149a35; /* Azul principal */
+  color: lch(12.97% 22.89 277.44); /* Azul principal */
   font-weight: 600;
 }
 
 .respuesta-feedback.incorrecta {
-  color: #511a04; /* Azul también, para mantener consistencia */
+  color:lch(12.97% 22.89 277.44); /* Azul también, para mantener consistencia */
   font-weight: 600;
 }

@@ -17,46 +17,16 @@ export default function Tema1_Ej1() {
   const token = localStorage.getItem("token");
 
   const ejercicios = [
-    {
-      desordenadas: ["plays", "in the park", "football", "Tom", "every Sunday"],
-      correcta: "Tom plays football in the park every Sunday.",
-    },
-    {
-      desordenadas: ["lunch", "at school", "has", "Sarah", "every day"],
-      correcta: "Sarah has lunch at school every day.",
-    },
-    {
-      desordenadas: ["watches", "TV", "in the evening", "my brother"],
-      correcta: "My brother watches TV in the evening.",
-    },
-    {
-      desordenadas: ["English", "at night", "studies", "Maria", "in her room"],
-      correcta: "Maria studies English in her room at night.",
-    },
-    {
-      desordenadas: ["in the library", "reads", "a book", "David", "every afternoon"],
-      correcta: "David reads a book in the library every afternoon.",
-    },
-    {
-      desordenadas: ["the piano", "in the living room", "plays", "Anna"],
-      correcta: "Anna plays the piano in the living room.",
-    },
-    {
-      desordenadas: ["breakfast", "in the kitchen", "eats", "my father", "every morning"],
-      correcta: "My father eats breakfast in the kitchen every morning.",
-    },
-    {
-      desordenadas: ["homework", "at home", "does", "Paul", "after school"],
-      correcta: "Paul does homework at home after school.",
-    },
-    {
-      desordenadas: ["in the gym", "exercise", "we", "every Friday"],
-      correcta: "We exercise in the gym every Friday.",
-    },
-    {
-      desordenadas: ["coffee", "in the office", "drinks", "Mr. Brown", "every morning"],
-      correcta: "Mr. Brown drinks coffee in the office every morning.",
-    },
+    { desordenadas: ["plays", "in the park", "football", "Tom", "every Sunday"], correcta: "Tom plays football in the park every Sunday." },
+    { desordenadas: ["lunch", "at school", "has", "Sarah", "every day"], correcta: "Sarah has lunch at school every day." },
+    { desordenadas: ["watches", "TV", "in the evening", "my brother"], correcta: "My brother watches TV in the evening." },
+    { desordenadas: ["English", "at night", "studies", "Maria", "in her room"], correcta: "Maria studies English in her room at night." },
+    { desordenadas: ["in the library", "reads", "a book", "David", "every afternoon"], correcta: "David reads a book in the library every afternoon." },
+    { desordenadas: ["the piano", "in the living room", "plays", "Anna"], correcta: "Anna plays the piano in the living room." },
+    { desordenadas: ["breakfast", "in the kitchen", "eats", "my father", "every morning"], correcta: "My father eats breakfast in the kitchen every morning." },
+    { desordenadas: ["homework", "at home", "does", "Paul", "after school"], correcta: "Paul does homework at home after school." },
+    { desordenadas: ["in the gym", "exercise", "we", "every Friday"], correcta: "We exercise in the gym every Friday." },
+    { desordenadas: ["coffee", "in the office", "drinks", "Mr. Brown", "every morning"], correcta: "Mr. Brown drinks coffee in the office every morning." },
   ];
 
   const actual = ejercicios[index];
@@ -83,21 +53,15 @@ export default function Tema1_Ej1() {
     const correcta = actual.correcta.replace(".", "").toLowerCase();
     const esCorrecta = respuestaUsuario.toLowerCase() === correcta;
 
-    if (esCorrecta) {
-      setRespuesta("Correct!");
-      setCorrectas((prev) => prev + 1);
-    } else {
-      setRespuesta("Incorrect");
-    }
+    setRespuesta(esCorrecta ? "Correct!" : "Incorrect");
+    if (esCorrecta) setCorrectas(prev => prev + 1);
 
     // Reordenar palabras siempre
     const ordenCorrecto = actual.correcta
       .replace(".", "")
       .split(" ")
       .reduce<string[]>((acc, word) => {
-        const frase = actual.desordenadas.find((f) =>
-          f.toLowerCase().includes(word.toLowerCase())
-        );
+        const frase = actual.desordenadas.find(f => f.toLowerCase().includes(word.toLowerCase()));
         if (frase && !acc.includes(frase)) acc.push(frase);
         return acc;
       }, []);
@@ -112,10 +76,10 @@ export default function Tema1_Ej1() {
       localStorage.setItem("ejercicios_completados", JSON.stringify(completados));
     }
 
-    // Guardar en backend
+    // Guardar en backend solo si hay token
     if (!token) return;
     try {
-      await fetch(`${API_URL}/api/progreso`, {
+      const res = await fetch(`${API_URL}/api/progreso`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -123,6 +87,7 @@ export default function Tema1_Ej1() {
         },
         body: JSON.stringify({ nivel, semana, tema, ejercicio }),
       });
+      if (!res.ok) console.error("Error al guardar progreso:", await res.text());
     } catch (err) {
       console.error("Error al guardar progreso:", err);
     }
@@ -130,7 +95,7 @@ export default function Tema1_Ej1() {
 
   const siguiente = async () => {
     setRespuesta(null);
-    await guardarProgreso(); // ✅ Guardar después de cada ejercicio
+    await guardarProgreso();
     if (index + 1 < ejercicios.length) {
       setIndex(index + 1);
     } else {
@@ -208,14 +173,8 @@ export default function Tema1_Ej1() {
             {respuesta && (
               <>
                 <p
-                  className={`respuesta-feedback ${
-                    respuesta === "Correct!" ? "correcta" : "incorrecta"
-                  }`}
-                  style={{
-                    fontSize: "1.2rem",
-                    margin: "1rem 0",
-                    color: respuesta === "Correct!" ? "#0D6EFD" : "#DC3545",
-                  }}
+                  className={`respuesta-feedback ${respuesta === "Correct!" ? "correcta" : "incorrecta"}`}
+                  style={{ fontSize: "1.2rem", margin: "1rem 0", color: respuesta === "Correct!" ? "#0D6EFD" : "#DC3545" }}
                 >
                   {respuesta}
                 </p>
@@ -235,10 +194,7 @@ export default function Tema1_Ej1() {
         <div className="finalizado" style={{ fontSize: "1.3rem" }}>
           <h2>You have completed the exercise!</h2>
           <p>
-            Correct answers:{" "}
-            <strong>
-              {correctas} / {ejercicios.length}
-            </strong>
+            Correct answers: <strong>{correctas} / {ejercicios.length}</strong>
           </p>
           <p>Redirecting to the start of the level...</p>
         </div>

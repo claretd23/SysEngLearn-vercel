@@ -532,13 +532,56 @@
   }
 }
 
-/* === COLORES UNIVERSALES DE RETROALIMENTACIÓN === */
+/* === FEEDBACK === */
+.respuesta-feedback {
+  font-size: 1.3rem;
+  margin-top: 1rem;
+  font-weight: 500;
+}
+
 .respuesta-feedback.correcta {
-  color: lch(12.97% 22.89 277.44); /* Azul principal */
-  font-weight: 600;
+  color: #2ecc71; /* verde */
 }
 
 .respuesta-feedback.incorrecta {
-  color:lch(12.97% 22.89 277.44); /* Azul también, para mantener consistencia */
-  font-weight: 600;
+  color: #e74c3c; /* rojo */
+}
+
+/* === INPUT Y BOTONES === */
+.input-box {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin: 1rem 0;
+}
+
+.input-respuesta {
+  font-size: 1.3rem;
+  padding: 0.8rem 1rem;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  flex: 1;
+  max-width: 400px;
+}
+
+.ejercicio-btn {
+  font-size: 1.3rem;
+  padding: 0.8rem 2rem;
+  border-radius: 8px;
+  background-color: #222a5c;
+  color: white;
+  border: none;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.ejercicio-btn:hover {
+  background-color: #1a214a;
+}
+
+.botones-box {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin-top: 1rem;
 }

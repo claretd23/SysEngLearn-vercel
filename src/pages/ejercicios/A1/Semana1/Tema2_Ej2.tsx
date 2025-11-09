@@ -58,10 +58,10 @@ export default function Tema1_Ej2() {
     const respuestaUsuario = inputValue.trim().toLowerCase();
     if (!respuestaUsuario) return;
     if (respuestaUsuario === actual.correcta.toLowerCase()) {
-      setRespuesta("✅ Correct!");
+      setRespuesta(" Correct!");
       setCorrectas((prev) => prev + 1);
     } else {
-      setRespuesta(`❌ Incorrect.`);
+      setRespuesta(` Incorrect.`);
     }
   };
 
@@ -193,7 +193,7 @@ export default function Tema1_Ej2() {
         </>
       ) : (
         <div className="finalizado">
-          <h2>✅ You have completed the exercise!</h2>
+          <h2> You have completed the exercise!</h2>
           <p>
             Correct answers:{" "}
             <strong>

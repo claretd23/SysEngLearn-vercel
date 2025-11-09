@@ -168,10 +168,10 @@ const actual = ejercicios[index]; // Ejercicio actual
     const respuestaUsuario = inputValor.trim().toLowerCase();
     if (!respuestaUsuario) return;
     if (respuestaUsuario === actual.correcta.toLowerCase()) {
-      setRespuesta("✅ Correct!");
+      setRespuesta(" Correct!");
       setCorrectas((prev) => prev + 1);
     } else {
-      setRespuesta("❌ Incorrect");
+      setRespuesta(" Incorrect");
     }
   };
 
@@ -298,7 +298,7 @@ const actual = ejercicios[index]; // Ejercicio actual
         </>
       ) : (
         <div className="finalizado">
-          <h2>✅ You have completed the exercise!</h2>
+          <h2> You have completed the exercise!</h2>
           <p>
             Correct answers: <strong>{correctas} / {ejercicios.length}</strong>
           </p>

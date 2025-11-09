@@ -98,10 +98,10 @@ const verificar = () => {
   if (!respuestaUsuario) return;
 
   if (respuestaUsuario === actual.correcta.toLowerCase()) {
-    setRespuesta(`✅ Correct! The answer is "${actual.correcta}".`);
+    setRespuesta(` Correct! The answer is "${actual.correcta}".`);
     setCorrectas((prev) => prev + 1);
   } else {
-    setRespuesta(`❌ Incorrect. The correct answer is "${actual.correcta}".`);
+    setRespuesta(`The correct answer is "${actual.correcta}".`);
   }
 };
 
@@ -121,7 +121,7 @@ const verificar = () => {
   if (yaCompletado) {
     return (
       <div className="finalizado" style={{ fontSize: "1.3rem" }}>
-        <h2>✅ You have already completed this exercise.</h2>
+        <h2> You have already completed this exercise.</h2>
         <p>You cannot answer it again.</p>
         <button
           onClick={() => navigate(`/inicio/${nivel}`)}
@@ -137,7 +137,7 @@ const verificar = () => {
   if (finalizado) {
     return (
       <div className="finalizado" style={{ fontSize: "1.3rem" }}>
-        <h2>✅ You have completed the exercise!</h2>
+        <h2> You have completed the exercise!</h2>
         <p>
           Correct answers:{" "}
           <strong>

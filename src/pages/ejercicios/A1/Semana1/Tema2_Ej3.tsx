@@ -60,10 +60,10 @@ export default function Tema1_Ej3_Listening() {
     const respuestaUsuario = inputValue.trim().toLowerCase();
     if (!respuestaUsuario) return;
     if (respuestaUsuario === actual.correcta.toLowerCase()) {
-      setRespuesta("✅ Correct!");
+      setRespuesta(" Correct!");
       setCorrectas((prev) => prev + 1);
     } else {
-      setRespuesta(`❌ Incorrect.\nThe answer is "${actual.correcta}".`);
+      setRespuesta(`The answer is "${actual.correcta}".`);
     }
   };
 
@@ -184,7 +184,7 @@ export default function Tema1_Ej3_Listening() {
         </>
       ) : (
         <div className="finalizado">
-          <h2>✅ You have completed the exercise!</h2>
+          <h2> You have completed the exercise!</h2>
           <p>
             Correct answers: <strong>{correctas} / {ejercicios.length}</strong>
           </p>

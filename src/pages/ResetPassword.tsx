@@ -22,7 +22,7 @@ function ResetPassword() {
 
     // Validación: las contraseñas deben coincidir
     if (newPassword !== confirmPassword) {
-      setError('❌ The passwords do not match');
+      setError('The passwords do not match');
       return;
     }
 
@@ -33,7 +33,7 @@ function ResetPassword() {
       newPassword
       });
 
-      setMessage('✅ Password successfully updated');
+      setMessage(' Password successfully updated');
       // Redirige a login después de 3 segundos
       setTimeout(() => navigate('/login'), 3000);
     } catch (err: any) {

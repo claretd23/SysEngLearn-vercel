@@ -55,17 +55,13 @@ export default function Tema3_Ej2() {
 
   /** 
    * 🔍 Normaliza texto para comparar respuestas
-   * - pasa a minúsculas
-   * - elimina espacios dobles
-   * - reemplaza contracciones equivalentes
    */
   const normalizar = (texto: string) => {
     return texto
       .trim()
       .toLowerCase()
       .replace(/\s+/g, " ")
-      // normaliza contracciones equivalentes
-      .replace(/’/g, "'") // reemplaza apóstrofos especiales
+      .replace(/’/g, "'")
       .replace(/\bisnt\b/g, "isn't")
       .replace(/\baren't\b/g, "aren't")
       .replace(/\bcan't\b/g, "cannot")
@@ -73,7 +69,7 @@ export default function Tema3_Ej2() {
       .replace(/\bdoesn't\b/g, "does not")
       .replace(/\bwasnt\b/g, "wasn't")
       .replace(/\bwerent\b/g, "weren't")
-      .replace(/\bcannot\b/g, "can't"); // cubre equivalentes inversos
+      .replace(/\bcannot\b/g, "can't");
   };
 
   const verificar = () => {
@@ -81,14 +77,14 @@ export default function Tema3_Ej2() {
     if (!respuestaUsuario) return;
 
     const esCorrecta = actual.correcta.some(
-      c => normalizar(c) === respuestaUsuario
+      (c) => normalizar(c) === respuestaUsuario
     );
 
     if (esCorrecta) {
-      setRespuesta(" Correct!");
-      setCorrectas(prev => prev + 1);
+      setRespuesta("Correct!");
+      setCorrectas((prev) => prev + 1);
     } else {
-      setRespuesta(` Correct answer: ${actual.correcta[0]}`);
+      setRespuesta("Incorrect.");
       setInputValue(actual.correcta[0]);
     }
   };
@@ -126,53 +122,87 @@ export default function Tema3_Ej2() {
               </p>
             </div>
 
-            <p className="pregunta-ejercicio" style={{ fontSize: "1.5rem", margin: "1rem 0", fontWeight: 500 }}>
+            <p
+              className="pregunta-ejercicio"
+              style={{
+                fontSize: "1.5rem",
+                margin: "1rem 0",
+                fontWeight: 500,
+              }}
+            >
               {actual.pregunta}
             </p>
 
             {!respuesta && (
-              <div style={{ display: "flex", justifyContent: "center", gap: "1rem", margin: "1rem 0" }}>
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "center",
+                  gap: "1rem",
+                  margin: "1rem 0",
+                }}
+              >
                 <input
                   type="text"
                   value={inputValue}
-                  onChange={e => setInputValue(e.target.value)}
+                  onChange={(e) => setInputValue(e.target.value)}
                   className="input-respuesta"
                   placeholder="Write your answer..."
-                  style={{ fontSize: "1.3rem", padding: "0.8rem 1rem", borderRadius: "8px", border: "1px solid #ccc", flex: 1 }}
+                  style={{
+                    fontSize: "1.3rem",
+                    padding: "0.8rem 1rem",
+                    borderRadius: "8px",
+                    border: "1px solid #ccc",
+                    flex: 1,
+                  }}
                 />
                 <button
                   onClick={verificar}
                   className="ejercicio-btn"
-                  style={{ fontSize: "1.3rem", padding: "0.8rem 2rem", borderRadius: "8px" }}
+                  style={{
+                    fontSize: "1.3rem",
+                    padding: "0.8rem 2rem",
+                    borderRadius: "8px",
+                  }}
                 >
                   Check
                 </button>
               </div>
             )}
 
-  {/* === FEEDBACK === */}
-        {respuesta && (
-          <p
-            className={`respuesta-feedback ${
-              respuesta === "Correct!" ? "correcta" : "incorrecta"
-            }`}
-            style={{
-              fontSize: "1.2rem",
-              margin: "1rem 0",
-              color: respuesta === "Correct!" ? "green" : "red",
-            }}
-          >
-            {respuesta}
-          </p>
-        )}
+            {/* === FEEDBACK === */}
+            {respuesta && (
+              <p
+                className={`respuesta-feedback ${
+                  respuesta === "Correct!" ? "correcta" : "incorrecta"
+                }`}
+                style={{
+                  fontSize: "1.2rem",
+                  margin: "1rem 0",
+                  color: respuesta === "Correct!" ? "green" : "red",
+                }}
+              >
+                {respuesta}
+              </p>
+            )}
 
-
-            <div style={{ display: "flex", justifyContent: "center", gap: "1rem", marginTop: "1rem" }}>
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                gap: "1rem",
+                marginTop: "1rem",
+              }}
+            >
               {respuesta && index < ejercicios.length - 1 && (
                 <button
                   onClick={siguiente}
                   className="ejercicio-btn"
-                  style={{ fontSize: "1.3rem", padding: "0.8rem 2rem", borderRadius: "8px" }}
+                  style={{
+                    fontSize: "1.3rem",
+                    padding: "0.8rem 2rem",
+                    borderRadius: "8px",
+                  }}
                 >
                   Next question
                 </button>
@@ -181,7 +211,11 @@ export default function Tema3_Ej2() {
                 <button
                   onClick={manejarFinalizacion}
                   className="ejercicio-btn"
-                  style={{ fontSize: "1.3rem", padding: "0.8rem 2rem", borderRadius: "8px" }}
+                  style={{
+                    fontSize: "1.3rem",
+                    padding: "0.8rem 2rem",
+                    borderRadius: "8px",
+                  }}
                 >
                   Finish
                 </button>
@@ -191,9 +225,12 @@ export default function Tema3_Ej2() {
         </>
       ) : (
         <div className="finalizado" style={{ fontSize: "1.3rem" }}>
-          <h2> You have completed the exercise!</h2>
+          <h2>You have completed the exercise!</h2>
           <p>
-            Correct answers: <strong>{correctas} / {ejercicios.length}</strong>
+            Correct answers:{" "}
+            <strong>
+              {correctas} / {ejercicios.length}
+            </strong>
           </p>
           <p>Redirecting to the start of the level...</p>
         </div>

@@ -44,10 +44,10 @@ export default function Tema2_Ej3() {
     const oracionCorrecta = actual.pregunta.replace(/_+/, actual.correcta);
 
     if (opcionSeleccionada === actual.correcta) {
-      setRespuesta(`✅ Correct!\n\n${oracionCompletada}`);
+      setRespuesta(` Correct!\n\n${oracionCompletada}`);
       setCorrectas((prev) => prev + 1);
     } else {
-      setRespuesta(`❌ Incorrect.\nThe answer is "${actual.correcta}".\n\n${oracionCorrecta}`);
+      setRespuesta(`The answer is "${actual.correcta}".\n\n${oracionCorrecta}`);
     }
   };
 
@@ -67,7 +67,7 @@ export default function Tema2_Ej3() {
       {!finalizado ? (
         <>
           <header className="ejercicio-header">
-            <h1 className="titulo-ejercicio">EXERCISE 3</h1>
+            <h1 className="titulo-ejercicio">EXERCISE </h1>
             <p className="progreso-ejercicio">
               Question {index + 1} of {ejercicios.length}
             </p>

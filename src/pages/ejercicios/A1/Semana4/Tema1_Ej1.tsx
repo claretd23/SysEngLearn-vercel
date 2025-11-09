@@ -80,32 +80,26 @@ export default function Tema1_Ej1() {
     const correcta = actual.correcta.replace(".", "").toLowerCase();
     const esCorrecta = respuestaUsuario.toLowerCase() === correcta;
 
-const verificar = () => {
-  const respuestaUsuario = palabras.join(" ");
-  const correcta = actual.correcta.replace(".", "").toLowerCase();
-  const esCorrecta = respuestaUsuario.toLowerCase() === correcta;
+    if (esCorrecta) {
+      setRespuesta("Correct!");
+      setCorrectas((prev) => prev + 1);
+    } else {
+      setRespuesta("Incorrect");
+    }
 
-  if (esCorrecta) {
-    setRespuesta("Correct!");
-    setCorrectas((prev) => prev + 1);
-  } else {
-    setRespuesta("Incorrect");
-  }
-
-  // Reordenar palabras siempre (tanto si es correcta como incorrecta)
-  const ordenCorrecto = actual.correcta
-    .replace(".", "")
-    .split(" ")
-    .reduce<string[]>((acc, word) => {
-      const frase = actual.desordenadas.find((f) =>
-        f.toLowerCase().includes(word.toLowerCase())
-      );
-      if (frase && !acc.includes(frase)) acc.push(frase);
-      return acc;
-    }, []);
-  setPalabras(ordenCorrecto);
-};
-
+    // Reordenar siempre las palabras (correcto o incorrecto)
+    const ordenCorrecto = actual.correcta
+      .replace(".", "")
+      .split(" ")
+      .reduce<string[]>((acc, word) => {
+        const frase = actual.desordenadas.find((f) =>
+          f.toLowerCase().includes(word.toLowerCase())
+        );
+        if (frase && !acc.includes(frase)) acc.push(frase);
+        return acc;
+      }, []);
+    setPalabras(ordenCorrecto);
+  };
 
   const siguiente = () => {
     setRespuesta(null);
@@ -219,17 +213,11 @@ const verificar = () => {
                   style={{
                     fontSize: "1.2rem",
                     margin: "1rem 0",
-                    color: respuesta === "Correct!" ? "green" : "red",
+                    color: respuesta === "Correct!" ? "#0D6EFD" : "#DC3545",
                   }}
                 >
                   {respuesta}
                 </p>
-
-                {respuesta === "Incorrect." && (
-                  <p style={{ fontSize: "1.2rem", marginBottom: "1rem" }}>
-
-                  </p>
-                )}
 
                 <button
                   onClick={siguiente}
@@ -244,7 +232,7 @@ const verificar = () => {
         </>
       ) : (
         <div className="finalizado" style={{ fontSize: "1.3rem" }}>
-          <h2> You have completed the exercise!</h2>
+          <h2>You have completed the exercise!</h2>
           <p>
             Correct answers:{" "}
             <strong>

@@ -95,7 +95,7 @@ export default function Tema2_Ej1() {
   const verificar = () => {
     if (!opcionSeleccionada) return;
 
-    const oracionCompletada = actual.pregunta.replace("______", opcionSeleccionada);
+    const oracionCompletada = actual.pregunta.replace("___", opcionSeleccionada);
 
     if (opcionSeleccionada === actual.correcta) {
       setRespuesta(` Correct!\n\n${oracionCompletada}`);

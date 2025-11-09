@@ -71,10 +71,10 @@ export default function Tema1_Ej3() {
     const correctaNormalizada = actual.correcta.trim().toLowerCase().replace(/\s+/g, " ");
 
     if (respuestaNormalizada === correctaNormalizada) {
-      setRespuesta("✅ Correct!");
+      setRespuesta("Correct!");
       setCorrectas((prev) => prev + 1);
     } else {
-      setRespuesta(`❌ Incorrect.`);
+      setRespuesta(` Incorrect.`);
     }
 
     // Autocompletar con la oración correcta
@@ -95,7 +95,7 @@ export default function Tema1_Ej3() {
   if (finalizado) {
     return (
       <div className="finalizado" style={{ fontSize: "1.3rem" }}>
-        <h2>✅ You have completed the exercise!</h2>
+        <h2> You have completed the exercise!</h2>
         <p>
           Correct answers: <strong>{correctas} / {ejercicios.length}</strong>
         </p>
@@ -158,11 +158,11 @@ export default function Tema1_Ej3() {
 
         {respuesta && (
           <p
-            className={`respuesta-feedback ${respuesta.startsWith("✅") ? "correcta" : "incorrecta"}`}
+            className={`respuesta-feedback ${respuesta.startsWith("Correcta") ? "correcta" : "incorrecta"}`}
             style={{
               fontSize: "1.2rem",
               margin: "0.5rem 0 1rem 0",
-              color: respuesta.startsWith("✅") ? "green" : "red",
+              color: respuesta.startsWith("Correcta") ? "green" : "red",
               minHeight: "1.5rem",
             }}
           >

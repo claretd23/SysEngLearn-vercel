@@ -16,7 +16,7 @@ export default function Tema2_Ej2() {
   const ejercicios = [
     { texto: "My best friend is very _________. (friendly / lazy)", correcta: ["friendly"] },
     { texto: "The movie isn’t _________. It’s boring! (interesting / sad)", correcta: ["interesting"] },
-    { texto: "__________ your teacher _________? (Is / strict)", correcta: ["Is your teacher strict?"] },
+    { texto: "__________ your teacher _________? (Is - Are /stricting - strict)", correcta: ["Is your teacher strict?"] },
     { texto: "This restaurant is really _________. (expensive / cheap)", correcta: ["cheap"] },
     { texto: "Our neighborhood isn’t _________. It’s dangerous at night. (safe / noisy)", correcta: ["safe"] },
     { texto: "My little sister is very _________. She always smiles. (cheerful / rude)", correcta: ["cheerful"] },

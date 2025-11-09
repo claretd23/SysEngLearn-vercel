@@ -1,213 +1,226 @@
 import { useParams, useNavigate } from "react-router-dom";
-import { useState, useEffect, useRef } from "react";
+import { useState, useRef } from "react";
 import "../ejercicios.css";
 
-interface EjercicioListening {
-  audioSrc: string;
-  respuesta: string;
-}
-
-const shuffleArray = <T,>(array: T[]): T[] => [...array].sort(() => Math.random() - 0.5);
-
-const pairColors = ["#aabc36", "#f28c28", "#36aabc", "#ab36bc", "#ff5c5c", "#36bc8f", "#bc9636", "#6b36bc", "#36bca3", "#e1bc36"];
-
-export default function Tema1_Ej3() {
+export default function Tema3_Ej3() {
   const { nivel, semana, tema, ejercicio } = useParams();
-  const navigate = useNavigate();
   const id = `${nivel}-${semana}-${tema}-${ejercicio}`;
+  const navigate = useNavigate();
 
-  const [ejercicios, setEjercicios] = useState<EjercicioListening[]>([]);
-  const [opciones, setOpciones] = useState<EjercicioListening[]>([]);
-  const [seleccion, setSeleccion] = useState<{ audio?: string; respuesta?: string }>({});
-  const [paresCorrectos, setParesCorrectos] = useState<{ [key: string]: string }>({});
-  const [paresIncorrectos, setParesIncorrectos] = useState<{ audio: string; respuesta: string }[]>([]);
+  const [index, setIndex] = useState(0);
+  const [respuesta, setRespuesta] = useState<string | null>(null);
+  const [opcionSeleccionada, setOpcionSeleccionada] = useState<string | null>(null);
+  const [correctas, setCorrectas] = useState(0);
   const [finalizado, setFinalizado] = useState(false);
-  const [completo, setCompleto] = useState(false);
 
-  const audiosRef = useRef<HTMLAudioElement[]>([]);
+  const audioRef = useRef<HTMLAudioElement | null>(null);
 
-  // Carga inicial
-  useEffect(() => {
-    const lista: EjercicioListening[] = [
-      { audioSrc: "/audios/sem3/audio1.mp3", respuesta: "My name is Anna." },           // What's your name?
-      { audioSrc: "/audios/sem3/audio2.mp3", respuesta: "I’m 13 years old." },          // How old are you?
-      { audioSrc: "/audios/sem3/audio3.mp3", respuesta: "I’m from Mexico." },           // Where are you from?
-      { audioSrc: "/audios/sem3/audio4.mp3", respuesta: "I live at 32 Park Street." },  // What’s your address?
-      { audioSrc: "/audios/sem3/audio5.mp3", respuesta: "My birthday is on July 20th." },// When is your birthday?
-      { audioSrc: "/audios/sem3/audio6.mp3", respuesta: "It’s 4567-8923." },            // What’s your phone number?
-      { audioSrc: "/audios/sem3/audio7.mp3", respuesta: "I live at 15 Green Avenue." }, // Where do you live?
-      { audioSrc: "/audios/sem3/audio8.mp3", respuesta: "My favorite hobby is reading." }, // What is your favorite hobby?
-      { audioSrc: "/audios/sem3/audio9.mp3", respuesta: "My favorite singer is Shakira." }, // Who is your favorite singer?
-      { audioSrc: "/audios/sem3/audio10.mp3", respuesta: "I’m fine, thank you." },      // How are you?
-    ];
-    setEjercicios(shuffleArray(lista));
-    setOpciones(shuffleArray(lista));
-  }, []);
+  const playAudio = () => {
+    audioRef.current?.play();
+  };
 
-  // Marcar completado cuando todos los pares se hayan intentado
-  useEffect(() => {
-    const totalIntentos = Object.keys(paresCorrectos).length + paresIncorrectos.length;
-    if (totalIntentos === ejercicios.length) setCompleto(true);
-  }, [paresCorrectos, paresIncorrectos, ejercicios.length]);
+  const ejercicios = [
+    {
+      pregunta: "What is the man’s name?",
+      opciones: ["Mark", "Carlos", "David"],
+      correcta: "Carlos",
+    },
+    {
+      pregunta: "Where is Carlos from?",
+      opciones: ["Mexico", "Canada", "The United States"],
+      correcta: "Mexico",
+    },
+    {
+      pregunta: "Where does Carlos live?",
+      opciones: ["In Mexico City", "In Guadalajara", "In Monterrey"],
+      correcta: "In Guadalajara",
+    },
+    {
+      pregunta: "How old is Carlos?",
+      opciones: ["20", "25", "30"],
+      correcta: "25",
+    },
+    {
+      pregunta: "What is his job or occupation?",
+      opciones: ["He is a teacher.", "He is a university student.", "He is a doctor."],
+      correcta: "He is a university student.",
+    },
+    {
+      pregunta: "What does Carlos like to do in his free time?",
+      opciones: ["Listening to music and chatting online", "Running in the park", "Reading books"],
+      correcta: "Listening to music and chatting online",
+    },
+    {
+      pregunta: "What is his sister’s name?",
+      opciones: ["Maria", "Ana", "Julia"],
+      correcta: "Ana",
+    },
+    {
+      pregunta: "What does Ana do?",
+      opciones: ["She is a teacher.", "She is a student.", "She is a nurse."],
+      correcta: "She is a teacher.",
+    },
+    {
+      pregunta: "Where is Carlos’s best friend from?",
+      opciones: ["The U.S.", "Mexico", "Canada"],
+      correcta: "Canada",
+    },
+    {
+      pregunta: "Why are Carlos and Mark studying English?",
+      opciones: [
+        "Because they want to travel to the U.S.",
+        "Because they like English music",
+        "Because their teacher told them to",
+      ],
+      correcta: "Because they want to travel to the U.S.",
+    },
+  ];
 
-  const guardarProgreso = async () => {
-    const completados = JSON.parse(localStorage.getItem("ejercicios_completados") || "[]");
-    if (!completados.includes(id)) {
-      completados.push(id);
-      localStorage.setItem("ejercicios_completados", JSON.stringify(completados));
-    }
+  const actual = ejercicios[index];
 
-    try {
-      const token = localStorage.getItem("token");
-      const res = await fetch("http://localhost:5000/api/progreso", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify({ nivel, semana, tema, ejercicio }),
-      });
-      if (!res.ok) console.error("Error al guardar progreso:", res.statusText);
-    } catch (error) {
-      console.error("Error al guardar el progreso:", error);
+  const verificar = () => {
+    if (!opcionSeleccionada) return;
+
+    if (opcionSeleccionada === actual.correcta) {
+      setRespuesta("✅ Correct!");
+      setCorrectas((prev) => prev + 1);
+    } else {
+      setRespuesta(`❌ The correct answer is: "${actual.correcta}".`);
     }
   };
 
-  const handleSeleccion = (tipo: "audio" | "respuesta", valor: string) => {
-    const nuevaSeleccion = { ...seleccion, [tipo]: valor };
-    setSeleccion(nuevaSeleccion);
-
-    if (nuevaSeleccion.audio && nuevaSeleccion.respuesta) {
-      const parCorrecto = ejercicios.find(
-        ej => ej.audioSrc === nuevaSeleccion.audio && ej.respuesta === nuevaSeleccion.respuesta
-      );
-
-      if (parCorrecto) {
-        setParesCorrectos(prev => ({ ...prev, [parCorrecto.audioSrc]: parCorrecto.respuesta }));
-      } else {
-        setParesIncorrectos(prev => [...prev, { audio: nuevaSeleccion.audio!, respuesta: nuevaSeleccion.respuesta! }]);
-      }
-
-      setSeleccion({});
-    }
-  };
-
-  const isIncorrecto = (tipo: "audio" | "respuesta", valor: string) =>
-    paresIncorrectos.some(p => (tipo === "audio" ? p.audio === valor : p.respuesta === valor));
-
-  const getColor = (audio: string) => {
-    const keys = Object.keys(paresCorrectos);
-    const index = keys.indexOf(audio);
-    return index >= 0 ? pairColors[index % pairColors.length] : undefined;
+  const siguiente = () => {
+    setRespuesta(null);
+    setOpcionSeleccionada(null);
+    setIndex((prev) => prev + 1);
   };
 
   const manejarFinalizacion = async () => {
-    await guardarProgreso();
     setFinalizado(true);
-    setTimeout(() => {
-      navigate(`/inicio/${nivel}`);
-    }, 3000);
+    setTimeout(() => navigate(`/inicio/${nivel}`), 3000);
   };
+
+  if (finalizado) {
+    return (
+      <div className="finalizado" style={{ fontSize: "1.3rem" }}>
+        <h2>✅ You have completed the listening exercise!</h2>
+        <p>
+          Correct answers:{" "}
+          <strong>
+            {correctas} / {ejercicios.length}
+          </strong>
+        </p>
+        <p>Redirecting to the start of the level...</p>
+      </div>
+    );
+  }
 
   return (
     <div className="ejercicio-container">
-      {!finalizado ? (
-        <>
-          <header className="ejercicio-header">
-            <h1 className="titulo-ejercicio">EXERCISE 3</h1>
-          </header>
+      <header className="ejercicio-header">
+        <h1 className="titulo-ejercicio">EXERCISE 3</h1>
+        <p className="progreso-ejercicio">
+          Question {index + 1} of {ejercicios.length}
+        </p>
+      </header>
 
-          <section className="tarjeta-ejercicio">
-            <div className="instruccion-box">
-              <p className="instruccion-ejercicio">
-                Listen to the question 🔊 and select the correct answer.
-              </p>
-            </div>
+      <section className="tarjeta-ejercicio" style={{ textAlign: "center" }}>
+        {index === 0 && (
+          <div className="instruccion-box" style={{ fontSize: "1.2rem", marginBottom: "1rem" }}>
+            <p>
+              🎧 Listen carefully to the audio and choose the correct answer for each question.
+              <br />
+              You can replay the audio if needed.
+            </p>
+          </div>
+        )}
 
-            <div style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
-              <div style={{ textAlign: "center", fontWeight: "600", color: "#222a5c" }}>Questions</div>
-              <div style={{ display: "flex", flexWrap: "wrap", gap: "0.5rem", justifyContent: "center" }}>
-                {ejercicios.map(ej => {
-                  const color = getColor(ej.audioSrc);
-                  const incorrecto = isIncorrecto("audio", ej.audioSrc);
-                  return (
-                    <button
-                      key={ej.audioSrc}
-                      disabled={!!color || incorrecto}
-                      className="btn-audio"
-                      style={{
-                        padding: "0.5rem 0.8rem",
-                        fontSize: "1.2rem",
-                        borderRadius: "8px",
-                        minWidth: "140px",
-                        backgroundColor: color ? color : incorrecto ? "#ccc" : "#fff",
-                        color: color || incorrecto ? "#fff" : "#222a5c",
-                        border: "1px solid #222a5c",
-                        cursor: color || incorrecto ? "not-allowed" : "pointer",
-                      }}
-                      onClick={() => {
-                        audiosRef.current[ejercicios.indexOf(ej)]?.play();
-                        handleSeleccion("audio", ej.audioSrc);
-                      }}
-                    >
-                      🔊
-                      <audio ref={el => (audiosRef.current[ejercicios.indexOf(ej)] = el!)} src={ej.audioSrc} />
-                    </button>
-                  );
-                })}
-              </div>
+        {/* === AUDIO === */}
+        <button
+          className="btn-audio"
+          style={{ fontSize: "2rem", margin: "1rem 0" }}
+          onClick={playAudio}
+        >
+          🔊
+        </button>
+        <audio ref={audioRef} src="/audios/sem3/carlos.mp3" />
 
-              <div style={{ textAlign: "center", fontWeight: "600", color: "#222a5c" }}>Answers</div>
-              <div style={{ display: "flex", flexWrap: "wrap", gap: "0.5rem", justifyContent: "center" }}>
-                {opciones.map(ej => {
-                  const audio = Object.keys(paresCorrectos).find(k => paresCorrectos[k] === ej.respuesta);
-                  const color = audio ? getColor(audio) : undefined;
-                  const incorrecto = isIncorrecto("respuesta", ej.respuesta);
-                  return (
-                    <button
-                      key={ej.respuesta}
-                      disabled={!!color || incorrecto}
-                      className="opcion-btn"
-                      style={{
-                        padding: "0.5rem 0.8rem",
-                        fontSize: "0.9rem",
-                        borderRadius: "8px",
-                        minWidth: "140px",
-                        backgroundColor: color ? color : incorrecto ? "#ccc" : "#fff",
-                        color: color || incorrecto ? "#fff" : "#222a5c",
-                        border: "1px solid #222a5c",
-                        cursor: color || incorrecto ? "not-allowed" : "pointer",
-                      }}
-                      onClick={() => handleSeleccion("respuesta", ej.respuesta)}
-                    >
-                      {ej.respuesta}
-                    </button>
-                  );
-                })}
-              </div>
+        {/* === PREGUNTA === */}
+        <h2 style={{ fontSize: "1.4rem", marginBottom: "1rem", color: "#222a5c" }}>
+          {actual.pregunta}
+        </h2>
 
-              <div className="botones-siguiente" style={{ display: "flex", justifyContent: "center", marginTop: "1rem" }}>
-                <button
-                  className="ejercicio-btn"
-                  disabled={!completo}
-                  onClick={manejarFinalizacion}
-                  style={{ fontSize: "1.3rem", padding: "0.8rem 2rem", borderRadius: "8px" }}
-                >
-                  Finish
-                </button>
-              </div>
-            </div>
-          </section>
-        </>
-      ) : (
-        <div className="finalizado" style={{ fontSize: "1.3rem" }}>
-          <h2>✅ You have completed the listening exercise!</h2>
-          <p>
-            Correct matches: <strong>{Object.keys(paresCorrectos).length}</strong> / {ejercicios.length}
+        {/* === OPCIONES === */}
+        {!respuesta && (
+          <div
+            className="opciones-ejercicio"
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              gap: "0.8rem",
+              alignItems: "center",
+              marginBottom: "1rem",
+            }}
+          >
+            {actual.opciones.map((op, i) => (
+              <button
+                key={i}
+                className={`opcion-btn ${opcionSeleccionada === op ? "seleccionada" : ""}`}
+                onClick={() => setOpcionSeleccionada(op)}
+                style={{ fontSize: "1.1rem", padding: "0.6rem 1.4rem", minWidth: "280px" }}
+              >
+                {op}
+              </button>
+            ))}
+          </div>
+        )}
+
+        {/* === BOTÓN CHECK === */}
+        {!respuesta && (
+          <button
+            onClick={verificar}
+            className="ejercicio-btn"
+            disabled={!opcionSeleccionada}
+            style={{ fontSize: "1.2rem", padding: "0.7rem 2rem", borderRadius: "8px" }}
+          >
+            Check
+          </button>
+        )}
+
+        {/* === FEEDBACK === */}
+        {respuesta && (
+          <p
+            className={`respuesta-feedback ${
+              respuesta.startsWith("✅") ? "correcta" : "incorrecta"
+            }`}
+            style={{ fontSize: "1.2rem", margin: "1rem 0" }}
+          >
+            {respuesta}
           </p>
-          <p>Redirecting to the start of the level...</p>
+        )}
+
+        {/* === BOTONES SIGUIENTE / FINALIZAR === */}
+        <div className="botones-siguiente" style={{ marginTop: "1rem" }}>
+          {respuesta && index < ejercicios.length - 1 && (
+            <button
+              onClick={siguiente}
+              className="ejercicio-btn"
+              style={{ fontSize: "1.2rem", padding: "0.7rem 2rem" }}
+            >
+              Next question
+            </button>
+          )}
+          {respuesta && index === ejercicios.length - 1 && (
+            <button
+              onClick={manejarFinalizacion}
+              className="ejercicio-btn"
+              style={{ fontSize: "1.2rem", padding: "0.7rem 2rem" }}
+            >
+              Finish
+            </button>
+          )}
         </div>
-      )}
+      </section>
     </div>
   );
 }

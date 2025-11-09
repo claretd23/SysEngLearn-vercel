@@ -80,26 +80,31 @@ export default function Tema1_Ej1() {
     const correcta = actual.correcta.replace(".", "").toLowerCase();
     const esCorrecta = respuestaUsuario.toLowerCase() === correcta;
 
-if (esCorrecta) {
-  setRespuesta("Correct!");
-  setCorrectas((prev) => prev + 1);
-} else {
-  setRespuesta("Incorrect");
-}
+const verificar = () => {
+  const respuestaUsuario = palabras.join(" ");
+  const correcta = actual.correcta.replace(".", "").toLowerCase();
+  const esCorrecta = respuestaUsuario.toLowerCase() === correcta;
 
-// Reordenar palabras siempre (correcto o incorrecto)
-const ordenCorrecto = actual.correcta
-  .replace(".", "")
-  .split(" ")
-  .reduce<string[]>((acc, word) => {
-    const frase = actual.desordenadas.find((f) =>
-      f.toLowerCase().includes(word.toLowerCase())
-    );
-    if (frase && !acc.includes(frase)) acc.push(frase);
-    return acc;
-  }, []);
+  if (esCorrecta) {
+    setRespuesta("Correct!");
+    setCorrectas((prev) => prev + 1);
+  } else {
+    setRespuesta("Incorrect");
+  }
 
-setPalabras(ordenCorrecto);
+  // Reordenar palabras siempre (tanto si es correcta como incorrecta)
+  const ordenCorrecto = actual.correcta
+    .replace(".", "")
+    .split(" ")
+    .reduce<string[]>((acc, word) => {
+      const frase = actual.desordenadas.find((f) =>
+        f.toLowerCase().includes(word.toLowerCase())
+      );
+      if (frase && !acc.includes(frase)) acc.push(frase);
+      return acc;
+    }, []);
+  setPalabras(ordenCorrecto);
+};
 
 
   const siguiente = () => {

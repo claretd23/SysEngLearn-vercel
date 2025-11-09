@@ -150,14 +150,22 @@ export default function Tema3_Ej2() {
               </div>
             )}
 
-            {respuesta && (
-              <p
-                className={`respuesta-feedback ${respuesta.startsWith("✅") ? "correcta" : "incorrecta"}`}
-                style={{ fontSize: "1.3rem", margin: "1rem 0" }}
-              >
-                {respuesta}
-              </p>
-            )}
+  {/* === FEEDBACK === */}
+        {respuesta && (
+          <p
+            className={`respuesta-feedback ${
+              respuesta === "Correct!" ? "correcta" : "incorrecta"
+            }`}
+            style={{
+              fontSize: "1.2rem",
+              margin: "1rem 0",
+              color: respuesta === "Correct!" ? "green" : "red",
+            }}
+          >
+            {respuesta}
+          </p>
+        )}
+
 
             <div style={{ display: "flex", justifyContent: "center", gap: "1rem", marginTop: "1rem" }}>
               {respuesta && index < ejercicios.length - 1 && (

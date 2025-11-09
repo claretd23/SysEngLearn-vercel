@@ -20,11 +20,7 @@ export default function Tema3_Ej2() {
   };
 
   const ejercicios = [
-    {
-      pregunta: "How does Lucas feel on Monday?",
-      opciones: ["Happy", "Tired", "Excited"],
-      correcta: "Tired",
-    },
+    { pregunta: "How does Lucas feel on Monday?", opciones: ["Happy", "Tired", "Excited"], correcta: "Tired" },
     {
       pregunta: "Why does Lucas feel happy on Tuesday?",
       opciones: [
@@ -34,53 +30,25 @@ export default function Tema3_Ej2() {
       ],
       correcta: "Because his best friend visits him",
     },
-    {
-      pregunta: "How does Emma feel today?",
-      opciones: ["Worried", "Angry", "Bored"],
-      correcta: "Worried",
-    },
+    { pregunta: "How does Emma feel today?", opciones: ["Worried", "Angry", "Bored"], correcta: "Worried" },
     {
       pregunta: "Why does Emma feel worried?",
-      opciones: [
-        "Because she has an exam",
-        "Because she lost her phone",
-        "Because she is late",
-      ],
+      opciones: ["Because she has an exam", "Because she lost her phone", "Because she is late"],
       correcta: "Because she has an exam",
     },
-    {
-      pregunta: "What other emotion does Emma feel?",
-      opciones: ["Excited", "Sad", "Nervous"],
-      correcta: "Excited",
-    },
+    { pregunta: "What other emotion does Emma feel?", opciones: ["Excited", "Sad", "Nervous"], correcta: "Excited" },
     {
       pregunta: "Why does Daniel feel angry?",
-      opciones: [
-        "Because he can’t find his keys",
-        "Because he’s hungry",
-        "Because he failed a test",
-      ],
+      opciones: ["Because he can’t find his keys", "Because he’s hungry", "Because he failed a test"],
       correcta: "Because he can’t find his keys",
     },
-    {
-      pregunta: "How does Daniel feel about his work?",
-      opciones: ["Relaxed", "Stressed", "Happy"],
-      correcta: "Stressed",
-    },
+    { pregunta: "How does Daniel feel about his work?", opciones: ["Relaxed", "Stressed", "Happy"], correcta: "Stressed" },
     {
       pregunta: "What do they usually do on Saturday?",
-      opciones: [
-        "They go shopping.",
-        "They stay home and watch movies.",
-        "They go to school.",
-      ],
+      opciones: ["They go shopping.", "They stay home and watch movies.", "They go to school."],
       correcta: "They stay home and watch movies.",
     },
-    {
-      pregunta: "How do they feel on weekends?",
-      opciones: ["Relaxed", "Angry", "Bored"],
-      correcta: "Relaxed",
-    },
+    { pregunta: "How do they feel on weekends?", opciones: ["Relaxed", "Angry", "Bored"], correcta: "Relaxed" },
     {
       pregunta: "Why do they feel happy on Sunday?",
       opciones: [
@@ -96,12 +64,11 @@ export default function Tema3_Ej2() {
 
   const verificar = () => {
     if (!opcionSeleccionada) return;
-
     if (opcionSeleccionada === actual.correcta) {
-      setRespuesta(" Correct!");
+      setRespuesta("Correct!");
       setCorrectas((prev) => prev + 1);
     } else {
-      setRespuesta(` Correct answer: "${actual.correcta}".`);
+      setRespuesta(`Correct answer: "${actual.correcta}"`);
     }
   };
 
@@ -111,7 +78,7 @@ export default function Tema3_Ej2() {
     setIndex((prev) => prev + 1);
   };
 
-  const manejarFinalizacion = async () => {
+  const manejarFinalizacion = () => {
     setFinalizado(true);
     setTimeout(() => navigate(`/inicio/${nivel}`), 3000);
   };
@@ -121,10 +88,7 @@ export default function Tema3_Ej2() {
       <div className="finalizado" style={{ fontSize: "1.3rem" }}>
         <h2>You have completed the listening exercise!</h2>
         <p>
-          Correct answers:{" "}
-          <strong>
-            {correctas} / {ejercicios.length}
-          </strong>
+          Correct answers: <strong>{correctas} / {ejercicios.length}</strong>
         </p>
         <p>Redirecting to the start of the level...</p>
       </div>
@@ -144,7 +108,7 @@ export default function Tema3_Ej2() {
         {index === 0 && (
           <div className="instruccion-box" style={{ fontSize: "1.2rem", marginBottom: "1rem" }}>
             <p>
-              🎧 Listen carefully to the audio and choose the correct answer for each question.
+              Listen carefully to the audio and choose the correct answer for each question.
               <br />
               You can replay the audio if needed.
             </p>
@@ -152,11 +116,7 @@ export default function Tema3_Ej2() {
         )}
 
         {/* === AUDIO === */}
-        <button
-          className="btn-audio"
-          style={{ fontSize: "2rem", margin: "1rem 0" }}
-          onClick={playAudio}
-        >
+        <button className="btn-audio" style={{ fontSize: "2rem", margin: "1rem 0" }} onClick={playAudio}>
           🔊
         </button>
         <audio ref={audioRef} src="/audios/sem4/Listening2.mp3" />
@@ -207,7 +167,7 @@ export default function Tema3_Ej2() {
         {respuesta && (
           <p
             className={`respuesta-feedback ${
-              respuesta.startsWith("✅") ? "correcta" : "incorrecta"
+              respuesta === "Correct!" ? "correcta" : "incorrecta"
             }`}
             style={{ fontSize: "1.2rem", margin: "1rem 0" }}
           >

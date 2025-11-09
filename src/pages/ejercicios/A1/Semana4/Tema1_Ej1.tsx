@@ -119,7 +119,8 @@ export default function Tema1_Ej1() {
 
     try {
       const token = localStorage.getItem("token");
-      await fetch("http://localhost:5000/api/progreso", {
+      const API_URL = import.meta.env.VITE_API_URL;
+      await fetch(`${API_URL}/api/progreso`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

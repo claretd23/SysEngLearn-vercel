@@ -102,7 +102,7 @@ export default function Tema3_Ej3() {
   if (finalizado) {
     return (
       <div className="finalizado" style={{ fontSize: "1.3rem" }}>
-        <h2>✅ You have completed the exercise!</h2>
+        <h2> You have completed the exercise!</h2>
         <p>
           Correct answers: <strong>{correctas} / {preguntas.length}</strong>
         </p>

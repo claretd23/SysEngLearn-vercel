@@ -2,6 +2,8 @@ import { useParams, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import "../ejercicios.css";
 
+const API_URL = import.meta.env.VITE_API_URL;
+
 export default function Tema1_Ej2() {
   const { nivel, semana, tema, ejercicio } = useParams();
   const id = `${nivel}-${semana}-${tema}-${ejercicio}`;
@@ -9,6 +11,7 @@ export default function Tema1_Ej2() {
 
   const [mostrarPreguntas, setMostrarPreguntas] = useState(false);
   const [respuesta, setRespuesta] = useState<string | null>(null);
+  const [esCorrecta, setEsCorrecta] = useState<boolean | null>(null);
   const [opcionSeleccionada, setOpcionSeleccionada] = useState<string | null>(null);
   const [correctas, setCorrectas] = useState(0);
   const [index, setIndex] = useState(0);
@@ -42,7 +45,7 @@ After school, Emma rarely watches TV because she prefers to do her homework. In 
 
     try {
       const token = localStorage.getItem("token");
-      const res = await fetch("http://localhost:5000/api/progreso", {
+      const res = await fetch(`${API_URL}/api/progreso`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -59,15 +62,18 @@ After school, Emma rarely watches TV because she prefers to do her homework. In 
   const verificar = () => {
     if (!opcionSeleccionada) return;
     if (opcionSeleccionada === actual.correcta) {
-      setRespuesta(`✅ Correct!\n\n${opcionSeleccionada}`);
+      setRespuesta(`Correct!\n\n${opcionSeleccionada}`);
+      setEsCorrecta(true);
       setCorrectas(prev => prev + 1);
     } else {
-      setRespuesta(`❌ Incorrect.\n\nCorrect answer: ${actual.correcta}`);
+      setRespuesta(`Incorrect.\n\nCorrect answer: ${actual.correcta}`);
+      setEsCorrecta(false);
     }
   };
 
   const siguiente = () => {
     setRespuesta(null);
+    setEsCorrecta(null);
     setOpcionSeleccionada(null);
     setIndex(index + 1);
   };
@@ -91,16 +97,13 @@ After school, Emma rarely watches TV because she prefers to do her homework. In 
             {mostrarPreguntas && <p className="progreso-ejercicio">Question {index + 1} of {ejercicios.length}</p>}
           </header>
 
-          {/* PRIMERA PARTE: Solo lectura */}
+          {/* === PARTE 1: SOLO LECTURA === */}
           {!mostrarPreguntas ? (
             <section className="tarjeta-ejercicio" style={{ textAlign: "center", fontSize: "1.3rem", padding: "2rem" }}>
               <p style={{ marginBottom: "1.5rem", fontWeight: "500" }}>
-                 <strong>Read the text carefully. Then press “Next” to answer the questions.</strong>
+                <strong>Read the text carefully. Then press “Next” to answer the questions.</strong>
               </p>
-              <div
-                className="texto-lectura"
-                style={{ backgroundColor: "#f4f6fa", padding: "1.5rem", borderRadius: "8px", textAlign: "left" }}
-              >
+              <div className="texto-lectura" style={{ backgroundColor: "#f4f6fa", padding: "1.5rem", borderRadius: "8px", textAlign: "left" }}>
                 <p style={{ whiteSpace: "pre-line" }}>{texto}</p>
               </div>
               <button
@@ -112,7 +115,7 @@ After school, Emma rarely watches TV because she prefers to do her homework. In 
               </button>
             </section>
           ) : (
-            // SEGUNDA PARTE: Preguntas
+            // === PARTE 2: PREGUNTAS ===
             <section className="tarjeta-ejercicio" style={{ textAlign: "center", fontSize: "1.3rem", padding: "2rem" }}>
               <p className="pregunta-ejercicio" style={{ fontSize: "1.5rem", margin: "1rem 0", fontWeight: 500 }}>
                 {actual.pregunta}
@@ -145,7 +148,7 @@ After school, Emma rarely watches TV because she prefers to do her homework. In 
               )}
 
               {respuesta && (
-                <p className={`respuesta-feedback ${respuesta.startsWith("✅") ? "correcta" : "incorrecta"}`} style={{ fontSize: "1.3rem", margin: "1rem 0" }}>
+                <p className={`respuesta-feedback ${esCorrecta ? "correcta" : "incorrecta"}`} style={{ fontSize: "1.3rem", margin: "1rem 0", whiteSpace: "pre-line" }}>
                   {respuesta.split("\n")[0]}
                 </p>
               )}
@@ -167,7 +170,7 @@ After school, Emma rarely watches TV because she prefers to do her homework. In 
         </>
       ) : (
         <div className="finalizado" style={{ fontSize: "1.3rem" }}>
-          <h2>✅ You have completed the exercise!</h2>
+          <h2>You have completed the exercise!</h2>
           <p>Correct answers: <strong>{correctas} / {ejercicios.length}</strong></p>
           <p>Redirecting to the start of the level...</p>
         </div>

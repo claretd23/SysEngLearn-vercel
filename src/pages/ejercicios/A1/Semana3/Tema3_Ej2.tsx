@@ -13,7 +13,10 @@ export default function Tema3_Ej2() {
   const [index, setIndex] = useState(0);
   const [finalizado, setFinalizado] = useState(false);
 
-  // ✅ Lista de oraciones con sus respuestas correctas
+  const API_URL = import.meta.env.VITE_API_URL;
+  const token = localStorage.getItem("token");
+
+  // Lista de oraciones con sus respuestas correctas
   const ejercicios = [
     { texto: "My father is a ____. He teaches English.", correcta: ["teacher"] },
     { texto: "Ana is a ____. She works in a hospital.", correcta: ["doctor"] },
@@ -30,15 +33,17 @@ export default function Tema3_Ej2() {
   const actual = ejercicios[index];
 
   const guardarProgreso = async () => {
+    // Guardar localmente
     const completados = JSON.parse(localStorage.getItem("ejercicios_completados") || "[]");
     if (!completados.includes(id)) {
       completados.push(id);
       localStorage.setItem("ejercicios_completados", JSON.stringify(completados));
     }
 
+    // Guardar en backend
+    if (!token) return;
     try {
-      const token = localStorage.getItem("token");
-      const res = await fetch("http://localhost:5000/api/progreso", {
+      const res = await fetch(`${API_URL}/api/progreso`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -46,7 +51,6 @@ export default function Tema3_Ej2() {
         },
         body: JSON.stringify({ nivel, semana, tema, ejercicio }),
       });
-
       if (!res.ok) console.error("Error al guardar progreso:", res.statusText);
     } catch (error) {
       console.error("Error al guardar el progreso:", error);
@@ -62,26 +66,27 @@ export default function Tema3_Ej2() {
     );
 
     if (esCorrecta) {
-      setRespuesta(" Correct!");
+      setRespuesta("Correct!");
       setCorrectas((prev) => prev + 1);
     } else {
-      setRespuesta(` Incorrect.`);
+      setRespuesta("Incorrect.");
     }
   };
 
-  const siguiente = () => {
+  const siguiente = async () => {
+    await guardarProgreso();
     setRespuesta(null);
     setInputValue("");
-    setIndex(index + 1);
-  };
 
-  const manejarFinalizacion = async () => {
-    await guardarProgreso();
-    setFinalizado(true);
-    setTimeout(() => {
-      navigate(`/inicio/${nivel}`);
-      window.location.reload();
-    }, 3000);
+    if (index + 1 < ejercicios.length) {
+      setIndex(index + 1);
+    } else {
+      setFinalizado(true);
+      setTimeout(() => {
+        navigate(`/inicio/${nivel}`);
+        window.location.reload();
+      }, 2500);
+    }
   };
 
   const mostrarTexto = respuesta
@@ -157,8 +162,15 @@ export default function Tema3_Ej2() {
 
             {respuesta && (
               <p
-                className={`respuesta-feedback ${respuesta.startsWith("✅") ? "correcta" : "incorrecta"}`}
-                style={{ fontSize: "1.2rem", margin: "1rem 0" }}
+                className={`respuesta-feedback ${
+                  respuesta.startsWith("Correct") ? "correcta" : "incorrecta"
+                }`}
+                style={{
+                  fontSize: "1.2rem",
+                  margin: "1rem 0",
+                  color: respuesta.startsWith("Correct") ? "#28A745" : "#DC3545", // Verde / Rojo
+                  fontWeight: "bold",
+                }}
               >
                 {respuesta}
               </p>
@@ -176,7 +188,7 @@ export default function Tema3_Ej2() {
               )}
               {respuesta && index === ejercicios.length - 1 && (
                 <button
-                  onClick={manejarFinalizacion}
+                  onClick={siguiente}
                   className="ejercicio-btn"
                   style={{ fontSize: "1.2rem", padding: "0.8rem 2rem" }}
                 >
@@ -188,7 +200,7 @@ export default function Tema3_Ej2() {
         </>
       ) : (
         <div className="finalizado" style={{ fontSize: "1.3rem" }}>
-          <h2> You have completed the exercise!</h2>
+          <h2>You have completed the exercise!</h2>
           <p>
             Correct answers: <strong>{correctas} / {ejercicios.length}</strong>
           </p>

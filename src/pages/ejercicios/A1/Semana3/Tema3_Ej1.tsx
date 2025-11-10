@@ -9,11 +9,6 @@ interface EjercicioMatching {
 
 const shuffleArray = <T,>(array: T[]): T[] => [...array].sort(() => Math.random() - 0.5);
 
-const pairColors = [
-  "#aabc36", "#f28c28", "#36aabc", "#ab36bc", "#ff5c5c",
-  "#36bc8f", "#bc9636", "#6b36bc", "#36bca3", "#e1bc36"
-];
-
 export default function Tema3_Ej1() {
   const { nivel, semana, tema, ejercicio } = useParams();
   const navigate = useNavigate();
@@ -50,7 +45,8 @@ export default function Tema3_Ej1() {
     if (totalIntentos === ejercicios.length) setCompleto(true);
   }, [paresCorrectos, paresIncorrectos]);
 
-  const guardarProgreso = async () => {
+  // === GUARDAR PROGRESO EN LOCAL Y BACKEND ===
+  const guardarProgreso = async (score: number) => {
     const completados = JSON.parse(localStorage.getItem("ejercicios_completados") || "[]");
     if (!completados.includes(id)) {
       completados.push(id);
@@ -65,7 +61,14 @@ export default function Tema3_Ej1() {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify({ nivel, semana, tema, ejercicio }),
+        body: JSON.stringify({
+          nivel,
+          semana,
+          tema,
+          ejercicio,
+          score, // 👈 número de pares correctos
+          total: ejercicios.length, // 👈 total de pares posibles
+        }),
       });
 
       if (!res.ok) console.error("Error al guardar progreso:", res.statusText);
@@ -74,6 +77,7 @@ export default function Tema3_Ej1() {
     }
   };
 
+  // === SELECCIONAR PARES ===
   const handleSeleccion = (tipo: "situacion" | "respuesta", texto: string) => {
     const nuevaSeleccion = { ...seleccion, [tipo]: texto };
     setSeleccion(nuevaSeleccion);
@@ -106,14 +110,9 @@ export default function Tema3_Ej1() {
       tipo === "situacion" ? p.situacion === valor : p.respuesta === valor
     );
 
-  const getColor = (situacion: string) => {
-    const keys = Object.keys(paresCorrectos);
-    const index = keys.indexOf(situacion);
-    return index >= 0 ? pairColors[index % pairColors.length] : undefined;
-  };
-
   const manejarFinalizacion = async () => {
-    await guardarProgreso();
+    const score = Object.keys(paresCorrectos).length;
+    await guardarProgreso(score);
     setFinalizado(true);
     setTimeout(() => {
       navigate(`/inicio/${nivel}`);
@@ -121,12 +120,15 @@ export default function Tema3_Ej1() {
     }, 3000);
   };
 
+  const colorCorrecto = "#222a5c"; // azul institucional
+  const colorIncorrecto = "#d9534f"; // rojo suave
+
   return (
     <div className="ejercicio-container">
       {!finalizado ? (
         <>
           <header className="ejercicio-header">
-            <h1 className="titulo-ejercicio">EXERCISE 1 </h1>
+            <h1 className="titulo-ejercicio">EXERCISE 1</h1>
           </header>
 
           <section className="tarjeta-ejercicio">
@@ -140,6 +142,8 @@ export default function Tema3_Ej1() {
               <div style={{ textAlign: "center", fontWeight: "600", color: "#222a5c" }}>
                 Professions
               </div>
+
+              {/* === Lista de profesiones === */}
               <div
                 style={{
                   display: "flex",
@@ -149,22 +153,27 @@ export default function Tema3_Ej1() {
                 }}
               >
                 {situaciones.map((ej) => {
-                  const color = getColor(ej.situacion);
+                  const correcto = paresCorrectos[ej.situacion];
                   const incorrecto = isIncorrecto("situacion", ej.situacion);
                   return (
                     <button
                       key={ej.situacion}
-                      disabled={!!color || incorrecto}
+                      disabled={!!correcto || incorrecto}
                       className="opcion-btn"
                       style={{
-                        padding: "0.5rem 0.8rem",
-                        fontSize: "0.9rem",
-                        borderRadius: "8px",
+                        padding: "0.6rem 0.9rem",
+                        fontSize: "1rem",
+                        borderRadius: "10px",
                         minWidth: "180px",
-                        backgroundColor: color ? color : incorrecto ? "#ccc" : "#fff",
-                        color: color || incorrecto ? "#fff" : "#222a5c",
+                        backgroundColor: correcto
+                          ? colorCorrecto
+                          : incorrecto
+                          ? colorIncorrecto
+                          : "#fff",
+                        color: correcto || incorrecto ? "#fff" : "#222a5c",
                         border: "1px solid #222a5c",
-                        cursor: color || incorrecto ? "not-allowed" : "pointer",
+                        cursor: correcto || incorrecto ? "not-allowed" : "pointer",
+                        transition: "all 0.3s ease",
                       }}
                       onClick={() => handleSeleccion("situacion", ej.situacion)}
                     >
@@ -177,6 +186,8 @@ export default function Tema3_Ej1() {
               <div style={{ textAlign: "center", fontWeight: "600", color: "#222a5c" }}>
                 Descriptions
               </div>
+
+              {/* === Lista de descripciones === */}
               <div
                 style={{
                   display: "flex",
@@ -189,22 +200,27 @@ export default function Tema3_Ej1() {
                   const situacion = Object.keys(paresCorrectos).find(
                     (k) => paresCorrectos[k] === ej.respuesta
                   );
-                  const color = situacion ? getColor(situacion) : undefined;
+                  const correcto = !!situacion;
                   const incorrecto = isIncorrecto("respuesta", ej.respuesta);
                   return (
                     <button
                       key={ej.respuesta}
-                      disabled={!!color || incorrecto}
+                      disabled={correcto || incorrecto}
                       className="opcion-btn"
                       style={{
-                        padding: "0.5rem 0.8rem",
-                        fontSize: "0.9rem",
-                        borderRadius: "8px",
-                        minWidth: "220px",
-                        backgroundColor: color ? color : incorrecto ? "#ccc" : "#fff",
-                        color: color || incorrecto ? "#fff" : "#222a5c",
+                        padding: "0.6rem 0.9rem",
+                        fontSize: "1rem",
+                        borderRadius: "10px",
+                        minWidth: "230px",
+                        backgroundColor: correcto
+                          ? colorCorrecto
+                          : incorrecto
+                          ? colorIncorrecto
+                          : "#fff",
+                        color: correcto || incorrecto ? "#fff" : "#222a5c",
                         border: "1px solid #222a5c",
-                        cursor: color || incorrecto ? "not-allowed" : "pointer",
+                        cursor: correcto || incorrecto ? "not-allowed" : "pointer",
+                        transition: "all 0.3s ease",
                       }}
                       onClick={() => handleSeleccion("respuesta", ej.respuesta)}
                     >
@@ -232,9 +248,10 @@ export default function Tema3_Ej1() {
         </>
       ) : (
         <div className="finalizado" style={{ fontSize: "1.3rem" }}>
-          <h2> You have completed the exercise!</h2>
+          <h2>You have completed the exercise!</h2>
           <p>
-            Correct pairs: <strong>{Object.keys(paresCorrectos).length}</strong> / {ejercicios.length}
+            Correct pairs:{" "}
+            <strong>{Object.keys(paresCorrectos).length}</strong> / {ejercicios.length}
           </p>
           <p>Redirecting to the start of the level...</p>
         </div>

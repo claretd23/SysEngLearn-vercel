@@ -15,16 +15,16 @@ export default function Tema2_Ej1() {
   const [finalizado, setFinalizado] = useState(false);
 
   const ejercicios = [
-    { palabras: ["a", "small", "black", "bag"], correcta: "a small black bag" },
-    { palabras: ["beautiful", "blue", "eyes"], correcta: "beautiful blue eyes" },
-    { palabras: ["a", "white", "cotton", "shirt"], correcta: "a white cotton shirt" },
-    { palabras: ["a", "new", "red", "car"], correcta: "a new red car" },
-    { palabras: ["a", "big", "brown", "dog"], correcta: "a big brown dog" },
-    { palabras: ["a", "large", "old", "white", "house"], correcta: "a large old white house" },
-    { palabras: ["a", "beautiful", "long", "blue", "silk", "dress"], correcta: "a beautiful long blue silk dress" },
-    { palabras: ["comfortable", "small", "black", "shoes"], correcta: "comfortable small black shoes" },
-    { palabras: ["an", "elegant", "round", "wooden", "table"], correcta: "an elegant round wooden table" },
-    { palabras: ["a", "kind", "tall", "young", "man"], correcta: "a kind tall young man" },
+    { palabras: ["a","small","black","bag"], correcta: "a small black bag" },
+    { palabras: ["beautiful","blue","eyes"], correcta: "beautiful blue eyes" },
+    { palabras: ["a","white","cotton","shirt"], correcta: "a white cotton shirt" },
+    { palabras: ["a","new","red","car"], correcta: "a new red car" },
+    { palabras: ["a","big","brown","dog"], correcta: "a big brown dog" },
+    { palabras: ["a","large","old","white","house"], correcta: "a large old white house" },
+    { palabras: ["a","beautiful","long","blue","silk","dress"], correcta: "a beautiful long blue silk dress" },
+    { palabras: ["comfortable","small","black","shoes"], correcta: "comfortable small black shoes" },
+    { palabras: ["an","elegant","round","wooden","table"], correcta: "an elegant round wooden table" },
+    { palabras: ["a","kind","tall","young","man"], correcta: "a kind tall young man" },
   ];
 
   const actual = ejercicios[index];
@@ -57,7 +57,6 @@ export default function Tema2_Ej1() {
     } else {
       setRespuesta("Incorrect.");
       setEsCorrecta(false);
-      // Mostrar la frase correcta completa
       setPalabras(actual.correcta.split(" "));
     }
   };
@@ -71,22 +70,27 @@ export default function Tema2_Ej1() {
   };
 
   const guardarProgreso = async () => {
-    const completados = JSON.parse(localStorage.getItem("ejercicios_completados") || "[]");
-    if (!completados.includes(id)) {
-      completados.push(id);
-      localStorage.setItem("ejercicios_completados", JSON.stringify(completados));
-    }
-
     try {
+      // Guardado local
+      const completados = JSON.parse(localStorage.getItem("ejercicios_completados") || "[]");
+      if (!completados.includes(id)) {
+        completados.push(id);
+        localStorage.setItem("ejercicios_completados", JSON.stringify(completados));
+      }
+
+      // Guardado remoto
       const token = localStorage.getItem("token");
-      await fetch("http://localhost:5000/api/progreso", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify({ nivel, semana, tema, ejercicio }),
-      });
+      if (token) {
+        const res = await fetch("http://localhost:5000/api/progreso", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({ nivel, semana, tema, ejercicio }),
+        });
+        if (!res.ok) console.error("Error al guardar progreso:", res.statusText);
+      }
     } catch (err) {
       console.error("Error al guardar progreso:", err);
     }

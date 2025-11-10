@@ -132,7 +132,7 @@ export default function Tema1_Ej3() {
       setRespuesta("Correct!");
       setCorrectas((prev) => prev + 1);
     } else {
-      setRespuesta(`Incorrect. The correct answer is "${actual.correcta}".`);
+      setRespuesta(`The correct answer is "${actual.correcta}".`);
     }
   };
 

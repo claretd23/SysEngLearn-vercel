@@ -2,12 +2,15 @@ import { useParams, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import "../ejercicios.css";
 
+const API_URL = import.meta.env.VITE_API_URL;
+
 export default function Tema1_Ej1() {
   const { nivel, semana, tema, ejercicio } = useParams();
   const id = `${nivel}-${semana}-${tema}-${ejercicio}`;
   const navigate = useNavigate();
 
   const [respuesta, setRespuesta] = useState<string | null>(null);
+  const [esCorrecta, setEsCorrecta] = useState<boolean | null>(null);
   const [opcionSeleccionada, setOpcionSeleccionada] = useState<string | null>(null);
   const [correctas, setCorrectas] = useState(0);
   const [index, setIndex] = useState(0);
@@ -37,7 +40,7 @@ export default function Tema1_Ej1() {
 
     try {
       const token = localStorage.getItem("token");
-      const res = await fetch("http://localhost:5000/api/progreso", {
+      const res = await fetch(`${API_URL}/api/progreso`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -57,16 +60,19 @@ export default function Tema1_Ej1() {
     const oracionCompletada = actual.pregunta.replace("______", opcionSeleccionada);
 
     if (opcionSeleccionada === actual.correcta) {
-      setRespuesta(`✅ Correct!\n\n${oracionCompletada}`);
+      setRespuesta(`Correct!\n\n${oracionCompletada}`);
+      setEsCorrecta(true);
       setCorrectas(prev => prev + 1);
     } else {
       const oracionCorrecta = actual.pregunta.replace("______", actual.correcta);
-      setRespuesta(`❌ Incorrect.\n\n${oracionCorrecta}`);
+      setRespuesta(`Incorrect.\n\n${oracionCorrecta}`);
+      setEsCorrecta(false);
     }
   };
 
   const siguiente = () => {
     setRespuesta(null);
+    setEsCorrecta(null);
     setOpcionSeleccionada(null);
     setIndex(index + 1);
   };
@@ -91,33 +97,21 @@ export default function Tema1_Ej1() {
             </p>
           </header>
 
-          <section
-            className="tarjeta-ejercicio"
-            style={{ textAlign: "center", fontSize: "1.3rem", padding: "2rem" }}
-          >
-            <div className="instruccion-box" style={{ marginBottom: "1.5rem" }}>
-              <p className="instruccion-ejercicio">
-                Choose the correct frequency adverb to complete the sentence.
-              </p>
-            </div>
+          <section className="tarjeta-ejercicio" style={{ textAlign: "center", fontSize: "1.3rem", padding: "2rem" }}>
+            {index === 0 && (
+              <div className="instruccion-box" style={{ marginBottom: "1.5rem" }}>
+                <p className="instruccion-ejercicio">
+                  Choose the correct frequency adverb to complete the sentence.
+                </p>
+              </div>
+            )}
 
-            <p
-              className="pregunta-ejercicio"
-              style={{ fontSize: "1.5rem", margin: "1rem 0", fontWeight: 500 }}
-            >
+            <p className="pregunta-ejercicio" style={{ fontSize: "1.5rem", margin: "1rem 0", fontWeight: 500 }}>
               {respuesta ? respuesta.split("\n").slice(1).join("\n") : actual.pregunta}
             </p>
 
             {!respuesta && (
-              <div
-                style={{
-                  display: "flex",
-                  flexDirection: "column",
-                  gap: "1rem",
-                  alignItems: "center",
-                  marginBottom: "1rem",
-                }}
-              >
+              <div style={{ display: "flex", flexDirection: "column", gap: "1rem", alignItems: "center", marginBottom: "1rem" }}>
                 {actual.opciones.map((op, i) => (
                   <button
                     key={i}
@@ -144,16 +138,14 @@ export default function Tema1_Ej1() {
 
             {respuesta && (
               <p
-                className={`respuesta-feedback ${respuesta.startsWith("✅") ? "correcta" : "incorrecta"}`}
-                style={{ fontSize: "1.3rem", margin: "1rem 0" }}
+                className={`respuesta-feedback ${esCorrecta ? "correcta" : "incorrecta"}`}
+                style={{ fontSize: "1.3rem", margin: "1rem 0", whiteSpace: "pre-line" }}
               >
                 {respuesta.split("\n")[0]}
               </p>
             )}
 
-            <div
-              style={{ display: "flex", justifyContent: "center", gap: "1rem", marginTop: "1rem" }}
-            >
+            <div style={{ display: "flex", justifyContent: "center", gap: "1rem", marginTop: "1rem" }}>
               {respuesta && index < ejercicios.length - 1 && (
                 <button
                   onClick={siguiente}
@@ -177,7 +169,7 @@ export default function Tema1_Ej1() {
         </>
       ) : (
         <div className="finalizado" style={{ fontSize: "1.3rem" }}>
-          <h2>✅ You have completed the exercise!</h2>
+          <h2>You have completed the exercise!</h2>
           <p>
             Correct answers: <strong>{correctas} / {ejercicios.length}</strong>
           </p>

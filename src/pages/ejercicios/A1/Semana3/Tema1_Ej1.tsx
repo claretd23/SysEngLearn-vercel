@@ -7,21 +7,9 @@ interface EjercicioMatching {
   respuesta: string;
 }
 
-const shuffleArray = <T,>(array: T[]): T[] =>
-  [...array].sort(() => Math.random() - 0.5);
+const shuffleArray = <T,>(array: T[]): T[] => [...array].sort(() => Math.random() - 0.5);
 
-const pairColors = [
-  "#aabc36",
-  "#f28c28",
-  "#36aabc",
-  "#ab36bc",
-  "#ff5c5c",
-  "#36bc8f",
-  "#bc9636",
-  "#6b36bc",
-  "#36bca3",
-  "#e1bc36",
-];
+const pairColors = ["#aabc36", "#f28c28", "#36aabc", "#ab36bc", "#ff5c5c", "#36bc8f", "#bc9636", "#6b36bc", "#36bca3", "#e1bc36"];
 
 export default function Tema1_Ej1() {
   const { nivel, semana, tema, ejercicio } = useParams();
@@ -35,8 +23,6 @@ export default function Tema1_Ej1() {
   const [paresIncorrectos, setParesIncorrectos] = useState<{ situacion: string; respuesta: string }[]>([]);
   const [finalizado, setFinalizado] = useState(false);
   const [completo, setCompleto] = useState(false);
-  const [feedback, setFeedback] = useState<string | null>(null);
-  const [feedbackTipo, setFeedbackTipo] = useState<"correcto" | "incorrecto" | null>(null);
 
   const ejercicios: EjercicioMatching[] = [
     { situacion: "Hello. How are you?", respuesta: "I’m fine, thank you." },
@@ -70,7 +56,7 @@ export default function Tema1_Ej1() {
 
     try {
       const token = localStorage.getItem("token");
-      const res = await fetch("https://tu-backend-render-url.onrender.com/api/progreso", {
+      const res = await fetch("http://localhost:5000/api/progreso", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -101,26 +87,19 @@ export default function Tema1_Ej1() {
           ...prev,
           [parCorrecto.situacion]: parCorrecto.respuesta,
         }));
-        setFeedback("Correct!");
-        setFeedbackTipo("correcto");
       } else {
         setParesIncorrectos((prev) => [
           ...prev,
           { situacion: nuevaSeleccion.situacion!, respuesta: nuevaSeleccion.respuesta! },
         ]);
-        setFeedback("Incorrect.");
-        setFeedbackTipo("incorrecto");
       }
 
       setSeleccion({});
-      setTimeout(() => setFeedback(null), 1500);
     }
   };
 
   const isIncorrecto = (tipo: "situacion" | "respuesta", valor: string) =>
-    paresIncorrectos.some((p) =>
-      tipo === "situacion" ? p.situacion === valor : p.respuesta === valor
-    );
+    paresIncorrectos.some(p => (tipo === "situacion" ? p.situacion === valor : p.respuesta === valor));
 
   const getColor = (situacion: string) => {
     const keys = Object.keys(paresCorrectos);
@@ -154,14 +133,7 @@ export default function Tema1_Ej1() {
 
             <div style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
               <div style={{ textAlign: "center", fontWeight: "600", color: "#222a5c" }}>Questions</div>
-              <div
-                style={{
-                  display: "flex",
-                  flexWrap: "wrap",
-                  gap: "0.5rem",
-                  justifyContent: "center",
-                }}
-              >
+              <div style={{ display: "flex", flexWrap: "wrap", gap: "0.5rem", justifyContent: "center" }}>
                 {situaciones.map((ej) => {
                   const color = getColor(ej.situacion);
                   const incorrecto = isIncorrecto("situacion", ej.situacion);
@@ -175,11 +147,7 @@ export default function Tema1_Ej1() {
                         fontSize: "0.9rem",
                         borderRadius: "8px",
                         minWidth: "180px",
-                        backgroundColor: color
-                          ? color
-                          : incorrecto
-                          ? "#ff6b6b"
-                          : "#fff",
+                        backgroundColor: color ? color : incorrecto ? "#ccc" : "#fff",
                         color: color || incorrecto ? "#fff" : "#222a5c",
                         border: "1px solid #222a5c",
                         cursor: color || incorrecto ? "not-allowed" : "pointer",
@@ -193,18 +161,9 @@ export default function Tema1_Ej1() {
               </div>
 
               <div style={{ textAlign: "center", fontWeight: "600", color: "#222a5c" }}>Answers</div>
-              <div
-                style={{
-                  display: "flex",
-                  flexWrap: "wrap",
-                  gap: "0.5rem",
-                  justifyContent: "center",
-                }}
-              >
+              <div style={{ display: "flex", flexWrap: "wrap", gap: "0.5rem", justifyContent: "center" }}>
                 {respuestas.map((ej) => {
-                  const situacion = Object.keys(paresCorrectos).find(
-                    (k) => paresCorrectos[k] === ej.respuesta
-                  );
+                  const situacion = Object.keys(paresCorrectos).find(k => paresCorrectos[k] === ej.respuesta);
                   const color = situacion ? getColor(situacion) : undefined;
                   const incorrecto = isIncorrecto("respuesta", ej.respuesta);
                   return (
@@ -217,11 +176,7 @@ export default function Tema1_Ej1() {
                         fontSize: "0.9rem",
                         borderRadius: "8px",
                         minWidth: "180px",
-                        backgroundColor: color
-                          ? color
-                          : incorrecto
-                          ? "#ff6b6b"
-                          : "#fff",
+                        backgroundColor: color ? color : incorrecto ? "#ccc" : "#fff",
                         color: color || incorrecto ? "#fff" : "#222a5c",
                         border: "1px solid #222a5c",
                         cursor: color || incorrecto ? "not-allowed" : "pointer",
@@ -234,38 +189,14 @@ export default function Tema1_Ej1() {
                 })}
               </div>
 
-              {/* === FEEDBACK === */}
-              {feedback && (
-                <p
-                  className={`respuesta-feedback ${
-                    feedbackTipo === "correcto" ? "correcta" : "incorrecta"
-                  }`}
-                  style={{
-                    fontSize: "1.2rem",
-                    margin: "1rem 0",
-                    color: feedbackTipo === "correcto" ? "green" : "red",
-                    fontWeight: "bold",
-                  }}
-                >
-                  {feedback}
-                </p>
-              )}
-
-              <div
-                className="botones-siguiente"
-                style={{ display: "flex", justifyContent: "center", marginTop: "1rem" }}
-              >
+              <div className="botones-siguiente" style={{ display: "flex", justifyContent: "center", marginTop: "1rem" }}>
                 <button
                   className="ejercicio-btn"
                   disabled={!completo}
                   onClick={manejarFinalizacion}
-                  style={{
-                    fontSize: "1.3rem",
-                    padding: "0.8rem 2rem",
-                    borderRadius: "8px",
-                  }}
+                  style={{ fontSize: "1.3rem", padding: "0.8rem 2rem", borderRadius: "8px" }}
                 >
-                  Finish
+                  Check
                 </button>
               </div>
             </div>
@@ -273,10 +204,9 @@ export default function Tema1_Ej1() {
         </>
       ) : (
         <div className="finalizado" style={{ fontSize: "1.3rem" }}>
-          <h2>You have completed the exercise!</h2>
+          <h2> You have completed the exercise!</h2>
           <p>
-            Correct pairs:{" "}
-            <strong>{Object.keys(paresCorrectos).length}</strong> / {ejercicios.length}
+            Correct pairs: <strong>{Object.keys(paresCorrectos).length}</strong> / {ejercicios.length}
           </p>
           <p>Redirecting to the start of the level...</p>
         </div>

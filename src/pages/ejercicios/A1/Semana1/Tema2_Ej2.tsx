@@ -7,6 +7,8 @@ export default function Tema1_Ej2() {
   const id = `${nivel}-${semana}-${tema}-${ejercicio}`;
   const navigate = useNavigate();
 
+  const API_URL = import.meta.env.VITE_API_URL;
+
   const [respuesta, setRespuesta] = useState<string | null>(null);
   const [inputValue, setInputValue] = useState<string>("");
   const [correctas, setCorrectas] = useState(0);
@@ -37,7 +39,7 @@ export default function Tema1_Ej2() {
 
     try {
       const token = localStorage.getItem("token");
-      const res = await fetch("http://localhost:5000/api/progreso", {
+      const res = await fetch(`${API_URL}/api/progreso`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -46,9 +48,7 @@ export default function Tema1_Ej2() {
         body: JSON.stringify({ nivel, semana, tema, ejercicio }),
       });
 
-      if (!res.ok) {
-        console.error("Error al guardar progreso:", res.statusText);
-      }
+      if (!res.ok) console.error("Error al guardar progreso:", res.statusText);
     } catch (error) {
       console.error("Error al guardar el progreso:", error);
     }
@@ -57,11 +57,12 @@ export default function Tema1_Ej2() {
   const verificar = () => {
     const respuestaUsuario = inputValue.trim().toLowerCase();
     if (!respuestaUsuario) return;
+
     if (respuestaUsuario === actual.correcta.toLowerCase()) {
-      setRespuesta(" Correct!");
+      setRespuesta("Correct!");
       setCorrectas((prev) => prev + 1);
     } else {
-      setRespuesta(` Incorrect.`);
+      setRespuesta(`Incorrect. The correct answer was "${actual.correcta}".`);
     }
   };
 
@@ -75,14 +76,12 @@ export default function Tema1_Ej2() {
     await guardarProgreso();
     setFinalizado(true);
     setTimeout(() => {
-      navigate("/inicio/A1");
+      navigate(`/inicio/${nivel}`);
       window.location.reload();
     }, 3000);
   };
 
-  const mostrarTexto = respuesta
-    ? `${actual.texto} (${actual.correcta})`
-    : actual.texto;
+  const mostrarTexto = respuesta ? `${actual.texto} (${actual.correcta})` : actual.texto;
 
   return (
     <div className="ejercicio-container">
@@ -103,19 +102,14 @@ export default function Tema1_Ej2() {
               fontSize: "1.3rem",
             }}
           >
-            {/* Instrucción con diseño de caja */}
             {index === 0 && (
               <div className="instruccion-box" style={{ marginBottom: "1.5rem" }}>
-                <p
-                  className="instruccion-ejercicio"
-                  style={{ fontSize: "1.2rem" }}
-                >
+                <p className="instruccion-ejercicio" style={{ fontSize: "1.2rem" }}>
                   Complete the sentences by writing the number in numerals.
                 </p>
               </div>
             )}
 
-            {/* Pregunta */}
             <p
               className="pregunta-ejercicio"
               style={{
@@ -126,7 +120,6 @@ export default function Tema1_Ej2() {
               {mostrarTexto}
             </p>
 
-            {/* Input y botón Check */}
             {!respuesta && (
               <div
                 className="opciones-ejercicio"
@@ -143,7 +136,7 @@ export default function Tema1_Ej2() {
                   value={inputValue}
                   onChange={(e) => setInputValue(e.target.value)}
                   className="input-respuesta"
-                  placeholder="Write the number in numerals...."
+                  placeholder="Write the number in numerals..."
                   style={{ fontSize: "1.2rem", padding: "0.6rem 1rem" }}
                 />
                 <button
@@ -156,19 +149,22 @@ export default function Tema1_Ej2() {
               </div>
             )}
 
-            {/* Feedback */}
             {respuesta && (
               <p
                 className={`respuesta-feedback ${
-                  respuesta.startsWith("✅") ? "correcta" : "incorrecta"
+                  respuesta.startsWith("Correct") ? "correcta" : "incorrecta"
                 }`}
-                style={{ fontSize: "1.2rem", marginTop: "1rem" }}
+                style={{
+                  fontSize: "1.2rem",
+                  marginTop: "1rem",
+                  color: respuesta.startsWith("Correct") ? "green" : "red",
+                  fontWeight: "bold",
+                }}
               >
                 {respuesta}
               </p>
             )}
 
-            {/* Botones siguiente o finalizar */}
             <div className="botones-siguiente" style={{ marginTop: "1.5rem" }}>
               {respuesta && index < ejercicios.length - 1 && (
                 <button
@@ -193,7 +189,7 @@ export default function Tema1_Ej2() {
         </>
       ) : (
         <div className="finalizado">
-          <h2> You have completed the exercise!</h2>
+          <h2>You have completed the exercise!</h2>
           <p>
             Correct answers:{" "}
             <strong>

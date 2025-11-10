@@ -6,12 +6,13 @@ export default function Tema1_Ej2_Ordinals() {
   const { nivel, semana, tema, ejercicio } = useParams();
   const id = `${nivel}-${semana}-${tema}-${ejercicio}`;
   const navigate = useNavigate();
+  const API_URL = import.meta.env.VITE_API_URL;
 
   const [respuesta, setRespuesta] = useState<string | null>(null);
   const [inputValue, setInputValue] = useState("");
   const [correctas, setCorrectas] = useState(0);
   const [index, setIndex] = useState(0);
-  const [finalizado, setFinalizado ] = useState(false);
+  const [finalizado, setFinalizado] = useState(false);
   const [yaCompletado, setYaCompletado] = useState(false);
 
   // 🔹 Ejercicios con imágenes y respuestas correctas
@@ -39,7 +40,7 @@ export default function Tema1_Ej2_Ordinals() {
       try {
         const token = localStorage.getItem("token");
         const res = await fetch(
-          `http://localhost:5000/api/progreso/${nivel}/${semana}/${tema}/${ejercicio}`,
+          `${API_URL}/api/progreso/${nivel}/${semana}/${tema}/${ejercicio}`,
           { headers: { Authorization: `Bearer ${token}` } }
         );
         if (res.ok) {
@@ -51,13 +52,13 @@ export default function Tema1_Ej2_Ordinals() {
       }
     };
     checkProgreso();
-  }, [id, nivel, semana, tema, ejercicio]);
+  }, [API_URL, id, nivel, semana, tema, ejercicio]);
 
   // 🔹 Guardar progreso al finalizar
   const guardarProgreso = async () => {
     try {
       const token = localStorage.getItem("token");
-      const res = await fetch("http://localhost:5000/api/progreso", {
+      const res = await fetch(`${API_URL}/api/progreso`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -82,10 +83,10 @@ export default function Tema1_Ej2_Ordinals() {
     const respuestaUsuario = inputValue.trim().toLowerCase();
     if (!respuestaUsuario) return;
     if (respuestaUsuario === actual.correcta.toLowerCase()) {
-      setRespuesta(" Correct!");
+      setRespuesta("Correct");
       setCorrectas((prev) => prev + 1);
     } else {
-      setRespuesta(` Incorrect.`);
+      setRespuesta("Incorrect");
     }
   };
 
@@ -105,7 +106,7 @@ export default function Tema1_Ej2_Ordinals() {
   if (yaCompletado) {
     return (
       <div className="finalizado">
-        <h2>✅ You have already completed this exercise.</h2>
+        <h2>You have already completed this exercise.</h2>
         <p>You cannot answer it again.</p>
         <button onClick={() => navigate(`/inicio/${nivel}`)} className="ejercicio-btn">
           Go back to level start
@@ -118,7 +119,7 @@ export default function Tema1_Ej2_Ordinals() {
   if (finalizado) {
     return (
       <div className="finalizado">
-        <h2> You have completed the exercise!</h2>
+        <h2>You have completed the exercise!</h2>
         <p>
           Correct answers: <strong>{correctas} / {ejercicios.length}</strong>
         </p>
@@ -138,7 +139,6 @@ export default function Tema1_Ej2_Ordinals() {
       </header>
 
       <section className="tarjeta-ejercicio" style={{ textAlign: "center" }}>
-        {/* Instrucción solo en la primera pregunta */}
         {index === 0 && (
           <div className="instruccion-box">
             <p className="instruccion-ejercicio">
@@ -147,19 +147,12 @@ export default function Tema1_Ej2_Ordinals() {
           </div>
         )}
 
-        {/* Imagen del ejercicio */}
-        <img
-          src={actual.imagen}
-          alt="Exercise reference"
-          className="imagen-completa"
-        />
+        <img src={actual.imagen} alt="Exercise reference" className="imagen-completa" />
 
-        {/* Pregunta */}
         <p className="pregunta-ejercicio">
           {respuesta ? actual.pregunta.replace("___", actual.correcta) : actual.pregunta}
         </p>
 
-        {/* Input + botón Check */}
         <div className="input-contenedor">
           <input
             type="text"
@@ -175,14 +168,16 @@ export default function Tema1_Ej2_Ordinals() {
           )}
         </div>
 
-        {/* Feedback */}
         {respuesta && (
-          <p className={`respuesta-feedback ${respuesta.startsWith("✅") ? "correcta" : "incorrecta"}`}>
+          <p
+            className={`respuesta-feedback ${
+              respuesta === "Correct" ? "correcta" : "incorrecta"
+            }`}
+          >
             {respuesta}
           </p>
         )}
 
-        {/* Botones siguientes */}
         <div className="botones-siguiente">
           {respuesta && index < ejercicios.length - 1 && (
             <button onClick={siguiente} className="ejercicio-btn">

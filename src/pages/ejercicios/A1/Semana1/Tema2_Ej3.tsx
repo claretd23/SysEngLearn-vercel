@@ -6,6 +6,7 @@ export default function Tema1_Ej3_Listening() {
   const { nivel, semana, tema, ejercicio } = useParams();
   const id = `${nivel}-${semana}-${tema}-${ejercicio}`;
   const navigate = useNavigate();
+  const API_URL = import.meta.env.VITE_API_URL; // ✅ agregado
 
   const [respuesta, setRespuesta] = useState<string | null>(null);
   const [inputValue, setInputValue] = useState<string>("");
@@ -42,7 +43,7 @@ export default function Tema1_Ej3_Listening() {
 
     try {
       const token = localStorage.getItem("token");
-      const res = await fetch("http://localhost:5000/api/progreso", {
+      const res = await fetch(`${API_URL}/api/progreso`, { // ✅ URL corregida
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -60,10 +61,10 @@ export default function Tema1_Ej3_Listening() {
     const respuestaUsuario = inputValue.trim().toLowerCase();
     if (!respuestaUsuario) return;
     if (respuestaUsuario === actual.correcta.toLowerCase()) {
-      setRespuesta(" Correct!");
+      setRespuesta("Correct!");
       setCorrectas((prev) => prev + 1);
     } else {
-      setRespuesta(`The answer is "${actual.correcta}".`);
+      setRespuesta(`Incorrect. The correct answer is "${actual.correcta}".`);
     }
   };
 
@@ -94,24 +95,27 @@ export default function Tema1_Ej3_Listening() {
           </header>
 
           <section className="tarjeta-ejercicio" style={{ textAlign: "center" }}>
-            {/* Instrucción con diseño de caja */}
             {index === 0 && (
               <div className="instruccion-box">
                 <p className="instruccion-ejercicio">
-                  Listen to the audio and write the number in numerals..
+                  Listen to the audio and write the number in numerals.
                 </p>
               </div>
             )}
 
-            {/* Audio y botón centrado */}
+            {/* Botón de audio */}
             <audio ref={audioRef} src={actual.audio} />
             <div style={{ display: "flex", justifyContent: "center", margin: "1rem 0" }}>
-              <button className="btn-audio" onClick={reproducirAudio} style={{ fontSize: "2rem" }}>
+              <button
+                className="btn-audio"
+                onClick={reproducirAudio}
+                style={{ fontSize: "2rem", marginBottom: "1rem" }}
+              >
                 🔊
               </button>
             </div>
 
-            {/* Input y botón Check alineados */}
+            {/* Campo de texto y botón Check */}
             {!respuesta && (
               <div
                 className="opciones-ejercicio"
@@ -128,13 +132,14 @@ export default function Tema1_Ej3_Listening() {
                   value={inputValue}
                   onChange={(e) => setInputValue(e.target.value)}
                   className="input-respuesta"
-                  placeholder="Write the number in numerals...."
+                  placeholder="Write the number..."
                   style={{
                     fontSize: "1.2rem",
                     padding: "0.6rem 1rem",
                     flex: 1,
                     borderRadius: "8px",
                     border: "1px solid #ccc",
+                    textAlign: "center",
                   }}
                 />
                 <button
@@ -151,23 +156,22 @@ export default function Tema1_Ej3_Listening() {
               </div>
             )}
 
-            {/* Feedback */}
+            {/* Feedback sin emojis, con color */}
             {respuesta && (
               <p
-                className={`respuesta-feedback ${
-                  respuesta.startsWith("✅") ? "correcta" : "incorrecta"
-                }`}
+                className="respuesta-feedback"
+                style={{
+                  fontSize: "1.3rem",
+                  margin: "1rem 0",
+                  fontWeight: 600,
+                  color: respuesta.startsWith("Correct") ? "green" : "red", // ✅ color dinámico
+                }}
               >
-                {respuesta.split("\n").map((linea, i) => (
-                  <span key={i}>
-                    {linea}
-                    <br />
-                  </span>
-                ))}
+                {respuesta}
               </p>
             )}
 
-            {/* Botones siguiente o finalizar */}
+            {/* Botones de siguiente o finalizar */}
             <div className="botones-siguiente">
               {respuesta && index < ejercicios.length - 1 && (
                 <button onClick={siguiente} className="ejercicio-btn">
@@ -183,8 +187,8 @@ export default function Tema1_Ej3_Listening() {
           </section>
         </>
       ) : (
-        <div className="finalizado">
-          <h2> You have completed the exercise!</h2>
+        <div className="finalizado" style={{ fontSize: "1.3rem" }}>
+          <h2>You have completed the exercise!</h2>
           <p>
             Correct answers: <strong>{correctas} / {ejercicios.length}</strong>
           </p>

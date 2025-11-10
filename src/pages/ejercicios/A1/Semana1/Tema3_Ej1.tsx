@@ -6,6 +6,7 @@ export default function Tema3_Ej1() {
   const { nivel, semana, tema, ejercicio } = useParams();
   const id = `${nivel}-${semana}-${tema}-${ejercicio}`;
   const navigate = useNavigate();
+  const API_URL = import.meta.env.VITE_API_URL; // ✅ agregado
 
   const [respuesta, setRespuesta] = useState<string | null>(null);
   const [inputValue, setInputValue] = useState<string>("");
@@ -13,7 +14,6 @@ export default function Tema3_Ej1() {
   const [index, setIndex] = useState(0);
   const [finalizado, setFinalizado] = useState(false);
 
-  
   const ejercicios = [
     { texto: "Monday is the 1st day of the week.", correcta: "first" },
     { texto: "Sunday is the 7th day of the week.", correcta: "seventh" },
@@ -38,7 +38,7 @@ export default function Tema3_Ej1() {
 
     try {
       const token = localStorage.getItem("token");
-      const res = await fetch("http://localhost:5000/api/progreso", {
+      const res = await fetch(`${API_URL}/api/progreso`, { // ✅ URL actualizada
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -47,9 +47,7 @@ export default function Tema3_Ej1() {
         body: JSON.stringify({ nivel, semana, tema, ejercicio }),
       });
 
-      if (!res.ok) {
-        console.error("Error al guardar progreso:", res.statusText);
-      }
+      if (!res.ok) console.error("Error al guardar progreso:", res.statusText);
     } catch (error) {
       console.error("Error al guardar el progreso:", error);
     }
@@ -59,10 +57,10 @@ export default function Tema3_Ej1() {
     const respuestaUsuario = inputValue.trim().toLowerCase();
     if (!respuestaUsuario) return;
     if (respuestaUsuario === actual.correcta.toLowerCase()) {
-      setRespuesta(" Correct!");
+      setRespuesta("Correct!");
       setCorrectas((prev) => prev + 1);
     } else {
-      setRespuesta(` The correct answer: "${actual.correcta}".`);
+      setRespuesta(`Incorrect. The correct answer is "${actual.correcta}".`);
     }
   };
 
@@ -151,8 +149,13 @@ export default function Tema3_Ej1() {
 
             {respuesta && (
               <p
-                className={`respuesta-feedback ${respuesta.startsWith("✅") ? "correcta" : "incorrecta"}`}
-                style={{ fontSize: "1.3rem", margin: "1rem 0" }}
+                className="respuesta-feedback"
+                style={{
+                  fontSize: "1.3rem",
+                  margin: "1rem 0",
+                  color: respuesta.startsWith("Correct") ? "green" : "red", // ✅ colores dinámicos
+                  fontWeight: 600,
+                }}
               >
                 {respuesta}
               </p>
@@ -182,7 +185,7 @@ export default function Tema3_Ej1() {
         </>
       ) : (
         <div className="finalizado" style={{ fontSize: "1.3rem" }}>
-          <h2> You have completed the exercise!</h2>
+          <h2>You have completed the exercise!</h2>
           <p>
             Correct answers: <strong>{correctas} / {ejercicios.length}</strong>
           </p>

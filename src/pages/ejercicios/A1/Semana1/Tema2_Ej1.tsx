@@ -7,6 +7,8 @@ export default function Tema1_Ej3() {
   const id = `${nivel}-${semana}-${tema}-${ejercicio}`;
   const navigate = useNavigate();
 
+  const API_URL = import.meta.env.VITE_API_URL;
+
   const [respuesta, setRespuesta] = useState<string | null>(null);
   const [inputValue, setInputValue] = useState<string>("");
   const [correctas, setCorrectas] = useState(0);
@@ -37,7 +39,7 @@ export default function Tema1_Ej3() {
 
     try {
       const token = localStorage.getItem("token");
-      const res = await fetch("http://localhost:5000/api/progreso", {
+      const res = await fetch(`${API_URL}/api/progreso`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -46,9 +48,7 @@ export default function Tema1_Ej3() {
         body: JSON.stringify({ nivel, semana, tema, ejercicio }),
       });
 
-      if (!res.ok) {
-        console.error("Error al guardar progreso:", res.statusText);
-      }
+      if (!res.ok) console.error("Error al guardar progreso:", res.statusText);
     } catch (error) {
       console.error("Error al guardar el progreso:", error);
     }
@@ -57,11 +57,12 @@ export default function Tema1_Ej3() {
   const verificar = () => {
     const respuestaUsuario = inputValue.trim().toLowerCase();
     if (!respuestaUsuario) return;
+
     if (respuestaUsuario === actual.correcta.toLowerCase()) {
-      setRespuesta(" Correct!");
+      setRespuesta("Correct!");
       setCorrectas((prev) => prev + 1);
     } else {
-      setRespuesta(` Incorrect.`);
+      setRespuesta(`Incorrect. The correct answer was "${actual.correcta}".`);
     }
   };
 
@@ -75,7 +76,7 @@ export default function Tema1_Ej3() {
     await guardarProgreso();
     setFinalizado(true);
     setTimeout(() => {
-      navigate("/inicio/A1");
+      navigate(`/inicio/${nivel}`);
       window.location.reload();
     }, 3000);
   };
@@ -89,7 +90,7 @@ export default function Tema1_Ej3() {
       {!finalizado ? (
         <>
           <header className="ejercicio-header">
-            <h1 className="titulo-ejercicio">EXERCISE 1</h1>
+            <h1 className="titulo-ejercicio">EXERCISE 3</h1>
             <p className="progreso-ejercicio">
               Question {index + 1} of {ejercicios.length}
             </p>
@@ -117,7 +118,6 @@ export default function Tema1_Ej3() {
               </div>
             )}
 
-            {/* Pregunta */}
             <p
               className="pregunta-ejercicio"
               style={{
@@ -128,7 +128,6 @@ export default function Tema1_Ej3() {
               {mostrarTexto}
             </p>
 
-            {/* Input y botón Check */}
             {!respuesta && (
               <div
                 className="opciones-ejercicio"
@@ -158,19 +157,22 @@ export default function Tema1_Ej3() {
               </div>
             )}
 
-            {/* Feedback */}
             {respuesta && (
               <p
                 className={`respuesta-feedback ${
-                  respuesta.startsWith("✅") ? "correcta" : "incorrecta"
+                  respuesta.startsWith("Correct") ? "correcta" : "incorrecta"
                 }`}
-                style={{ fontSize: "1.2rem", marginTop: "1rem" }}
+                style={{
+                  fontSize: "1.2rem",
+                  marginTop: "1rem",
+                  color: respuesta.startsWith("Correct") ? "green" : "red",
+                  fontWeight: "bold",
+                }}
               >
                 {respuesta}
               </p>
             )}
 
-            {/* Botones siguiente o finalizar */}
             <div
               className="botones-siguiente"
               style={{ marginTop: "1.5rem" }}
@@ -198,7 +200,7 @@ export default function Tema1_Ej3() {
         </>
       ) : (
         <div className="finalizado">
-          <h2> You have completed the exercise!</h2>
+          <h2>You have completed the exercise!</h2>
           <p>
             Correct answers:{" "}
             <strong>

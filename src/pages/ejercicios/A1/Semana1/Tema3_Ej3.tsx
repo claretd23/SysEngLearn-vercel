@@ -6,6 +6,7 @@ export default function Tema3_Ej3() {
   const { nivel, semana, tema, ejercicio } = useParams();
   const id = `${nivel}-${semana}-${tema}-${ejercicio}`;
   const navigate = useNavigate();
+  const API_URL = import.meta.env.VITE_API_URL; // ✅ agregado
 
   const [respuesta, setRespuesta] = useState<string | null>(null);
   const [inputValue, setInputValue] = useState("");
@@ -13,14 +14,14 @@ export default function Tema3_Ej3() {
   const [index, setIndex] = useState(0);
   const [finalizado, setFinalizado] = useState(false);
   const [yaCompletado, setYaCompletado] = useState(false);
-  
+
   const ejercicios = useMemo(
     () => [
       { audios: ["/audios/sem1/Tema3/ordinal1_a.mp3", "/audios/sem1/Tema3/ordinal1_b.mp3"], correcta: "1st" },
       { audios: ["/audios/sem1/Tema3/ordinal2_a.mp3", "/audios/sem1/Tema3/ordinal2_b.mp3"], correcta: "3rd" },
       { audios: ["/audios/sem1/Tema3/ordinal3_a.mp3", "/audios/sem1/Tema3/ordinal3_b.mp3"], correcta: "4th" },
-      { audios: ["/audios/sem1/Tema3/ordinal4_a.mp3", "/audios/sem1/Tema3/ordinal4_b.mp3"], correcta: "8th"},
-      { audios: ["/audios/sem1/Tema3/ordinal5_a.mp3", "/audios/sem1/Tema3/ordinal5_b.mp3"], correcta: "2nd"},
+      { audios: ["/audios/sem1/Tema3/ordinal4_a.mp3", "/audios/sem1/Tema3/ordinal4_b.mp3"], correcta: "8th" },
+      { audios: ["/audios/sem1/Tema3/ordinal5_a.mp3", "/audios/sem1/Tema3/ordinal5_b.mp3"], correcta: "2nd" },
       { audios: ["/audios/sem1/Tema3/ordinal6_a.mp3", "/audios/sem1/Tema3/ordinal6_b.mp3"], correcta: "15th" },
       { audios: ["/audios/sem1/Tema3/ordinal7_a.mp3", "/audios/sem1/Tema3/ordinal7_b.mp3"], correcta: "3rd" },
       { audios: ["/audios/sem1/Tema3/ordinal8_a.mp3", "/audios/sem1/Tema3/ordinal8_b.mp3"], correcta: "20th" },
@@ -31,12 +32,13 @@ export default function Tema3_Ej3() {
   const actual = ejercicios[index];
   const audioRefs = useRef<(HTMLAudioElement | null)[]>([]);
 
+  // ✅ Verificar si el ejercicio ya fue completado
   useEffect(() => {
     const checkProgreso = async () => {
       try {
         const token = localStorage.getItem("token");
         const res = await fetch(
-          `http://localhost:5000/api/progreso/${nivel}/${semana}/${tema}/${ejercicio}`,
+          `${API_URL}/api/progreso/${nivel}/${semana}/${tema}/${ejercicio}`,
           { headers: { Authorization: `Bearer ${token}` } }
         );
         if (res.ok) {
@@ -48,12 +50,13 @@ export default function Tema3_Ej3() {
       }
     };
     checkProgreso();
-  }, [id, nivel, semana, tema, ejercicio]);
+  }, [id, nivel, semana, tema, ejercicio, API_URL]);
 
+  // ✅ Guardar progreso en el backend
   const guardarProgreso = async () => {
     try {
       const token = localStorage.getItem("token");
-      const res = await fetch("http://localhost:5000/api/progreso", {
+      const res = await fetch(`${API_URL}/api/progreso`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -62,15 +65,10 @@ export default function Tema3_Ej3() {
         body: JSON.stringify({ nivel, semana, tema, ejercicio }),
       });
       if (res.ok) {
-        const completados = JSON.parse(
-          localStorage.getItem("ejercicios_completados") || "[]"
-        );
+        const completados = JSON.parse(localStorage.getItem("ejercicios_completados") || "[]");
         if (!completados.includes(id)) {
           completados.push(id);
-          localStorage.setItem(
-            "ejercicios_completados",
-            JSON.stringify(completados)
-          );
+          localStorage.setItem("ejercicios_completados", JSON.stringify(completados));
         }
       }
     } catch (error) {
@@ -78,6 +76,7 @@ export default function Tema3_Ej3() {
     }
   };
 
+  // ✅ Reproducir audios secuencialmente
   const playSequence = () => {
     audioRefs.current.forEach((audio, i) => {
       if (audio) {
@@ -93,18 +92,17 @@ export default function Tema3_Ej3() {
     audioRefs.current[0]?.play();
   };
 
-const verificar = () => {
-  const respuestaUsuario = inputValue.trim().toLowerCase();
-  if (!respuestaUsuario) return;
+  const verificar = () => {
+    const respuestaUsuario = inputValue.trim().toLowerCase();
+    if (!respuestaUsuario) return;
 
-  if (respuestaUsuario === actual.correcta.toLowerCase()) {
-    setRespuesta(` Correct! The answer is "${actual.correcta}".`);
-    setCorrectas((prev) => prev + 1);
-  } else {
-    setRespuesta(`The correct answer is "${actual.correcta}".`);
-  }
-};
-
+    if (respuestaUsuario === actual.correcta.toLowerCase()) {
+      setRespuesta(`Correct! The answer is "${actual.correcta}".`);
+      setCorrectas((prev) => prev + 1);
+    } else {
+      setRespuesta(`Incorrect. The correct answer is "${actual.correcta}".`);
+    }
+  };
 
   const siguiente = () => {
     setRespuesta(null);
@@ -118,10 +116,11 @@ const verificar = () => {
     setTimeout(() => navigate(`/inicio/${nivel}`), 2500);
   };
 
+  // ✅ Si ya está completado
   if (yaCompletado) {
     return (
       <div className="finalizado" style={{ fontSize: "1.3rem" }}>
-        <h2> You have already completed this exercise.</h2>
+        <h2>You have already completed this exercise.</h2>
         <p>You cannot answer it again.</p>
         <button
           onClick={() => navigate(`/inicio/${nivel}`)}
@@ -134,10 +133,11 @@ const verificar = () => {
     );
   }
 
+  // ✅ Pantalla final
   if (finalizado) {
     return (
       <div className="finalizado" style={{ fontSize: "1.3rem" }}>
-        <h2> You have completed the exercise!</h2>
+        <h2>You have completed the exercise!</h2>
         <p>
           Correct answers:{" "}
           <strong>
@@ -149,6 +149,7 @@ const verificar = () => {
     );
   }
 
+  // ✅ Ejercicio principal
   return (
     <div className="ejercicio-container">
       <header className="ejercicio-header">
@@ -208,7 +209,11 @@ const verificar = () => {
               <button
                 onClick={verificar}
                 className="ejercicio-btn"
-                style={{ fontSize: "1.3rem", padding: "0.8rem 2rem", borderRadius: "8px" }}
+                style={{
+                  fontSize: "1.3rem",
+                  padding: "0.8rem 2rem",
+                  borderRadius: "8px",
+                }}
               >
                 Check
               </button>
@@ -216,12 +221,16 @@ const verificar = () => {
           )}
         </div>
 
+        {/* Feedback de respuesta */}
         {respuesta && (
           <p
-            className={`respuesta-feedback ${
-              respuesta.startsWith("✅") ? "correcta" : "incorrecta"
-            }`}
-            style={{ fontSize: "1.3rem", margin: "1rem 0" }}
+            className="respuesta-feedback"
+            style={{
+              fontSize: "1.3rem",
+              margin: "1rem 0",
+              color: respuesta.startsWith("Correct") ? "green" : "red",
+              fontWeight: "bold",
+            }}
           >
             {respuesta}
           </p>

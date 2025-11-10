@@ -13,6 +13,8 @@ export default function Tema3_Ej1() {
   const [index, setIndex] = useState(0);
   const [finalizado, setFinalizado] = useState(false);
 
+  const API_URL = import.meta.env.VITE_API_URL;
+
   const ejercicios = [
     { texto: "She ___ my sister.", correcta: "is" },
     { texto: "I ___ from Mexico.", correcta: "am" },
@@ -28,6 +30,7 @@ export default function Tema3_Ej1() {
 
   const actual = ejercicios[index];
 
+  // ✅ Guardar progreso con variable de entorno
   const guardarProgreso = async () => {
     const completados = JSON.parse(localStorage.getItem("ejercicios_completados") || "[]");
     if (!completados.includes(id)) {
@@ -37,7 +40,7 @@ export default function Tema3_Ej1() {
 
     try {
       const token = localStorage.getItem("token");
-      const res = await fetch("http://localhost:5000/api/progreso", {
+      const res = await fetch(`${API_URL}/api/progreso`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -57,11 +60,11 @@ export default function Tema3_Ej1() {
     if (!respuestaUsuario) return;
 
     if (respuestaUsuario === actual.correcta.toLowerCase()) {
-      setRespuesta(" Correct!");
+      setRespuesta("Correct");
       setCorrectas((prev) => prev + 1);
     } else {
-      setRespuesta(" Incorrect");
-      setInputValue(actual.correcta); // autocompleta con la respuesta correcta
+      setRespuesta("Incorrect");
+      setInputValue(actual.correcta);
     }
   };
 
@@ -106,7 +109,11 @@ export default function Tema3_Ej1() {
 
             <p
               className="pregunta-ejercicio"
-              style={{ fontSize: "1.5rem", margin: "1rem 0", fontWeight: 500 }}
+              style={{
+                fontSize: "1.5rem",
+                margin: "1rem 0",
+                fontWeight: 500,
+              }}
             >
               {mostrarTexto}
             </p>
@@ -152,8 +159,13 @@ export default function Tema3_Ej1() {
 
             {respuesta && (
               <p
-                className={`respuesta-feedback ${respuesta.startsWith("✅") ? "correcta" : "incorrecta"}`}
-                style={{ fontSize: "1.3rem", margin: "1rem 0" }}
+                className="respuesta-feedback"
+                style={{
+                  fontSize: "1.3rem",
+                  margin: "1rem 0",
+                  color: respuesta === "Correct" ? "#28A745" : "#DC3545",
+                  fontWeight: "bold",
+                }}
               >
                 {respuesta}
               </p>
@@ -183,7 +195,7 @@ export default function Tema3_Ej1() {
         </>
       ) : (
         <div className="finalizado" style={{ fontSize: "1.3rem" }}>
-          <h2> You have completed the exercise!</h2>
+          <h2>You have completed the exercise!</h2>
           <p>
             Correct answers: <strong>{correctas} / {ejercicios.length}</strong>
           </p>

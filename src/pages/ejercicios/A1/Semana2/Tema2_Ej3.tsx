@@ -13,7 +13,7 @@ export default function Tema2_Ej3() {
   const [index, setIndex] = useState(0);
   const [finalizado, setFinalizado] = useState(false);
   const audioRef = useRef<HTMLAudioElement | null>(null);
-
+  const API_URL = import.meta.env.VITE_API_URL;
   // === Lista de ejercicios ===
   const ejercicios = useMemo(
     () => [
@@ -43,7 +43,7 @@ export default function Tema2_Ej3() {
 
     try {
       const token = localStorage.getItem("token");
-      const res = await fetch("http://localhost:5000/api/progreso", {
+      const res = await fetch(`${API_URL}/api/progreso`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -77,7 +77,7 @@ export default function Tema2_Ej3() {
       setCorrectas((prev) => prev + 1);
     } else {
       const oracionCorrecta = actual.pregunta.replace("_", actual.correcta);
-      setRespuesta(` Incorrect.\n\n${oracionCorrecta}`);
+      setRespuesta(`Incorrect.\n\n${oracionCorrecta}`);
     }
   };
 
@@ -97,6 +97,8 @@ export default function Tema2_Ej3() {
       window.location.reload();
     }, 3000);
   };
+
+  const esCorrecta = respuesta?.startsWith("Correct");
 
   return (
     <div className="ejercicio-container">
@@ -203,8 +205,13 @@ export default function Tema2_Ej3() {
             {/* Feedback */}
             {respuesta && (
               <p
-                className={`respuesta-feedback ${respuesta.startsWith("✅") ? "correcta" : "incorrecta"}`}
-                style={{ fontSize: "1.3rem", margin: "1rem 0" }}
+                className={`respuesta-feedback ${esCorrecta ? "correcta" : "incorrecta"}`}
+                style={{
+                  fontSize: "1.3rem",
+                  margin: "1rem 0",
+                  color: esCorrecta ? "green" : "red",
+                  fontWeight: 600,
+                }}
               >
                 {respuesta.split("\n")[0]}
               </p>
@@ -243,7 +250,7 @@ export default function Tema2_Ej3() {
         </>
       ) : (
         <div className="finalizado" style={{ fontSize: "1.3rem" }}>
-          <h2> You have completed the exercise!</h2>
+          <h2>You have completed the exercise!</h2>
           <p>
             Correct answers: <strong>{correctas} / {ejercicios.length}</strong>
           </p>

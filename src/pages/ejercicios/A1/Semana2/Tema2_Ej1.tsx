@@ -6,6 +6,7 @@ export default function Tema2_Ej1() {
   const { nivel, semana, tema, ejercicio } = useParams();
   const navigate = useNavigate();
   const id = `${nivel}-${semana}-${tema}-${ejercicio}`;
+  const API_URL = import.meta.env.VITE_API_URL;
 
   // === ESTADOS ===
   const [respuesta, setRespuesta] = useState<string | null>(null);
@@ -35,7 +36,7 @@ export default function Tema2_Ej1() {
   const guardarProgreso = async () => {
     try {
       const token = localStorage.getItem("token");
-      const res = await fetch("http://localhost:5000/api/progreso", {
+      const res = await fetch(`${API_URL}/api/progreso`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -71,10 +72,10 @@ export default function Tema2_Ej1() {
     setMostrarOracionCompleta(true);
 
     if (respuestaUsuario === correcta) {
-      setRespuesta(" Correct!");
+      setRespuesta("Correct!");
       setCorrectas((prev) => prev + 1);
     } else {
-      setRespuesta(` Incorrect.`);
+      setRespuesta("Incorrect.");
     }
   };
 
@@ -97,7 +98,7 @@ export default function Tema2_Ej1() {
   if (finalizado) {
     return (
       <div className="finalizado" style={{ fontSize: "1.3rem" }}>
-        <h2> You have completed the exercise!</h2>
+        <h2>You have completed the exercise!</h2>
         <p>
           Correct answers:{" "}
           <strong>
@@ -192,7 +193,7 @@ export default function Tema2_Ej1() {
         {respuesta && (
           <p
             className={`respuesta-feedback ${
-              respuesta.startsWith("✅") ? "correcta" : "incorrecta"
+              respuesta === "Correct!" ? "correcta" : "incorrecta"
             }`}
             style={{ fontSize: "1.3rem", margin: "1rem 0" }}
           >

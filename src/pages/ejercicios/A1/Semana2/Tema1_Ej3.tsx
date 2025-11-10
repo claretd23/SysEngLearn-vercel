@@ -1,11 +1,12 @@
 import { useParams, useNavigate } from "react-router-dom";
-import { useState, useEffect, useMemo, useRef } from "react";
+import { useState, useMemo, useRef } from "react";
 import "../ejercicios.css";
 
 export default function Tema1_Ej3() {
   const { nivel, semana, tema, ejercicio } = useParams();
   const id = `${nivel}-${semana}-${tema}-${ejercicio}`;
   const navigate = useNavigate();
+  const API_URL = import.meta.env.VITE_API_URL;
 
   const [respuesta, setRespuesta] = useState<string | null>(null);
   const [opcionSeleccionada, setOpcionSeleccionada] = useState<string | null>(null);
@@ -40,7 +41,7 @@ export default function Tema1_Ej3() {
         correcta: "Tired",
       },
       {
-        audios: ["/audios/sem2/conv5_a.mp3", "/audios/sem2/onv5_b.mp3"],
+        audios: ["/audios/sem2/conv5_a.mp3", "/audios/sem2/conv5_b.mp3"],
         pregunta: "When will they meet again?",
         opciones: ["Later today", "Tomorrow", "Never"],
         correcta: "Tomorrow",
@@ -82,6 +83,7 @@ export default function Tema1_Ej3() {
   const actual = ejercicios[index];
   const audioRefs = useRef<(HTMLAudioElement | null)[]>([]);
 
+  // === REPRODUCCIÓN DE AUDIOS SECUENCIALES ===
   const playSequence = () => {
     audioRefs.current.forEach((audio, i) => {
       if (audio) {
@@ -97,32 +99,62 @@ export default function Tema1_Ej3() {
     audioRefs.current[0]?.play();
   };
 
+  // === GUARDAR PROGRESO ===
+  const guardarProgreso = async () => {
+    try {
+      const token = localStorage.getItem("token");
+      const res = await fetch(`${API_URL}/api/progreso`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ nivel, semana, tema, ejercicio }),
+      });
+
+      if (res.ok) {
+        const completados = JSON.parse(localStorage.getItem("ejercicios_completados") || "[]");
+        if (!completados.includes(id)) {
+          completados.push(id);
+          localStorage.setItem("ejercicios_completados", JSON.stringify(completados));
+        }
+      }
+    } catch (error) {
+      console.error("Error al guardar el progreso:", error);
+    }
+  };
+
+  // === VERIFICAR RESPUESTA ===
   const verificar = () => {
     if (!opcionSeleccionada) return;
 
     if (opcionSeleccionada === actual.correcta) {
-      setRespuesta(" Correct!");
+      setRespuesta("Correct!");
       setCorrectas((prev) => prev + 1);
     } else {
-      setRespuesta(`The answer is "${actual.correcta}".`);
+      setRespuesta(`Incorrect. The correct answer is "${actual.correcta}".`);
     }
   };
 
+  // === SIGUIENTE ===
   const siguiente = () => {
     setRespuesta(null);
     setOpcionSeleccionada(null);
     setIndex((prev) => prev + 1);
   };
 
+  // === FINALIZAR ===
   const manejarFinalizacion = async () => {
+    await guardarProgreso();
     setFinalizado(true);
     setTimeout(() => navigate(`/inicio/${nivel}`), 2500);
   };
 
+  // === FINALIZADO ===
   if (finalizado) {
     return (
       <div className="finalizado" style={{ fontSize: "1.3rem" }}>
-        <h2> You have completed the exercise!</h2>
+        <h2>You have completed the exercise!</h2>
         <p>
           Correct answers: <strong>{correctas} / {ejercicios.length}</strong>
         </p>
@@ -131,6 +163,7 @@ export default function Tema1_Ej3() {
     );
   }
 
+  // === INTERFAZ PRINCIPAL ===
   return (
     <div className="ejercicio-container">
       <header className="ejercicio-header">
@@ -149,6 +182,7 @@ export default function Tema1_Ej3() {
           </div>
         )}
 
+        {/* Botón de audio */}
         <button
           className="btn-audio"
           style={{ fontSize: "2rem", margin: "1rem 0" }}
@@ -164,43 +198,45 @@ export default function Tema1_Ej3() {
         <p style={{ fontSize: "1.3rem", margin: "1rem 0" }}>{actual.pregunta}</p>
 
         {!respuesta && (
-          <div
-            className="opciones-ejercicio"
-            style={{
-              display: "flex",
-              flexDirection: "column",
-              gap: "1rem",
-              alignItems: "center",
-              marginBottom: "1rem",
-            }}
-          >
-            {actual.opciones.map((op, i) => (
-              <button
-                key={i}
-                className={`opcion-btn ${opcionSeleccionada === op ? "seleccionada" : ""}`}
-                onClick={() => setOpcionSeleccionada(op)}
-                style={{ fontSize: "1.2rem", padding: "0.8rem 1.5rem", minWidth: "220px" }}
-              >
-                {op}
-              </button>
-            ))}
-          </div>
-        )}
+          <>
+            <div
+              className="opciones-ejercicio"
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                gap: "1rem",
+                alignItems: "center",
+                marginBottom: "1rem",
+              }}
+            >
+              {actual.opciones.map((op, i) => (
+                <button
+                  key={i}
+                  className={`opcion-btn ${opcionSeleccionada === op ? "seleccionada" : ""}`}
+                  onClick={() => setOpcionSeleccionada(op)}
+                  style={{ fontSize: "1.2rem", padding: "0.8rem 1.5rem", minWidth: "220px" }}
+                >
+                  {op}
+                </button>
+              ))}
+            </div>
 
-        {!respuesta && (
-          <button
-            onClick={verificar}
-            className="ejercicio-btn"
-            disabled={!opcionSeleccionada}
-            style={{ fontSize: "1.3rem", padding: "0.8rem 2rem", borderRadius: "8px" }}
-          >
-            Check
-          </button>
+            <button
+              onClick={verificar}
+              className="ejercicio-btn"
+              disabled={!opcionSeleccionada}
+              style={{ fontSize: "1.3rem", padding: "0.8rem 2rem", borderRadius: "8px" }}
+            >
+              Check
+            </button>
+          </>
         )}
 
         {respuesta && (
           <p
-            className={`respuesta-feedback ${respuesta.startsWith("✅") ? "correcta" : "incorrecta"}`}
+            className={`respuesta-feedback ${
+              respuesta.startsWith("Correct") ? "correcta" : "incorrecta"
+            }`}
             style={{ fontSize: "1.3rem", margin: "1rem 0" }}
           >
             {respuesta}

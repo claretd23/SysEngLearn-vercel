@@ -6,6 +6,7 @@ export default function Tema2_Ej3() {
   const { nivel, semana, tema, ejercicio } = useParams();
   const id = `${nivel}-${semana}-${tema}-${ejercicio}`;
   const navigate = useNavigate();
+  const API_URL = import.meta.env.VITE_API_URL; // ✅ agregado
 
   const [respuesta, setRespuesta] = useState<string | null>(null);
   const [opcionSeleccionada, setOpcionSeleccionada] = useState<string | null>(null);
@@ -39,15 +40,14 @@ export default function Tema2_Ej3() {
   const verificar = () => {
     if (!opcionSeleccionada) return;
 
-    // Reemplazar el guión bajo por la palabra seleccionada o correcta
     const oracionCompletada = actual.pregunta.replace(/_+/, opcionSeleccionada);
     const oracionCorrecta = actual.pregunta.replace(/_+/, actual.correcta);
 
     if (opcionSeleccionada === actual.correcta) {
-      setRespuesta(` Correct!\n\n${oracionCompletada}`);
+      setRespuesta(`Correct!\n\n${oracionCompletada}`);
       setCorrectas((prev) => prev + 1);
     } else {
-      setRespuesta(`The answer is "${actual.correcta}".\n\n${oracionCorrecta}`);
+      setRespuesta(`Incorrect. The answer is "${actual.correcta}".\n\n${oracionCorrecta}`);
     }
   };
 
@@ -58,6 +58,21 @@ export default function Tema2_Ej3() {
   };
 
   const manejarFinalizacion = async () => {
+    try {
+      const token = localStorage.getItem("token");
+
+      await fetch(`${API_URL}/api/progreso`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ nivel, semana, tema, ejercicio }),
+      });
+    } catch (error) {
+      console.error("Error al guardar el progreso:", error);
+    }
+
     setFinalizado(true);
     setTimeout(() => navigate(`/inicio/${nivel}`), 3000);
   };
@@ -73,8 +88,10 @@ export default function Tema2_Ej3() {
             </p>
           </header>
 
-          <section className="tarjeta-ejercicio" style={{ textAlign: "center", fontSize: "1.3rem", padding: "2rem" }}>
-            {/* Instrucción */}
+          <section
+            className="tarjeta-ejercicio"
+            style={{ textAlign: "center", fontSize: "1.3rem", padding: "2rem" }}
+          >
             {index === 0 && (
               <div className="instruccion-box" style={{ marginBottom: "1.5rem" }}>
                 <p className="instruccion-ejercicio">
@@ -83,7 +100,6 @@ export default function Tema2_Ej3() {
               </div>
             )}
 
-            {/* Botón audio */}
             <button
               className="btn-audio"
               style={{ fontSize: "2rem", margin: "1rem 0" }}
@@ -93,7 +109,6 @@ export default function Tema2_Ej3() {
             </button>
             <audio ref={audioRef} src={actual.audio} />
 
-            {/* Oración o feedback */}
             <div
               className="dialogo-box"
               style={{
@@ -108,21 +123,34 @@ export default function Tema2_Ej3() {
                 whiteSpace: "pre-line",
               }}
             >
-              <p>{respuesta ? respuesta.split("\n").slice(1).join("\n") : actual.pregunta}</p>
+              <p>
+                {respuesta ? respuesta.split("\n").slice(1).join("\n") : actual.pregunta}
+              </p>
             </div>
 
-            {/* Opciones */}
             {!respuesta && (
               <div
                 className="opciones-ejercicio"
-                style={{ display: "flex", flexDirection: "column", gap: "1rem", alignItems: "center", marginBottom: "1rem" }}
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  gap: "1rem",
+                  alignItems: "center",
+                  marginBottom: "1rem",
+                }}
               >
                 {actual.opciones.map((op, i) => (
                   <button
                     key={i}
-                    className={`opcion-btn ${opcionSeleccionada === op ? "seleccionada" : ""}`}
+                    className={`opcion-btn ${
+                      opcionSeleccionada === op ? "seleccionada" : ""
+                    }`}
                     onClick={() => setOpcionSeleccionada(op)}
-                    style={{ fontSize: "1.2rem", padding: "0.8rem 1.5rem", minWidth: "220px" }}
+                    style={{
+                      fontSize: "1.2rem",
+                      padding: "0.8rem 1.5rem",
+                      minWidth: "220px",
+                    }}
                   >
                     {op}
                   </button>
@@ -130,35 +158,54 @@ export default function Tema2_Ej3() {
               </div>
             )}
 
-            {/* Botón Check */}
             {!respuesta && (
               <button
                 onClick={verificar}
                 className="ejercicio-btn"
                 disabled={!opcionSeleccionada}
-                style={{ fontSize: "1.3rem", padding: "0.8rem 2rem", marginBottom: "1rem", borderRadius: "8px" }}
+                style={{
+                  fontSize: "1.3rem",
+                  padding: "0.8rem 2rem",
+                  marginBottom: "1rem",
+                  borderRadius: "8px",
+                }}
               >
                 Check
               </button>
             )}
 
-            {/* Feedback */}
             {respuesta && (
               <p
-                className={`respuesta-feedback ${respuesta.startsWith("✅") ? "correcta" : "incorrecta"}`}
-                style={{ fontSize: "1.3rem", margin: "1rem 0" }}
+                className="respuesta-feedback"
+                style={{
+                  fontSize: "1.3rem",
+                  margin: "1rem 0",
+                  color: respuesta.startsWith("Correct") ? "green" : "red",
+                  fontWeight: "bold",
+                }}
               >
                 {respuesta.split("\n")[0]}
               </p>
             )}
 
-            {/* Botones de siguiente / finalizar */}
-            <div className="botones-siguiente" style={{ display: "flex", justifyContent: "center", gap: "1rem", marginTop: "1rem" }}>
+            <div
+              className="botones-siguiente"
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                gap: "1rem",
+                marginTop: "1rem",
+              }}
+            >
               {respuesta && index < ejercicios.length - 1 && (
                 <button
                   onClick={siguiente}
                   className="ejercicio-btn"
-                  style={{ fontSize: "1.3rem", padding: "0.8rem 2rem", borderRadius: "8px" }}
+                  style={{
+                    fontSize: "1.3rem",
+                    padding: "0.8rem 2rem",
+                    borderRadius: "8px",
+                  }}
                 >
                   Next question
                 </button>
@@ -167,7 +214,11 @@ export default function Tema2_Ej3() {
                 <button
                   onClick={manejarFinalizacion}
                   className="ejercicio-btn"
-                  style={{ fontSize: "1.3rem", padding: "0.8rem 2rem", borderRadius: "8px" }}
+                  style={{
+                    fontSize: "1.3rem",
+                    padding: "0.8rem 2rem",
+                    borderRadius: "8px",
+                  }}
                 >
                   Finish
                 </button>
@@ -177,7 +228,7 @@ export default function Tema2_Ej3() {
         </>
       ) : (
         <div className="finalizado" style={{ fontSize: "1.3rem" }}>
-          <h2> You have completed the exercise!</h2>
+          <h2>You have completed the exercise!</h2>
           <p>
             Correct answers: <strong>{correctas} / {ejercicios.length}</strong>
           </p>

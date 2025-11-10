@@ -15,6 +15,7 @@ export default function Tema1_Ej2() {
   const { nivel, semana, tema, ejercicio } = useParams();
   const navigate = useNavigate();
   const id = `${nivel}-${semana}-${tema}-${ejercicio}`;
+  const API_URL = import.meta.env.VITE_API_URL;
 
   const [situaciones, setSituaciones] = useState<EjercicioMatching[]>([]);
   const [respuestas, setRespuestas] = useState<EjercicioMatching[]>([]);
@@ -23,6 +24,7 @@ export default function Tema1_Ej2() {
   const [paresIncorrectos, setParesIncorrectos] = useState<{ situacion: string; respuesta: string }[]>([]);
   const [finalizado, setFinalizado] = useState(false);
   const [completo, setCompleto] = useState(false);
+  const [feedback, setFeedback] = useState<{ texto: string; tipo: "correcto" | "incorrecto" | null }>({ texto: "", tipo: null });
 
   const ejercicios: EjercicioMatching[] = [
     { situacion: "At 8:00 a.m. in class", respuesta: "Good morning" },
@@ -42,7 +44,7 @@ export default function Tema1_Ej2() {
     setRespuestas(shuffleArray(ejercicios));
   }, []);
 
-  // ✅ Cambiado: se habilita cuando se completan todos los intentos (pares correctos + incorrectos)
+  // ✅ Se activa al completar todos los pares (correctos o incorrectos)
   useEffect(() => {
     const totalIntentos = Object.keys(paresCorrectos).length + paresIncorrectos.length;
     if (totalIntentos === ejercicios.length) setCompleto(true);
@@ -57,7 +59,7 @@ export default function Tema1_Ej2() {
 
     try {
       const token = localStorage.getItem("token");
-      const res = await fetch("http://localhost:5000/api/progreso", {
+      const res = await fetch(`${API_URL}/api/progreso`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -88,13 +90,16 @@ export default function Tema1_Ej2() {
           ...prev,
           [parCorrecto.situacion]: parCorrecto.respuesta,
         }));
+        setFeedback({ texto: "Correct!", tipo: "correcto" });
       } else {
         setParesIncorrectos((prev) => [
           ...prev,
           { situacion: nuevaSeleccion.situacion!, respuesta: nuevaSeleccion.respuesta! },
         ]);
+        setFeedback({ texto: "Incorrect pair.", tipo: "incorrecto" });
       }
 
+      setTimeout(() => setFeedback({ texto: "", tipo: null }), 1500);
       setSeleccion({});
     }
   };
@@ -131,6 +136,19 @@ export default function Tema1_Ej2() {
                 Click a situation, then click the matching response. Each correct pair has a different color.
               </p>
             </div>
+
+            {feedback.texto && (
+              <p
+                style={{
+                  color: feedback.tipo === "correcto" ? "green" : "red",
+                  fontSize: "1.2rem",
+                  textAlign: "center",
+                  marginBottom: "1rem",
+                }}
+              >
+                {feedback.texto}
+              </p>
+            )}
 
             <div style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
               <div style={{ textAlign: "center", fontWeight: "600", color: "#222a5c" }}>Situations</div>
@@ -190,7 +208,6 @@ export default function Tema1_Ej2() {
                 })}
               </div>
 
-              {/* ✅ Botón Check solo habilitado cuando se juntaron todos los pares */}
               <div className="botones-siguiente" style={{ display: "flex", justifyContent: "center", marginTop: "1rem" }}>
                 <button
                   className="ejercicio-btn"
@@ -206,7 +223,7 @@ export default function Tema1_Ej2() {
         </>
       ) : (
         <div className="finalizado" style={{ fontSize: "1.3rem" }}>
-          <h2> You have completed the exercise!</h2>
+          <h2>You have completed the exercise!</h2>
           <p>
             Correct pairs: <strong>{Object.keys(paresCorrectos).length}</strong> / {ejercicios.length}
           </p>
@@ -216,4 +233,3 @@ export default function Tema1_Ej2() {
     </div>
   );
 }
-

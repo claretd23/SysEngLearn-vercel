@@ -13,22 +13,25 @@ export default function Tema3_Ej2() {
   const [index, setIndex] = useState(0);
   const [finalizado, setFinalizado] = useState(false);
 
+  const API_URL = import.meta.env.VITE_API_URL;
+
   // ✅ Ejercicios en forma negativa con abreviación
- const ejercicios = [
-  { texto: "I ___ a student.", correcta: ["am not"] },
-  { texto: "He ___ tall.", correcta: ["is not", "isn't"] },
-  { texto: "We ___ friends.", correcta: ["are not", "aren't"] },
-  { texto: "You ___ very kind.", correcta: ["are not", "aren't"] },
-  { texto: "She ___ from London.", correcta: ["is not", "isn't"] },
-  { texto: "They ___ at school.", correcta: ["are not", "aren't"] },
-  { texto: "My name ___ David.", correcta: ["is not", "isn't"] },
-  { texto: "I ___ happy today.", correcta: ["am not"] },
-  { texto: "The cat ___ on the sofa.", correcta: ["is not", "isn't"] },
-  { texto: "You ___ my classmates.", correcta: ["are not", "aren't"] },
-];
+  const ejercicios = [
+    { texto: "I ___ a student.", correcta: ["am not"] },
+    { texto: "He ___ tall.", correcta: ["is not", "isn't"] },
+    { texto: "We ___ friends.", correcta: ["are not", "aren't"] },
+    { texto: "You ___ very kind.", correcta: ["are not", "aren't"] },
+    { texto: "She ___ from London.", correcta: ["is not", "isn't"] },
+    { texto: "They ___ at school.", correcta: ["are not", "aren't"] },
+    { texto: "My name ___ David.", correcta: ["is not", "isn't"] },
+    { texto: "I ___ happy today.", correcta: ["am not"] },
+    { texto: "The cat ___ on the sofa.", correcta: ["is not", "isn't"] },
+    { texto: "You ___ my classmates.", correcta: ["are not", "aren't"] },
+  ];
 
   const actual = ejercicios[index];
 
+  // ✅ Guardar progreso (con API_URL)
   const guardarProgreso = async () => {
     const completados = JSON.parse(localStorage.getItem("ejercicios_completados") || "[]");
     if (!completados.includes(id)) {
@@ -38,7 +41,7 @@ export default function Tema3_Ej2() {
 
     try {
       const token = localStorage.getItem("token");
-      const res = await fetch("http://localhost:5000/api/progreso", {
+      const res = await fetch(`${API_URL}/api/progreso`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -47,33 +50,31 @@ export default function Tema3_Ej2() {
         body: JSON.stringify({ nivel, semana, tema, ejercicio }),
       });
 
-      if (!res.ok) {
-        console.error("Error al guardar progreso:", res.statusText);
-      }
+      if (!res.ok) console.error("Error al guardar progreso:", res.statusText);
     } catch (error) {
       console.error("Error al guardar el progreso:", error);
     }
   };
 
-const verificar = () => {
-  const respuestaUsuario = inputValue.trim().toLowerCase().replace("’", "'");
+  const verificar = () => {
+    const respuestaUsuario = inputValue.trim().toLowerCase().replace("’", "'");
 
-  if (!respuestaUsuario) return;
+    if (!respuestaUsuario) return;
 
-  const esCorrecta = actual.correcta.some(
-    (c) =>
-      c.toLowerCase() === respuestaUsuario ||
-      c.toLowerCase().replace("'", "") === respuestaUsuario.replace("'", "")
-  );
+    const esCorrecta = actual.correcta.some(
+      (c) =>
+        c.toLowerCase() === respuestaUsuario ||
+        c.toLowerCase().replace("'", "") === respuestaUsuario.replace("'", "")
+    );
 
-  if (esCorrecta) {
-    setRespuesta(" Correct!");
-    setCorrectas((prev) => prev + 1);
-  } else {
-    setRespuesta(" Incorrect");
-    setInputValue(actual.correcta[0]);
-  }
-};
+    if (esCorrecta) {
+      setRespuesta("Correct");
+      setCorrectas((prev) => prev + 1);
+    } else {
+      setRespuesta("Incorrect");
+      setInputValue(actual.correcta[0]);
+    }
+  };
 
   const siguiente = () => {
     setRespuesta(null);
@@ -109,14 +110,18 @@ const verificar = () => {
             {index === 0 && (
               <div className="instruccion-box">
                 <p className="instruccion-ejercicio" style={{ fontSize: "1.3rem" }}>
-                  Complete the sentences in the <b>negative form</b> with the correct form of the verb <b>to be</b>. 
+                  Complete the sentences in the <b>negative form</b> with the correct form of the verb <b>to be</b>.
                 </p>
               </div>
             )}
 
             <p
               className="pregunta-ejercicio"
-              style={{ fontSize: "1.5rem", margin: "1rem 0", fontWeight: 500 }}
+              style={{
+                fontSize: "1.5rem",
+                margin: "1rem 0",
+                fontWeight: 500,
+              }}
             >
               {mostrarTexto}
             </p>
@@ -162,8 +167,13 @@ const verificar = () => {
 
             {respuesta && (
               <p
-                className={`respuesta-feedback ${respuesta.startsWith("✅") ? "correcta" : "incorrecta"}`}
-                style={{ fontSize: "1.3rem", margin: "1rem 0" }}
+                className="respuesta-feedback"
+                style={{
+                  fontSize: "1.3rem",
+                  margin: "1rem 0",
+                  color: respuesta === "Correct" ? "#28A745" : "#DC3545",
+                  fontWeight: "bold",
+                }}
               >
                 {respuesta}
               </p>
@@ -193,7 +203,7 @@ const verificar = () => {
         </>
       ) : (
         <div className="finalizado" style={{ fontSize: "1.3rem" }}>
-          <h2> You have completed the exercise!</h2>
+          <h2>You have completed the exercise!</h2>
           <p>
             Correct answers: <strong>{correctas} / {ejercicios.length}</strong>
           </p>

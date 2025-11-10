@@ -8,29 +8,31 @@ export default function Tema2_Ej1() {
   const navigate = useNavigate();
 
   const [respuesta, setRespuesta] = useState<string | null>(null);
+  const [esCorrecta, setEsCorrecta] = useState<boolean | null>(null);
   const [palabras, setPalabras] = useState<string[]>([]);
   const [index, setIndex] = useState(0);
   const [correctas, setCorrectas] = useState(0);
   const [finalizado, setFinalizado] = useState(false);
 
   const ejercicios = [
-    { palabras: ["bag", "black", "small"], correcta: "a small black bag" },
-    { palabras: ["eyes", "blue", "beautiful"], correcta: "beautiful blue eyes" },
-    { palabras: ["shirt", "cotton", "white"], correcta: "a white cotton shirt" },
-    { palabras: ["car", "red", "new"], correcta: "a new red car" },
-    { palabras: ["dog", "big", "brown"], correcta: "a big brown dog" },
-    { palabras: ["house", "old", "white", "large"], correcta: "a large old white house" },
-    { palabras: ["dress", "silk", "beautiful", "long", "blue"], correcta: "a beautiful long blue silk dress" },
-    { palabras: ["shoes", "comfortable", "small", "black"], correcta: "comfortable small black shoes" },
-    { palabras: ["table", "round", "wooden", "elegant"], correcta: "an elegant round wooden table" },
-    { palabras: ["man", "tall", "kind", "young"], correcta: "a kind tall young man" },
+    { palabras: ["a", "small", "black", "bag"], correcta: "a small black bag" },
+    { palabras: ["beautiful", "blue", "eyes"], correcta: "beautiful blue eyes" },
+    { palabras: ["a", "white", "cotton", "shirt"], correcta: "a white cotton shirt" },
+    { palabras: ["a", "new", "red", "car"], correcta: "a new red car" },
+    { palabras: ["a", "big", "brown", "dog"], correcta: "a big brown dog" },
+    { palabras: ["a", "large", "old", "white", "house"], correcta: "a large old white house" },
+    { palabras: ["a", "beautiful", "long", "blue", "silk", "dress"], correcta: "a beautiful long blue silk dress" },
+    { palabras: ["comfortable", "small", "black", "shoes"], correcta: "comfortable small black shoes" },
+    { palabras: ["an", "elegant", "round", "wooden", "table"], correcta: "an elegant round wooden table" },
+    { palabras: ["a", "kind", "tall", "young", "man"], correcta: "a kind tall young man" },
   ];
 
   const actual = ejercicios[index];
 
-  // Barajar palabras cada vez que cambia la oración
   useEffect(() => {
     setPalabras(shuffleArray(actual.palabras));
+    setRespuesta(null);
+    setEsCorrecta(null);
   }, [index]);
 
   function shuffleArray(array: string[]) {
@@ -45,33 +47,22 @@ export default function Tema2_Ej1() {
   };
 
   const verificar = () => {
-    const respuestaUsuario = palabras.join(" ");
-    const correcta = actual.correcta.replace(".", "").toLowerCase();
+    const respuestaUsuario = palabras.join(" ").toLowerCase();
+    const correcta = actual.correcta.toLowerCase();
 
-    const esCorrecta = respuestaUsuario.toLowerCase() === correcta;
-
-    if (esCorrecta) {
-      setRespuesta("✅ Correct!");
-      setCorrectas((prev) => prev + 1);
+    if (respuestaUsuario === correcta) {
+      setRespuesta("Correct!");
+      setEsCorrecta(true);
+      setCorrectas(prev => prev + 1);
     } else {
-      setRespuesta("❌ Incorrect.");
-      // Mostrar la versión correcta acomodada
-      const ordenCorrecto = actual.correcta
-        .replace(".", "")
-        .split(" ")
-        .reduce<string[]>((acc, word) => {
-          const frase = actual.palabras.find(f =>
-            f.toLowerCase().includes(word.toLowerCase())
-          );
-          if (frase && !acc.includes(frase)) acc.push(frase);
-          return acc;
-        }, []);
-      setPalabras(ordenCorrecto);
+      setRespuesta("Incorrect.");
+      setEsCorrecta(false);
+      // Mostrar la frase correcta completa
+      setPalabras(actual.correcta.split(" "));
     }
   };
 
   const siguiente = () => {
-    setRespuesta(null);
     if (index + 1 < ejercicios.length) {
       setIndex(index + 1);
     } else {
@@ -122,7 +113,6 @@ export default function Tema2_Ej1() {
           </header>
 
           <section className="tarjeta-ejercicio" style={{ textAlign: "center", fontSize: "1.3rem", padding: "2rem" }}>
-            {/* Solo mostrar la instrucción en el primer ejercicio */}
             {index === 0 && (
               <div className="instruccion-box" style={{ marginBottom: "1.5rem" }}>
                 <p className="instruccion-ejercicio">
@@ -169,33 +159,22 @@ export default function Tema2_Ej1() {
 
             {respuesta && (
               <>
-                <p
-                  className={`respuesta-feedback ${respuesta.startsWith("✅") ? "correcta" : "incorrecta"}`}
-                  style={{ fontSize: "1.3rem", margin: "1.5rem 0" }}
-                >
+                <p className={`respuesta-feedback ${esCorrecta ? "correcta" : "incorrecta"}`} style={{ fontSize: "1.3rem", margin: "1.5rem 0" }}>
                   {respuesta}
                 </p>
 
-                {respuesta.startsWith("❌") && (
+                {!esCorrecta && (
                   <p style={{ fontSize: "1.2rem", marginBottom: "1rem" }}>
                     Correct order: <strong>{palabras.join(" ")}</strong>
                   </p>
                 )}
 
                 {index < ejercicios.length - 1 ? (
-                  <button
-                    onClick={siguiente}
-                    className="ejercicio-btn"
-                    style={{ fontSize: "1.3rem", padding: "0.8rem 2rem", borderRadius: "8px" }}
-                  >
+                  <button onClick={siguiente} className="ejercicio-btn" style={{ fontSize: "1.3rem", padding: "0.8rem 2rem", borderRadius: "8px" }}>
                     Next
                   </button>
                 ) : (
-                  <button
-                    onClick={manejarFinalizacion}
-                    className="ejercicio-btn"
-                    style={{ fontSize: "1.3rem", padding: "0.8rem 2rem", borderRadius: "8px" }}
-                  >
+                  <button onClick={manejarFinalizacion} className="ejercicio-btn" style={{ fontSize: "1.3rem", padding: "0.8rem 2rem", borderRadius: "8px" }}>
                     Finish
                   </button>
                 )}
@@ -205,10 +184,8 @@ export default function Tema2_Ej1() {
         </>
       ) : (
         <div className="finalizado" style={{ fontSize: "1.3rem" }}>
-          <h2>✅ You have completed the exercise!</h2>
-          <p>
-            Correct answers: <strong>{correctas} / {ejercicios.length}</strong>
-          </p>
+          <h2>You have completed the exercise!</h2>
+          <p>Correct answers: <strong>{correctas} / {ejercicios.length}</strong></p>
           <p>Redirecting to the start of the level...</p>
         </div>
       )}

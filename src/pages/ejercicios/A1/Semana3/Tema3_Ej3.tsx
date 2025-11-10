@@ -15,16 +15,46 @@ export default function Tema3_Ej3() {
 
   const ejercicios = useMemo(
     () => [
-      { audio: "/audios/sem3/prof1.mp3", correcta: "teacher" },
-      { audio: "/audios/sem3/prof2.mp3", correcta: "doctor" },
-      { audio: "/audios/sem3/prof3.mp3", correcta: "chef" },
-      { audio: "/audios/sem3/prof4.mp3", correcta: "driver" },
-      { audio: "/audios/sem3/prof5.mp3", correcta: "singer" },
-      { audio: "/audios/sem3/prof6.mp3", correcta: "police officer" },
-      { audio: "/audios/sem3/prof7.mp3", correcta: "nurse" },
-      { audio: "/audios/sem3/prof8.mp3", correcta: "farmer" },
-      { audio: "/audios/sem3/prof9.mp3", correcta: "engineer" },
-      { audio: "/audios/sem3/prof10.mp3", correcta: "student" },
+      {
+        audio: "/audios/sem3/prof1.mp3",
+        correcta: "teacher",
+      },
+      {
+        audio: "/audios/sem3/prof2.mp3",
+        correcta: "doctor",
+      },
+      {
+        audio: "/audios/sem3/prof3.mp3",
+        correcta: "chef",
+      },
+      {
+        audio: "/audios/sem3/prof4.mp3",
+        correcta: "driver",
+      },
+      {
+        audio: "/audios/sem3/prof5.mp3",
+        correcta: "singer",
+      },
+      {
+        audio: "/audios/sem3/prof6.mp3",
+        correcta: "police officer",
+      },
+      {
+        audio: "/audios/sem3/prof7.mp3",
+        correcta: "nurse",
+      },
+      {
+        audio: "/audios/sem3/prof8.mp3",
+        correcta: "farmer",
+      },
+      {
+        audio: "/audios/sem3/prof9.mp3",
+        correcta: "engineer",
+      },
+      {
+        audio: "/audios/sem3/prof10.mp3",
+        correcta: "student",
+      },
     ],
     []
   );
@@ -39,15 +69,10 @@ export default function Tema3_Ej3() {
   const verificar = () => {
     const respuestaNormalizada = respuestaUsuario.trim().toLowerCase();
     if (respuestaNormalizada === actual.correcta.toLowerCase()) {
-      setRespuesta("Correct!");
+      setRespuesta(" Correct!");
       setCorrectas((prev) => prev + 1);
-
-      // Guardar progreso en localStorage
-      const progreso = JSON.parse(localStorage.getItem("progreso") || "{}");
-      progreso[id] = true;
-      localStorage.setItem("progreso", JSON.stringify(progreso));
     } else {
-      setRespuesta(`Incorrect. The correct answer is "${actual.correcta}".`);
+      setRespuesta(`The answer is "${actual.correcta}".`);
     }
   };
 
@@ -65,12 +90,9 @@ export default function Tema3_Ej3() {
   if (finalizado) {
     return (
       <div className="finalizado" style={{ fontSize: "1.3rem" }}>
-        <h2>You have completed the exercise!</h2>
+        <h2> You have completed the exercise!</h2>
         <p>
-          Correct answers:{" "}
-          <strong>
-            {correctas} / {ejercicios.length}
-          </strong>
+          Correct answers: <strong>{correctas} / {ejercicios.length}</strong>
         </p>
         <p>Redirecting to the start of the level...</p>
       </div>
@@ -95,7 +117,6 @@ export default function Tema3_Ej3() {
           </div>
         )}
 
-        {/* Botón de audio */}
         <button
           className="btn-audio"
           style={{ fontSize: "2rem", margin: "1rem 0" }}
@@ -105,6 +126,10 @@ export default function Tema3_Ej3() {
         </button>
 
         <audio ref={audioRef} src={actual.audio} />
+
+        <p style={{ fontSize: "1.3rem", margin: "1rem 0" }}>
+          {actual.descripcion}
+        </p>
 
         {!respuesta && (
           <div style={{ marginBottom: "1rem" }}>
@@ -139,9 +164,7 @@ export default function Tema3_Ej3() {
 
         {respuesta && (
           <p
-            className={`respuesta-feedback ${
-              respuesta.startsWith("Correct") ? "correcta" : "incorrecta"
-            }`}
+            className={`respuesta-feedback ${respuesta.startsWith("✅") ? "correcta" : "incorrecta"}`}
             style={{ fontSize: "1.3rem", margin: "1rem 0" }}
           >
             {respuesta}

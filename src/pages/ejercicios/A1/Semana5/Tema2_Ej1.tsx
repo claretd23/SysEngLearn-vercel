@@ -2,6 +2,8 @@ import { useParams, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import "../ejercicios.css";
 
+
+const API_URL = import.meta.env.VITE_API_URL;
 export default function Tema2_Ej1() {
   const { nivel, semana, tema, ejercicio } = useParams();
   const id = `${nivel}-${semana}-${tema}-${ejercicio}`;
@@ -70,29 +72,25 @@ export default function Tema2_Ej1() {
   };
 
   const guardarProgreso = async () => {
-    try {
-      // Guardado local
-      const completados = JSON.parse(localStorage.getItem("ejercicios_completados") || "[]");
-      if (!completados.includes(id)) {
-        completados.push(id);
-        localStorage.setItem("ejercicios_completados", JSON.stringify(completados));
-      }
+    const completados = JSON.parse(localStorage.getItem("ejercicios_completados") || "[]");
+    if (!completados.includes(id)) {
+      completados.push(id);
+      localStorage.setItem("ejercicios_completados", JSON.stringify(completados));
+    }
 
-      // Guardado remoto
+    try {
       const token = localStorage.getItem("token");
-      if (token) {
-        const res = await fetch("http://localhost:5000/api/progreso", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-          body: JSON.stringify({ nivel, semana, tema, ejercicio }),
-        });
-        if (!res.ok) console.error("Error al guardar progreso:", res.statusText);
-      }
-    } catch (err) {
-      console.error("Error al guardar progreso:", err);
+      const res = await fetch(`${API_URL}/api/progreso`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ nivel, semana, tema, ejercicio }),
+      });
+      if (!res.ok) console.error("Error al guardar progreso:", res.statusText);
+    } catch (error) {
+      console.error("Error al guardar el progreso:", error);
     }
   };
 

@@ -13,6 +13,9 @@ export default function Tema2_Ej1() {
   const [index, setIndex] = useState(0);
   const [finalizado, setFinalizado] = useState(false);
 
+  const API_URL = import.meta.env.VITE_API_URL;
+  const token = localStorage.getItem("token");
+
   const ejercicios = [
     { pregunta: "Maria is from Italy. She is ___ .", opciones: ["Italian", "Italyan", "Italish"], correcta: "Italian" },
     { pregunta: "John is from Canada. He is ___ .", opciones: ["Canadian", "Canadish", "Canadaian"], correcta: "Canadian" },
@@ -35,9 +38,9 @@ export default function Tema2_Ej1() {
       localStorage.setItem("ejercicios_completados", JSON.stringify(completados));
     }
 
+    if (!token) return;
     try {
-      const token = localStorage.getItem("token");
-      const res = await fetch("http://localhost:5000/api/progreso", {
+      const res = await fetch(`${API_URL}/api/progreso`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -58,11 +61,11 @@ export default function Tema2_Ej1() {
     const oracionCompletada = actual.pregunta.replace("___", opcionSeleccionada);
 
     if (opcionSeleccionada === actual.correcta) {
-      setRespuesta(` Correct!\n\n${oracionCompletada}`);
+      setRespuesta(`Correct!\n\n${oracionCompletada}`);
       setCorrectas((prev) => prev + 1);
     } else {
       const oracionCorrecta = actual.pregunta.replace("___", actual.correcta);
-      setRespuesta(` Incorrect.\n\n${oracionCorrecta}`);
+      setRespuesta(`Incorrect.\n\n${oracionCorrecta}`);
     }
   };
 
@@ -86,7 +89,7 @@ export default function Tema2_Ej1() {
       {!finalizado ? (
         <>
           <header className="ejercicio-header">
-            <h1 className="titulo-ejercicio">EXERCISE 1 </h1>
+            <h1 className="titulo-ejercicio">EXERCISE 1</h1>
             <p className="progreso-ejercicio">
               Question {index + 1} of {ejercicios.length}
             </p>
@@ -166,8 +169,16 @@ export default function Tema2_Ej1() {
             {/* Feedback */}
             {respuesta && (
               <p
-                className={`respuesta-feedback ${respuesta.startsWith("✅") ? "correcta" : "incorrecta"}`}
-                style={{ fontSize: "1.3rem", margin: "1rem 0" }}
+                className={`respuesta-feedback ${
+                  respuesta.startsWith("Correct") ? "correcta" : "incorrecta"
+                }`}
+                style={{
+                  fontSize: "1.3rem",
+                  margin: "1rem 0",
+                  color: respuesta.startsWith("Correct") ? "#28A745" : "#DC3545",
+                  fontWeight: "bold",
+                  minHeight: "1.5rem",
+                }}
               >
                 {respuesta.split("\n")[0]}
               </p>
@@ -206,7 +217,7 @@ export default function Tema2_Ej1() {
         </>
       ) : (
         <div className="finalizado" style={{ fontSize: "1.3rem" }}>
-          <h2> You have completed the exercise!</h2>
+          <h2>You have completed the exercise!</h2>
           <p>
             Correct answers: <strong>{correctas} / {ejercicios.length}</strong>
           </p>

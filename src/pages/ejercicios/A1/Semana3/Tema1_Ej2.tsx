@@ -28,6 +28,8 @@ export default function Tema1_Ej2() {
 
   const actual = ejercicios[index];
 
+  const API_URL = import.meta.env.VITE_API_URL;
+
   const guardarProgreso = async () => {
     const completados = JSON.parse(localStorage.getItem("ejercicios_completados") || "[]");
     if (!completados.includes(id)) {
@@ -37,7 +39,7 @@ export default function Tema1_Ej2() {
 
     try {
       const token = localStorage.getItem("token");
-      const res = await fetch("http://localhost:5000/api/progreso", {
+      const res = await fetch(`${API_URL}/api/progreso`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -55,12 +57,11 @@ export default function Tema1_Ej2() {
   const verificar = () => {
     if (!opcionSeleccionada) return;
 
-    // Mensaje correcto o incorrecto
     if (opcionSeleccionada === actual.correcta) {
-      setMensaje(" Correct!");
+      setMensaje("Correct");
       setCorrectas((prev) => prev + 1);
     } else {
-      setMensaje(" Incorrect");
+      setMensaje("Incorrect");
     }
   };
 
@@ -149,12 +150,16 @@ export default function Tema1_Ej2() {
             {mensaje && (
               <>
                 <p
-                  className={`respuesta-feedback ${mensaje.startsWith("✅") ? "correcta" : "incorrecta"}`}
-                  style={{ fontSize: "1.3rem", margin: "1rem 0" }}
+                  className="respuesta-feedback"
+                  style={{
+                    fontSize: "1.3rem",
+                    margin: "1rem 0",
+                    color: mensaje === "Correct" ? "#28A745" : "#DC3545",
+                    fontWeight: "bold",
+                  }}
                 >
                   {mensaje}
                 </p>
-                {/* Mostrar la respuesta correcta solo si fallaste */}
                 {opcionSeleccionada !== actual.correcta && (
                   <p style={{ fontSize: "1.2rem", color: "#222a5c", fontWeight: "bold" }}>
                     Correct answer: {actual.correcta}
@@ -164,10 +169,7 @@ export default function Tema1_Ej2() {
             )}
 
             {/* Botones siguiente / finalizar */}
-            <div
-              className="botones-siguiente"
-              style={{ display: "flex", justifyContent: "center", gap: "1rem", marginTop: "1rem" }}
-            >
+            <div className="botones-siguiente" style={{ display: "flex", justifyContent: "center", gap: "1rem", marginTop: "1rem" }}>
               {mensaje && index < ejercicios.length - 1 && (
                 <button
                   onClick={siguiente}
@@ -191,7 +193,7 @@ export default function Tema1_Ej2() {
         </>
       ) : (
         <div className="finalizado" style={{ fontSize: "1.3rem" }}>
-          <h2> You have completed the exercise!</h2>
+          <h2>You have completed the exercise!</h2>
           <p>
             Correct answers: <strong>{correctas} / {ejercicios.length}</strong>
           </p>

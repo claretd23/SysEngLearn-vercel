@@ -14,78 +14,59 @@ export default function Tema3_Ej3() {
   const [finalizado, setFinalizado] = useState(false);
 
   const audioRef = useRef<HTMLAudioElement | null>(null);
+  const API_URL = import.meta.env.VITE_API_URL;
 
   const playAudio = () => {
     audioRef.current?.play();
   };
 
   const ejercicios = [
-    {
-      pregunta: "What is the man’s name?",
-      opciones: ["Mark", "Carlos", "David"],
-      correcta: "Carlos",
-    },
-    {
-      pregunta: "Where is Carlos from?",
-      opciones: ["Mexico", "Canada", "The United States"],
-      correcta: "Mexico",
-    },
-    {
-      pregunta: "Where does Carlos live?",
-      opciones: ["In Mexico City", "In Guadalajara", "In Monterrey"],
-      correcta: "In Guadalajara",
-    },
-    {
-      pregunta: "How old is Carlos?",
-      opciones: ["20", "25", "30"],
-      correcta: "25",
-    },
-    {
-      pregunta: "What is his job or occupation?",
-      opciones: ["He is a teacher.", "He is a university student.", "He is a doctor."],
-      correcta: "He is a university student.",
-    },
-    {
-      pregunta: "What does Carlos like to do in his free time?",
-      opciones: ["Listening to music and chatting online", "Running in the park", "Reading books"],
-      correcta: "Listening to music and chatting online",
-    },
-    {
-      pregunta: "What is his sister’s name?",
-      opciones: ["Maria", "Ana", "Julia"],
-      correcta: "Ana",
-    },
-    {
-      pregunta: "What does Ana do?",
-      opciones: ["She is a teacher.", "She is a student.", "She is a nurse."],
-      correcta: "She is a teacher.",
-    },
-    {
-      pregunta: "Where is Carlos’s best friend from?",
-      opciones: ["The U.S.", "Mexico", "Canada"],
-      correcta: "Canada",
-    },
-    {
-      pregunta: "Why are Carlos and Mark studying English?",
-      opciones: [
-        "Because they want to travel to the U.S.",
-        "Because they like English music",
-        "Because their teacher told them to",
-      ],
-      correcta: "Because they want to travel to the U.S.",
-    },
+    { pregunta: "What is the man’s name?", opciones: ["Mark", "Carlos", "David"], correcta: "Carlos" },
+    { pregunta: "Where is Carlos from?", opciones: ["Mexico", "Canada", "The United States"], correcta: "Mexico" },
+    { pregunta: "Where does Carlos live?", opciones: ["In Mexico City", "In Guadalajara", "In Monterrey"], correcta: "In Guadalajara" },
+    { pregunta: "How old is Carlos?", opciones: ["20", "25", "30"], correcta: "25" },
+    { pregunta: "What is his job or occupation?", opciones: ["He is a teacher.", "He is a university student.", "He is a doctor."], correcta: "He is a university student." },
+    { pregunta: "What does Carlos like to do in his free time?", opciones: ["Listening to music and chatting online", "Running in the park", "Reading books"], correcta: "Listening to music and chatting online" },
+    { pregunta: "What is his sister’s name?", opciones: ["Maria", "Ana", "Julia"], correcta: "Ana" },
+    { pregunta: "What does Ana do?", opciones: ["She is a teacher.", "She is a student.", "She is a nurse."], correcta: "She is a teacher." },
+    { pregunta: "Where is Carlos’s best friend from?", opciones: ["The U.S.", "Mexico", "Canada"], correcta: "Canada" },
+    { pregunta: "Why are Carlos and Mark studying English?", opciones: ["Because they want to travel to the U.S.", "Because they like English music", "Because their teacher told them to"], correcta: "Because they want to travel to the U.S." },
   ];
 
   const actual = ejercicios[index];
+
+  const guardarProgreso = async () => {
+    const completados = JSON.parse(localStorage.getItem("ejercicios_completados") || "[]");
+    if (!completados.includes(id)) {
+      completados.push(id);
+      localStorage.setItem("ejercicios_completados", JSON.stringify(completados));
+    }
+
+    try {
+      const token = localStorage.getItem("token");
+      const res = await fetch(`${API_URL}/api/progreso`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ nivel, semana, tema, ejercicio }),
+      });
+
+      if (!res.ok) console.error("Error al guardar progreso:", res.statusText);
+    } catch (error) {
+      console.error("Error al guardar el progreso:", error);
+    }
+  };
 
   const verificar = () => {
     if (!opcionSeleccionada) return;
 
     if (opcionSeleccionada === actual.correcta) {
-      setRespuesta(" Correct!");
+      setRespuesta("Correct");
       setCorrectas((prev) => prev + 1);
     } else {
-      setRespuesta(`Correct answer: "${actual.correcta}".`);
+      setRespuesta(`Incorrect. Correct answer: "${actual.correcta}".`);
     }
   };
 
@@ -96,6 +77,7 @@ export default function Tema3_Ej3() {
   };
 
   const manejarFinalizacion = async () => {
+    await guardarProgreso();
     setFinalizado(true);
     setTimeout(() => navigate(`/inicio/${nivel}`), 3000);
   };
@@ -103,7 +85,7 @@ export default function Tema3_Ej3() {
   if (finalizado) {
     return (
       <div className="finalizado" style={{ fontSize: "1.3rem" }}>
-        <h2> You have completed the listening exercise!</h2>
+        <h2>You have completed the listening exercise!</h2>
         <p>
           Correct answers:{" "}
           <strong>
@@ -136,19 +118,13 @@ export default function Tema3_Ej3() {
         )}
 
         {/* === AUDIO === */}
-        <button
-          className="btn-audio"
-          style={{ fontSize: "2rem", margin: "1rem 0" }}
-          onClick={playAudio}
-        >
+        <button className="btn-audio" style={{ fontSize: "2rem", margin: "1rem 0" }} onClick={playAudio}>
           🔊
         </button>
         <audio ref={audioRef} src="/audios/sem3/carlos.mp3" />
 
         {/* === PREGUNTA === */}
-        <h2 style={{ fontSize: "1.4rem", marginBottom: "1rem", color: "#222a5c" }}>
-          {actual.pregunta}
-        </h2>
+        <h2 style={{ fontSize: "1.4rem", marginBottom: "1rem", color: "#222a5c" }}>{actual.pregunta}</h2>
 
         {/* === OPCIONES === */}
         {!respuesta && (
@@ -190,10 +166,12 @@ export default function Tema3_Ej3() {
         {/* === FEEDBACK === */}
         {respuesta && (
           <p
-            className={`respuesta-feedback ${
-              respuesta.startsWith("✅") ? "correcta" : "incorrecta"
-            }`}
-            style={{ fontSize: "1.2rem", margin: "1rem 0" }}
+            className={`respuesta-feedback ${respuesta.startsWith("Correct") ? "correcta" : "incorrecta"}`}
+            style={{
+              fontSize: "1.2rem",
+              margin: "1rem 0",
+              color: respuesta.startsWith("Correct") ? "#28A745" : "#DC3545",
+            }}
           >
             {respuesta}
           </p>

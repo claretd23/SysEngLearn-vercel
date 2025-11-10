@@ -2,8 +2,6 @@ import { useParams, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import "../ejercicios.css";
 
-
-const API_URL = import.meta.env.VITE_API_URL;
 export default function Tema2_Ej1() {
   const { nivel, semana, tema, ejercicio } = useParams();
   const id = `${nivel}-${semana}-${tema}-${ejercicio}`;
@@ -53,12 +51,13 @@ export default function Tema2_Ej1() {
     const correcta = actual.correcta.toLowerCase();
 
     if (respuestaUsuario === correcta) {
-      setRespuesta("Correct!");
+      setRespuesta("Correct");
       setEsCorrecta(true);
       setCorrectas(prev => prev + 1);
     } else {
-      setRespuesta("Incorrect.");
+      setRespuesta("Incorrect");
       setEsCorrecta(false);
+      // Reordenar palabras al orden correcto
       setPalabras(actual.correcta.split(" "));
     }
   };
@@ -72,25 +71,27 @@ export default function Tema2_Ej1() {
   };
 
   const guardarProgreso = async () => {
-    const completados = JSON.parse(localStorage.getItem("ejercicios_completados") || "[]");
-    if (!completados.includes(id)) {
-      completados.push(id);
-      localStorage.setItem("ejercicios_completados", JSON.stringify(completados));
-    }
-
     try {
+      const completados = JSON.parse(localStorage.getItem("ejercicios_completados") || "[]");
+      if (!completados.includes(id)) {
+        completados.push(id);
+        localStorage.setItem("ejercicios_completados", JSON.stringify(completados));
+      }
+
       const token = localStorage.getItem("token");
-      const res = await fetch(`${API_URL}/api/progreso`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify({ nivel, semana, tema, ejercicio }),
-      });
-      if (!res.ok) console.error("Error al guardar progreso:", res.statusText);
-    } catch (error) {
-      console.error("Error al guardar el progreso:", error);
+      if (token) {
+        const res = await fetch("http://localhost:5000/api/progreso", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({ nivel, semana, tema, ejercicio }),
+        });
+        if (!res.ok) console.error("Error al guardar progreso:", res.statusText);
+      }
+    } catch (err) {
+      console.error("Error al guardar progreso:", err);
     }
   };
 
@@ -164,12 +165,6 @@ export default function Tema2_Ej1() {
                 <p className={`respuesta-feedback ${esCorrecta ? "correcta" : "incorrecta"}`} style={{ fontSize: "1.3rem", margin: "1.5rem 0" }}>
                   {respuesta}
                 </p>
-
-                {!esCorrecta && (
-                  <p style={{ fontSize: "1.2rem", marginBottom: "1rem" }}>
-                    Correct order: <strong>{palabras.join(" ")}</strong>
-                  </p>
-                )}
 
                 {index < ejercicios.length - 1 ? (
                   <button onClick={siguiente} className="ejercicio-btn" style={{ fontSize: "1.3rem", padding: "0.8rem 2rem", borderRadius: "8px" }}>

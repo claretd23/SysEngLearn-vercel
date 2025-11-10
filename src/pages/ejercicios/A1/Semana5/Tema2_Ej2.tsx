@@ -2,6 +2,8 @@ import { useParams, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import "../ejercicios.css";
 
+const API_URL = import.meta.env.VITE_API_URL;
+
 export default function Tema2_Ej2() {
   const { nivel, semana, tema, ejercicio } = useParams();
   const id = `${nivel}-${semana}-${tema}-${ejercicio}`;
@@ -119,40 +121,39 @@ export default function Tema2_Ej2() {
   const actual = ejercicios[index];
 
   const guardarProgreso = async () => {
-    const completados = JSON.parse(localStorage.getItem("ejercicios_completados") || "[]");
-    if (!completados.includes(id)) {
-      completados.push(id);
-      localStorage.setItem("ejercicios_completados", JSON.stringify(completados));
-    }
-
     try {
-      const token = localStorage.getItem("token");
-      const res = await fetch("http://localhost:5000/api/progreso", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify({ nivel, semana, tema, ejercicio }),
-      });
+      const completados = JSON.parse(localStorage.getItem("ejercicios_completados") || "[]");
+      if (!completados.includes(id)) {
+        completados.push(id);
+        localStorage.setItem("ejercicios_completados", JSON.stringify(completados));
+      }
 
-      if (!res.ok) console.error("Error al guardar progreso:", res.statusText);
+      const token = localStorage.getItem("token");
+      if (token) {
+        const res = await fetch(`${API_URL}/api/progreso`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({ nivel, semana, tema, ejercicio }),
+        });
+        if (!res.ok) console.error("Error al guardar progreso:", res.statusText);
+      }
     } catch (error) {
-      console.error("Error al guardar el progreso:", error);
+      console.error("Error al guardar progreso:", error);
     }
   };
 
-  const verificar = () => {
+  const verificar = async () => {
     if (!opcionSeleccionada) return;
 
-    const oracionCompletada = actual.pregunta.replace("___", opcionSeleccionada);
-
     if (opcionSeleccionada === actual.correcta) {
-      setRespuesta(`✅ Correct!\n\n${oracionCompletada}`);
+      setRespuesta("Correct");
       setCorrectas((prev) => prev + 1);
+      await guardarProgreso();
     } else {
-      const oracionCorrecta = actual.pregunta.replace("___", actual.correcta);
-      setRespuesta(`❌ Incorrect.\n\n${oracionCorrecta}`);
+      setRespuesta("Incorrect");
     }
   };
 
@@ -176,7 +177,7 @@ export default function Tema2_Ej2() {
       {!finalizado ? (
         <>
           <header className="ejercicio-header">
-            <h1 className="titulo-ejercicio">EXERCISE 2 </h1>
+            <h1 className="titulo-ejercicio">EXERCISE 2</h1>
             <p className="progreso-ejercicio">
               Question {index + 1} of {ejercicios.length}
             </p>
@@ -186,7 +187,6 @@ export default function Tema2_Ej2() {
             className="tarjeta-ejercicio"
             style={{ textAlign: "center", fontSize: "1.3rem", padding: "2rem" }}
           >
-            {/* Instrucción */}
             {index === 0 && (
               <div className="instruccion-box" style={{ marginBottom: "1.5rem" }}>
                 <p className="instruccion-ejercicio">
@@ -210,7 +210,7 @@ export default function Tema2_Ej2() {
                 whiteSpace: "pre-line",
               }}
             >
-              <p>{respuesta ? respuesta.split("\n").slice(1).join("\n") : actual.pregunta}</p>
+              <p>{respuesta ? actual.pregunta.replace("___", opcionSeleccionada || "") : actual.pregunta}</p>
             </div>
 
             {/* Opciones */}
@@ -258,10 +258,10 @@ export default function Tema2_Ej2() {
             {/* Feedback */}
             {respuesta && (
               <p
-                className={`respuesta-feedback ${respuesta.startsWith("✅") ? "correcta" : "incorrecta"}`}
+                className={`respuesta-feedback ${respuesta === "Correct" ? "correcta" : "incorrecta"}`}
                 style={{ fontSize: "1.3rem", margin: "1rem 0" }}
               >
-                {respuesta.split("\n")[0]}
+                {respuesta}
               </p>
             )}
 
@@ -298,7 +298,7 @@ export default function Tema2_Ej2() {
         </>
       ) : (
         <div className="finalizado" style={{ fontSize: "1.3rem" }}>
-          <h2>✅ You have completed the exercise!</h2>
+          <h2>You have completed the exercise!</h2>
           <p>
             Correct answers: <strong>{correctas} / {ejercicios.length}</strong>
           </p>

@@ -13,15 +13,14 @@ export default function Tema3_Ej3() {
   const [index, setIndex] = useState(0);
   const [finalizado, setFinalizado] = useState(false);
 
-  // Referencia al audio
+  const API_URL = import.meta.env.VITE_API_URL;
+  const token = localStorage.getItem("token");
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
-  // Función para reproducir el audio
   const playAudio = () => {
     audioRef.current?.play();
   };
 
-  // Ejercicios (nacionalidades)
   const ejercicios = [
     { texto: "Sofia is from Mexico. She is ______.", correcta: ["Mexican"] },
     { texto: "Peter is from Canada. He is ______.", correcta: ["Canadian"] },
@@ -33,7 +32,7 @@ export default function Tema3_Ej3() {
 
   const actual = ejercicios[index];
 
-  // Guardar progreso
+  // === GUARDAR PROGRESO ===
   const guardarProgreso = async () => {
     const completados = JSON.parse(localStorage.getItem("ejercicios_completados") || "[]");
     if (!completados.includes(id)) {
@@ -41,9 +40,9 @@ export default function Tema3_Ej3() {
       localStorage.setItem("ejercicios_completados", JSON.stringify(completados));
     }
 
+    if (!token) return;
     try {
-      const token = localStorage.getItem("token");
-      const res = await fetch("http://localhost:5000/api/progreso", {
+      const res = await fetch(`${API_URL}/api/progreso`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -60,7 +59,7 @@ export default function Tema3_Ej3() {
     }
   };
 
-  // Verificar respuesta
+  // === VERIFICAR RESPUESTA ===
   const verificar = () => {
     const respuestaUsuario = inputValue.trim().toLowerCase();
     if (!respuestaUsuario) return;
@@ -70,22 +69,22 @@ export default function Tema3_Ej3() {
     );
 
     if (esCorrecta) {
-      setRespuesta(" Correct!");
+      setRespuesta("Correct");
       setCorrectas((prev) => prev + 1);
     } else {
-      setRespuesta(`Incorrect".`);
+      setRespuesta("Incorrect");
       setInputValue(actual.correcta[0]);
     }
   };
 
-  // Siguiente pregunta
+  // === SIGUIENTE ===
   const siguiente = () => {
     setRespuesta(null);
     setInputValue("");
     setIndex(index + 1);
   };
 
-  // Finalización
+  // === FINALIZAR ===
   const manejarFinalizacion = async () => {
     await guardarProgreso();
     setFinalizado(true);
@@ -95,7 +94,6 @@ export default function Tema3_Ej3() {
     }, 3000);
   };
 
-  // Mostrar texto con o sin respuesta
   const mostrarTexto = respuesta
     ? actual.texto.replace("______", actual.correcta[0])
     : actual.texto;
@@ -120,7 +118,7 @@ export default function Tema3_Ej3() {
               </div>
             )}
 
-            {/* === BOTÓN Y AUDIO === */}
+            {/* === AUDIO === */}
             <div style={{ margin: "1rem 0" }}>
               <button
                 onClick={playAudio}
@@ -136,7 +134,7 @@ export default function Tema3_Ej3() {
               <audio ref={audioRef} src="/audios/sem3/anna_friends.mp3" />
             </div>
 
-            {/* === TEXTO === */}
+            {/* === PREGUNTA === */}
             <p
               className="pregunta-ejercicio"
               style={{
@@ -148,7 +146,7 @@ export default function Tema3_Ej3() {
               {mostrarTexto}
             </p>
 
-            {/* === INPUT Y BOTÓN === */}
+            {/* === INPUT === */}
             {!respuesta && (
               <div
                 className="opciones-ejercicio"
@@ -189,16 +187,19 @@ export default function Tema3_Ej3() {
             {/* === RETROALIMENTACIÓN === */}
             {respuesta && (
               <p
-                className={`respuesta-feedback ${
-                  respuesta.startsWith("✅") ? "correcta" : "incorrecta"
-                }`}
-                style={{ fontSize: "1.2rem", margin: "1rem 0" }}
+                className="respuesta-feedback"
+                style={{
+                  fontSize: "1.2rem",
+                  margin: "1rem 0",
+                  fontWeight: "bold",
+                  color: respuesta === "Correct" ? "#28A745" : "#DC3545",
+                }}
               >
                 {respuesta}
               </p>
             )}
 
-            {/* === BOTONES DE NAVEGACIÓN === */}
+            {/* === NAVEGACIÓN === */}
             <div className="botones-siguiente">
               {respuesta && index < ejercicios.length - 1 && (
                 <button
@@ -223,7 +224,7 @@ export default function Tema3_Ej3() {
         </>
       ) : (
         <div className="finalizado" style={{ fontSize: "1.3rem" }}>
-          <h2> You have completed the exercise!</h2>
+          <h2>You have completed the exercise!</h2>
           <p>
             Correct answers:{" "}
             <strong>

@@ -48,7 +48,32 @@ export default function Tema2_Ej1() {
     setPalabras(nuevas);
   };
 
-  const verificar = () => {
+  const guardarProgreso = async () => {
+    try {
+      const completados = JSON.parse(localStorage.getItem("ejercicios_completados") || "[]");
+      if (!completados.includes(id)) {
+        completados.push(id);
+        localStorage.setItem("ejercicios_completados", JSON.stringify(completados));
+      }
+
+      const token = localStorage.getItem("token");
+      if (token) {
+        const res = await fetch(`${API_URL}/api/progreso`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({ nivel, semana, tema, ejercicio }),
+        });
+        if (!res.ok) console.error("Error al guardar progreso:", res.statusText);
+      }
+    } catch (err) {
+      console.error("Error al guardar progreso:", err);
+    }
+  };
+
+  const verificar = async () => {
     const respuestaUsuario = palabras.join(" ").toLowerCase();
     const correcta = actual.correcta.toLowerCase();
 
@@ -56,46 +81,19 @@ export default function Tema2_Ej1() {
       setRespuesta("Correct");
       setEsCorrecta(true);
       setCorrectas(prev => prev + 1);
+      await guardarProgreso(); // guardar progreso inmediatamente
     } else {
       setRespuesta("Incorrect");
       setEsCorrecta(false);
-      // Reordenar palabras al orden correcto
-      setPalabras(actual.correcta.split(" "));
+      setPalabras(actual.correcta.split(" ")); // acomodar palabras correctamente
     }
   };
 
   const siguiente = () => {
-    setRespuesta(null);
-    setEsCorrecta(null);
     if (index + 1 < ejercicios.length) {
       setIndex(index + 1);
     } else {
       manejarFinalizacion();
-    }
-  };
-
-  const guardarProgreso = async () => {
-    try {
-      const completados = JSON.parse(localStorage.getItem("ejercicios_completados") || "[]");
-      if (!completados.includes(id)) {
-        completados.push(id);
-        localStorage.setItem("ejercicios_completados", JSON.stringify(completados));
-
-        const token = localStorage.getItem("token");
-        if (token) {
-          const res = await fetch(`${API_URL}/api/progreso`, {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${token}`,
-            },
-            body: JSON.stringify({ nivel, semana, tema, ejercicio }),
-          });
-          if (!res.ok) console.error("Error al guardar progreso:", res.statusText);
-        }
-      }
-    } catch (err) {
-      console.error("Error al guardar progreso:", err);
     }
   };
 

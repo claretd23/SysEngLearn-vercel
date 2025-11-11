@@ -1,123 +1,106 @@
 import { useParams, useNavigate } from "react-router-dom";
-import { useState, useRef } from "react";
+import { useState, useMemo, useRef } from "react";
 import "../ejercicios.css";
-
-const API_URL = import.meta.env.VITE_API_URL;
 
 export default function Tema2_Ej3() {
   const { nivel, semana, tema, ejercicio } = useParams();
   const id = `${nivel}-${semana}-${tema}-${ejercicio}`;
   const navigate = useNavigate();
+  const API_URL = import.meta.env.VITE_API_URL;
 
-  const [respuestaSeleccionada, setRespuestaSeleccionada] = useState<string | null>(null);
-  const [respuestaCorrecta, setRespuestaCorrecta] = useState<string | null>(null);
+  const [respuesta, setRespuesta] = useState<string | null>(null);
+  const [opcionSeleccionada, setOpcionSeleccionada] = useState<string | null>(null);
   const [correctas, setCorrectas] = useState(0);
   const [index, setIndex] = useState(0);
   const [finalizado, setFinalizado] = useState(false);
   const audioRef = useRef<HTMLAudioElement>(null);
 
-  const ejercicios = [
-    {
-      audio: "/audios/sem6/ej3_1.mp3",
-      pregunta: "I have a ______ dog.",
-      opciones: [
-        "small beautiful white dog",
-        "white small beautiful dog",
-        "beautiful small white dog",
-      ],
-      correcta: "beautiful small white dog",
-    },
-    {
-      audio: "/audios/sem6/ej3_2.mp3",
-      pregunta: "She is wearing a ______ dress.",
-      opciones: [
-        "long red nice dress",
-        "nice long red dress",
-        "red nice long dress",
-      ],
-      correcta: "nice long red dress",
-    },
-    {
-      audio: "/audios/sem6/ej3_3.mp3",
-      pregunta: "He lives in a ______ house.",
-      opciones: [
-        "yellow big house",
-        "big yellow house",
-        "house big yellow",
-      ],
-      correcta: "big yellow house",
-    },
-    {
-      audio: "/audios/sem6/ej3_4.mp3",
-      pregunta: "I bought a ______ car.",
-      opciones: [
-        "black new car",
-        "new black car",
-        "car black new",
-      ],
-      correcta: "new black car",
-    },
-    {
-      audio: "/audios/sem6/ej3_5.mp3",
-      pregunta: "They have a ______ baby.",
-      opciones: [
-        "little cute baby",
-        "baby cute little",
-        "cute little baby",
-      ],
-      correcta: "cute little baby",
-    },
-    {
-      audio: "/audios/sem6/ej3_6.mp3",
-      pregunta: "We saw a ______ park.",
-      opciones: [
-        "green big beautiful park",
-        "big beautiful green park",
-        "beautiful big green park",
-      ],
-      correcta: "beautiful big green park",
-    },
-    {
-      audio: "/audios/sem6/ej3_7.mp3",
-      pregunta: "She has a ______ bag.",
-      opciones: [
-        "nice small brown bag",
-        "brown nice small bag",
-        "small brown nice bag",
-      ],
-      correcta: "nice small brown bag",
-    },
-    {
-      audio: "/audios/sem6/ej3_8.mp3",
-      pregunta: "I want a ______ chair.",
-      opciones: [
-        "large comfortable blue chair",
-        "comfortable large blue chair",
-        "blue comfortable large chair",
-      ],
-      correcta: "comfortable large blue chair",
-    },
-    {
-      audio: "/audios/sem6/ej3_9.mp3",
-      pregunta: "We visited an ______ church.",
-      opciones: [
-        "old white church",
-        "white old church",
-        "church old white",
-      ],
-      correcta: "old white church",
-    },
-    {
-      audio: "/audios/sem6/ej3_10.mp3",
-      pregunta: "He is driving a ______ car.",
-      opciones: [
-        "fast red car",
-        "red fast car",
-        "car red fast",
-      ],
-      correcta: "fast red car",
-    },
-  ];
+  // === LISTA DE EJERCICIOS ===
+  const ejercicios = useMemo(
+    () => [
+      {
+        audio: "/audios/sem6/ej3_1.mp3",
+        pregunta: "I have a ______ dog.",
+        opciones: [
+          "small beautiful white dog",
+          "white small beautiful dog",
+          "beautiful small white dog",
+        ],
+        correcta: "beautiful small white dog",
+      },
+      {
+        audio: "/audios/sem6/ej3_2.mp3",
+        pregunta: "She is wearing a ______ dress.",
+        opciones: [
+          "long red nice dress",
+          "nice long red dress",
+          "red nice long dress",
+        ],
+        correcta: "nice long red dress",
+      },
+      {
+        audio: "/audios/sem6/ej3_3.mp3",
+        pregunta: "He lives in a ______ house.",
+        opciones: ["yellow big house", "big yellow house", "house big yellow"],
+        correcta: "big yellow house",
+      },
+      {
+        audio: "/audios/sem6/ej3_4.mp3",
+        pregunta: "I bought a ______ car.",
+        opciones: ["black new car", "new black car", "car black new"],
+        correcta: "new black car",
+      },
+      {
+        audio: "/audios/sem6/ej3_5.mp3",
+        pregunta: "They have a ______ baby.",
+        opciones: ["little cute baby", "baby cute little", "cute little baby"],
+        correcta: "cute little baby",
+      },
+      {
+        audio: "/audios/sem6/ej3_6.mp3",
+        pregunta: "We saw a ______ park.",
+        opciones: [
+          "green big beautiful park",
+          "big beautiful green park",
+          "beautiful big green park",
+        ],
+        correcta: "beautiful big green park",
+      },
+      {
+        audio: "/audios/sem6/ej3_7.mp3",
+        pregunta: "She has a ______ bag.",
+        opciones: [
+          "nice small brown bag",
+          "brown nice small bag",
+          "small brown nice bag",
+        ],
+        correcta: "nice small brown bag",
+      },
+      {
+        audio: "/audios/sem6/ej3_8.mp3",
+        pregunta: "I want a ______ chair.",
+        opciones: [
+          "large comfortable blue chair",
+          "comfortable large blue chair",
+          "blue comfortable large chair",
+        ],
+        correcta: "comfortable large blue chair",
+      },
+      {
+        audio: "/audios/sem6/ej3_9.mp3",
+        pregunta: "We visited an ______ church.",
+        opciones: ["old white church", "white old church", "church old white"],
+        correcta: "old white church",
+      },
+      {
+        audio: "/audios/sem6/ej3_10.mp3",
+        pregunta: "He is driving a ______ car.",
+        opciones: ["fast red car", "red fast car", "car red fast"],
+        correcta: "fast red car",
+      },
+    ],
+    []
+  );
 
   const actual = ejercicios[index];
 
@@ -126,30 +109,8 @@ export default function Tema2_Ej3() {
     audioRef.current?.play();
   };
 
-  // === VERIFICAR RESPUESTA ===
-  const verificar = (opcion: string) => {
-    setRespuestaSeleccionada(opcion);
-    setRespuestaCorrecta(actual.correcta);
-    if (opcion === actual.correcta) {
-      setCorrectas((prev) => prev + 1);
-    }
-  };
-
-  // === SIGUIENTE PREGUNTA ===
-  const siguiente = () => {
-    setRespuestaSeleccionada(null);
-    setRespuestaCorrecta(null);
-    setIndex(index + 1);
-  };
-
   // === GUARDAR PROGRESO ===
   const guardarProgreso = async () => {
-    const completados = JSON.parse(localStorage.getItem("ejercicios_completados") || "[]");
-    if (!completados.includes(id)) {
-      completados.push(id);
-      localStorage.setItem("ejercicios_completados", JSON.stringify(completados));
-    }
-
     try {
       const token = localStorage.getItem("token");
       const res = await fetch(`${API_URL}/api/progreso`, {
@@ -161,129 +122,155 @@ export default function Tema2_Ej3() {
         body: JSON.stringify({ nivel, semana, tema, ejercicio }),
       });
 
-      if (!res.ok) console.error("Error al guardar progreso:", res.statusText);
+      if (res.ok) {
+        const completados = JSON.parse(localStorage.getItem("ejercicios_completados") || "[]");
+        if (!completados.includes(id)) {
+          completados.push(id);
+          localStorage.setItem("ejercicios_completados", JSON.stringify(completados));
+        }
+      }
     } catch (error) {
       console.error("Error al guardar el progreso:", error);
     }
   };
 
-  // === FINALIZAR EJERCICIO ===
+  // === VERIFICAR RESPUESTA ===
+  const verificar = () => {
+    if (!opcionSeleccionada) return;
+
+    if (opcionSeleccionada === actual.correcta) {
+      setRespuesta("Correct!");
+      setCorrectas((prev) => prev + 1);
+    } else {
+      setRespuesta(`The correct answer is "${actual.correcta}".`);
+    }
+  };
+
+  // === SIGUIENTE ===
+  const siguiente = () => {
+    setRespuesta(null);
+    setOpcionSeleccionada(null);
+    setIndex((prev) => prev + 1);
+  };
+
+  // === FINALIZAR ===
   const manejarFinalizacion = async () => {
     await guardarProgreso();
     setFinalizado(true);
-    setTimeout(() => {
-      navigate(`/inicio/${nivel}`);
-      window.location.reload();
-    }, 3000);
+    setTimeout(() => navigate(`/inicio/${nivel}`), 2500);
   };
 
+  // === FINALIZADO ===
+  if (finalizado) {
+    return (
+      <div className="finalizado" style={{ fontSize: "1.3rem" }}>
+        <h2>You have completed the exercise!</h2>
+        <p>
+          Correct answers: <strong>{correctas} / {ejercicios.length}</strong>
+        </p>
+        <p>Redirecting to the start of the level...</p>
+      </div>
+    );
+  }
+
+  // === INTERFAZ PRINCIPAL ===
   return (
     <div className="ejercicio-container">
-      {!finalizado ? (
-        <>
-          <header className="ejercicio-header">
-            <h1 className="titulo-ejercicio">EXERCISE 3</h1>
-            <p className="progreso-ejercicio">
-              Question {index + 1} of {ejercicios.length}
+      <header className="ejercicio-header">
+        <h1 className="titulo-ejercicio">EXERCISE 3</h1>
+        <p className="progreso-ejercicio">
+          Question {index + 1} of {ejercicios.length}
+        </p>
+      </header>
+
+      <section className="tarjeta-ejercicio" style={{ textAlign: "center" }}>
+        {index === 0 && (
+          <div className="instruccion-box" style={{ fontSize: "1.3rem" }}>
+            <p className="instruccion-ejercicio">
+              🎧 Listen carefully to the sentence. Choose the option with the correct order of adjectives.
             </p>
-          </header>
+          </div>
+        )}
 
-          <section
-            className="tarjeta-ejercicio"
-            style={{ textAlign: "center", fontSize: "1.3rem", padding: "2rem" }}
-          >
-            {index === 0 && (
-              <div className="instruccion-box" style={{ marginBottom: "1.5rem" }}>
-                <p className="instruccion-ejercicio">
-                  🎧 Listen carefully to the sentence. Choose the option with the correct order of adjectives.
-                </p>
-              </div>
-            )}
+        {/* Botón de audio */}
+        <button
+          className="btn-audio"
+          style={{ fontSize: "2rem", margin: "1rem 0" }}
+          onClick={playAudio}
+        >
+          🔊
+        </button>
+        <audio ref={audioRef} src={actual.audio} />
 
-            <button
-              onClick={playAudio}
-              className="btn-audio"
-              style={{ fontSize: "2rem", marginBottom: "1rem" }}
-            >
-              🔊
-            </button>
-            <audio ref={audioRef} src={actual.audio} />
+        <p style={{ fontSize: "1.3rem", margin: "1rem 0" }}>{actual.pregunta}</p>
 
-            <p style={{ margin: "1rem 0", fontStyle: "italic" }}>{actual.pregunta}</p>
-
+        {!respuesta && (
+          <>
             <div
+              className="opciones-ejercicio"
               style={{
                 display: "flex",
                 flexDirection: "column",
+                gap: "1rem",
                 alignItems: "center",
-                gap: "0.8rem",
-                width: "100%",
+                marginBottom: "1rem",
               }}
             >
-              {actual.opciones.map((opcion, i) => (
+              {actual.opciones.map((op, i) => (
                 <button
                   key={i}
-                  className={`opcion-btn ${
-                    respuestaSeleccionada
-                      ? opcion === respuestaCorrecta
-                        ? "correcta"
-                        : opcion === respuestaSeleccionada
-                        ? "incorrecta"
-                        : ""
-                      : ""
-                  }`}
-                  onClick={() => verificar(opcion)}
-                  disabled={!!respuestaSeleccionada}
-                  style={{
-                    width: "70%",
-                    fontSize: "1.1rem",
-                    padding: "0.8rem",
-                    borderRadius: "8px",
-                    border: "1px solid #ccc",
-                    cursor: respuestaSeleccionada ? "not-allowed" : "pointer",
-                    transition: "0.3s ease",
-                  }}
+                  className={`opcion-btn ${opcionSeleccionada === op ? "seleccionada" : ""}`}
+                  onClick={() => setOpcionSeleccionada(op)}
+                  style={{ fontSize: "1.2rem", padding: "0.8rem 1.5rem", minWidth: "220px" }}
                 >
-                  {opcion}
+                  {op}
                 </button>
               ))}
             </div>
 
-            {respuestaSeleccionada && (
-              <div style={{ marginTop: "1.5rem" }}>
-                {index < ejercicios.length - 1 ? (
-                  <button
-                    onClick={siguiente}
-                    className="ejercicio-btn"
-                    style={{ fontSize: "1.2rem", padding: "0.8rem 2rem", borderRadius: "8px" }}
-                  >
-                    Next question
-                  </button>
-                ) : (
-                  <button
-                    onClick={manejarFinalizacion}
-                    className="ejercicio-btn"
-                    style={{ fontSize: "1.2rem", padding: "0.8rem 2rem", borderRadius: "8px" }}
-                  >
-                    Finish
-                  </button>
-                )}
-              </div>
-            )}
-          </section>
-        </>
-      ) : (
-        <div className="finalizado" style={{ fontSize: "1.3rem" }}>
-          <h2>You have completed the exercise!</h2>
-          <p>
-            Correct answers:{" "}
-            <strong>
-              {correctas} / {ejercicios.length}
-            </strong>
+            <button
+              onClick={verificar}
+              className="ejercicio-btn"
+              disabled={!opcionSeleccionada}
+              style={{ fontSize: "1.3rem", padding: "0.8rem 2rem", borderRadius: "8px" }}
+            >
+              Check
+            </button>
+          </>
+        )}
+
+        {respuesta && (
+          <p
+            className={`respuesta-feedback ${
+              respuesta.startsWith("Correct") ? "correcta" : "incorrecta"
+            }`}
+            style={{ fontSize: "1.3rem", margin: "1rem 0" }}
+          >
+            {respuesta}
           </p>
-          <p>Redirecting to the start of the level...</p>
+        )}
+
+        <div className="botones-siguiente" style={{ marginTop: "1rem" }}>
+          {respuesta && index < ejercicios.length - 1 && (
+            <button
+              onClick={siguiente}
+              className="ejercicio-btn"
+              style={{ fontSize: "1.3rem", padding: "0.8rem 2rem" }}
+            >
+              Next question
+            </button>
+          )}
+          {respuesta && index === ejercicios.length - 1 && (
+            <button
+              onClick={manejarFinalizacion}
+              className="ejercicio-btn"
+              style={{ fontSize: "1.3rem", padding: "0.8rem 2rem" }}
+            >
+              Finish
+            </button>
+          )}
         </div>
-      )}
+      </section>
     </div>
   );
 }

@@ -121,24 +121,28 @@ export default function Tema2_Ej3() {
 
   const actual = ejercicios[index];
 
+  // === AUDIO ===
   const playAudio = () => {
     audioRef.current?.play();
   };
 
+  // === VERIFICAR RESPUESTA ===
   const verificar = (opcion: string) => {
     setRespuestaSeleccionada(opcion);
     setRespuestaCorrecta(actual.correcta);
     if (opcion === actual.correcta) {
-      setCorrectas(prev => prev + 1);
+      setCorrectas((prev) => prev + 1);
     }
   };
 
+  // === SIGUIENTE PREGUNTA ===
   const siguiente = () => {
     setRespuestaSeleccionada(null);
     setRespuestaCorrecta(null);
     setIndex(index + 1);
   };
 
+  // === GUARDAR PROGRESO ===
   const guardarProgreso = async () => {
     const completados = JSON.parse(localStorage.getItem("ejercicios_completados") || "[]");
     if (!completados.includes(id)) {
@@ -163,6 +167,7 @@ export default function Tema2_Ej3() {
     }
   };
 
+  // === FINALIZAR EJERCICIO ===
   const manejarFinalizacion = async () => {
     await guardarProgreso();
     setFinalizado(true);
@@ -190,8 +195,7 @@ export default function Tema2_Ej3() {
             {index === 0 && (
               <div className="instruccion-box" style={{ marginBottom: "1.5rem" }}>
                 <p className="instruccion-ejercicio">
-                  Listen carefully to the sentence. You will hear a description that includes
-                  two or three adjectives. Choose the option with the correct order of adjectives.
+                  🎧 Listen carefully to the sentence. Choose the option with the correct order of adjectives.
                 </p>
               </div>
             )}
@@ -207,7 +211,15 @@ export default function Tema2_Ej3() {
 
             <p style={{ margin: "1rem 0", fontStyle: "italic" }}>{actual.pregunta}</p>
 
-            <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "0.8rem" }}>
+            <div
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+                gap: "0.8rem",
+                width: "100%",
+              }}
+            >
               {actual.opciones.map((opcion, i) => (
                 <button
                   key={i}
@@ -228,6 +240,8 @@ export default function Tema2_Ej3() {
                     padding: "0.8rem",
                     borderRadius: "8px",
                     border: "1px solid #ccc",
+                    cursor: respuestaSeleccionada ? "not-allowed" : "pointer",
+                    transition: "0.3s ease",
                   }}
                 >
                   {opcion}
@@ -262,7 +276,10 @@ export default function Tema2_Ej3() {
         <div className="finalizado" style={{ fontSize: "1.3rem" }}>
           <h2>You have completed the exercise!</h2>
           <p>
-            Correct answers: <strong>{correctas} / {ejercicios.length}</strong>
+            Correct answers:{" "}
+            <strong>
+              {correctas} / {ejercicios.length}
+            </strong>
           </p>
           <p>Redirecting to the start of the level...</p>
         </div>

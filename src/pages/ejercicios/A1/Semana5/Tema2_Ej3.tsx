@@ -21,12 +21,12 @@ export default function Tema2_Ej3() {
     () => [
       {
         audio: "/audios/sem6/ej3_1.mp3",
-        pregunta: "I have a ______ dog.",
+        pregunta: "I have a ______ .",
         correcta: "beautiful small white dog",
       },
       {
         audio: "/audios/sem6/ej3_2.mp3",
-        pregunta: "She is wearing a ______ dress.",
+        pregunta: "She is wearing a ______.",
         correcta: "nice long red dress",
       },
       {
@@ -36,37 +36,37 @@ export default function Tema2_Ej3() {
       },
       {
         audio: "/audios/sem6/ej3_4.mp3",
-        pregunta: "I bought a ______ car.",
+        pregunta: "I bought a ______.",
         correcta: "new black car",
       },
       {
         audio: "/audios/sem6/ej3_5.mp3",
-        pregunta: "They have a ______ baby.",
+        pregunta: "They have a ______ .",
         correcta: "cute little baby",
       },
       {
         audio: "/audios/sem6/ej3_6.mp3",
-        pregunta: "We saw a ______ park.",
+        pregunta: "We saw a ______ .",
         correcta: "beautiful big green park",
       },
       {
         audio: "/audios/sem6/ej3_7.mp3",
-        pregunta: "She has a ______ bag.",
+        pregunta: "She has a ______.",
         correcta: "nice small brown bag",
       },
       {
         audio: "/audios/sem6/ej3_8.mp3",
-        pregunta: "I want a ______ chair.",
+        pregunta: "I want a ______ .",
         correcta: "comfortable large blue chair",
       },
       {
         audio: "/audios/sem6/ej3_9.mp3",
-        pregunta: "We visited an ______ church.",
+        pregunta: "We visited an ______ .",
         correcta: "old white church",
       },
       {
         audio: "/audios/sem6/ej3_10.mp3",
-        pregunta: "He is driving a ______ car.",
+        pregunta: "He is driving a ______.",
         correcta: "fast red car",
       },
     ],

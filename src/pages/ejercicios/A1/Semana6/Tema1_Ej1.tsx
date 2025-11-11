@@ -2,8 +2,6 @@ import { useParams, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import "../ejercicios.css";
 
-const API_URL = import.meta.env.VITE_API_URL;
-
 export default function Tema1_Ej1() {
   const { nivel, semana, tema, ejercicio } = useParams();
   const id = `${nivel}-${semana}-${tema}-${ejercicio}`;
@@ -15,7 +13,7 @@ export default function Tema1_Ej1() {
   const [index, setIndex] = useState(0);
   const [finalizado, setFinalizado] = useState(false);
 
-  // === LISTA DE EJERCICIOS ===
+  // ✅ Lista de ejercicios de preposiciones
   const ejercicios = [
     { texto: "The cat is sleeping ___ the sofa.", correcta: ["on"] },
     { texto: "There is a supermarket ___ the corner of the street.", correcta: ["at"] },
@@ -31,7 +29,6 @@ export default function Tema1_Ej1() {
 
   const actual = ejercicios[index];
 
-  // === GUARDAR PROGRESO ===
   const guardarProgreso = async () => {
     const completados = JSON.parse(localStorage.getItem("ejercicios_completados") || "[]");
     if (!completados.includes(id)) {
@@ -41,7 +38,7 @@ export default function Tema1_Ej1() {
 
     try {
       const token = localStorage.getItem("token");
-      const res = await fetch(`${API_URL}/api/progreso`, {
+      const res = await fetch("http://localhost:5000/api/progreso", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -49,13 +46,15 @@ export default function Tema1_Ej1() {
         },
         body: JSON.stringify({ nivel, semana, tema, ejercicio }),
       });
-      if (!res.ok) console.error("Error al guardar el progreso:", res.statusText);
+
+      if (!res.ok) {
+        console.error("Error al guardar progreso:", res.statusText);
+      }
     } catch (error) {
       console.error("Error al guardar el progreso:", error);
     }
   };
 
-  // === VERIFICAR RESPUESTA ===
   const verificar = () => {
     const respuestaUsuario = inputValue.trim().toLowerCase();
     if (!respuestaUsuario) return;
@@ -65,22 +64,20 @@ export default function Tema1_Ej1() {
     );
 
     if (esCorrecta) {
-      setRespuesta("Correct");
+      setRespuesta("✅ Correct!");
       setCorrectas((prev) => prev + 1);
     } else {
-      setRespuesta("Incorrect");
+      setRespuesta("❌ Incorrect");
       setInputValue(actual.correcta[0]);
     }
   };
 
-  // === SIGUIENTE PREGUNTA ===
   const siguiente = () => {
     setRespuesta(null);
     setInputValue("");
     setIndex(index + 1);
   };
 
-  // === FINALIZAR ===
   const manejarFinalizacion = async () => {
     await guardarProgreso();
     setFinalizado(true);
@@ -94,7 +91,6 @@ export default function Tema1_Ej1() {
     ? actual.texto.replace("___", actual.correcta[0])
     : actual.texto;
 
-  // === RENDER ===
   return (
     <div className="ejercicio-container">
       {!finalizado ? (
@@ -163,9 +159,7 @@ export default function Tema1_Ej1() {
 
             {respuesta && (
               <p
-                className={`respuesta-feedback ${
-                  respuesta === "Correct" ? "correcta" : "incorrecta"
-                }`}
+                className={`respuesta-feedback ${respuesta.startsWith("✅") ? "correcta" : "incorrecta"}`}
                 style={{ fontSize: "1.3rem", margin: "1rem 0" }}
               >
                 {respuesta}
@@ -196,7 +190,7 @@ export default function Tema1_Ej1() {
         </>
       ) : (
         <div className="finalizado" style={{ fontSize: "1.3rem" }}>
-          <h2 className="correcta">You have completed the exercise!</h2>
+          <h2>✅ You have completed the exercise!</h2>
           <p>
             Correct answers: <strong>{correctas} / {ejercicios.length}</strong>
           </p>

@@ -19,7 +19,7 @@ export default function Tema2_Ej3() {
   const ejercicios = useMemo(
     () => [
       {
-        audio: "/audios/sem6/ej3_1.mp3",
+        audio: "/audios/sem5/ej3_11.mp3",
         pregunta: "I have a ______ dog.",
         opciones: [
           "small beautiful white dog",
@@ -29,7 +29,7 @@ export default function Tema2_Ej3() {
         correcta: "beautiful small white dog",
       },
       {
-        audio: "/audios/sem6/ej3_2.mp3",
+        audio: "/audios/sem5/ej3_12.mp3",
         pregunta: "She is wearing a ______ dress.",
         opciones: [
           "long red nice dress",
@@ -39,25 +39,25 @@ export default function Tema2_Ej3() {
         correcta: "nice long red dress",
       },
       {
-        audio: "/audios/sem6/ej3_3.mp3",
+        audio: "/audios/sem5/ej3_13.mp3",
         pregunta: "He lives in a ______ house.",
         opciones: ["yellow big house", "big yellow house", "house big yellow"],
         correcta: "big yellow house",
       },
       {
-        audio: "/audios/sem6/ej3_4.mp3",
+        audio: "/audios/sem5/ej3_14.mp3",
         pregunta: "I bought a ______ car.",
         opciones: ["black new car", "new black car", "car black new"],
         correcta: "new black car",
       },
       {
-        audio: "/audios/sem6/ej3_5.mp3",
+        audio: "/audios/sem5/ej3_15.mp3",
         pregunta: "They have a ______ baby.",
         opciones: ["little cute baby", "baby cute little", "cute little baby"],
         correcta: "cute little baby",
       },
       {
-        audio: "/audios/sem6/ej3_6.mp3",
+        audio: "/audios/sem5/ej3_16.mp3",
         pregunta: "We saw a ______ park.",
         opciones: [
           "green big beautiful park",
@@ -67,7 +67,7 @@ export default function Tema2_Ej3() {
         correcta: "beautiful big green park",
       },
       {
-        audio: "/audios/sem6/ej3_7.mp3",
+        audio: "/audios/sem5/ej3_17.mp3",
         pregunta: "She has a ______ bag.",
         opciones: [
           "nice small brown bag",
@@ -77,7 +77,7 @@ export default function Tema2_Ej3() {
         correcta: "nice small brown bag",
       },
       {
-        audio: "/audios/sem6/ej3_8.mp3",
+        audio: "/audios/sem5/ej3_18.mp3",
         pregunta: "I want a ______ chair.",
         opciones: [
           "large comfortable blue chair",
@@ -87,13 +87,13 @@ export default function Tema2_Ej3() {
         correcta: "comfortable large blue chair",
       },
       {
-        audio: "/audios/sem6/ej3_9.mp3",
+        audio: "/audios/sem5/ej3_19.mp3",
         pregunta: "We visited an ______ church.",
         opciones: ["old white church", "white old church", "church old white"],
         correcta: "old white church",
       },
       {
-        audio: "/audios/sem6/ej3_10.mp3",
+        audio: "/audios/sem5/ej3_20.mp3",
         pregunta: "He is driving a ______ car.",
         opciones: ["fast red car", "red fast car", "car red fast"],
         correcta: "fast red car",
@@ -207,40 +207,39 @@ export default function Tema2_Ej3() {
         </button>
         <audio ref={audioRef} src={actual.audio} />
 
-        {/* PREGUNTA */}
+        {/* ORACIÓN */}
         <p style={{ fontSize: "1.3rem", margin: "1rem 0" }}>
           {oracionMostrada}
         </p>
 
-        {/* OPCIONES */}
-        <div
-          className="opciones-ejercicio"
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            gap: "1rem",
-            alignItems: "center",
-            marginBottom: "1rem",
-          }}
-        >
-          {actual.opciones.map((op, i) => (
-            <button
-              key={i}
-              className={`opcion-btn ${
-                opcionSeleccionada === op
-                  ? op === actual.correcta
-                    ? "correcta"
-                    : "incorrecta"
-                  : ""
-              }`}
-              onClick={() => verificar(op)}
-              disabled={!!opcionSeleccionada}
-              style={{ fontSize: "1.2rem", padding: "0.8rem 1.5rem", minWidth: "250px" }}
-            >
-              {op}
-            </button>
-          ))}
-        </div>
+        {/* OPCIONES (solo si no ha respondido) */}
+        {!respuesta && (
+          <div
+            className="opciones-ejercicio"
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              gap: "1rem",
+              alignItems: "center",
+              marginBottom: "1rem",
+            }}
+          >
+            {actual.opciones.map((op, i) => (
+              <button
+                key={i}
+                className="opcion-btn"
+                onClick={() => verificar(op)}
+                style={{
+                  fontSize: "1.2rem",
+                  padding: "0.8rem 1.5rem",
+                  minWidth: "250px",
+                }}
+              >
+                {op}
+              </button>
+            ))}
+          </div>
+        )}
 
         {/* FEEDBACK */}
         {respuesta && (

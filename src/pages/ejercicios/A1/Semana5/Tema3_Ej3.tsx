@@ -31,7 +31,7 @@ export default function Tema3_Ej3() {
     {
       texto: "She is sitting ___ the car with her friends.",
       correcta: ["in"],
-      audio: "/audios/sem2/sem5/ej3_22.mp3",
+      audio: "/audios/sem5/ej3_22.mp3",
     },
     {
       texto: "We travel ___ train to visit our grandparents.",

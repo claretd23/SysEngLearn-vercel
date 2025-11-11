@@ -30,11 +30,36 @@ export default function Tema2_Ej1() {
 
   const actual = ejercicios[index];
 
+  const guardarProgreso = async () => {
+    // Guarda en localStorage
+    const completados = JSON.parse(localStorage.getItem("ejercicios_completados") || "[]");
+    if (!completados.includes(id)) {
+      completados.push(id);
+      localStorage.setItem("ejercicios_completados", JSON.stringify(completados));
+    }
+
+    // Guarda en la base de datos
+    try {
+      const token = localStorage.getItem("token");
+      const res = await fetch(`${API_URL}/api/progreso`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ nivel, semana, tema, ejercicio }),
+      });
+      if (!res.ok) console.error("Error al guardar progreso:", res.statusText);
+    } catch (error) {
+      console.error("Error al guardar el progreso:", error);
+    }
+  };
+
   const verificar = (opcion: string) => {
     setOpcionSeleccionada(opcion);
     if (opcion === actual.correcta) {
       setRespuestaCorrecta("Correct");
-      setCorrectas(correctas + 1);
+      setCorrectas((prev) => prev + 1);
     } else {
       setRespuestaCorrecta("Incorrect");
     }
@@ -46,62 +71,69 @@ export default function Tema2_Ej1() {
       setOpcionSeleccionada(null);
       setRespuestaCorrecta(null);
     } else {
+      await guardarProgreso();
       setFinalizado(true);
-      try {
-        await fetch(`${API_URL}/progreso`, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ id, completado: true }),
-        });
-      } catch (error) {
-        console.error("Error al guardar el progreso:", error);
-      }
+      setTimeout(() => {
+        navigate(`/inicio/${nivel}`);
+        window.location.reload();
+      }, 3000);
     }
   };
 
   return (
     <div className="ejercicio-container">
-      <h2>Exercise 1: Phrasal verbs - Daily actions</h2>
-
       {!finalizado ? (
         <>
-          <p className="pregunta">{actual.pregunta}</p>
-
-          <div className="opciones">
-            {actual.opciones.map((op, i) => (
-              <button
-                key={i}
-                className={`opcion 
-                  ${opcionSeleccionada === op && respuestaCorrecta === "Correct" && op === actual.correcta ? "correcta" : ""}
-                  ${opcionSeleccionada === op && respuestaCorrecta === "Incorrect" && op !== actual.correcta ? "incorrecta" : ""}
-                `}
-                onClick={() => verificar(op)}
-                disabled={opcionSeleccionada !== null}
-              >
-                {op}
-              </button>
-            ))}
-          </div>
-
-          {respuestaCorrecta && (
-            <p className={`mensaje ${respuestaCorrecta === "Correct" ? "correcto" : "incorrecto"}`}>
-              {respuestaCorrecta}
+          <header className="ejercicio-header">
+            <h1 className="titulo-ejercicio">EXERCISE 1</h1>
+            <p className="progreso-ejercicio">
+              Question {index + 1} of {ejercicios.length}
             </p>
-          )}
+          </header>
 
-          {opcionSeleccionada && (
-            <button className="siguiente-btn" onClick={siguiente}>
-              Next
-            </button>
-          )}
+          <section className="tarjeta-ejercicio">
+            <p className="pregunta-ejercicio">{actual.pregunta}</p>
+
+            <div className="opciones">
+              {actual.opciones.map((op, i) => (
+                <button
+                  key={i}
+                  className={`opcion-btn
+                    ${opcionSeleccionada === op && respuestaCorrecta === "Correct" && op === actual.correcta ? "correcta" : ""}
+                    ${opcionSeleccionada === op && respuestaCorrecta === "Incorrect" && op !== actual.correcta ? "incorrecta" : ""}
+                  `}
+                  onClick={() => verificar(op)}
+                  disabled={opcionSeleccionada !== null}
+                >
+                  {op}
+                </button>
+              ))}
+            </div>
+
+            {respuestaCorrecta && (
+              <p
+                className={`respuesta-feedback ${
+                  respuestaCorrecta === "Correct" ? "correcta" : "incorrecta"
+                }`}
+              >
+                {respuestaCorrecta}
+              </p>
+            )}
+
+            {opcionSeleccionada && (
+              <button onClick={siguiente} className="ejercicio-btn">
+                {index === ejercicios.length - 1 ? "Finish" : "Next"}
+              </button>
+            )}
+          </section>
         </>
       ) : (
-        <div className="resultado">
-          <h3>Exercise completed!</h3>
+        <div className="finalizado">
+          <h2>Well done! You have completed the exercise.</h2>
           <p>
-            You got {correctas} out of {ejercicios.length} correct.
+            Correct answers: <strong>{correctas}</strong> / {ejercicios.length}
           </p>
-          <button onClick={() => navigate(-1)}>Go back</button>
+          <p>Redirecting to the start of the level...</p>
         </div>
       )}
     </div>

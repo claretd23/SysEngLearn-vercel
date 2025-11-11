@@ -61,19 +61,22 @@ export default function Tema1_Ej3() {
     audioRef.current?.play();
   };
 
-  const verificar = () => {
-    if (!inputValue.trim()) return;
+ const verificar = () => {
+  if (!inputValue.trim()) return;
 
-    const respuestaNormalizada = inputValue.trim().toLowerCase();
-    if (respuestaNormalizada === actual.correcta.toLowerCase()) {
-      setRespuesta(`Correct!\n\n${actual.pregunta.replace("______", actual.correcta)}`);
-      setEsCorrecta(true);
-      setCorrectas(prev => prev + 1);
-    } else {
-      setRespuesta(`Incorrect.\n\n${actual.pregunta.replace("______", actual.correcta)}`);
-      setEsCorrecta(false);
-    }
-  };
+  const respuestaNormalizada = inputValue.trim().toLowerCase();
+  const oracionCompleta = actual.pregunta.replace(/_+/g, actual.correcta); //  reemplaza todos los guiones bajos
+
+  if (respuestaNormalizada === actual.correcta.toLowerCase()) {
+    setRespuesta(`Correct!\n\n${oracionCompleta}`);
+    setEsCorrecta(true);
+    setCorrectas(prev => prev + 1);
+  } else {
+    setRespuesta(`Incorrect.\n\n${oracionCompleta}`);
+    setEsCorrecta(false);
+  }
+};
+
 
   const siguiente = () => {
     setRespuesta(null);

@@ -2,6 +2,8 @@ import { useParams, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import "../ejercicios.css";
 
+const API_URL = import.meta.env.VITE_API_URL;
+
 export default function Tema3_Ej1() {
   const { nivel, semana, tema, ejercicio } = useParams();
   const id = `${nivel}-${semana}-${tema}-${ejercicio}`;
@@ -14,56 +16,16 @@ export default function Tema3_Ej1() {
   const [finalizado, setFinalizado] = useState(false);
 
   const ejercicios = [
-    {
-      pregunta: "The cat is ___ the sofa.",
-      opciones: ["in", "on", "at"],
-      correcta: "on",
-    },
-    {
-      pregunta: "She lives ___ New York.",
-      opciones: ["in", "on", "at"],
-      correcta: "in",
-    },
-    {
-      pregunta: "There’s a man ___ the door.",
-      opciones: ["in", "on", "at"],
-      correcta: "at",
-    },
-    {
-      pregunta: "The kids are playing ___ the park.",
-      opciones: ["in", "on", "at"],
-      correcta: "in",
-    },
-    {
-      pregunta: "Look! There’s a spider ___ the ceiling!",
-      opciones: ["in", "on", "at"],
-      correcta: "on",
-    },
-    {
-      pregunta: "I’ll meet you ___ the bus stop.",
-      opciones: ["in", "on", "at"],
-      correcta: "at",
-    },
-    {
-      pregunta: "My keys are ___ the table.",
-      opciones: ["in", "on", "at"],
-      correcta: "on",
-    },
-    {
-      pregunta: "We live ___ Mexico City.",
-      opciones: ["in", "on", "at"],
-      correcta: "in",
-    },
-    {
-      pregunta: "There’s a small shop ___ the corner.",
-      opciones: ["in", "on", "at"],
-      correcta: "at",
-    },
-    {
-      pregunta: "She is waiting ___ the kitchen.",
-      opciones: ["in", "on", "at"],
-      correcta: "in",
-    },
+    { pregunta: "The cat is ___ the sofa.", opciones: ["in", "on", "at"], correcta: "on" },
+    { pregunta: "She lives ___ New York.", opciones: ["in", "on", "at"], correcta: "in" },
+    { pregunta: "There’s a man ___ the door.", opciones: ["in", "on", "at"], correcta: "at" },
+    { pregunta: "The kids are playing ___ the park.", opciones: ["in", "on", "at"], correcta: "in" },
+    { pregunta: "Look! There’s a spider ___ the ceiling!", opciones: ["in", "on", "at"], correcta: "on" },
+    { pregunta: "I’ll meet you ___ the bus stop.", opciones: ["in", "on", "at"], correcta: "at" },
+    { pregunta: "My keys are ___ the table.", opciones: ["in", "on", "at"], correcta: "on" },
+    { pregunta: "We live ___ Mexico City.", opciones: ["in", "on", "at"], correcta: "in" },
+    { pregunta: "There’s a small shop ___ the corner.", opciones: ["in", "on", "at"], correcta: "at" },
+    { pregunta: "She is waiting ___ the kitchen.", opciones: ["in", "on", "at"], correcta: "in" },
   ];
 
   const actual = ejercicios[index];
@@ -77,7 +39,7 @@ export default function Tema3_Ej1() {
 
     try {
       const token = localStorage.getItem("token");
-      const res = await fetch("http://localhost:5000/api/progreso", {
+      const res = await fetch(`${API_URL}/api/progreso`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -94,15 +56,14 @@ export default function Tema3_Ej1() {
 
   const verificar = () => {
     if (!opcionSeleccionada) return;
-
     const oracionCompletada = actual.pregunta.replace("___", opcionSeleccionada);
 
     if (opcionSeleccionada === actual.correcta) {
-      setRespuesta(`✅ Correct!\n\n${oracionCompletada}`);
+      setRespuesta(`Correct!\n\n${oracionCompletada}`);
       setCorrectas((prev) => prev + 1);
     } else {
       const oracionCorrecta = actual.pregunta.replace("___", actual.correcta);
-      setRespuesta(`❌ Incorrect.\n\n${oracionCorrecta}`);
+      setRespuesta(`Incorrect.\n\n${oracionCorrecta}`);
     }
   };
 
@@ -126,7 +87,7 @@ export default function Tema3_Ej1() {
       {!finalizado ? (
         <>
           <header className="ejercicio-header">
-            <h1 className="titulo-ejercicio">EXERCISE 1 </h1>
+            <h1 className="titulo-ejercicio">EXERCISE 1</h1>
             <p className="progreso-ejercicio">
               Question {index + 1} of {ejercicios.length}
             </p>
@@ -136,7 +97,6 @@ export default function Tema3_Ej1() {
             className="tarjeta-ejercicio"
             style={{ textAlign: "center", fontSize: "1.3rem", padding: "2rem" }}
           >
-            {/* Instrucción */}
             {index === 0 && (
               <div className="instruccion-box" style={{ marginBottom: "1.5rem" }}>
                 <p className="instruccion-ejercicio">
@@ -145,7 +105,6 @@ export default function Tema3_Ej1() {
               </div>
             )}
 
-            {/* Oración */}
             <div
               className="oracion-box"
               style={{
@@ -163,7 +122,6 @@ export default function Tema3_Ej1() {
               <p>{respuesta ? respuesta.split("\n").slice(1).join("\n") : actual.pregunta}</p>
             </div>
 
-            {/* Opciones */}
             {!respuesta && (
               <div
                 className="opciones-ejercicio"
@@ -188,7 +146,6 @@ export default function Tema3_Ej1() {
               </div>
             )}
 
-            {/* Botón Check */}
             {!respuesta && (
               <button
                 onClick={verificar}
@@ -205,17 +162,17 @@ export default function Tema3_Ej1() {
               </button>
             )}
 
-            {/* Feedback */}
             {respuesta && (
               <p
-                className={`respuesta-feedback ${respuesta.startsWith("✅") ? "correcta" : "incorrecta"}`}
+                className={`respuesta-feedback ${
+                  respuesta.startsWith("Correct") ? "correcta" : "incorrecta"
+                }`}
                 style={{ fontSize: "1.3rem", margin: "1rem 0" }}
               >
                 {respuesta.split("\n")[0]}
               </p>
             )}
 
-            {/* Botones siguiente / finalizar */}
             <div
               className="botones-siguiente"
               style={{
@@ -248,7 +205,7 @@ export default function Tema3_Ej1() {
         </>
       ) : (
         <div className="finalizado" style={{ fontSize: "1.3rem" }}>
-          <h2>✅ You have completed the exercise!</h2>
+          <h2>You have completed the exercise!</h2>
           <p>
             Correct answers: <strong>{correctas} / {ejercicios.length}</strong>
           </p>

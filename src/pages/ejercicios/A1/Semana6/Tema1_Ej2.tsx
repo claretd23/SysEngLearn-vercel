@@ -2,6 +2,8 @@ import { useParams, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import "../ejercicios.css";
 
+const API_URL = import.meta.env.VITE_API_URL;
+
 export default function Tema1_Ej2() {
   const { nivel, semana, tema, ejercicio } = useParams();
   const id = `${nivel}-${semana}-${tema}-${ejercicio}`;
@@ -14,60 +16,21 @@ export default function Tema1_Ej2() {
   const [finalizado, setFinalizado] = useState(false);
 
   const ejercicios = [
-    {
-      pregunta: "There is a picture hanging ___ the wall.",
-      opciones: ["in", "on", "at", "under"],
-      correcta: "on",
-    },
-    {
-      pregunta: "The book is ___ the shelf.",
-      opciones: ["on", "in", "at", "behind"],
-      correcta: "on",
-    },
-    {
-      pregunta: "The children are playing ___ the garden.",
-      opciones: ["in", "on", "at", "under"],
-      correcta: "in",
-    },
-    {
-      pregunta: "The clock is _____ the door.",
-      opciones: ["in", "on", "above", "under"],
-      correcta: "above",
-    },
-    {
-      pregunta: "The ball is ___ the chair.",
-      opciones: ["under", "on", "next to", "in"],
-      correcta: "under",
-    },
-    {
-      pregunta: "The bank is ___ the post office and the pharmacy.",
-      opciones: ["between", "on", "next to", "under"],
-      correcta: "between",
-    },
-    {
-      pregunta: "She is standing ___ her mother.",
-      opciones: ["behind", "next to", "in", "at"],
-      correcta: "next to",
-    },
-    {
-      pregunta: "The ball is _______ the sofa.",
-      opciones: ["behind", "in", "above", "between"],
-      correcta: "behind",
-    },
-    {
-      pregunta: "The cat is sitting ___ the chair.",
-      opciones: ["on", "in", "under", "behind"],
-      correcta: "on",
-    },
-    {
-      pregunta: "The painting is ___ the sofa.",
-      opciones: ["above", "under", "behind", "in front of"],
-      correcta: "above",
-    },
+    { pregunta: "There is a picture hanging ___ the wall.", opciones: ["in", "on", "at", "under"], correcta: "on" },
+    { pregunta: "The book is ___ the shelf.", opciones: ["on", "in", "at", "behind"], correcta: "on" },
+    { pregunta: "The children are playing ___ the garden.", opciones: ["in", "on", "at", "under"], correcta: "in" },
+    { pregunta: "The clock is _____ the door.", opciones: ["in", "on", "above", "under"], correcta: "above" },
+    { pregunta: "The ball is ___ the chair.", opciones: ["under", "on", "next to", "in"], correcta: "under" },
+    { pregunta: "The bank is ___ the post office and the pharmacy.", opciones: ["between", "on", "next to", "under"], correcta: "between" },
+    { pregunta: "She is standing ___ her mother.", opciones: ["behind", "next to", "in", "at"], correcta: "next to" },
+    { pregunta: "The ball is _______ the sofa.", opciones: ["behind", "in", "above", "between"], correcta: "behind" },
+    { pregunta: "The cat is sitting ___ the chair.", opciones: ["on", "in", "under", "behind"], correcta: "on" },
+    { pregunta: "The painting is ___ the sofa.", opciones: ["above", "under", "behind", "in front of"], correcta: "above" },
   ];
 
   const actual = ejercicios[index];
 
+  // === GUARDAR PROGRESO ===
   const guardarProgreso = async () => {
     const completados = JSON.parse(localStorage.getItem("ejercicios_completados") || "[]");
     if (!completados.includes(id)) {
@@ -77,7 +40,7 @@ export default function Tema1_Ej2() {
 
     try {
       const token = localStorage.getItem("token");
-      const res = await fetch("http://localhost:5000/api/progreso", {
+      const res = await fetch(`${API_URL}/api/progreso`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -86,32 +49,35 @@ export default function Tema1_Ej2() {
         body: JSON.stringify({ nivel, semana, tema, ejercicio }),
       });
 
-      if (!res.ok) console.error("Error al guardar progreso:", res.statusText);
+      if (!res.ok) console.error("Error saving progress:", res.statusText);
     } catch (error) {
-      console.error("Error al guardar el progreso:", error);
+      console.error("Error saving progress:", error);
     }
   };
 
+  // === VERIFICAR RESPUESTA ===
   const verificar = () => {
     if (!opcionSeleccionada) return;
 
     const oracionCompletada = actual.pregunta.replace("___", opcionSeleccionada);
 
     if (opcionSeleccionada === actual.correcta) {
-      setRespuesta(`✅ Correct!\n\n${oracionCompletada}`);
+      setRespuesta(`Correct\n\n${oracionCompletada}`);
       setCorrectas((prev) => prev + 1);
     } else {
       const oracionCorrecta = actual.pregunta.replace("___", actual.correcta);
-      setRespuesta(`❌ Incorrect.\n\n${oracionCorrecta}`);
+      setRespuesta(`Incorrect\n\n${oracionCorrecta}`);
     }
   };
 
+  // === SIGUIENTE PREGUNTA ===
   const siguiente = () => {
     setRespuesta(null);
     setOpcionSeleccionada(null);
     setIndex(index + 1);
   };
 
+  // === FINALIZAR ===
   const manejarFinalizacion = async () => {
     await guardarProgreso();
     setFinalizado(true);
@@ -121,21 +87,19 @@ export default function Tema1_Ej2() {
     }, 3000);
   };
 
+  // === RENDER ===
   return (
     <div className="ejercicio-container">
       {!finalizado ? (
         <>
           <header className="ejercicio-header">
-            <h1 className="titulo-ejercicio">EXERCISE 2 </h1>
+            <h1 className="titulo-ejercicio">EXERCISE 2</h1>
             <p className="progreso-ejercicio">
               Question {index + 1} of {ejercicios.length}
             </p>
           </header>
 
-          <section
-            className="tarjeta-ejercicio"
-            style={{ textAlign: "center", fontSize: "1.3rem", padding: "2rem" }}
-          >
+          <section className="tarjeta-ejercicio" style={{ textAlign: "center", fontSize: "1.3rem", padding: "2rem" }}>
             {/* Instrucción */}
             {index === 0 && (
               <div className="instruccion-box" style={{ marginBottom: "1.5rem" }}>
@@ -208,7 +172,9 @@ export default function Tema1_Ej2() {
             {/* Feedback */}
             {respuesta && (
               <p
-                className={`respuesta-feedback ${respuesta.startsWith("✅") ? "correcta" : "incorrecta"}`}
+                className={`respuesta-feedback ${
+                  respuesta.startsWith("Correct") ? "correcta" : "incorrecta"
+                }`}
                 style={{ fontSize: "1.3rem", margin: "1rem 0" }}
               >
                 {respuesta.split("\n")[0]}
@@ -248,7 +214,7 @@ export default function Tema1_Ej2() {
         </>
       ) : (
         <div className="finalizado" style={{ fontSize: "1.3rem" }}>
-          <h2>✅ You have completed the exercise!</h2>
+          <h2 className="correcta">You have completed the exercise!</h2>
           <p>
             Correct answers: <strong>{correctas} / {ejercicios.length}</strong>
           </p>

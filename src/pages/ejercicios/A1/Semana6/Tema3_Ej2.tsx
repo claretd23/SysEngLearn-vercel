@@ -2,6 +2,8 @@ import { useParams, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import "../ejercicios.css";
 
+const API_URL = import.meta.env.VITE_API_URL;
+
 export default function Tema3_Ej2() {
   const { nivel, semana, tema, ejercicio } = useParams();
   const id = `${nivel}-${semana}-${tema}-${ejercicio}`;
@@ -43,7 +45,7 @@ On weekends, I spend time at my parents’ house or meet my friends in a café i
 
     try {
       const token = localStorage.getItem("token");
-      const res = await fetch("http://localhost:5000/api/progreso", {
+      const res = await fetch(`${API_URL}/api/progreso`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -60,10 +62,10 @@ On weekends, I spend time at my parents’ house or meet my friends in a café i
   const verificar = () => {
     if (!opcionSeleccionada) return;
     if (opcionSeleccionada === actual.correcta) {
-      setRespuesta(`✅ Correct!\n\n${opcionSeleccionada}`);
+      setRespuesta(`Correct!\n\n${opcionSeleccionada}`);
       setCorrectas(prev => prev + 1);
     } else {
-      setRespuesta(`❌ Incorrect.\n\nCorrect answer: ${actual.correcta}`);
+      setRespuesta(`Incorrect.\n\nCorrect answer: ${actual.correcta}`);
     }
   };
 
@@ -132,7 +134,7 @@ On weekends, I spend time at my parents’ house or meet my friends in a café i
               )}
 
               {respuesta && (
-                <p className={`respuesta-feedback ${respuesta.startsWith("✅") ? "correcta" : "incorrecta"}`} style={{ fontSize: "1.3rem", margin: "1rem 0" }}>
+                <p className={`respuesta-feedback ${respuesta.startsWith("Correct") ? "correcta" : "incorrecta"}`} style={{ fontSize: "1.3rem", margin: "1rem 0" }}>
                   {respuesta.split("\n")[0]}
                 </p>
               )}
@@ -154,7 +156,7 @@ On weekends, I spend time at my parents’ house or meet my friends in a café i
         </>
       ) : (
         <div className="finalizado" style={{ fontSize: "1.3rem" }}>
-          <h2>✅ You have completed the exercise!</h2>
+          <h2>Well done! You have completed the exercise.</h2>
           <p>Correct answers: <strong>{correctas} / {ejercicios.length}</strong></p>
           <p>Redirecting to the start of the level...</p>
         </div>

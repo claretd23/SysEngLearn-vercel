@@ -23,6 +23,7 @@ export default function Tema2_Ej2() {
   const [paresIncorrectos, setParesIncorrectos] = useState<{ situacion: string; respuesta: string }[]>([]);
   const [finalizado, setFinalizado] = useState(false);
   const [completo, setCompleto] = useState(false);
+  const [mensajeProgreso, setMensajeProgreso] = useState<string | null>(null);
 
   const ejercicios: EjercicioMatching[] = [
     { situacion: "___ your homework before dinner.", respuesta: "Do" },
@@ -48,26 +49,40 @@ export default function Tema2_Ej2() {
   }, [paresCorrectos, paresIncorrectos]);
 
   const guardarProgreso = async () => {
-    const completados = JSON.parse(localStorage.getItem("ejercicios_completados") || "[]");
-    if (!completados.includes(id)) {
-      completados.push(id);
-      localStorage.setItem("ejercicios_completados", JSON.stringify(completados));
-    }
-
     try {
+      const completados = JSON.parse(localStorage.getItem("ejercicios_completados") || "[]");
+      if (!completados.includes(id)) {
+        completados.push(id);
+        localStorage.setItem("ejercicios_completados", JSON.stringify(completados));
+      }
+
       const token = localStorage.getItem("token");
+      if (!token) {
+        console.warn("No hay token, el progreso solo se guardará localmente.");
+        return { ok: false, mensaje: "Guardado localmente" };
+      }
+
       const res = await fetch(`${API_URL}/progreso`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify({ nivel, semana, tema, ejercicio }),
+        body: JSON.stringify({ id, completado: true }),
       });
 
-      if (!res.ok) console.error("Error al guardar progreso:", res.statusText);
+      if (!res.ok) {
+        const errorText = await res.text();
+        console.error("Error al guardar progreso:", res.status, errorText);
+        return { ok: false, mensaje: "Error en el servidor" };
+      }
+
+      const data = await res.json().catch(() => ({}));
+      console.log("Progreso guardado:", data);
+      return { ok: true, mensaje: "Progreso guardado correctamente" };
     } catch (error) {
       console.error("Error al guardar el progreso:", error);
+      return { ok: false, mensaje: "Error en la conexión" };
     }
   };
 
@@ -108,8 +123,10 @@ export default function Tema2_Ej2() {
   };
 
   const manejarFinalizacion = async () => {
-    await guardarProgreso();
+    const resultado = await guardarProgreso();
+    setMensajeProgreso(resultado.mensaje);
     setFinalizado(true);
+
     setTimeout(() => {
       navigate(`/inicio/${nivel}`);
       window.location.reload();
@@ -203,11 +220,12 @@ export default function Tema2_Ej2() {
           </section>
         </>
       ) : (
-        <div className="finalizado" style={{ fontSize: "1.3rem" }}>
+        <div className="finalizado" style={{ fontSize: "1.3rem", textAlign: "center" }}>
           <h2>You have completed the exercise!</h2>
           <p>
             Correct pairs: <strong>{Object.keys(paresCorrectos).length}</strong> / {ejercicios.length}
           </p>
+          {mensajeProgreso && <p style={{ color: "#222a5c", fontWeight: "600" }}>{mensajeProgreso}</p>}
           <p>Redirecting to the start of the level...</p>
         </div>
       )}

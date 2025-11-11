@@ -112,7 +112,7 @@ export default function Tema1_Ej3() {
             )}
 
             <button onClick={playAudio} className="btn-audio" style={{ fontSize: "2rem", marginBottom: "1rem" }}>
-              🔊 Play Audio
+              🔊
             </button>
             <audio ref={audioRef} src={actual.audio} />
 

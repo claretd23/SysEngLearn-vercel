@@ -26,52 +26,52 @@ export default function Tema3_Ej3() {
     {
       texto: "I usually go to school ___ bus every morning.",
       correcta: ["by"],
-      audio: "/audios/sem2/go_to_school_by_bus.mp3",
+      audio: "/audios/sem5/ej3_21.mp3",
     },
     {
       texto: "She is sitting ___ the car with her friends.",
       correcta: ["in"],
-      audio: "/audios/sem2/sitting_in_the_car.mp3",
+      audio: "/audios/sem2/sem5/ej3_22.mp3",
     },
     {
       texto: "We travel ___ train to visit our grandparents.",
       correcta: ["by"],
-      audio: "/audios/sem2/travel_by_train.mp3",
+      audio: "/audios/sem5/ej3_23.mp3",
     },
     {
       texto: "He is standing ___ the bus stop waiting for the bus.",
       correcta: ["at"],
-      audio: "/audios/sem2/standing_at_bus_stop.mp3",
+      audio: "/audios/sem5/ej3_24.mp3",
     },
     {
       texto: "They are walking ___ the street to get to the park.",
       correcta: ["on"],
-      audio: "/audios/sem2/walking_on_the_street.mp3",
+      audio: "/audios/sem5/ej3_25.mp3",
     },
     {
       texto: "I always put my bag ___ the taxi.",
       correcta: ["in"],
-      audio: "/audios/sem2/put_bag_in_taxi.mp3",
+      audio: "/audios/sem5/ej3_26.mp3",
     },
     {
       texto: "She rides her bicycle ___ school every day.",
       correcta: ["to"],
-      audio: "/audios/sem2/rides_bicycle_to_school.mp3",
+      audio: "/audios/sem5/ej3_27.mp3",
     },
     {
       texto: "We are going to London ___ plane next week.",
       correcta: ["by"],
-      audio: "/audios/sem2/going_to_london_by_plane.mp3",
+      audio: "/audios/sem5/ej3_28.mp3",
     },
     {
       texto: "He sits ___ the front seat of the car.",
       correcta: ["in"],
-      audio: "/audios/sem2/sits_in_front_seat.mp3",
+      audio: "/audios/sem5/ej3_29.mp3",
     },
     {
       texto: "The passengers are waiting ___ the train platform.",
       correcta: ["on"],
-      audio: "/audios/sem2/waiting_on_platform.mp3",
+      audio: "/audios/sem5/ej3_30.mp3",
     },
   ];
 

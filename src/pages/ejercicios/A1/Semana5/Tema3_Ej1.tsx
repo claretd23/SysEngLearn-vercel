@@ -37,7 +37,6 @@ export default function Tema3_Ej1() {
         completados.push(id);
         localStorage.setItem("ejercicios_completados", JSON.stringify(completados));
       }
-
       const token = localStorage.getItem("token");
       if (token) {
         const res = await fetch(`${API_URL}/api/progreso`, {

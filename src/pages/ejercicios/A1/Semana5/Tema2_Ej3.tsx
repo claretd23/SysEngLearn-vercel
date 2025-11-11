@@ -9,6 +9,7 @@ export default function Tema2_Ej3() {
   const API_URL = import.meta.env.VITE_API_URL;
 
   const [respuesta, setRespuesta] = useState<string | null>(null);
+  const [oracionCompleta, setOracionCompleta] = useState<string | null>(null);
   const [opcionSeleccionada, setOpcionSeleccionada] = useState<string | null>(null);
   const [correctas, setCorrectas] = useState(0);
   const [index, setIndex] = useState(0);
@@ -21,81 +22,51 @@ export default function Tema2_Ej3() {
       {
         audio: "/audios/sem6/ej3_1.mp3",
         pregunta: "I have a ______ dog.",
-        opciones: [
-          "small beautiful white dog",
-          "white small beautiful dog",
-          "beautiful small white dog",
-        ],
         correcta: "beautiful small white dog",
       },
       {
         audio: "/audios/sem6/ej3_2.mp3",
         pregunta: "She is wearing a ______ dress.",
-        opciones: [
-          "long red nice dress",
-          "nice long red dress",
-          "red nice long dress",
-        ],
         correcta: "nice long red dress",
       },
       {
         audio: "/audios/sem6/ej3_3.mp3",
         pregunta: "He lives in a ______ house.",
-        opciones: ["yellow big house", "big yellow house", "house big yellow"],
         correcta: "big yellow house",
       },
       {
         audio: "/audios/sem6/ej3_4.mp3",
         pregunta: "I bought a ______ car.",
-        opciones: ["black new car", "new black car", "car black new"],
         correcta: "new black car",
       },
       {
         audio: "/audios/sem6/ej3_5.mp3",
         pregunta: "They have a ______ baby.",
-        opciones: ["little cute baby", "baby cute little", "cute little baby"],
         correcta: "cute little baby",
       },
       {
         audio: "/audios/sem6/ej3_6.mp3",
         pregunta: "We saw a ______ park.",
-        opciones: [
-          "green big beautiful park",
-          "big beautiful green park",
-          "beautiful big green park",
-        ],
         correcta: "beautiful big green park",
       },
       {
         audio: "/audios/sem6/ej3_7.mp3",
         pregunta: "She has a ______ bag.",
-        opciones: [
-          "nice small brown bag",
-          "brown nice small bag",
-          "small brown nice bag",
-        ],
         correcta: "nice small brown bag",
       },
       {
         audio: "/audios/sem6/ej3_8.mp3",
         pregunta: "I want a ______ chair.",
-        opciones: [
-          "large comfortable blue chair",
-          "comfortable large blue chair",
-          "blue comfortable large chair",
-        ],
         correcta: "comfortable large blue chair",
       },
       {
         audio: "/audios/sem6/ej3_9.mp3",
         pregunta: "We visited an ______ church.",
-        opciones: ["old white church", "white old church", "church old white"],
         correcta: "old white church",
       },
       {
         audio: "/audios/sem6/ej3_10.mp3",
         pregunta: "He is driving a ______ car.",
-        opciones: ["fast red car", "red fast car", "car red fast"],
         correcta: "fast red car",
       },
     ],
@@ -103,6 +74,17 @@ export default function Tema2_Ej3() {
   );
 
   const actual = ejercicios[index];
+
+  // === OPCIONES ALEATORIAS (correcta + 2 mezcladas) ===
+  const opciones = useMemo(() => {
+    const otras = ejercicios
+      .filter((e) => e.correcta !== actual.correcta)
+      .map((e) => e.correcta)
+      .sort(() => 0.5 - Math.random())
+      .slice(0, 2);
+    const todas = [...otras, actual.correcta].sort(() => 0.5 - Math.random());
+    return todas;
+  }, [actual, ejercicios]);
 
   // === AUDIO ===
   const playAudio = () => {
@@ -135,20 +117,23 @@ export default function Tema2_Ej3() {
   };
 
   // === VERIFICAR RESPUESTA ===
-  const verificar = () => {
-    if (!opcionSeleccionada) return;
+  const verificar = (op: string) => {
+    setOpcionSeleccionada(op);
+    const completa = actual.pregunta.replace("______", actual.correcta);
 
-    if (opcionSeleccionada === actual.correcta) {
+    if (op === actual.correcta) {
       setRespuesta("Correct!");
       setCorrectas((prev) => prev + 1);
     } else {
-      setRespuesta(`The correct answer is "${actual.correcta}".`);
+      setRespuesta("Incorrect!");
     }
+    setOracionCompleta(completa);
   };
 
   // === SIGUIENTE ===
   const siguiente = () => {
     setRespuesta(null);
+    setOracionCompleta(null);
     setOpcionSeleccionada(null);
     setIndex((prev) => prev + 1);
   };
@@ -192,7 +177,7 @@ export default function Tema2_Ej3() {
           </div>
         )}
 
-        {/* Botón de audio */}
+        {/* AUDIO */}
         <button
           className="btn-audio"
           style={{ fontSize: "2rem", margin: "1rem 0" }}
@@ -202,54 +187,61 @@ export default function Tema2_Ej3() {
         </button>
         <audio ref={audioRef} src={actual.audio} />
 
-        <p style={{ fontSize: "1.3rem", margin: "1rem 0" }}>{actual.pregunta}</p>
+        {/* PREGUNTA */}
+        <p style={{ fontSize: "1.3rem", margin: "1rem 0" }}>
+          {actual.pregunta}
+        </p>
 
-        {!respuesta && (
-          <>
-            <div
-              className="opciones-ejercicio"
-              style={{
-                display: "flex",
-                flexDirection: "column",
-                gap: "1rem",
-                alignItems: "center",
-                marginBottom: "1rem",
-              }}
-            >
-              {actual.opciones.map((op, i) => (
-                <button
-                  key={i}
-                  className={`opcion-btn ${opcionSeleccionada === op ? "seleccionada" : ""}`}
-                  onClick={() => setOpcionSeleccionada(op)}
-                  style={{ fontSize: "1.2rem", padding: "0.8rem 1.5rem", minWidth: "220px" }}
-                >
-                  {op}
-                </button>
-              ))}
-            </div>
-
+        {/* OPCIONES */}
+        <div
+          className="opciones-ejercicio"
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            gap: "1rem",
+            alignItems: "center",
+            marginBottom: "1rem",
+          }}
+        >
+          {opciones.map((op, i) => (
             <button
-              onClick={verificar}
-              className="ejercicio-btn"
-              disabled={!opcionSeleccionada}
-              style={{ fontSize: "1.3rem", padding: "0.8rem 2rem", borderRadius: "8px" }}
+              key={i}
+              className={`opcion-btn ${
+                opcionSeleccionada === op
+                  ? op === actual.correcta
+                    ? "correcta"
+                    : "incorrecta"
+                  : ""
+              }`}
+              onClick={() => verificar(op)}
+              disabled={!!opcionSeleccionada}
+              style={{ fontSize: "1.2rem", padding: "0.8rem 1.5rem", minWidth: "250px" }}
             >
-              Check
+              {op}
             </button>
+          ))}
+        </div>
+
+        {/* FEEDBACK */}
+        {respuesta && (
+          <>
+            <p
+              className={`respuesta-feedback ${
+                respuesta === "Correct!" ? "correcta" : "incorrecta"
+              }`}
+              style={{ fontSize: "1.3rem", margin: "1rem 0" }}
+            >
+              {respuesta}
+            </p>
+            {oracionCompleta && (
+              <p style={{ fontSize: "1.2rem", marginTop: "0.5rem", fontStyle: "italic" }}>
+                {oracionCompleta}
+              </p>
+            )}
           </>
         )}
 
-        {respuesta && (
-          <p
-            className={`respuesta-feedback ${
-              respuesta.startsWith("Correct") ? "correcta" : "incorrecta"
-            }`}
-            style={{ fontSize: "1.3rem", margin: "1rem 0" }}
-          >
-            {respuesta}
-          </p>
-        )}
-
+        {/* BOTONES SIGUIENTE / FINALIZAR */}
         <div className="botones-siguiente" style={{ marginTop: "1rem" }}>
           {respuesta && index < ejercicios.length - 1 && (
             <button

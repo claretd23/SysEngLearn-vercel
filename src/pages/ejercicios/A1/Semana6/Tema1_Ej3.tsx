@@ -198,18 +198,7 @@ export default function Tema1_Ej3() {
               key={opcion}
               onClick={() => setSeleccion(opcion)}
               className={`opcion-btn ${seleccion === opcion ? "seleccionada" : ""}`}
-              style={{
-                fontSize: "1.2rem",
-                padding: "0.5rem 1rem",
-                width: "280px",
-                borderRadius: "8px",
-                border: "1px solid #ccc",
-                background:
-                  seleccion === opcion ? "#f8f9f3ff" : "white",
-                color:
-                  seleccion === opcion ? "white" : "#222a5c",
-                transition: "0.3s",
-              }}
+              style={{ fontSize: "1.2rem", padding: "0.8rem 1.5rem", minWidth: "180px" }}
             >
               {opcion}
             </button>

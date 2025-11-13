@@ -32,7 +32,7 @@ export default function Tema3_Ej3() {
   const actual = ejercicios[index];
   const audioRefs = useRef<(HTMLAudioElement | null)[]>([]);
 
-  // ✅ Verificar si el ejercicio ya fue completado
+  //  Verificar si el ejercicio ya fue completado
   useEffect(() => {
     const checkProgreso = async () => {
       try {

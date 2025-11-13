@@ -1,9 +1,10 @@
- import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { useState, useRef } from "react";
 import "../ejercicios.css";
 
-export default function Tema2_Ej3() {
+export default function Tema3_Ej3() {
   const { nivel, semana, tema, ejercicio } = useParams();
+  const id = `${nivel}-${semana}-${tema}-${ejercicio}`;
   const navigate = useNavigate();
 
   const [respuesta, setRespuesta] = useState<string | null>(null);
@@ -11,117 +12,89 @@ export default function Tema2_Ej3() {
   const [correctas, setCorrectas] = useState(0);
   const [index, setIndex] = useState(0);
   const [finalizado, setFinalizado] = useState(false);
+
   const API_URL = import.meta.env.VITE_API_URL;
+  const token = localStorage.getItem("token");
+  const audioRefs = useRef<(HTMLAudioElement | null)[]>([]);
 
-  const audioRefs = [
-    useRef<HTMLAudioElement>(null),
-    useRef<HTMLAudioElement>(null),
-    useRef<HTMLAudioElement>(null),
-  ];
+  // === FUNCIONES DE AUDIO ===
+  const playAudios = () => {
+    const audios = audioRefs.current;
+    if (!audios[0]) return;
+    audios[0].play();
+    audios[0].onended = () => {
+      if (audios[1]) {
+        setTimeout(() => audios[1]?.play(), 500);
+      }
+    };
+  };
 
+  // === EJERCICIOS ===
   const ejercicios = [
     {
-      audios: [
-        { src: "/audios/sem1/Tema2/ej3-1a.mp3", img: "/img/satnav.png" },
-        { src: "/audios/sem1/Tema2/ej3-1b.mp3", img: "/img/lisa.png" },
-        { src: "/audios/sem1/Tema2/ej3-1c.mp3", img: "/img/john.png" },
-      ],
-      correcta: "turn",
-      placeholder: "After 100 metres, ________ right.",
+      audios: ["/audios/sem3/imperatives1_a.mp3", "/audios/sem3/imperatives1_b.mp3"],
+      texto: "After 100 metres, ________ right.",
+      correcta: ["turn"],
     },
     {
-      audios: [
-        { src: "/audios/sem1/Tema2/ej3-2a.mp3", img: "/img/teacher.png" },
-        { src: "/audios/sem1/Tema2/ej3-2b.mp3", img: "/img/students.png" },
-      ],
-      correcta: "open",
-      placeholder: "Please, ________ your books on page 10.",
+      audios: ["/audios/sem3/imperatives2_a.mp3", "/audios/sem3/imperatives2_b.mp3"],
+      texto: "Please, ________ your books on page 10.",
+      correcta: ["open"],
     },
     {
-      audios: [
-        { src: "/audios/sem1/Tema2/ej3-3a.mp3", img: "/img/mom.png" },
-        { src: "/audios/sem1/Tema2/ej3-3b.mp3", img: "/img/child.png" },
-      ],
-      correcta: "don’t stand",
-      placeholder: "________ so close to the fire.",
+      audios: ["/audios/sem3/imperatives3_a.mp3", "/audios/sem3/imperatives3_b.mp3"],
+      texto: "________ so close to the fire.",
+      correcta: ["don't stand"],
     },
     {
-      audios: [
-        { src: "/audios/sem1/Tema2/ej3-4a.mp3", img: "/img/coach.png" },
-        { src: "/audios/sem1/Tema2/ej3-4b.mp3", img: "/img/players.png" },
-      ],
-      correcta: "run",
-      placeholder: "________ faster, we’re almost there!",
+      audios: ["/audios/sem3/imperatives4_a.mp3", "/audios/sem3/imperatives4_b.mp3"],
+      texto: "________ faster, we’re almost there!",
+      correcta: ["run"],
     },
     {
-      audios: [
-        { src: "/audios/sem1/Tema2/ej3-5a.mp3", img: "/img/doctor.png" },
-        { src: "/audios/sem1/Tema2/ej3-5b.mp3", img: "/img/patient.png" },
-      ],
-      correcta: "take",
-      placeholder: "________ this medicine twice a day.",
+      audios: ["/audios/sem3/imperatives5_a.mp3", "/audios/sem3/imperatives5_b.mp3"],
+      texto: "________ this medicine twice a day.",
+      correcta: ["take"],
     },
     {
-      audios: [
-        { src: "/audios/sem1/Tema2/ej3-6a.mp3", img: "/img/policeman.png" },
-        { src: "/audios/sem1/Tema2/ej3-6b.mp3", img: "/img/driver.png" },
-      ],
-      correcta: "stop",
-      placeholder: "________ here, please.",
+      audios: ["/audios/sem3/imperatives6_a.mp3", "/audios/sem3/imperatives6_b.mp3"],
+      texto: "________ here, please.",
+      correcta: ["stop"],
     },
     {
-      audios: [
-        { src: "/audios/sem1/Tema2/ej3-7a.mp3", img: "/img/dad.png" },
-        { src: "/audios/sem1/Tema2/ej3-7b.mp3", img: "/img/kid.png" },
-      ],
-      correcta: "wash",
-      placeholder: "________ your hands before eating.",
+      audios: ["/audios/sem3/imperatives7_a.mp3", "/audios/sem3/imperatives7_b.mp3"],
+      texto: "________ your hands before eating.",
+      correcta: ["wash"],
     },
     {
-      audios: [
-        { src: "/audios/sem1/Tema2/ej3-8a.mp3", img: "/img/teacher2.png" },
-        { src: "/audios/sem1/Tema2/ej3-8b.mp3", img: "/img/students2.png" },
-      ],
-      correcta: "pay",
-      placeholder: "________ attention, everyone.",
+      audios: ["/audios/sem3/imperatives8_a.mp3", "/audios/sem3/imperatives8_b.mp3"],
+      texto: "________ attention, everyone.",
+      correcta: ["pay"],
     },
     {
-      audios: [
-        { src: "/audios/sem1/Tema2/ej3-9a.mp3", img: "/img/tourguide.png" },
-        { src: "/audios/sem1/Tema2/ej3-9b.mp3", img: "/img/tourist.png" },
-      ],
-      correcta: "don’t take",
-      placeholder: "________ pictures inside the museum, please.",
+      audios: ["/audios/sem3/imperatives9_a.mp3", "/audios/sem3/imperatives9_b.mp3"],
+      texto: "________ pictures inside the museum, please.",
+      correcta: ["don't take"],
     },
     {
-      audios: [
-        { src: "/audios/sem1/Tema2/ej3-10a.mp3", img: "/img/friend1.png" },
-        { src: "/audios/sem1/Tema2/ej3-10b.mp3", img: "/img/friend2.png" },
-      ],
-      correcta: "speak",
-      placeholder: "________ louder!",
+      audios: ["/audios/sem3/imperatives10_a.mp3", "/audios/sem3/imperatives10_b.mp3"],
+      texto: "________ louder!",
+      correcta: ["speak"],
     },
   ];
 
   const actual = ejercicios[index];
 
-  const playSequence = () => {
-    if (audioRefs[0].current) {
-      audioRefs[0].current.play();
-      audioRefs[0].current.onended = () => {
-        setTimeout(() => audioRefs[1].current?.play(), 1000);
-      };
-    }
-    if (audioRefs[1].current) {
-      audioRefs[1].current.onended = () => {
-        setTimeout(() => audioRefs[2]?.current?.play(), 1000);
-      };
-    }
-  };
-
+  // === GUARDAR PROGRESO ===
   const guardarProgreso = async () => {
+    const completados = JSON.parse(localStorage.getItem("ejercicios_completados") || "[]");
+    if (!completados.includes(id)) {
+      completados.push(id);
+      localStorage.setItem("ejercicios_completados", JSON.stringify(completados));
+    }
+
+    if (!token) return;
     try {
-      const token = localStorage.getItem("token");
       const res = await fetch(`${API_URL}/api/progreso`, {
         method: "POST",
         headers: {
@@ -130,29 +103,41 @@ export default function Tema2_Ej3() {
         },
         body: JSON.stringify({ nivel, semana, tema, ejercicio }),
       });
-      if (!res.ok) console.error("Error al guardar progreso:", res.statusText);
+
+      if (!res.ok) {
+        console.error("Error al guardar progreso:", res.statusText);
+      }
     } catch (error) {
       console.error("Error al guardar el progreso:", error);
     }
   };
 
+  // === VERIFICAR RESPUESTA ===
   const verificar = () => {
     const respuestaUsuario = inputValue.trim().toLowerCase();
     if (!respuestaUsuario) return;
-    if (respuestaUsuario === actual.correcta.toLowerCase()) {
-      setRespuesta("Correct!");
+
+    const esCorrecta = actual.correcta.some(
+      (c) => c.toLowerCase() === respuestaUsuario
+    );
+
+    if (esCorrecta) {
+      setRespuesta("Correct");
       setCorrectas((prev) => prev + 1);
     } else {
-      setRespuesta(`Incorrect. The answer is "${actual.correcta}".`);
+      setRespuesta("Incorrect");
+      setInputValue(actual.correcta[0]);
     }
   };
 
+  // === SIGUIENTE ===
   const siguiente = () => {
     setRespuesta(null);
     setInputValue("");
     setIndex(index + 1);
   };
 
+  // === FINALIZAR ===
   const manejarFinalizacion = async () => {
     await guardarProgreso();
     setFinalizado(true);
@@ -162,6 +147,10 @@ export default function Tema2_Ej3() {
     }, 3000);
   };
 
+  const mostrarTexto = respuesta
+    ? actual.texto.replace("______", actual.correcta[0])
+    : actual.texto;
+
   return (
     <div className="ejercicio-container">
       {!finalizado ? (
@@ -169,67 +158,121 @@ export default function Tema2_Ej3() {
           <header className="ejercicio-header">
             <h1 className="titulo-ejercicio">EXERCISE 3</h1>
             <p className="progreso-ejercicio">
-              Question {index + 1} of {ejercicios.length}
+              Conversation {index + 1} of {ejercicios.length}
             </p>
           </header>
 
-          <section className="tarjeta-ejercicio">
+          <section className="tarjeta-ejercicio" style={{ textAlign: "center" }}>
             {index === 0 && (
               <div className="instruccion-box">
-                <p className="instruccion-ejercicio">
-                  Listen to each conversation and complete the space with the correct imperative.
+                <p className="instruccion-ejercicio" style={{ fontSize: "1.2rem" }}>
+                  🎧 Listen to each conversation and complete the sentence with the correct imperative.
                 </p>
               </div>
             )}
 
-            <div className="imagenes-conversacion">
-              <img src={actual.audios[0].img} alt="Speaker 1" className="speaker-img" />
-              {actual.audios[1] && (
-                <img src={actual.audios[1].img} alt="Speaker 2" className="speaker-img" />
-              )}
+            {/* === AUDIO === */}
+            <div style={{ margin: "1rem 0" }}>
+              <button
+                onClick={playAudios}
+                className="btn-audio"
+                style={{
+                  fontSize: "1.8rem",
+                  padding: "0.6rem 1rem",
+                  borderRadius: "8px",
+                }}
+              >
+                🔊
+              </button>
+              <div style={{ display: "flex", justifyContent: "center", gap: "1rem", marginTop: "0.5rem" }}>
+                {actual.audios.map((src, i) => (
+                  <audio key={i} ref={(el) => (audioRefs.current[i] = el)} src={src} />
+                ))}
+              </div>
             </div>
 
-            {actual.audios.map((a, i) => (
-              <audio key={i} ref={audioRefs[i]} src={a.src} preload="auto" />
-            ))}
+            {/* === PREGUNTA === */}
+            <p
+              className="pregunta-ejercicio"
+              style={{
+                fontSize: "1.5rem",
+                margin: "1rem 0",
+                fontWeight: 500,
+              }}
+            >
+              {mostrarTexto}
+            </p>
 
-            <div className="play-container" style={{ textAlign: "center", margin: "1rem 0" }}>
-              <button onClick={playSequence} className="btn-audio">🔊</button>
-            </div>
-
-            <div className="opciones-ejercicio">
-              <input
-                type="text"
-                value={inputValue}
-                onChange={(e) => setInputValue(e.target.value)}
-                className="input-respuesta"
-                placeholder={actual.placeholder}
-              />
-              {!respuesta && (
-                <button onClick={verificar} className="ejercicio-btn">
+            {/* === INPUT === */}
+            {!respuesta && (
+              <div
+                className="opciones-ejercicio"
+                style={{
+                  display: "flex",
+                  justifyContent: "center",
+                  gap: "1rem",
+                  margin: "1.5rem 0",
+                }}
+              >
+                <input
+                  type="text"
+                  value={inputValue}
+                  onChange={(e) => setInputValue(e.target.value)}
+                  className="input-respuesta"
+                  placeholder="Write the imperative"
+                  style={{
+                    fontSize: "1.3rem",
+                    padding: "0.8rem 1rem",
+                    borderRadius: "8px",
+                    border: "1px solid #ccc",
+                  }}
+                />
+                <button
+                  onClick={verificar}
+                  className="ejercicio-btn"
+                  style={{
+                    fontSize: "1.3rem",
+                    padding: "0.8rem 2rem",
+                    borderRadius: "8px",
+                  }}
+                >
                   Check
                 </button>
-              )}
-            </div>
+              </div>
+            )}
 
+            {/* === FEEDBACK === */}
             {respuesta && (
               <p
-                className={`respuesta-feedback ${
-                  respuesta.startsWith("Correct") ? "correcta" : "incorrecta"
-                }`}
+                className="respuesta-feedback"
+                style={{
+                  fontSize: "1.2rem",
+                  margin: "1rem 0",
+                  fontWeight: "bold",
+                  color: respuesta === "Correct" ? "#28A745" : "#DC3545",
+                }}
               >
                 {respuesta}
               </p>
             )}
 
+            {/* === BOTONES SIGUIENTE / FINAL === */}
             <div className="botones-siguiente">
               {respuesta && index < ejercicios.length - 1 && (
-                <button onClick={siguiente} className="ejercicio-btn">
-                  Next question
+                <button
+                  onClick={siguiente}
+                  className="ejercicio-btn"
+                  style={{ fontSize: "1.3rem", padding: "0.8rem 2rem" }}
+                >
+                  Next conversation
                 </button>
               )}
               {respuesta && index === ejercicios.length - 1 && (
-                <button onClick={manejarFinalizacion} className="ejercicio-btn">
+                <button
+                  onClick={manejarFinalizacion}
+                  className="ejercicio-btn"
+                  style={{ fontSize: "1.3rem", padding: "0.8rem 2rem" }}
+                >
                   Finish
                 </button>
               )}
@@ -237,10 +280,13 @@ export default function Tema2_Ej3() {
           </section>
         </>
       ) : (
-        <div className="finalizado">
+        <div className="finalizado" style={{ fontSize: "1.3rem" }}>
           <h2>You have completed the exercise!</h2>
           <p>
-            Correct answers: <strong>{correctas} / {ejercicios.length}</strong>
+            Correct answers:{" "}
+            <strong>
+              {correctas} / {ejercicios.length}
+            </strong>
           </p>
           <p>Redirecting to the start of the level...</p>
         </div>

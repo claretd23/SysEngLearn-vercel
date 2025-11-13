@@ -155,7 +155,7 @@ export default function Tema3_Ej3() {
         {index === 0 && (
           <div className="instruccion-box" style={{ fontSize: "1.3rem" }}>
             <p className="instruccion-ejercicio">
-              🎧 Listen carefully to each sentence. You will hear where a person, animal, or thing is located.
+              Listen carefully to each sentence. You will hear where a person, animal, or thing is located.
               Choose the correct answer that shows the right preposition of place: in, on, or at.
             </p>
           </div>

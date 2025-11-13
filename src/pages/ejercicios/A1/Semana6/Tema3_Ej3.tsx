@@ -152,6 +152,7 @@ export default function Tema3_Ej3() {
     );
   }
 
+  // === RENDER ===
   return (
     <div className="ejercicio-container">
       <header className="ejercicio-header">
@@ -165,7 +166,7 @@ export default function Tema3_Ej3() {
         {index === 0 && (
           <div className="instruccion-box" style={{ fontSize: "1.3rem" }}>
             <p className="instruccion-ejercicio">
-              🎧 Listen carefully to each sentence. Choose the correct answer that shows the right preposition of place: <strong>in, on, or at</strong>.
+              Listen carefully to each sentence. Choose the correct answer that shows the right preposition of place: <strong>in, on, or at</strong>.
             </p>
           </div>
         )}
@@ -184,44 +185,58 @@ export default function Tema3_Ej3() {
         <p style={{ fontSize: "1.3rem", margin: "1rem 0" }}>{actual.pregunta}</p>
 
         {/* OPCIONES */}
-        {!respuesta && (
-          <div
-            className="opciones-ejercicio"
-            style={{
-              display: "flex",
-              flexDirection: "column",
-              gap: "1rem",
-              alignItems: "center",
-              marginBottom: "1rem",
-            }}
-          >
-            {actual.opciones.map((op, i) => (
+        <div
+          className="opciones-ejercicio"
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            gap: "1rem",
+            alignItems: "center",
+            marginBottom: "1rem",
+          }}
+        >
+          {actual.opciones.map((op, i) => {
+            // clases condicionales para resaltar correct/incorrect después de responder
+            let clase = "opcion-btn";
+            if (respuesta) {
+              if (op === actual.correcta) clase += " correcta";
+              else if (op === opcionSeleccionada) clase += " incorrecta";
+              else clase += " neutral";
+            }
+
+            return (
               <button
                 key={i}
-                className="opcion-btn"
-                onClick={() => verificar(op)}
+                className={clase}
+                onClick={() => !respuesta && verificar(op)}
                 style={{
                   fontSize: "1.2rem",
                   padding: "0.8rem 1.5rem",
                   minWidth: "250px",
                 }}
+                disabled={!!respuesta}
               >
                 {op}
               </button>
-            ))}
-          </div>
-        )}
+            );
+          })}
+        </div>
 
-        {/* FEEDBACK */}
+        {/* FEEDBACK (muestra también cuál es la respuesta correcta) */}
         {respuesta && (
-          <p
-            className={`respuesta-feedback ${
-              respuesta === "Correct!" ? "correcta" : "incorrecta"
-            }`}
-            style={{ fontSize: "1.3rem", margin: "1rem 0" }}
-          >
-            {respuesta}
-          </p>
+          <div style={{ margin: "1rem 0", fontSize: "1.3rem" }}>
+            <p
+              className={`respuesta-feedback ${
+                respuesta === "Correct!" ? "correcta" : "incorrecta"
+              }`}
+              style={{ marginBottom: "0.5rem" }}
+            >
+              {respuesta}
+            </p>
+            <p>
+              Respuesta correcta: <strong>{actual.correcta}</strong>
+            </p>
+          </div>
         )}
 
         {/* BOTONES SIGUIENTE / FINALIZAR */}

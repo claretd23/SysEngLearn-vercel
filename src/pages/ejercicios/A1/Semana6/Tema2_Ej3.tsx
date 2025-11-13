@@ -148,7 +148,7 @@ export default function Tema3_Ej3() {
   };
 
   const mostrarTexto = respuesta
-    ? actual.texto.replace("______", actual.correcta[0])
+    ? actual.texto.replace("________", actual.correcta[0])
     : actual.texto;
 
   return (

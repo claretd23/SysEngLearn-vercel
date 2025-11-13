@@ -6,7 +6,7 @@ export default function Tema3_Ej3() {
   const { nivel, semana, tema, ejercicio } = useParams();
   const id = `${nivel}-${semana}-${tema}-${ejercicio}`;
   const navigate = useNavigate();
-  const API_URL = import.meta.env.VITE_API_URL; // ✅ agregado
+  const API_URL = import.meta.env.VITE_API_URL; 
 
   const [respuesta, setRespuesta] = useState<string | null>(null);
   const [inputValue, setInputValue] = useState("");
@@ -100,7 +100,7 @@ export default function Tema3_Ej3() {
       setRespuesta(`Correct! The answer is "${actual.correcta}".`);
       setCorrectas((prev) => prev + 1);
     } else {
-      setRespuesta(`Incorrect. The correct answer is "${actual.correcta}".`);
+      setRespuesta(` The correct answer is "${actual.correcta}".`);
     }
   };
 
@@ -116,7 +116,7 @@ export default function Tema3_Ej3() {
     setTimeout(() => navigate(`/inicio/${nivel}`), 2500);
   };
 
-  // ✅ Si ya está completado
+
   if (yaCompletado) {
     return (
       <div className="finalizado" style={{ fontSize: "1.3rem" }}>
@@ -133,7 +133,7 @@ export default function Tema3_Ej3() {
     );
   }
 
-  // ✅ Pantalla final
+  //  Pantalla final
   if (finalizado) {
     return (
       <div className="finalizado" style={{ fontSize: "1.3rem" }}>
@@ -149,7 +149,7 @@ export default function Tema3_Ej3() {
     );
   }
 
-  // ✅ Ejercicio principal
+  //  Ejercicio principal
   return (
     <div className="ejercicio-container">
       <header className="ejercicio-header">

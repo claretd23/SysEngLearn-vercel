@@ -6,7 +6,7 @@ export default function Tema1_Ej3_Listening() {
   const { nivel, semana, tema, ejercicio } = useParams();
   const id = `${nivel}-${semana}-${tema}-${ejercicio}`;
   const navigate = useNavigate();
-  const API_URL = import.meta.env.VITE_API_URL; // ✅ agregado
+  const API_URL = import.meta.env.VITE_API_URL; 
 
   const [respuesta, setRespuesta] = useState<string | null>(null);
   const [inputValue, setInputValue] = useState<string>("");

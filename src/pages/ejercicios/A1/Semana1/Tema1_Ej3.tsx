@@ -5,14 +5,13 @@ import "../ejercicios.css";
 export default function Tema1_Ej3() {
   const { nivel, semana, tema, ejercicio } = useParams();
   const navigate = useNavigate();
-  const API_URL = import.meta.env.VITE_API_URL; // ✅ agregado
 
   const [respuesta, setRespuesta] = useState<string | null>(null);
   const [inputValue, setInputValue] = useState<string>("");
   const [correctas, setCorrectas] = useState(0);
   const [index, setIndex] = useState(0);
   const [finalizado, setFinalizado] = useState(false);
-
+ const API_URL = import.meta.env.VITE_API_URL; 
   const audioRefs = [
     useRef<HTMLAudioElement>(null),
     useRef<HTMLAudioElement>(null),

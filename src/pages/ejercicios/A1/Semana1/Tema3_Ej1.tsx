@@ -6,8 +6,7 @@ export default function Tema3_Ej1() {
   const { nivel, semana, tema, ejercicio } = useParams();
   const id = `${nivel}-${semana}-${tema}-${ejercicio}`;
   const navigate = useNavigate();
-  const API_URL = import.meta.env.VITE_API_URL; // ✅ agregado
-
+  const API_URL = import.meta.env.VITE_API_URL; 
   const [respuesta, setRespuesta] = useState<string | null>(null);
   const [inputValue, setInputValue] = useState<string>("");
   const [correctas, setCorrectas] = useState(0);

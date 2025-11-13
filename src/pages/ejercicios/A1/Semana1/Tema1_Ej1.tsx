@@ -2,8 +2,11 @@ import { useParams, useNavigate } from "react-router-dom";
 import { useState, useRef } from "react";
 import "../ejercicios.css";
 
+const API_URL = import.meta.env.VITE_API_URL;
+
 export default function Tema1_Ej1() {
   const { nivel, semana, tema, ejercicio } = useParams();
+  const id = `${nivel}-${semana}-${tema}-${ejercicio}`;
   const navigate = useNavigate();
 
   const [correctas, setCorrectas] = useState(0);
@@ -162,6 +165,7 @@ export default function Tema1_Ej1() {
   const verificar = () => {
     const respuestaUsuario = inputValor.trim().toLowerCase();
     if (!respuestaUsuario) return;
+
     if (respuestaUsuario === actual.correcta.toLowerCase()) {
       setRespuesta("Correct");
       setCorrectas((prev) => prev + 1);
@@ -176,8 +180,21 @@ export default function Tema1_Ej1() {
     setIndex(index + 1);
   };
 
-  const manejarFinalizacion = () => {
+  const manejarFinalizacion = async () => {
     setFinalizado(true);
+    try {
+      await fetch(`${API_URL}/progreso`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+        body: JSON.stringify({ id, completado: true }),
+      });
+    } catch (error) {
+      console.error("Error al guardar el progreso:", error);
+    }
+
     setTimeout(() => {
       navigate(`/inicio/${nivel}`);
       window.location.reload();

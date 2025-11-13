@@ -162,21 +162,17 @@ export default function Tema2_Ej1() {
               </button>
             )}
 
+            {/* Feedback */}
             {respuesta && (
               <p
                 className={`respuesta-feedback ${
-                  respuesta.startsWith("Correct!") ? "correcta" : "incorrecta"
+                  respuesta.startsWith("Correct") ? "correcta" : "incorrecta"
                 }`}
-                style={{
-                  fontSize: "1.3rem",
-                  margin: "1rem 0",
-                  color: respuesta.startsWith("Correct!") ? "#0D6EFD" : "#DC3545",
-                }}
+                style={{ fontSize: "1.3rem", margin: "1rem 0" }}
               >
                 {respuesta.split("\n")[0]}
               </p>
             )}
-
             <div
               className="botones-siguiente"
               style={{

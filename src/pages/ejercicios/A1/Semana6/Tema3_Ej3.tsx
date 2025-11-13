@@ -184,6 +184,7 @@ export default function Tema3_Ej3() {
           {actual.pregunta}
         </p>
 
+    
         {/* === OPCIONES === */}
         <div
           className="opciones-container"
@@ -206,6 +207,7 @@ export default function Tema3_Ej3() {
           ))}
         </div>
 
+      
         {/* === FEEDBACK === */}
         {respuesta && (
           <p

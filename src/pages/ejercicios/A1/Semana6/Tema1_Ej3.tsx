@@ -163,11 +163,12 @@ export default function Tema1_Ej3() {
         {index === 0 && (
           <div className="instruccion-box" style={{ fontSize: "1.2rem" }}>
             <p className="instruccion-ejercicio">
-              Listen carefully to each sentence and choose the correct answer that shows where it is.
+              🎧 Listen carefully to each sentence and choose the correct place.
             </p>
           </div>
         )}
 
+        {/* === AUDIO === */}
         <button
           className="btn-audio"
           style={{ fontSize: "2rem", margin: "1rem 0" }}
@@ -177,10 +178,12 @@ export default function Tema1_Ej3() {
         </button>
         <audio ref={audioRef} src={actual.audio} />
 
+        {/* === PREGUNTA === */}
         <p style={{ fontSize: "1.2rem", margin: "1rem 0", color: "#222a5c" }}>
           {actual.pregunta}
         </p>
 
+        {/* === OPCIONES === */}
         <div
           className="opciones-container"
           style={{
@@ -195,13 +198,17 @@ export default function Tema1_Ej3() {
               key={opcion}
               onClick={() => setSeleccion(opcion)}
               className={`opcion-btn ${seleccion === opcion ? "seleccionada" : ""}`}
-              disabled={!!respuesta}
               style={{
                 fontSize: "1.2rem",
                 padding: "0.5rem 1rem",
                 width: "280px",
                 borderRadius: "8px",
                 border: "1px solid #ccc",
+                background:
+                  seleccion === opcion ? "#aabc37" : "white",
+                color:
+                  seleccion === opcion ? "white" : "#222a5c",
+                transition: "0.3s",
               }}
             >
               {opcion}
@@ -209,26 +216,33 @@ export default function Tema1_Ej3() {
           ))}
         </div>
 
+        {/* === FEEDBACK === */}
         {respuesta && (
           <p
-            className={`respuesta-feedback ${respuesta.startsWith("Correct") ? "correcta" : "incorrecta"}`}
+            className={`respuesta-feedback ${
+              respuesta.startsWith("Correct") ? "correcta" : "incorrecta"
+            }`}
             style={{
               fontSize: "1.2rem",
               margin: "1rem 0",
-              color: respuesta.startsWith("Correct") ? "#0D6EFD" : "#DC3545",
+              color: respuesta.startsWith("Correct") ? "#28A745" : "#DC3545",
               fontWeight: "bold",
-              minHeight: "1.5rem",
             }}
           >
             {respuesta}
           </p>
         )}
 
+        {/* === BOTONES === */}
         {!respuesta && seleccion && (
           <button
             onClick={verificar}
             className="ejercicio-btn"
-            style={{ fontSize: "1.3rem", padding: "0.8rem 2rem" }}
+            style={{
+              fontSize: "1.3rem",
+              padding: "0.8rem 2rem",
+              marginTop: "1rem",
+            }}
           >
             Check
           </button>
@@ -238,7 +252,11 @@ export default function Tema1_Ej3() {
           <button
             onClick={siguiente}
             className="ejercicio-btn"
-            style={{ fontSize: "1.3rem", padding: "0.8rem 2rem", marginTop: "1rem" }}
+            style={{
+              fontSize: "1.3rem",
+              padding: "0.8rem 2rem",
+              marginTop: "1rem",
+            }}
           >
             {index === ejercicios.length - 1 ? "Finish" : "Next question"}
           </button>

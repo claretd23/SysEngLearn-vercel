@@ -13,57 +13,20 @@ export default function Tema2_Ej1() {
   const [index, setIndex] = useState(0);
   const [finalizado, setFinalizado] = useState(false);
 
+  const API_URL = import.meta.env.VITE_API_URL;
+  const token = localStorage.getItem("token");
+
   const ejercicios = [
-    {
-      pregunta: "___ your shoes before entering the house.",
-      opciones: ["Take off", "Take off", "Took off", "Taking off"],
-      correcta: "Take off",
-    },
-    {
-      pregunta: "___ the book on the table.",
-      opciones: ["Put", "Put", "Puts", "Putting"],
-      correcta: "Put",
-    },
-    {
-      pregunta: "___ your friends at the station at 5 p.m.",
-      opciones: ["Meet", "Meetings", "Meets", "Meeting"],
-      correcta: "Meet",
-    },
-    {
-      pregunta: "___ the music, please; I’m trying to study.",
-      opciones: ["Turn on", "Turned on", "Turn off", "Turning off"],
-      correcta: "Turn off",
-    },
-    {
-      pregunta: "___ your mobile phones during the lesson.",
-      opciones: ["Switch off", "Switched off", "Switching off", "Switches off"],
-      correcta: "Switch off",
-    },
-    {
-      pregunta: "___ your hands before cooking.",
-      opciones: ["Wash", "Wash", "Washed", "Washing"],
-      correcta: "Wash",
-    },
-    {
-      pregunta: "___ the bus; it’s leaving now!",
-      opciones: ["Get in", "Get on", "Getting on", "Gets on"],
-      correcta: "Get on",
-    },
-    {
-      pregunta: "___ quietly; the baby is sleeping.",
-      opciones: ["Speak", "Speaks", "Speaking", "Spoke"],
-      correcta: "Speak",
-    },
-    {
-      pregunta: "___ this box to the kitchen, please.",
-      opciones: ["Bringings", "Bring", "Brings", "Bringing"],
-      correcta: "Bring",
-    },
-    {
-      pregunta: "___ the homework before going to bed.",
-      opciones: ["To Do", "Do", "Does", "Doing"],
-      correcta: "Do",
-    },
+    { pregunta: "___ your shoes before entering the house.", opciones: ["Take off", "Take off", "Took off", "Taking off"], correcta: "Take off" },
+    { pregunta: "___ the book on the table.", opciones: ["Put", "Put", "Puts", "Putting"], correcta: "Put" },
+    { pregunta: "___ your friends at the station at 5 p.m.", opciones: ["Meet", "Meetings", "Meets", "Meeting"], correcta: "Meet" },
+    { pregunta: "___ the music, please; I’m trying to study.", opciones: ["Turn on", "Turned on", "Turn off", "Turning off"], correcta: "Turn off" },
+    { pregunta: "___ your mobile phones during the lesson.", opciones: ["Switch off", "Switched off", "Switching off", "Switches off"], correcta: "Switch off" },
+    { pregunta: "___ your hands before cooking.", opciones: ["Wash", "Wash", "Washed", "Washing"], correcta: "Wash" },
+    { pregunta: "___ the bus; it’s leaving now!", opciones: ["Get in", "Get on", "Getting on", "Gets on"], correcta: "Get on" },
+    { pregunta: "___ quietly; the baby is sleeping.", opciones: ["Speak", "Speaks", "Speaking", "Spoke"], correcta: "Speak" },
+    { pregunta: "___ this box to the kitchen, please.", opciones: ["Bringings", "Bring", "Brings", "Bringing"], correcta: "Bring" },
+    { pregunta: "___ the homework before going to bed.", opciones: ["To Do", "Do", "Does", "Doing"], correcta: "Do" },
   ];
 
   const actual = ejercicios[index];
@@ -75,9 +38,9 @@ export default function Tema2_Ej1() {
       localStorage.setItem("ejercicios_completados", JSON.stringify(completados));
     }
 
+    if (!token) return;
     try {
-      const token = localStorage.getItem("token");
-      const res = await fetch("http://localhost:5000/api/progreso", {
+      const res = await fetch(`${API_URL}/api/progreso`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -85,7 +48,6 @@ export default function Tema2_Ej1() {
         },
         body: JSON.stringify({ nivel, semana, tema, ejercicio }),
       });
-
       if (!res.ok) console.error("Error al guardar progreso:", res.statusText);
     } catch (error) {
       console.error("Error al guardar el progreso:", error);
@@ -94,15 +56,14 @@ export default function Tema2_Ej1() {
 
   const verificar = () => {
     if (!opcionSeleccionada) return;
-
     const oracionCompletada = actual.pregunta.replace("___", opcionSeleccionada);
 
     if (opcionSeleccionada === actual.correcta) {
-      setRespuesta(`✅ Correct!\n\n${oracionCompletada}`);
+      setRespuesta(`Correct!\n\n${oracionCompletada}`);
       setCorrectas((prev) => prev + 1);
     } else {
       const oracionCorrecta = actual.pregunta.replace("___", actual.correcta);
-      setRespuesta(`❌ Incorrect.\n\n${oracionCorrecta}`);
+      setRespuesta(`Incorrect.\n\n${oracionCorrecta}`);
     }
   };
 
@@ -126,7 +87,7 @@ export default function Tema2_Ej1() {
       {!finalizado ? (
         <>
           <header className="ejercicio-header">
-            <h1 className="titulo-ejercicio">EXERCISE 1 </h1>
+            <h1 className="titulo-ejercicio">EXERCISE 1</h1>
             <p className="progreso-ejercicio">
               Question {index + 1} of {ejercicios.length}
             </p>
@@ -136,7 +97,6 @@ export default function Tema2_Ej1() {
             className="tarjeta-ejercicio"
             style={{ textAlign: "center", fontSize: "1.3rem", padding: "2rem" }}
           >
-            {/* Instrucción */}
             {index === 0 && (
               <div className="instruccion-box" style={{ marginBottom: "1.5rem" }}>
                 <p className="instruccion-ejercicio">
@@ -145,7 +105,6 @@ export default function Tema2_Ej1() {
               </div>
             )}
 
-            {/* Oración */}
             <div
               className="oracion-box"
               style={{
@@ -163,7 +122,6 @@ export default function Tema2_Ej1() {
               <p>{respuesta ? respuesta.split("\n").slice(1).join("\n") : actual.pregunta}</p>
             </div>
 
-            {/* Opciones */}
             {!respuesta && (
               <div
                 className="opciones-ejercicio"
@@ -188,7 +146,6 @@ export default function Tema2_Ej1() {
               </div>
             )}
 
-            {/* Botón Check */}
             {!respuesta && (
               <button
                 onClick={verificar}
@@ -205,17 +162,21 @@ export default function Tema2_Ej1() {
               </button>
             )}
 
-            {/* Feedback */}
             {respuesta && (
               <p
-                className={`respuesta-feedback ${respuesta.startsWith("✅") ? "correcta" : "incorrecta"}`}
-                style={{ fontSize: "1.3rem", margin: "1rem 0" }}
+                className={`respuesta-feedback ${
+                  respuesta.startsWith("Correct!") ? "correcta" : "incorrecta"
+                }`}
+                style={{
+                  fontSize: "1.3rem",
+                  margin: "1rem 0",
+                  color: respuesta.startsWith("Correct!") ? "#0D6EFD" : "#DC3545",
+                }}
               >
                 {respuesta.split("\n")[0]}
               </p>
             )}
 
-            {/* Botones siguiente / finalizar */}
             <div
               className="botones-siguiente"
               style={{
@@ -248,7 +209,7 @@ export default function Tema2_Ej1() {
         </>
       ) : (
         <div className="finalizado" style={{ fontSize: "1.3rem" }}>
-          <h2>✅ You have completed the exercise!</h2>
+          <h2>You have completed the exercise!</h2>
           <p>
             Correct answers: <strong>{correctas} / {ejercicios.length}</strong>
           </p>

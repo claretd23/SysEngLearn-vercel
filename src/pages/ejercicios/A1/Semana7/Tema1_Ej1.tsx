@@ -13,7 +13,11 @@ export default function Tema1_Ej1() {
   const [index, setIndex] = useState(0);
   const [finalizado, setFinalizado] = useState(false);
 
-  // ✅ Lista de ejercicios de possessive adjectives
+  // variable de entorno para la URL base del backend
+  const API_URL = import.meta.env.VITE_API_URL;
+  const token = localStorage.getItem("token");
+
+  // Lista de ejercicios de possessive adjectives
   const ejercicios = [
     { texto: "I have a brother. ___ name is Tom.", correcta: ["His"] },
     { texto: "She has a cat. ___ fur is white.", correcta: ["Its"] },
@@ -29,6 +33,7 @@ export default function Tema1_Ej1() {
 
   const actual = ejercicios[index];
 
+  // Guardar progreso local y en la API (usa API_URL)
   const guardarProgreso = async () => {
     const completados = JSON.parse(localStorage.getItem("ejercicios_completados") || "[]");
     if (!completados.includes(id)) {
@@ -36,9 +41,9 @@ export default function Tema1_Ej1() {
       localStorage.setItem("ejercicios_completados", JSON.stringify(completados));
     }
 
+    if (!API_URL || !token) return; // si falta API_URL o token no intentamos llamar
     try {
-      const token = localStorage.getItem("token");
-      const res = await fetch("http://localhost:5000/api/progreso", {
+      const res = await fetch(`${API_URL}/api/progreso`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -47,12 +52,15 @@ export default function Tema1_Ej1() {
         body: JSON.stringify({ nivel, semana, tema, ejercicio }),
       });
 
-      if (!res.ok) console.error("Error al guardar progreso:", res.statusText);
+      if (!res.ok) {
+        console.error("Error al guardar progreso:", res.statusText);
+      }
     } catch (error) {
       console.error("Error al guardar el progreso:", error);
     }
   };
 
+  // Verificar respuesta del usuario
   const verificar = () => {
     const respuestaUsuario = inputValue.trim();
     if (!respuestaUsuario) return;
@@ -62,20 +70,28 @@ export default function Tema1_Ej1() {
     );
 
     if (esCorrecta) {
-      setRespuesta("✅ Correct!");
+      setRespuesta("Correct!");
       setCorrectas((prev) => prev + 1);
     } else {
-      setRespuesta("❌ Incorrect");
+      setRespuesta("Incorrect.");
       setInputValue(actual.correcta[0]);
     }
   };
 
-  const siguiente = () => {
+  // Pasar a la siguiente pregunta (guarda progreso antes de avanzar)
+  const siguiente = async () => {
     setRespuesta(null);
     setInputValue("");
-    setIndex(index + 1);
+    await guardarProgreso();
+    if (index + 1 < ejercicios.length) {
+      setIndex(index + 1);
+    } else {
+      // si se terminó, usar la misma rutina que manejarFinalizacion
+      await manejarFinalizacion();
+    }
   };
 
+  // Finalizar el ejercicio (guarda progreso y redirige)
   const manejarFinalizacion = async () => {
     await guardarProgreso();
     setFinalizado(true);
@@ -85,6 +101,7 @@ export default function Tema1_Ej1() {
     }, 3000);
   };
 
+  // Mostrar la oración con la respuesta correcta si ya se verificó
   const mostrarTexto = respuesta
     ? actual.texto.replace("___", actual.correcta[0])
     : actual.texto;
@@ -101,6 +118,7 @@ export default function Tema1_Ej1() {
           </header>
 
           <section className="tarjeta-ejercicio" style={{ textAlign: "center" }}>
+            {/* Instrucción solo en la primera pregunta */}
             {index === 0 && (
               <div className="instruccion-box">
                 <p className="instruccion-ejercicio" style={{ fontSize: "1.3rem" }}>
@@ -109,6 +127,7 @@ export default function Tema1_Ej1() {
               </div>
             )}
 
+            {/* Texto de la oración */}
             <p
               className="pregunta-ejercicio"
               style={{ fontSize: "1.5rem", margin: "1rem 0", fontWeight: 500 }}
@@ -116,6 +135,7 @@ export default function Tema1_Ej1() {
               {mostrarTexto}
             </p>
 
+            {/* Input y botón Check */}
             {!respuesta && (
               <div
                 className="opciones-ejercicio"
@@ -136,9 +156,11 @@ export default function Tema1_Ej1() {
                   style={{
                     fontSize: "1.3rem",
                     padding: "0.8rem 1rem",
-                    flex: 1,
+                    width: "250px",
                     borderRadius: "8px",
-                    border: "1px solid #ccc",
+                    border: "2px solid #222a5c",
+                    outline: "none",
+                    textAlign: "center",
                   }}
                 />
                 <button
@@ -155,15 +177,23 @@ export default function Tema1_Ej1() {
               </div>
             )}
 
+            {/* Feedback */}
             {respuesta && (
               <p
-                className={`respuesta-feedback ${respuesta.startsWith("✅") ? "correcta" : "incorrecta"}`}
-                style={{ fontSize: "1.3rem", margin: "1rem 0" }}
+                className={`respuesta-feedback ${
+                  respuesta.startsWith("Correct") ? "correcta" : "incorrecta"
+                }`}
+                style={{
+                  fontSize: "1.3rem",
+                  margin: "1rem 0",
+                  color: respuesta.startsWith("Correct") ? "#0D6EFD" : "#DC3545",
+                }}
               >
                 {respuesta}
               </p>
             )}
 
+            {/* Botones siguiente / finalizar */}
             <div className="botones-siguiente">
               {respuesta && index < ejercicios.length - 1 && (
                 <button
@@ -188,7 +218,7 @@ export default function Tema1_Ej1() {
         </>
       ) : (
         <div className="finalizado" style={{ fontSize: "1.3rem" }}>
-          <h2>✅ You have completed the exercise!</h2>
+          <h2>You have completed the exercise!</h2>
           <p>
             Correct answers: <strong>{correctas} / {ejercicios.length}</strong>
           </p>

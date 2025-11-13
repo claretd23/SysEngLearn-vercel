@@ -8,22 +8,12 @@ interface EjercicioMatching {
 }
 
 const API_URL = import.meta.env.VITE_API_URL;
-const shuffleArray = <T,>(array: T[]): T[] => [...array].sort(() => Math.random() - 0.5);
 const pairColors = ["#aabc36", "#f28c28", "#36aabc", "#ab36bc", "#ff5c5c", "#36bc8f", "#bc9636", "#6b36bc", "#36bca3", "#e1bc36"];
 
 export default function Tema2_Ej2() {
   const { nivel, semana, tema, ejercicio } = useParams();
-  const navigate = useNavigate();
   const id = `${nivel}-${semana}-${tema}-${ejercicio}`;
-
-  const [situaciones, setSituaciones] = useState<EjercicioMatching[]>([]);
-  const [respuestas, setRespuestas] = useState<EjercicioMatching[]>([]);
-  const [seleccion, setSeleccion] = useState<{ situacion?: string; respuesta?: string }>({});
-  const [paresCorrectos, setParesCorrectos] = useState<{ [key: string]: string }>({});
-  const [paresIncorrectos, setParesIncorrectos] = useState<{ situacion: string; respuesta: string }[]>([]);
-  const [finalizado, setFinalizado] = useState(false);
-  const [completo, setCompleto] = useState(false);
-  const [mensajeProgreso, setMensajeProgreso] = useState<string | null>(null);
+  const navigate = useNavigate();
 
   const ejercicios: EjercicioMatching[] = [
     { situacion: "___ your homework before dinner.", respuesta: "Do" },
@@ -38,16 +28,21 @@ export default function Tema2_Ej2() {
     { situacion: "___ the lights when you leave the room.", respuesta: "Turn off" },
   ];
 
+  const [situaciones, setSituaciones] = useState<EjercicioMatching[]>([]);
+  const [respuestas, setRespuestas] = useState<EjercicioMatching[]>([]);
+  const [seleccion, setSeleccion] = useState<{ situacion?: string; respuesta?: string }>({});
+  const [paresCorrectos, setParesCorrectos] = useState<{ [key: string]: string }>({});
+  const [mensaje, setMensaje] = useState<string | null>(null);
+  const [completado, setCompletado] = useState(false);
+
+  // Mezclar listas al inicio
   useEffect(() => {
-    setSituaciones(shuffleArray(ejercicios));
-    setRespuestas(shuffleArray(ejercicios));
+    const shuffle = <T,>(array: T[]): T[] => [...array].sort(() => Math.random() - 0.5);
+    setSituaciones(shuffle(ejercicios));
+    setRespuestas(shuffle(ejercicios));
   }, []);
 
-  useEffect(() => {
-    const totalIntentos = Object.keys(paresCorrectos).length + paresIncorrectos.length;
-    if (totalIntentos === ejercicios.length) setCompleto(true);
-  }, [paresCorrectos, paresIncorrectos]);
-
+  // Guardar progreso al completar
   const guardarProgreso = async () => {
     try {
       const completados = JSON.parse(localStorage.getItem("ejercicios_completados") || "[]");
@@ -57,10 +52,7 @@ export default function Tema2_Ej2() {
       }
 
       const token = localStorage.getItem("token");
-      if (!token) {
-        console.warn("No hay token, el progreso solo se guardará localmente.");
-        return { ok: false, mensaje: "Guardado localmente" };
-      }
+      if (!token) return console.warn("Sin token, guardado local únicamente.");
 
       const res = await fetch(`${API_URL}/progreso`, {
         method: "POST",
@@ -74,47 +66,39 @@ export default function Tema2_Ej2() {
       if (!res.ok) {
         const errorText = await res.text();
         console.error("Error al guardar progreso:", res.status, errorText);
-        return { ok: false, mensaje: "Error en el servidor" };
+        setMensaje("Error en el servidor");
+        return;
       }
 
-      const data = await res.json().catch(() => ({}));
-      console.log("Progreso guardado:", data);
-      return { ok: true, mensaje: "Progreso guardado correctamente" };
+      console.log("Progreso guardado correctamente");
+      setMensaje("Progress saved successfully");
     } catch (error) {
-      console.error("Error al guardar el progreso:", error);
-      return { ok: false, mensaje: "Error en la conexión" };
+      console.error("Error al conectar:", error);
+      setMensaje("Connection error");
     }
   };
 
-  const handleSeleccion = (tipo: "situacion" | "respuesta", texto: string) => {
-    const nuevaSeleccion = { ...seleccion, [tipo]: texto };
+  // Al emparejar
+  const handleSeleccion = (tipo: "situacion" | "respuesta", valor: string) => {
+    const nuevaSeleccion = { ...seleccion, [tipo]: valor };
     setSeleccion(nuevaSeleccion);
 
     if (nuevaSeleccion.situacion && nuevaSeleccion.respuesta) {
-      const parCorrecto = ejercicios.find(
+      const correcto = ejercicios.find(
         (ej) =>
           ej.situacion === nuevaSeleccion.situacion &&
           ej.respuesta === nuevaSeleccion.respuesta
       );
 
-      if (parCorrecto) {
+      if (correcto) {
         setParesCorrectos((prev) => ({
           ...prev,
-          [parCorrecto.situacion]: parCorrecto.respuesta,
+          [correcto.situacion]: correcto.respuesta,
         }));
-      } else {
-        setParesIncorrectos((prev) => [
-          ...prev,
-          { situacion: nuevaSeleccion.situacion!, respuesta: nuevaSeleccion.respuesta! },
-        ]);
       }
-
       setSeleccion({});
     }
   };
-
-  const isIncorrecto = (tipo: "situacion" | "respuesta", valor: string) =>
-    paresIncorrectos.some(p => (tipo === "situacion" ? p.situacion === valor : p.respuesta === valor));
 
   const getColor = (situacion: string) => {
     const keys = Object.keys(paresCorrectos);
@@ -122,102 +106,82 @@ export default function Tema2_Ej2() {
     return index >= 0 ? pairColors[index % pairColors.length] : undefined;
   };
 
-  const manejarFinalizacion = async () => {
-    const resultado = await guardarProgreso();
-    setMensajeProgreso(resultado.mensaje);
-    setFinalizado(true);
-
-    setTimeout(() => {
-      navigate(`/inicio/${nivel}`);
-      window.location.reload();
-    }, 3000);
-  };
+  // Verificar si completó todo
+  useEffect(() => {
+    if (Object.keys(paresCorrectos).length === ejercicios.length && !completado) {
+      setCompletado(true);
+      guardarProgreso();
+      setTimeout(() => navigate(`/inicio/${nivel}`), 3000);
+    }
+  }, [paresCorrectos]);
 
   return (
     <div className="ejercicio-container">
-      {!finalizado ? (
+      {!completado ? (
         <>
           <header className="ejercicio-header">
             <h1 className="titulo-ejercicio">EXERCISE 2</h1>
+            <p className="instruccion-ejercicio">
+              Match the sentences with the correct imperatives.
+            </p>
           </header>
 
-          <section className="tarjeta-ejercicio">
-            <div className="instruccion-box">
-              <p className="instruccion-ejercicio">
-                Match the sentences with the correct imperatives.
-              </p>
+          <div className="tarjeta-ejercicio" style={{ display: "flex", flexDirection: "column", gap: "1.5rem" }}>
+            {/* Sentences */}
+            <div style={{ textAlign: "center", fontWeight: "600", color: "#222a5c" }}>Sentences</div>
+            <div style={{ display: "flex", flexWrap: "wrap", gap: "0.5rem", justifyContent: "center" }}>
+              {situaciones.map((ej) => {
+                const color = getColor(ej.situacion);
+                return (
+                  <button
+                    key={ej.situacion}
+                    disabled={!!color}
+                    className="opcion-btn"
+                    onClick={() => handleSeleccion("situacion", ej.situacion)}
+                    style={{
+                      backgroundColor: color || "#fff",
+                      color: color ? "#fff" : "#222a5c",
+                      border: "1px solid #222a5c",
+                      borderRadius: "8px",
+                      padding: "0.5rem 0.8rem",
+                      minWidth: "180px",
+                      cursor: color ? "not-allowed" : "pointer",
+                    }}
+                  >
+                    {ej.situacion}
+                  </button>
+                );
+              })}
             </div>
 
-            <div style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
-              <div style={{ textAlign: "center", fontWeight: "600", color: "#222a5c" }}>Sentences</div>
-              <div style={{ display: "flex", flexWrap: "wrap", gap: "0.5rem", justifyContent: "center" }}>
-                {situaciones.map((ej) => {
-                  const color = getColor(ej.situacion);
-                  const incorrecto = isIncorrecto("situacion", ej.situacion);
-                  return (
-                    <button
-                      key={ej.situacion}
-                      disabled={!!color || incorrecto}
-                      className="opcion-btn"
-                      style={{
-                        padding: "0.5rem 0.8rem",
-                        fontSize: "0.9rem",
-                        borderRadius: "8px",
-                        minWidth: "180px",
-                        backgroundColor: color ? color : incorrecto ? "#ccc" : "#fff",
-                        color: color || incorrecto ? "#fff" : "#222a5c",
-                        border: "1px solid #222a5c",
-                        cursor: color || incorrecto ? "not-allowed" : "pointer",
-                      }}
-                      onClick={() => handleSeleccion("situacion", ej.situacion)}
-                    >
-                      {ej.situacion}
-                    </button>
-                  );
-                })}
-              </div>
-
-              <div style={{ textAlign: "center", fontWeight: "600", color: "#222a5c" }}>Imperatives</div>
-              <div style={{ display: "flex", flexWrap: "wrap", gap: "0.5rem", justifyContent: "center" }}>
-                {respuestas.map((ej) => {
-                  const situacion = Object.keys(paresCorrectos).find(k => paresCorrectos[k] === ej.respuesta);
-                  const color = situacion ? getColor(situacion) : undefined;
-                  const incorrecto = isIncorrecto("respuesta", ej.respuesta);
-                  return (
-                    <button
-                      key={ej.respuesta}
-                      disabled={!!color || incorrecto}
-                      className="opcion-btn"
-                      style={{
-                        padding: "0.5rem 0.8rem",
-                        fontSize: "0.9rem",
-                        borderRadius: "8px",
-                        minWidth: "120px",
-                        backgroundColor: color ? color : incorrecto ? "#ccc" : "#fff",
-                        color: color || incorrecto ? "#fff" : "#222a5c",
-                        border: "1px solid #222a5c",
-                        cursor: color || incorrecto ? "not-allowed" : "pointer",
-                      }}
-                      onClick={() => handleSeleccion("respuesta", ej.respuesta)}
-                    >
-                      {ej.respuesta}
-                    </button>
-                  );
-                })}
-              </div>
-
-              <div className="botones-siguiente" style={{ display: "flex", justifyContent: "center", marginTop: "1rem" }}>
-                <button
-                  className="ejercicio-btn"
-                  disabled={!completo}
-                  onClick={manejarFinalizacion}
-                  style={{ fontSize: "1.3rem", padding: "0.8rem 2rem", borderRadius: "8px" }}
-                >
-                  Check
-                </button>
-              </div>
+            {/* Imperatives */}
+            <div style={{ textAlign: "center", fontWeight: "600", color: "#222a5c" }}>Imperatives</div>
+            <div style={{ display: "flex", flexWrap: "wrap", gap: "0.5rem", justifyContent: "center" }}>
+              {respuestas.map((ej) => {
+                const situacion = Object.keys(paresCorrectos).find(k => paresCorrectos[k] === ej.respuesta);
+                const color = situacion ? getColor(situacion) : undefined;
+                return (
+                  <button
+                    key={ej.respuesta}
+                    disabled={!!color}
+                    className="opcion-btn"
+                    onClick={() => handleSeleccion("respuesta", ej.respuesta)}
+                    style={{
+                      backgroundColor: color || "#fff",
+                      color: color ? "#fff" : "#222a5c",
+                      border: "1px solid #222a5c",
+                      borderRadius: "8px",
+                      padding: "0.5rem 0.8rem",
+                      minWidth: "120px",
+                      cursor: color ? "not-allowed" : "pointer",
+                    }}
+                  >
+                    {ej.respuesta}
+                  </button>
+                );
+              })}
             </div>
-          </section>
+          </div>
         </>
       ) : (
         <div className="finalizado" style={{ fontSize: "1.3rem", textAlign: "center" }}>
@@ -225,7 +189,7 @@ export default function Tema2_Ej2() {
           <p>
             Correct pairs: <strong>{Object.keys(paresCorrectos).length}</strong> / {ejercicios.length}
           </p>
-          {mensajeProgreso && <p style={{ color: "#222a5c", fontWeight: "600" }}>{mensajeProgreso}</p>}
+          {mensaje && <p style={{ color: "#222a5c", fontWeight: "600" }}>{mensaje}</p>}
           <p>Redirecting to the start of the level...</p>
         </div>
       )}

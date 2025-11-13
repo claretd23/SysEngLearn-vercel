@@ -205,7 +205,7 @@ export default function Tema1_Ej3() {
                 borderRadius: "8px",
                 border: "1px solid #ccc",
                 background:
-                  seleccion === opcion ? "#aabc37" : "white",
+                  seleccion === opcion ? "#f8f9f3ff" : "white",
                 color:
                   seleccion === opcion ? "white" : "#222a5c",
                 transition: "0.3s",

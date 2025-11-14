@@ -116,10 +116,10 @@ export default function Tema1_Ej3() {
     if (!seleccion) return;
 
     if (seleccion === actual.correcta) {
-      setRespuesta("Correct!");
+      setRespuesta("Correct");
       setCorrectas((prev) => prev + 1);
     } else {
-      setRespuesta(`The correct answer: ${actual.correcta}`);
+      setRespuesta(`Correct answer: ${actual.correcta}`);
     }
   };
 
@@ -127,6 +127,7 @@ export default function Tema1_Ej3() {
     setRespuesta(null);
     setSeleccion(null);
     await guardarProgreso();
+
     if (index + 1 < ejercicios.length) {
       setIndex(index + 1);
     } else {
@@ -134,14 +135,14 @@ export default function Tema1_Ej3() {
       setTimeout(() => {
         navigate(`/inicio/${nivel}`);
         window.location.reload();
-      }, 2500);
+      }, 2000);
     }
   };
 
   if (finalizado) {
     return (
       <div className="finalizado" style={{ fontSize: "1.3rem" }}>
-        <h2>You have completed the exercise!</h2>
+        <h2>You have completed the exercise</h2>
         <p>
           Correct answers: <strong>{correctas} / {ejercicios.length}</strong>
         </p>
@@ -160,15 +161,16 @@ export default function Tema1_Ej3() {
       </header>
 
       <section className="tarjeta-ejercicio" style={{ textAlign: "center" }}>
+
         {index === 0 && (
           <div className="instruccion-box" style={{ fontSize: "1.2rem" }}>
             <p className="instruccion-ejercicio">
-              🎧 Listen carefully to each sentence and choose the correct place.
+              Listen carefully to each sentence and choose the correct place.
             </p>
           </div>
         )}
 
-        {/* === AUDIO === */}
+        {/* AUDIO */}
         <button
           className="btn-audio"
           style={{ fontSize: "2rem", margin: "1rem 0" }}
@@ -178,12 +180,12 @@ export default function Tema1_Ej3() {
         </button>
         <audio ref={audioRef} src={actual.audio} />
 
-        {/* === PREGUNTA === */}
+        {/* PREGUNTA */}
         <p style={{ fontSize: "1.2rem", margin: "1rem 0", color: "#222a5c" }}>
           {actual.pregunta}
         </p>
 
-        {/* === OPCIONES === */}
+        {/* OPCIONES */}
         <div
           className="opciones-container"
           style={{
@@ -205,16 +207,16 @@ export default function Tema1_Ej3() {
           ))}
         </div>
 
-        {/* === FEEDBACK === */}
+        {/* FEEDBACK */}
         {respuesta && (
           <p
             className={`respuesta-feedback ${
-              respuesta.startsWith("Correct") ? "correcta" : "incorrecta"
+              respuesta === "Correct" ? "correcta" : "incorrecta"
             }`}
             style={{
               fontSize: "1.2rem",
               margin: "1rem 0",
-              color: respuesta.startsWith("Correct") ? "#28A745" : "#DC3545",
+              color: respuesta === "Correct" ? "#28A745" : "#DC3545",
               fontWeight: "bold",
             }}
           >
@@ -222,7 +224,7 @@ export default function Tema1_Ej3() {
           </p>
         )}
 
-        {/* === BOTONES === */}
+        {/* BOTONES */}
         {!respuesta && seleccion && (
           <button
             onClick={verificar}

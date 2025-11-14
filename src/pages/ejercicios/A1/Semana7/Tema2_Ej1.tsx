@@ -14,16 +14,56 @@ export default function Tema2_Ej1() {
   const [finalizado, setFinalizado] = useState(false);
 
   const ejercicios = [
-    { pregunta: "This bag is not mine. It’s ___?", opciones: ["her", "hers", "she", "him"], correcta: "hers" },
-    { pregunta: "The blue jacket is not ours. It’s ___?", opciones: ["their", "theirs", "ours", "them"], correcta: "theirs" },
-    { pregunta: "I love this notebook. Can I borrow ___?", opciones: ["your", "yours", "you", "yours"], correcta: "yours" },
-    { pregunta: "This sandwich is not mine. It’s ___?", opciones: ["his", "him", "his", "he"], correcta: "his" },
-    { pregunta: "That apartment is not theirs. It’s ___?", opciones: ["ours", "our", "ours", "we"], correcta: "ours" },
-    { pregunta: "The cake is not mine. Can I try ___?", opciones: ["her", "hers", "hers", "she"], correcta: "hers" },
-    { pregunta: "The tickets are not ours. They are ___?", opciones: ["their", "theirs", "theirs", "them"], correcta: "theirs" },
-    { pregunta: "I found a pen. Is this ___?", opciones: ["your", "yours", "you", "yours"], correcta: "yours" },
-    { pregunta: "The bag on the chair is not mine. It’s ___?", opciones: ["hers", "her", "she", "him"], correcta: "hers" },
-    { pregunta: "The shoes outside the shop are not ours. They are ___?", opciones: ["their", "theirs", "theirs", "them"], correcta: "theirs" },
+    {
+      pregunta: "This bag is not mine. It’s ___?",
+      opciones: ["her", "hers", "she", "him"],
+      correcta: "hers",
+    },
+    {
+      pregunta: "The blue jacket is not ours. It’s ___?",
+      opciones: ["their", "theirs", "ours", "them"],
+      correcta: "theirs",
+    },
+    {
+      pregunta: "I love this notebook. Can I borrow ___?",
+      opciones: ["your", "yours", "you", "yours"],
+      correcta: "yours",
+    },
+    {
+      pregunta: "This sandwich is not mine. It’s ___?",
+      opciones: ["his", "him", "his", "he"],
+      correcta: "his",
+    },
+    {
+      pregunta: "That apartment is not theirs. It’s ___?",
+      opciones: ["ours", "our", "ours", "we"],
+      correcta: "ours",
+    },
+    {
+      pregunta: "The cake is not mine. Can I try ___?",
+      opciones: ["her", "hers", "hers", "she"],
+      correcta: "hers",
+    },
+    {
+      pregunta: "The tickets are not ours. They are ___?",
+      opciones: ["their", "theirs", "theirs", "them"],
+      correcta: "theirs",
+    },
+    {
+      pregunta: "I found a pen. Is this ___?",
+      opciones: ["your", "yours", "you", "yours"],
+      correcta: "yours",
+    },
+    {
+      pregunta: "The bag on the chair is not mine. It’s ___?",
+      opciones: ["hers", "her", "she", "him"],
+      correcta: "hers",
+    },
+    {
+      pregunta: "The shoes outside the shop are not ours. They are ___?",
+      opciones: ["their", "theirs", "theirs", "them"],
+      correcta: "theirs",
+    },
   ];
 
   const actual = ejercicios[index];
@@ -37,7 +77,7 @@ export default function Tema2_Ej1() {
 
     try {
       const token = localStorage.getItem("token");
-      const res = await fetch("https://doablyacademy.com/api/progreso", {
+      const res = await fetch("http://localhost:5000/api/progreso", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -52,17 +92,17 @@ export default function Tema2_Ej1() {
     }
   };
 
-  // 🔥 FUNCIÓN MODIFICADA PARA AUTOCOMPLETAR LA ORACIÓN
   const verificar = () => {
     if (!opcionSeleccionada) return;
 
-    const oracionCompletada = actual.pregunta.replace("___", actual.correcta);
+    const oracionCompletada = actual.pregunta.replace("___", opcionSeleccionada);
 
     if (opcionSeleccionada === actual.correcta) {
-      setRespuesta(`Correct:\n${oracionCompletada}`);
+      setRespuesta(`✅ Correct!\n\n${oracionCompletada}`);
       setCorrectas((prev) => prev + 1);
     } else {
-      setRespuesta(`Incorrect:\n${oracionCompletada}`);
+      const oracionCorrecta = actual.pregunta.replace("___", actual.correcta);
+      setRespuesta(`❌ Incorrect.\n\n${oracionCorrecta}`);
     }
   };
 
@@ -92,8 +132,10 @@ export default function Tema2_Ej1() {
             </p>
           </header>
 
-          <section className="tarjeta-ejercicio" style={{ textAlign: "center", fontSize: "1.3rem", padding: "2rem" }}>
-            
+          <section
+            className="tarjeta-ejercicio"
+            style={{ textAlign: "center", fontSize: "1.3rem", padding: "2rem" }}
+          >
             {index === 0 && (
               <div className="instruccion-box" style={{ marginBottom: "1.5rem" }}>
                 <p className="instruccion-ejercicio">
@@ -116,13 +158,19 @@ export default function Tema2_Ej1() {
                 whiteSpace: "pre-line",
               }}
             >
-              <p>{!respuesta ? actual.pregunta : respuesta.split("\n").slice(1).join("\n")}</p>
+              <p>{respuesta ? respuesta.split("\n").slice(1).join("\n") : actual.pregunta}</p>
             </div>
 
             {!respuesta && (
               <div
                 className="opciones-ejercicio"
-                style={{ display: "flex", flexDirection: "column", gap: "1rem", alignItems: "center", marginBottom: "1rem" }}
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  gap: "1rem",
+                  alignItems: "center",
+                  marginBottom: "1rem",
+                }}
               >
                 {actual.opciones.map((op, i) => (
                   <button
@@ -142,7 +190,12 @@ export default function Tema2_Ej1() {
                 onClick={verificar}
                 className="ejercicio-btn"
                 disabled={!opcionSeleccionada}
-                style={{ fontSize: "1.3rem", padding: "0.8rem 2rem", marginBottom: "1rem", borderRadius: "8px" }}
+                style={{
+                  fontSize: "1.3rem",
+                  padding: "0.8rem 2rem",
+                  marginBottom: "1rem",
+                  borderRadius: "8px",
+                }}
               >
                 Check
               </button>
@@ -150,24 +203,37 @@ export default function Tema2_Ej1() {
 
             {respuesta && (
               <p
-                className={`respuesta-feedback ${
-                  respuesta.startsWith("Correct") ? "correcta" : "incorrecta"
-                }`}
-                style={{ fontSize: "1.3rem", margin: "1rem 0", whiteSpace: "pre-line" }}
+                className={`respuesta-feedback ${respuesta.startsWith("✅") ? "correcta" : "incorrecta"}`}
+                style={{ fontSize: "1.3rem", margin: "1rem 0" }}
               >
-                {respuesta}
+                {respuesta.split("\n")[0]}
               </p>
             )}
 
-            <div className="botones-siguiente" style={{ display: "flex", justifyContent: "center", gap: "1rem", marginTop: "1rem" }}>
+            <div
+              className="botones-siguiente"
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                gap: "1rem",
+                marginTop: "1rem",
+              }}
+            >
               {respuesta && index < ejercicios.length - 1 && (
-                <button onClick={siguiente} className="ejercicio-btn" style={{ fontSize: "1.3rem", padding: "0.8rem 2rem", borderRadius: "8px" }}>
+                <button
+                  onClick={siguiente}
+                  className="ejercicio-btn"
+                  style={{ fontSize: "1.3rem", padding: "0.8rem 2rem", borderRadius: "8px" }}
+                >
                   Next question
                 </button>
               )}
-
               {respuesta && index === ejercicios.length - 1 && (
-                <button onClick={manejarFinalizacion} className="ejercicio-btn" style={{ fontSize: "1.3rem", padding: "0.8rem 2rem", borderRadius: "8px" }}>
+                <button
+                  onClick={manejarFinalizacion}
+                  className="ejercicio-btn"
+                  style={{ fontSize: "1.3rem", padding: "0.8rem 2rem", borderRadius: "8px" }}
+                >
                   Finish
                 </button>
               )}
@@ -176,7 +242,7 @@ export default function Tema2_Ej1() {
         </>
       ) : (
         <div className="finalizado" style={{ fontSize: "1.3rem" }}>
-          <h2>You have completed the exercise!</h2>
+          <h2>✅ You have completed the exercise!</h2>
           <p>
             Correct answers: <strong>{correctas} / {ejercicios.length}</strong>
           </p>

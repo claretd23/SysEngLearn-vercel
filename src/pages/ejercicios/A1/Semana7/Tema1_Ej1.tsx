@@ -186,7 +186,7 @@ export default function Tema1_Ej1() {
                 style={{
                   fontSize: "1.3rem",
                   margin: "1rem 0",
-                  color: respuesta.startsWith("Correct") ? "#0D6EFD" : "#DC3545",
+                  color: respuesta.startsWith("Correct") ? "#32be2dff" : "#DC3545",
                 }}
               >
                 {respuesta}

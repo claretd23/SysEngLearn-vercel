@@ -19,61 +19,61 @@ export default function Tema1_Ej3() {
   const ejercicios = useMemo(
     () => [
       {
-        audio: "/audios/sem2/e3_1.mp3",
+        audio: "/audios/sem6/e3_1.mp3",
         pregunta: "Where is the bank?",
         opciones: ["Behind the supermarket", "Next to the supermarket", "In front of the school"],
         correcta: "Next to the supermarket",
       },
       {
-        audio: "/audios/sem2/e3_2.mp3",
+        audio: "/audios/sem6/e3_2.mp3",
         pregunta: "Where is the cat?",
         opciones: ["On the table", "Under the table", "Behind the sofa"],
         correcta: "Under the table",
       },
       {
-        audio: "/audios/sem2/e3_3.mp3",
+        audio: "/audios/sem6/e3_3.mp3",
         pregunta: "Where is the tree?",
         opciones: ["Behind the house", "Between the houses", "In front of the house"],
         correcta: "In front of the house",
       },
       {
-        audio: "/audios/sem2/e3_4.mp3",
+        audio: "/audios/sem6/e3_4.mp3",
         pregunta: "Where are the shoes?",
         opciones: ["Under the bed", "On the box", "Behind the door"],
         correcta: "Under the bed",
       },
       {
-        audio: "/audios/sem2/e3_5.mp3",
+        audio: "/audios/sem6/e3_5.mp3",
         pregunta: "Where is the park?",
         opciones: ["Next to the supermarket", "Between the library and the school", "In front of the school"],
         correcta: "Between the library and the school",
       },
       {
-        audio: "/audios/sem2/e3_6.mp3",
+        audio: "/audios/sem6/e3_6.mp3",
         pregunta: "Where is the bus stop?",
         opciones: ["Behind the hospital", "In front of the hospital", "Between the hospital and the park"],
         correcta: "In front of the hospital",
       },
       {
-        audio: "/audios/sem2/e3_7.mp3",
+        audio: "/audios/sem6/e3_7.mp3",
         pregunta: "Where is the dog?",
         opciones: ["Behind the sofa", "On the sofa", "Under the chair"],
         correcta: "Behind the sofa",
       },
       {
-        audio: "/audios/sem2/e3_8.mp3",
+        audio: "/audios/sem6/e3_8.mp3",
         pregunta: "Where is the restaurant?",
         opciones: ["Between the bank and the school", "Next to the movie theater", "In front of the park"],
         correcta: "Next to the movie theater",
       },
       {
-        audio: "/audios/sem2/e3_9.mp3",
+        audio: "/audios/sem6/e3_9.mp3",
         pregunta: "Where are the toys?",
         opciones: ["In the box", "On the chair", "Between the boxes"],
         correcta: "In the box",
       },
       {
-        audio: "/audios/sem2/e3_10.mp3",
+        audio: "/audios/sem6/e3_10.mp3",
         pregunta: "Where is the car?",
         opciones: ["In front of the house", "Behind the house", "On the street"],
         correcta: "Behind the house",
@@ -85,9 +85,11 @@ export default function Tema1_Ej3() {
   const actual = ejercicios[index];
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
-  const playAudio = () => {
-    audioRef.current?.play();
-  };
+const playAudio = () => {
+  audioRef.current?.load();  // recarga el audio
+  audioRef.current?.play();
+};
+
 
   const guardarProgreso = async () => {
     const completados = JSON.parse(localStorage.getItem("ejercicios_completados") || "[]");

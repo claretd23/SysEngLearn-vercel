@@ -52,6 +52,7 @@ export default function Tema2_Ej1() {
     }
   };
 
+
 const verificar = () => {
   if (!opcionSeleccionada) return;
 
@@ -60,12 +61,11 @@ const verificar = () => {
     setRespuesta("Correct");
     setCorrectas((prev) => prev + 1);
   } else {
-    // Incorrecta: solo indica que es incorrecta
-    setRespuesta("Incorrect");
+    // Incorrecta: completa el espacio en blanco con la respuesta correcta
+    const oracionCompletada = actual.pregunta.replace("___", actual.correcta);
+    setRespuesta(`Incorrect.\n\n${oracionCompletada}`);
   }
 };
-
-
 
 
   const siguiente = () => {

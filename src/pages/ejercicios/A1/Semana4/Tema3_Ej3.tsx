@@ -2,6 +2,8 @@ import { useParams, useNavigate } from "react-router-dom";
 import { useState, useMemo, useRef } from "react";
 import "../ejercicios.css";
 
+const API_URL = import.meta.env.VITE_API_URL;
+
 export default function Tema3_Ej3() {
   const { nivel, semana, tema, ejercicio } = useParams();
   const id = `${nivel}-${semana}-${tema}-${ejercicio}`;
@@ -12,9 +14,6 @@ export default function Tema3_Ej3() {
   const [correctas, setCorrectas] = useState(0);
   const [index, setIndex] = useState(0);
   const [finalizado, setFinalizado] = useState(false);
-
-  const API_URL = import.meta.env.VITE_API_URL;
-  const token = localStorage.getItem("token");
 
   const ejercicios = useMemo(
     () => [
@@ -35,21 +34,17 @@ export default function Tema3_Ej3() {
   const actual = ejercicios[index];
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
-  const playAudio = () => {
-    audioRef.current?.play();
-  };
+  const playAudio = () => audioRef.current?.play();
 
   const guardarProgreso = async () => {
-    // Guardar en localStorage
     const completados = JSON.parse(localStorage.getItem("ejercicios_completados") || "[]");
     if (!completados.includes(id)) {
       completados.push(id);
       localStorage.setItem("ejercicios_completados", JSON.stringify(completados));
     }
 
-    // Guardar en backend
-    if (!token) return;
     try {
+      const token = localStorage.getItem("token");
       const res = await fetch(`${API_URL}/api/progreso`, {
         method: "POST",
         headers: {
@@ -58,9 +53,10 @@ export default function Tema3_Ej3() {
         },
         body: JSON.stringify({ nivel, semana, tema, ejercicio }),
       });
+
       if (!res.ok) console.error("Error al guardar progreso:", res.statusText);
-    } catch (err) {
-      console.error("Error al guardar progreso:", err);
+    } catch (error) {
+      console.error("Error al guardar el progreso:", error);
     }
   };
 
@@ -71,23 +67,20 @@ export default function Tema3_Ej3() {
       setRespuesta("Correct!");
       setCorrectas((prev) => prev + 1);
     } else {
-      setRespuesta(`Incorrect.\nCorrect answer: ${actual.correcta}`);
+      setRespuesta(`The answer is:"${actual.correcta}"`);
     }
   };
 
-  const siguiente = async () => {
+  const siguiente = () => {
     setRespuesta(null);
     setSeleccion(null);
+    setIndex((prev) => prev + 1);
+  };
+
+  const manejarFinalizacion = async () => {
     await guardarProgreso();
-    if (index + 1 < ejercicios.length) {
-      setIndex(index + 1);
-    } else {
-      setFinalizado(true);
-      setTimeout(() => {
-        navigate(`/inicio/${nivel}`);
-        window.location.reload();
-      }, 2500);
-    }
+    setFinalizado(true);
+    setTimeout(() => navigate(`/inicio/${nivel}`), 2500);
   };
 
   if (finalizado) {
@@ -115,7 +108,7 @@ export default function Tema3_Ej3() {
         {index === 0 && (
           <div className="instruccion-box" style={{ fontSize: "1.3rem" }}>
             <p className="instruccion-ejercicio">
-              🎧 Listen to the audio and choose the correct answer.
+              Listen to the audio and choose the correct answer.
             </p>
           </div>
         )}
@@ -127,71 +120,68 @@ export default function Tema3_Ej3() {
         >
           🔊
         </button>
+
         <audio ref={audioRef} src={actual.audio} />
 
         <div
-          className="opciones-container"
+          className="opciones-ejercicio"
           style={{
             display: "flex",
             flexDirection: "column",
             gap: "1rem",
             alignItems: "center",
+            marginBottom: "1rem",
           }}
         >
-          {actual.opciones.map((opcion) => (
+          {actual.opciones.map((op, i) => (
             <button
-              key={opcion}
-              onClick={() => setSeleccion(opcion)}
-              className={`opcion-btn ${seleccion === opcion ? "seleccionada" : ""}`}
+              key={i}
+              className={`opcion-btn ${seleccion === op ? "seleccionada" : ""}`}
+              onClick={() => setSeleccion(op)}
               disabled={!!respuesta}
-              style={{
-                fontSize: "1.2rem",
-                padding: "0.5rem 1rem",
-                width: "250px",
-                borderRadius: "8px",
-                border: "1px solid #ccc",
-                textAlign: "center",
-              }}
+              style={{ fontSize: "1.2rem", padding: "0.8rem 1.5rem", minWidth: "280px" }}
             >
-              {opcion}
+              {op}
             </button>
           ))}
         </div>
 
         {respuesta && (
           <p
-            className={`respuesta-feedback ${respuesta.startsWith("Correct") ? "correcta" : "incorrecta"}`}
+            className="respuesta-feedback"
             style={{
-              fontSize: "1.2rem",
+              fontSize: "1.3rem",
               margin: "1rem 0",
-              color: respuesta.startsWith("Correct") ? "#0D6EFD" : "#DC3545",
-              fontWeight: "bold",
-              minHeight: "1.5rem",
+              whiteSpace: "pre-line",
+              color: respuesta.startsWith("Correct") ? "#28A745" : "#DC3545",
+              fontWeight: "600",
             }}
           >
-            {respuesta.split("\n")[0]}
+            {respuesta}
           </p>
         )}
 
-        {!respuesta && seleccion && (
-          <button
-            onClick={verificar}
-            className="ejercicio-btn"
-            style={{ fontSize: "1.3rem", padding: "0.8rem 2rem" }}
-          >
-            Check
-          </button>
-        )}
+        <div className="botones-siguiente" style={{ marginTop: "1rem" }}>
+          {respuesta && index < ejercicios.length - 1 && (
+            <button
+              onClick={siguiente}
+              className="ejercicio-btn"
+              style={{ fontSize: "1.3rem", padding: "0.8rem 2rem" }}
+            >
+              Next question
+            </button>
+          )}
 
-        {respuesta && (
-          <button
-            onClick={siguiente}
-            className="ejercicio-btn"
-            style={{ fontSize: "1.3rem", padding: "0.8rem 2rem", marginTop: "1rem" }}
-          >
-            {index === ejercicios.length - 1 ? "Finish" : "Next question"}
-          </button>
-        )}
+          {respuesta && index === ejercicios.length - 1 && (
+            <button
+              onClick={manejarFinalizacion}
+              className="ejercicio-btn"
+              style={{ fontSize: "1.3rem", padding: "0.8rem 2rem" }}
+            >
+              Finish
+            </button>
+          )}
+        </div>
       </section>
     </div>
   );

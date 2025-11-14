@@ -123,16 +123,20 @@ export default function Tema3_Ej1() {
             Check
           </button>
         )}
-
-        {respuesta && (
+                {respuesta && (
           <p
             className={`respuesta-feedback ${respuesta.startsWith("Correct") ? "correcta" : "incorrecta"}`}
-            style={{ fontSize: "1.2rem", margin: "1rem 0", color: respuesta.startsWith("Correct") ? "#2ecc71" : "#e74c3c", fontWeight: "bold" }}
+            style={{
+              fontSize: "1.2rem",
+              margin: "1rem 0",
+              color: respuesta.startsWith("Correct") ? "#2ecc71" : "#e74c3c",
+              fontWeight: "bold",
+              whiteSpace: "pre-line",
+            }}
           >
-            {respuesta.split("\n")[0]}
+            {respuesta}
           </p>
         )}
-
         {respuesta && (
           <div className="botones-siguiente" style={{ marginTop: "1rem" }}>
             <button onClick={siguiente} className="ejercicio-btn" style={{ fontSize: "1.3rem", padding: "0.8rem 2rem", borderRadius: "8px" }}>

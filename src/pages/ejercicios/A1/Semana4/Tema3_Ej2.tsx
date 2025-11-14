@@ -130,16 +130,20 @@ export default function Tema3_Ej2() {
             </button>
           </div>
         )}
-
-        {respuesta && (
-          <p
-            className={`respuesta-feedback ${respuesta.startsWith("Correct") ? "correcta" : "incorrecta"}`}
-            style={{ fontSize: "1.2rem", margin: "1rem 0", color: respuesta.startsWith("Correct") ? "#2ecc71" : "#e74c3c", fontWeight: "bold" }}
-          >
-            {respuesta.split("\n")[0]}
-          </p>
-        )}
-
+              {respuesta && (
+        <p
+          className={`respuesta-feedback ${respuesta.startsWith("Correct") ? "correcta" : "incorrecta"}`}
+          style={{
+            fontSize: "1.2rem",
+            margin: "1rem 0",
+            color: respuesta.startsWith("Correct") ? "#2ecc71" : "#e74c3c",
+            fontWeight: "bold",
+            whiteSpace: "pre-line",
+          }}
+        >
+          {respuesta}
+        </p>
+      )}
         {respuesta && (
           <div style={{ display: "flex", justifyContent: "center", gap: "1rem", marginTop: "1rem" }}>
             <button

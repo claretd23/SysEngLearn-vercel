@@ -2,7 +2,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import "../ejercicios.css";
 
-export default function Tema1_Ej3() {
+export default function Tema1_Ej1() {
   const { nivel, semana, tema, ejercicio } = useParams();
   const id = `${nivel}-${semana}-${tema}-${ejercicio}`;
   const navigate = useNavigate();
@@ -62,7 +62,7 @@ export default function Tema1_Ej3() {
       setRespuesta("Correct!");
       setCorrectas((prev) => prev + 1);
     } else {
-      setRespuesta(`Incorrect. The correct answer was "${actual.correcta}".`);
+      setRespuesta(`Incorrect.`);
     }
   };
 

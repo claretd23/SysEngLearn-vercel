@@ -20,51 +20,61 @@ export default function Tema3_Ej3() {
     () => [
       {
         audio: "/audios/sem6/e3_1.mp3",
+        pregunta: "Where is the speaker?",
         opciones: ["In the car", "On the bus", "At the bus stop"],
         correcta: "At the bus stop",
       },
       {
         audio: "/audios/sem6/e3_2.mp3",
+        pregunta: "Where are the books?",
         opciones: ["In the bag", "On the desk", "At school"],
         correcta: "On the desk",
       },
       {
         audio: "/audios/sem6/e3_3.mp3",
+        pregunta: "Where are the parents?",
         opciones: ["In the kitchen", "On the balcony", "At the park"],
         correcta: "In the kitchen",
       },
       {
         audio: "/audios/sem6/e3_4.mp3",
+        pregunta: "Where are they?",
         opciones: ["At the airport", "In the plane", "On the bus"],
         correcta: "At the airport",
       },
       {
         audio: "/audios/sem6/e3_5.mp3",
+        pregunta: "Where is the phone?",
         opciones: ["On the bed", "In the drawer", "At the table"],
         correcta: "On the bed",
       },
       {
         audio: "/audios/sem6/e3_6.mp3",
+        pregunta: "Where is the cat?",
         opciones: ["In the box", "On the chair", "At the door"],
         correcta: "In the box",
       },
       {
         audio: "/audios/sem6/e3_7.mp3",
+        pregunta: "Where are the children?",
         opciones: ["In the park", "At school", "On the bus"],
         correcta: "In the park",
       },
       {
         audio: "/audios/sem6/e3_8.mp3",
+        pregunta: "Where is the speaker?",
         opciones: ["On the sofa", "In the room", "At work"],
         correcta: "On the sofa",
       },
       {
         audio: "/audios/sem6/e3_9.mp3",
+        pregunta: "Where is the teacher?",
         opciones: ["In the classroom", "On the chair", "At the door"],
         correcta: "At the door",
       },
       {
         audio: "/audios/sem6/e3_10.mp3",
+        pregunta: "Where are the apples?",
         opciones: ["In the fridge", "On the table", "At the store"],
         correcta: "In the fridge",
       },
@@ -80,14 +90,12 @@ export default function Tema3_Ej3() {
   };
 
   const guardarProgreso = async () => {
-    // Guardar en localStorage
     const completados = JSON.parse(localStorage.getItem("ejercicios_completados") || "[]");
     if (!completados.includes(id)) {
       completados.push(id);
       localStorage.setItem("ejercicios_completados", JSON.stringify(completados));
     }
 
-    // Guardar en backend
     if (!token) return;
     try {
       const res = await fetch(`${API_URL}/api/progreso`, {
@@ -111,7 +119,7 @@ export default function Tema3_Ej3() {
       setRespuesta("Correct!");
       setCorrectas((prev) => prev + 1);
     } else {
-      setRespuesta(`Incorrect.\nCorrect answer: ${actual.correcta}`);
+      setRespuesta(`The correct answer: ${actual.correcta}`);
     }
   };
 
@@ -153,7 +161,7 @@ export default function Tema3_Ej3() {
 
       <section className="tarjeta-ejercicio" style={{ textAlign: "center" }}>
         {index === 0 && (
-          <div className="instruccion-box" style={{ fontSize: "1.3rem" }}>
+          <div className="instruccion-box" style={{ fontSize: "1.2rem" }}>
             <p className="instruccion-ejercicio">
               Listen carefully to each sentence. You will hear where a person, animal, or thing is located.
               Choose the correct answer that shows the right preposition of place: in, on, or at.
@@ -161,6 +169,7 @@ export default function Tema3_Ej3() {
           </div>
         )}
 
+        {/* === AUDIO === */}
         <button
           className="btn-audio"
           style={{ fontSize: "2rem", margin: "1rem 0" }}
@@ -170,6 +179,13 @@ export default function Tema3_Ej3() {
         </button>
         <audio ref={audioRef} src={actual.audio} />
 
+        {/* === PREGUNTA === */}
+        <p style={{ fontSize: "1.2rem", margin: "1rem 0", color: "#222a5c" }}>
+          {actual.pregunta}
+        </p>
+
+    
+        {/* === OPCIONES === */}
         <div
           className="opciones-container"
           style={{
@@ -184,42 +200,41 @@ export default function Tema3_Ej3() {
               key={opcion}
               onClick={() => setSeleccion(opcion)}
               className={`opcion-btn ${seleccion === opcion ? "seleccionada" : ""}`}
-              disabled={!!respuesta}
-              style={{
-                fontSize: "1.2rem",
-                padding: "0.5rem 1rem",
-                width: "250px",
-                borderRadius: "8px",
-                border: "1px solid #ccc",
-                textAlign: "center",
-              }}
+              style={{ fontSize: "1.2rem", padding: "0.8rem 1.5rem", minWidth: "180px" }}
             >
               {opcion}
             </button>
           ))}
         </div>
 
+      
+        {/* === FEEDBACK === */}
         {respuesta && (
           <p
-            className={`respuesta-feedback ${respuesta.startsWith("Correct") ? "correcta" : "incorrecta"}`}
+            className={`respuesta-feedback ${
+              respuesta.startsWith("Correct") ? "correcta" : "incorrecta"
+            }`}
             style={{
               fontSize: "1.2rem",
               margin: "1rem 0",
-              color: respuesta.startsWith("Correct") ? "#0D6EFD" : "#DC3545",
+              color: respuesta.startsWith("Correct") ? "#28A745" : "#DC3545",
               fontWeight: "bold",
-              minHeight: "1.5rem",
-              whiteSpace: "pre-line",
             }}
           >
             {respuesta}
           </p>
         )}
 
+        {/* === BOTONES === */}
         {!respuesta && seleccion && (
           <button
             onClick={verificar}
             className="ejercicio-btn"
-            style={{ fontSize: "1.3rem", padding: "0.8rem 2rem" }}
+            style={{
+              fontSize: "1.3rem",
+              padding: "0.8rem 2rem",
+              marginTop: "1rem",
+            }}
           >
             Check
           </button>
@@ -229,7 +244,11 @@ export default function Tema3_Ej3() {
           <button
             onClick={siguiente}
             className="ejercicio-btn"
-            style={{ fontSize: "1.3rem", padding: "0.8rem 2rem", marginTop: "1rem" }}
+            style={{
+              fontSize: "1.3rem",
+              padding: "0.8rem 2rem",
+              marginTop: "1rem",
+            }}
           >
             {index === ejercicios.length - 1 ? "Finish" : "Next question"}
           </button>

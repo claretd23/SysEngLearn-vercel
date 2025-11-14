@@ -47,7 +47,7 @@ export default function Tema2_Ej3() {
       setRespuesta(`Correct!\n\n${oracionCompletada}`);
       setCorrectas((prev) => prev + 1);
     } else {
-      setRespuesta(`The answer is "${actual.correcta}".\n\n${oracionCorrecta}`);
+      setRespuesta(`Incorrect".\n\n${oracionCorrecta}`);
     }
   };
 

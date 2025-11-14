@@ -189,7 +189,7 @@ export default function Tema2_Ej1() {
 
             {respuesta && (
               <p className={`respuesta-feedback ${respuesta.startsWith("Correct!") ? "correcta" : "incorrecta"}`}
-                style={{ fontSize: "1.3rem", margin: "1rem 0", color: respuesta.startsWith("Correct!") ? "#0D6EFD" : "#DC3545", fontWeight: "bold" }}>
+                style={{ fontSize: "1.3rem", margin: "1rem 0", color: respuesta.startsWith("Correct!") ? "#19c948ff" : "#DC3545", fontWeight: "bold" }}>
                 {respuesta.split("\n")[0]}
               </p>
             )}

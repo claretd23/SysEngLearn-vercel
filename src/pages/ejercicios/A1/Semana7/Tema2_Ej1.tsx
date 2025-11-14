@@ -52,22 +52,19 @@ export default function Tema2_Ej1() {
     }
   };
 
+  // 🔥 FUNCIÓN MODIFICADA PARA AUTOCOMPLETAR LA ORACIÓN
+  const verificar = () => {
+    if (!opcionSeleccionada) return;
 
-const verificar = () => {
-  if (!opcionSeleccionada) return;
-
-  if (opcionSeleccionada === actual.correcta) {
-    // Correcta: indica que es correcta
-    setRespuesta("Correct");
-    setCorrectas((prev) => prev + 1);
-  } else {
-    // Incorrecta: solo muestra "Incorrect" y completa la oración automáticamente
     const oracionCompletada = actual.pregunta.replace("___", actual.correcta);
-    setRespuesta(oracionCompletada); // Aquí ponemos directamente la oración completa
-  }
-};
 
-
+    if (opcionSeleccionada === actual.correcta) {
+      setRespuesta(`Correct:\n${oracionCompletada}`);
+      setCorrectas((prev) => prev + 1);
+    } else {
+      setRespuesta(`Incorrect:\n${oracionCompletada}`);
+    }
+  };
 
   const siguiente = () => {
     setRespuesta(null);
@@ -119,7 +116,7 @@ const verificar = () => {
                 whiteSpace: "pre-line",
               }}
             >
-              <p>{respuesta ? respuesta.split("\n").slice(1).join("\n") : actual.pregunta}</p>
+              <p>{!respuesta ? actual.pregunta : respuesta.split("\n").slice(1).join("\n")}</p>
             </div>
 
             {!respuesta && (

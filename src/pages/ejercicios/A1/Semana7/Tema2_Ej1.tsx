@@ -62,8 +62,8 @@ const verificar = () => {
     setCorrectas((prev) => prev + 1);
   } else {
     // Incorrecta: completa el espacio en blanco con la respuesta correcta
-    const oracionCompletada = actual.pregunta.replace("___", actual.correcta);
-    setRespuesta(`Incorrect.\n\n${oracionCompletada}`);
+    actual.pregunta.replace("___", actual.correcta);
+    setRespuesta(`Incorrect.`);
   }
 };
 

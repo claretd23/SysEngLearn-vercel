@@ -62,7 +62,7 @@ export default function Tema1_Ej2() {
       setRespuesta("Correct!");
       setCorrectas((prev) => prev + 1);
     } else {
-      setRespuesta(`Incorrect. The correct answer was "${actual.correcta}".`);
+      setRespuesta(`Incorrect.`);
     }
   };
 

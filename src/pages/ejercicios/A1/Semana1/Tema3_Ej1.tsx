@@ -152,7 +152,7 @@ export default function Tema3_Ej1() {
                 style={{
                   fontSize: "1.3rem",
                   margin: "1rem 0",
-                  color: respuesta.startsWith("Correct") ? "green" : "red", // ✅ colores dinámicos
+                  color: respuesta.startsWith("Correct") ? "green" : "red", 
                   fontWeight: 600,
                 }}
               >

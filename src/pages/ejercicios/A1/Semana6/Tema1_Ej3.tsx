@@ -245,25 +245,22 @@ export default function Tema1_Ej3() {
                 Check
               </button>
             )}
-
-            {/* FEEDBACK */}
-            {respuesta && (
-              <p
-                className={`respuesta-feedback ${
-                  esCorrecta ? "correcta" : "incorrecta"
-                }`}
-                style={{
-                  fontSize: "1.3rem",
-                  margin: "1rem 0",
-                  color: esCorrecta ? "green" : "red",
-                  fontWeight: 600,
-                  whiteSpace: "pre-line",
-                }}
-              >
-                {respuesta.split("\n")[0]}
-              </p>
-            )}
-
+              {respuesta && (
+                <p
+                  className={`respuesta-feedback ${
+                    esCorrecta ? "correcta" : "incorrecta"
+                  }`}
+                  style={{
+                    fontSize: "1.3rem",
+                    margin: "1rem 0",
+                    color: esCorrecta ? "green" : "red",
+                    fontWeight: 600,
+                    whiteSpace: "pre-line",
+                  }}
+                >
+                  {respuesta}
+                </p>
+              )}
             {/* Next / Finish */}
             {respuesta && index < ejercicios.length - 1 && (
               <button

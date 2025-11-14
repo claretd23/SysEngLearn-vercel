@@ -52,19 +52,19 @@ export default function Tema2_Ej1() {
     }
   };
 
-  const verificar = () => {
-    if (!opcionSeleccionada) return;
+const verificar = () => {
+  if (!opcionSeleccionada) return;
 
+  if (opcionSeleccionada === actual.correcta) {
     const oracionCompletada = actual.pregunta.replace("___", opcionSeleccionada);
+    setRespuesta(`Correct\n\n${oracionCompletada}`);
+    setCorrectas((prev) => prev + 1);
+  } else {
+    const oracionCorrecta = actual.pregunta.replace("___", actual.correcta);
+    setRespuesta(`Incorrect\n\n${oracionCorrecta}`);
+  }
+};
 
-    if (opcionSeleccionada === actual.correcta) {
-      setRespuesta(`Correct\n\n${oracionCompletada}`);
-      setCorrectas((prev) => prev + 1);
-    } else {
-      const oracionCorrecta = actual.pregunta.replace("___", actual.correcta);
-      setRespuesta(`Incorrect\n\n${oracionCorrecta}`);
-    }
-  };
 
   const siguiente = () => {
     setRespuesta(null);

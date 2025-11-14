@@ -2,6 +2,8 @@ import { useParams, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import "../ejercicios.css";
 
+const API_URL = import.meta.env.VITE_API_URL;
+
 export default function Tema1_Ej2() {
   const { nivel, semana, tema, ejercicio } = useParams();
   const id = `${nivel}-${semana}-${tema}-${ejercicio}`;
@@ -14,70 +16,32 @@ export default function Tema1_Ej2() {
   const [finalizado, setFinalizado] = useState(false);
 
   const ejercicios = [
-    {
-      pregunta: "That is ___ bag.",
-      opciones: ["me", "my", "mine", "I"],
-      correcta: "my",
-    },
-    {
-      pregunta: "This is John. ___ house is very nice.",
-      opciones: ["He", "His", "Him", "Himself"],
-      correcta: "His",
-    },
-    {
-      pregunta: "I have a brother. ___ name is Sam.",
-      opciones: ["Him", "His", "He", "Him"],
-      correcta: "His",
-    },
-    {
-      pregunta: "We have a cat. ___ fur is black.",
-      opciones: ["Our", "Their", "Our", "Us"],
-      correcta: "Our",
-    },
-    {
-      pregunta: "You have a notebook. Is that ___?",
-      opciones: ["you", "yours", "your", "yours"],
-      correcta: "your",
-    },
-    {
-      pregunta: "She has a dog. ___ name is Bella.",
-      opciones: ["Her", "Hers", "Her", "She"],
-      correcta: "Her",
-    },
-    {
-      pregunta: "They have a house. ___ garden is beautiful.",
-      opciones: ["Their", "Their", "Them", "Theirs"],
-      correcta: "Their",
-    },
-    {
-      pregunta: "I have a pen. ___ color is blue.",
-      opciones: ["My", "My", "Mine", "Me"],
-      correcta: "My",
-    },
-    {
-      pregunta: "He has a sister. ___ name is Anna.",
-      opciones: ["He", "Her", "Hers", "Him"],
-      correcta: "Her",
-    },
-    {
-      pregunta: "We have two cars. ___ are very fast.",
-      opciones: ["Ours", "Our", "Our", "Us"],
-      correcta: "Our",
-    },
+    { pregunta: "That is ___ bag.", opciones: ["me", "my", "mine", "I"], correcta: "my" },
+    { pregunta: "This is John. ___ house is very nice.", opciones: ["He", "His", "Him", "Himself"], correcta: "His" },
+    { pregunta: "I have a brother. ___ name is Sam.", opciones: ["Him", "His", "He", "Him"], correcta: "His" },
+    { pregunta: "We have a cat. ___ fur is black.", opciones: ["Our", "Their", "Our", "Us"], correcta: "Our" },
+    { pregunta: "You have a notebook. Is that ___?", opciones: ["you", "yours", "your", "yours"], correcta: "your" },
+    { pregunta: "She has a dog. ___ name is Bella.", opciones: ["Her", "Hers", "Her", "She"], correcta: "Her" },
+    { pregunta: "They have a house. ___ garden is beautiful.", opciones: ["Their", "Their", "Them", "Theirs"], correcta: "Their" },
+    { pregunta: "I have a pen. ___ color is blue.", opciones: ["My", "My", "Mine", "Me"], correcta: "My" },
+    { pregunta: "He has a sister. ___ name is Anna.", opciones: ["He", "Her", "Hers", "Him"], correcta: "Her" },
+    { pregunta: "We have two cars. ___ are very fast.", opciones: ["Ours", "Our", "Our", "Us"], correcta: "Our" },
   ];
 
   const actual = ejercicios[index];
 
   const guardarProgreso = async () => {
+    // Guardar en localStorage
     const completados = JSON.parse(localStorage.getItem("ejercicios_completados") || "[]");
     if (!completados.includes(id)) {
       completados.push(id);
       localStorage.setItem("ejercicios_completados", JSON.stringify(completados));
     }
 
+    // Guardar en backend
     try {
       const token = localStorage.getItem("token");
-      const res = await fetch("http://localhost:5000/api/progreso", {
+      const res = await fetch(`${API_URL}/progreso`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -98,27 +62,27 @@ export default function Tema1_Ej2() {
     const oracionCompletada = actual.pregunta.replace("___", opcionSeleccionada);
 
     if (opcionSeleccionada === actual.correcta) {
-      setRespuesta(`✅ Correct!\n\n${oracionCompletada}`);
+      setRespuesta(`Correct!\n\n${oracionCompletada}`);
       setCorrectas((prev) => prev + 1);
     } else {
       const oracionCorrecta = actual.pregunta.replace("___", actual.correcta);
-      setRespuesta(`❌ Incorrect.\n\n${oracionCorrecta}`);
+      setRespuesta(`Incorrect.\n\n${oracionCorrecta}`);
     }
   };
 
   const siguiente = () => {
     setRespuesta(null);
     setOpcionSeleccionada(null);
-    setIndex(index + 1);
+    setIndex((prev) => prev + 1);
   };
 
   const manejarFinalizacion = async () => {
     await guardarProgreso();
     setFinalizado(true);
+
     setTimeout(() => {
       navigate(`/inicio/${nivel}`);
-      window.location.reload();
-    }, 3000);
+    }, 2500);
   };
 
   return (
@@ -203,7 +167,9 @@ export default function Tema1_Ej2() {
 
             {respuesta && (
               <p
-                className={`respuesta-feedback ${respuesta.startsWith("✅") ? "correcta" : "incorrecta"}`}
+                className={`respuesta-feedback ${
+                  respuesta.startsWith("Correct") ? "correcta" : "incorrecta"
+                }`}
                 style={{ fontSize: "1.3rem", margin: "1rem 0" }}
               >
                 {respuesta.split("\n")[0]}
@@ -228,6 +194,7 @@ export default function Tema1_Ej2() {
                   Next question
                 </button>
               )}
+
               {respuesta && index === ejercicios.length - 1 && (
                 <button
                   onClick={manejarFinalizacion}
@@ -242,7 +209,7 @@ export default function Tema1_Ej2() {
         </>
       ) : (
         <div className="finalizado" style={{ fontSize: "1.3rem" }}>
-          <h2>✅ You have completed the exercise!</h2>
+          <h2>You have completed the exercise!</h2>
           <p>
             Correct answers: <strong>{correctas} / {ejercicios.length}</strong>
           </p>

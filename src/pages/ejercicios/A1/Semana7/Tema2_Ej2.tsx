@@ -59,7 +59,7 @@ export default function Tema2_Ej2() {
 
     try {
       const token = localStorage.getItem("token");
-      const res = await fetch("http://localhost:5000/api/progreso", {
+      const res = await fetch("https://doablyacademy.com/api/progreso", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -126,7 +126,7 @@ export default function Tema2_Ej2() {
       {!finalizado ? (
         <>
           <header className="ejercicio-header">
-            <h1 className="titulo-ejercicio">EXERCISE 1</h1>
+            <h1 className="titulo-ejercicio">EXERCISE 2</h1>
           </header>
 
           <section className="tarjeta-ejercicio">
@@ -208,7 +208,7 @@ export default function Tema2_Ej2() {
         </>
       ) : (
         <div className="finalizado" style={{ fontSize: "1.3rem" }}>
-          <h2>✅ You have completed the exercise!</h2>
+          <h2>You have completed the exercise!</h2>
           <p>
             Correct pairs: <strong>{paresCorrectos.length}</strong> / {ejercicios.length}
           </p>

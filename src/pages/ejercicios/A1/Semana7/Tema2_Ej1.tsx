@@ -56,14 +56,17 @@ const verificar = () => {
   if (!opcionSeleccionada) return;
 
   if (opcionSeleccionada === actual.correcta) {
+    // Correcta: completa la oración con la respuesta seleccionada
     const oracionCompletada = actual.pregunta.replace("___", opcionSeleccionada);
     setRespuesta(`Correct\n\n${oracionCompletada}`);
     setCorrectas((prev) => prev + 1);
   } else {
-    const oracionCorrecta = actual.pregunta.replace("___", actual.correcta);
-    setRespuesta(`Incorrect\n\n${oracionCorrecta}`);
+    // Incorrecta: solo completa el espacio en blanco con la respuesta correcta
+    const oracionCompletada = actual.pregunta.replace("___", actual.correcta);
+    setRespuesta(`Incorrect\n\n${oracionCompletada}`);
   }
 };
+
 
 
   const siguiente = () => {

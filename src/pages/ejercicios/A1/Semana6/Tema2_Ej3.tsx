@@ -15,32 +15,41 @@ export default function Tema3_Ej3() {
 
   const API_URL = import.meta.env.VITE_API_URL;
   const token = localStorage.getItem("token");
-  const audioRefs = useRef<(HTMLAudioElement | null)[]>([]);
 
-  // ⚠️ RESETEAR LOS AUDIOS CADA VEZ QUE CAMBIA LA PREGUNTA
+  // Refs estables
+  const audioRefs = useRef<HTMLAudioElement[]>([]);
+
+  // Precargar audios al cambiar de ejercicio
   useEffect(() => {
-    audioRefs.current = [];
+    audioRefs.current.forEach((a) => a?.load());
   }, [index]);
 
-  // FUNCION DE AUDIO
+  // Reproducir todos los audios secuencialmente
   const playAudios = () => {
     const audios = audioRefs.current;
     if (!audios[0]) return;
 
-    audios[0].load();
-    audios[0].play();
+    let i = 0;
 
-    audios[0].onended = () => {
-      if (audios[1]) {
-        audios[1].load();
-        setTimeout(() => audios[1]?.play(), 400);
-      }
+    const reproducir = () => {
+      if (!audios[i]) return;
+      audios[i].currentTime = 0;
+      audios[i].play();
+
+      audios[i].onended = () => {
+        i++;
+        if (i < audios.length) {
+          setTimeout(() => reproducir(), 300);
+        }
+      };
     };
+
+    reproducir();
   };
 
   const ejercicios = [
     {
-      audios: ["/audios/sem6/1_a.mp3", "/audios/sem3/1_b.mp3", "/audios/sem6/1_c.mp3", "/audios/sem6/1_d.mp3", "/audios/sem6/1_e.mp3"],
+      audios: ["/audios/sem6/1_a.mp3", "/audios/sem6/1_b.mp3", "/audios/sem6/1_c.mp3", "/audios/sem6/1_d.mp3", "/audios/sem6/1_e.mp3"],
       texto: "After 100 metres, ________ right.",
       correcta: ["turn"],
     },
@@ -93,7 +102,6 @@ export default function Tema3_Ej3() {
 
   const actual = ejercicios[index];
 
-  // GUARDAR PROGRESO
   const guardarProgreso = async () => {
     const completados = JSON.parse(localStorage.getItem("ejercicios_completados") || "[]");
     if (!completados.includes(id)) {
@@ -119,7 +127,6 @@ export default function Tema3_Ej3() {
     }
   };
 
-  // VERIFICAR RESPUESTA
   const verificar = () => {
     const respuestaUsuario = inputValue.trim().toLowerCase();
     if (!respuestaUsuario) return;
@@ -177,7 +184,16 @@ export default function Tema3_Ej3() {
               </div>
             )}
 
-            {/* AUDIOS */}
+            {/* AUDIOS — AHORA SIN DIV OCULTO */}
+            {actual.audios.map((src, i) => (
+              <audio
+                key={`${index}-${i}`}
+                ref={(el) => (audioRefs.current[i] = el!)}
+                src={src}
+                preload="auto"
+              />
+            ))}
+
             <div style={{ margin: "1rem 0" }}>
               <button
                 onClick={playAudios}
@@ -186,16 +202,6 @@ export default function Tema3_Ej3() {
               >
                 🔊
               </button>
-
-              <div style={{ display: "none" }}>
-                {actual.audios.map((src, i) => (
-                  <audio
-                    key={`${index}-${i}`}
-                    ref={(el) => (audioRefs.current[i] = el)}
-                    src={src}
-                  />
-                ))}
-              </div>
             </div>
 
             <p className="pregunta-ejercicio" style={{ fontSize: "1.5rem", fontWeight: 500 }}>

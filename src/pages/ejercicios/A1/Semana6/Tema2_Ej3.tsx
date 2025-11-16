@@ -1,5 +1,5 @@
 import { useParams, useNavigate } from "react-router-dom";
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import "../ejercicios.css";
 
 export default function Tema3_Ej3() {
@@ -17,21 +17,30 @@ export default function Tema3_Ej3() {
   const token = localStorage.getItem("token");
   const audioRefs = useRef<(HTMLAudioElement | null)[]>([]);
 
-  // FUNCIONES DE AUDIO  
+  // ⚠️ RESETEAR LOS AUDIOS CADA VEZ QUE CAMBIA LA PREGUNTA
+  useEffect(() => {
+    audioRefs.current = [];
+  }, [index]);
+
+  // FUNCION DE AUDIO
   const playAudios = () => {
     const audios = audioRefs.current;
     if (!audios[0]) return;
+
+    audios[0].load();
     audios[0].play();
+
     audios[0].onended = () => {
       if (audios[1]) {
-        setTimeout(() => audios[1]?.play(), 500);
+        audios[1].load();
+        setTimeout(() => audios[1]?.play(), 400);
       }
     };
   };
 
   const ejercicios = [
     {
-      audios: ["/audios/sem6/1_a.mp3", "/audios/sem3/1_b.mp3","/audios/sem6/1_c.mp3","/audios/sem6/1_d.mp3","/audios/sem6/1_e.mp3"],
+      audios: ["/audios/sem6/1_a.mp3", "/audios/sem3/1_b.mp3", "/audios/sem6/1_c.mp3", "/audios/sem6/1_d.mp3", "/audios/sem6/1_e.mp3"],
       texto: "After 100 metres, ________ right.",
       correcta: ["turn"],
     },
@@ -84,7 +93,7 @@ export default function Tema3_Ej3() {
 
   const actual = ejercicios[index];
 
-  // === GUARDAR PROGRESO ===
+  // GUARDAR PROGRESO
   const guardarProgreso = async () => {
     const completados = JSON.parse(localStorage.getItem("ejercicios_completados") || "[]");
     if (!completados.includes(id)) {
@@ -93,6 +102,7 @@ export default function Tema3_Ej3() {
     }
 
     if (!token) return;
+
     try {
       const res = await fetch(`${API_URL}/api/progreso`, {
         method: "POST",
@@ -103,15 +113,13 @@ export default function Tema3_Ej3() {
         body: JSON.stringify({ nivel, semana, tema, ejercicio }),
       });
 
-      if (!res.ok) {
-        console.error("Error al guardar progreso:", res.statusText);
-      }
+      if (!res.ok) console.error("Error al guardar progreso:", res.statusText);
     } catch (error) {
       console.error("Error al guardar el progreso:", error);
     }
   };
 
-  // === VERIFICAR RESPUESTA ===
+  // VERIFICAR RESPUESTA
   const verificar = () => {
     const respuestaUsuario = inputValue.trim().toLowerCase();
     if (!respuestaUsuario) return;
@@ -129,17 +137,16 @@ export default function Tema3_Ej3() {
     }
   };
 
-  // === SIGUIENTE ===
   const siguiente = () => {
     setRespuesta(null);
     setInputValue("");
     setIndex(index + 1);
   };
 
-  // === FINALIZAR ===
   const manejarFinalizacion = async () => {
     await guardarProgreso();
     setFinalizado(true);
+
     setTimeout(() => {
       navigate(`/inicio/${nivel}`);
       window.location.reload();
@@ -164,89 +171,57 @@ export default function Tema3_Ej3() {
           <section className="tarjeta-ejercicio" style={{ textAlign: "center" }}>
             {index === 0 && (
               <div className="instruccion-box">
-                <p className="instruccion-ejercicio" style={{ fontSize: "1.2rem" }}>
-                Listen to each conversation and complete the sentence with the correct imperative.
+                <p className="instruccion-ejercicio">
+                  Listen to each conversation and complete the sentence with the correct imperative.
                 </p>
               </div>
             )}
 
-            {/* === AUDIO === */}
+            {/* AUDIOS */}
             <div style={{ margin: "1rem 0" }}>
               <button
                 onClick={playAudios}
                 className="btn-audio"
-                style={{
-                  fontSize: "1.8rem",
-                  padding: "0.6rem 1rem",
-                  borderRadius: "8px",
-                }}
+                style={{ fontSize: "1.8rem", padding: "0.6rem 1rem" }}
               >
                 🔊
               </button>
-              <div style={{ display: "flex", justifyContent: "center", gap: "1rem", marginTop: "0.5rem" }}>
+
+              <div style={{ display: "none" }}>
                 {actual.audios.map((src, i) => (
-                  <audio key={i} ref={(el) => (audioRefs.current[i] = el)} src={src} />
+                  <audio
+                    key={`${index}-${i}`}
+                    ref={(el) => (audioRefs.current[i] = el)}
+                    src={src}
+                  />
                 ))}
               </div>
             </div>
 
-            {/* === PREGUNTA === */}
-            <p
-              className="pregunta-ejercicio"
-              style={{
-                fontSize: "1.5rem",
-                margin: "1rem 0",
-                fontWeight: 500,
-              }}
-            >
+            <p className="pregunta-ejercicio" style={{ fontSize: "1.5rem", fontWeight: 500 }}>
               {mostrarTexto}
             </p>
 
-            {/* === INPUT === */}
             {!respuesta && (
-              <div
-                className="opciones-ejercicio"
-                style={{
-                  display: "flex",
-                  justifyContent: "center",
-                  gap: "1rem",
-                  margin: "1.5rem 0",
-                }}
-              >
+              <div style={{ margin: "1.5rem 0", display: "flex", gap: "1rem", justifyContent: "center" }}>
                 <input
                   type="text"
                   value={inputValue}
                   onChange={(e) => setInputValue(e.target.value)}
-                  className="input-respuesta"
                   placeholder="Write the imperative"
-                  style={{
-                    fontSize: "1.3rem",
-                    padding: "0.8rem 1rem",
-                    borderRadius: "8px",
-                    border: "1px solid #ccc",
-                  }}
+                  style={{ fontSize: "1.3rem", padding: "0.8rem 1rem", borderRadius: "8px" }}
                 />
-                <button
-                  onClick={verificar}
-                  className="ejercicio-btn"
-                  style={{
-                    fontSize: "1.3rem",
-                    padding: "0.8rem 2rem",
-                    borderRadius: "8px",
-                  }}
-                >
+
+                <button onClick={verificar} className="ejercicio-btn">
                   Check
                 </button>
               </div>
             )}
 
-            {/* === FEEDBACK === */}
             {respuesta && (
               <p
-                className="respuesta-feedback"
                 style={{
                   fontSize: "1.2rem",
-                  margin: "1rem 0",
                   fontWeight: "bold",
                   color: respuesta === "Correct" ? "#28A745" : "#DC3545",
                 }}
@@ -255,39 +230,26 @@ export default function Tema3_Ej3() {
               </p>
             )}
 
-            {/* === BOTONES SIGUIENTE / FINAL === */}
-            <div className="botones-siguiente">
-              {respuesta && index < ejercicios.length - 1 && (
-                <button
-                  onClick={siguiente}
-                  className="ejercicio-btn"
-                  style={{ fontSize: "1.3rem", padding: "0.8rem 2rem" }}
-                >
-                  Next conversation
-                </button>
-              )}
-              {respuesta && index === ejercicios.length - 1 && (
-                <button
-                  onClick={manejarFinalizacion}
-                  className="ejercicio-btn"
-                  style={{ fontSize: "1.3rem", padding: "0.8rem 2rem" }}
-                >
-                  Finish
-                </button>
-              )}
-            </div>
+            {respuesta && index < ejercicios.length - 1 && (
+              <button onClick={siguiente} className="ejercicio-btn">
+                Next conversation
+              </button>
+            )}
+
+            {respuesta && index === ejercicios.length - 1 && (
+              <button onClick={manejarFinalizacion} className="ejercicio-btn">
+                Finish
+              </button>
+            )}
           </section>
         </>
       ) : (
-        <div className="finalizado" style={{ fontSize: "1.3rem" }}>
+        <div className="finalizado">
           <h2>You have completed the exercise!</h2>
           <p>
-            Correct answers:{" "}
-            <strong>
-              {correctas} / {ejercicios.length}
-            </strong>
+            Correct answers: <strong>{correctas} / {ejercicios.length}</strong>
           </p>
-          <p>Redirecting to the start of the level...</p>
+          <p>Redirecting...</p>
         </div>
       )}
     </div>

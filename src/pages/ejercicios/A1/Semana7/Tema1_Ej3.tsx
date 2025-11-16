@@ -19,7 +19,7 @@ export default function Tema1_Ej3() {
   const ejercicios = useMemo(
     () => [
       {
-        audio: "/audios/sem7/e3_1.mp3",
+        audio:  ["/audios/sem7/1_a.mp3", "/audios/sem7/1_b.mp3"],
         pregunta: "Which sentence is true?",
         opciones: [
           "The backpack is blue.",
@@ -29,7 +29,7 @@ export default function Tema1_Ej3() {
         correcta: "The red backpack belongs to her."
       },
       {
-        audio: "/audios/sem7/e3_2.mp3",
+        audio: ["/audios/sem7/2_a.mp3", "/audios/sem7/2_b.mp3"],
         pregunta: "Which sentence is true?",
         opciones: [
           "The black shoes are his.",
@@ -39,7 +39,7 @@ export default function Tema1_Ej3() {
         correcta: "The black shoes are mine."
       },
       {
-        audio: "/audios/sem7/e3_3.mp3",
+        audio: ["/audios/sem7/3_a.mp3", "/audios/sem7/3_b.mp3"],
         pregunta: "Which sentence is true?",
         opciones: [
           "The green notebook is hers.",
@@ -49,7 +49,7 @@ export default function Tema1_Ej3() {
         correcta: "The green notebook is hers."
       },
       {
-        audio: "/audios/sem7/e3_4.mp3",
+        audio: ["/audios/sem7/4_a.mp3", "/audios/sem7/4_b.mp3"],
         pregunta: "Which sentence is true?",
         opciones: [
           "The blue pen belongs to them.",
@@ -59,7 +59,7 @@ export default function Tema1_Ej3() {
         correcta: "The blue pen belongs to me."
       },
       {
-        audio: "/audios/semX/e3_5.mp3",
+        audio: ["/audios/sem7/5_a.mp3", "/audios/sem7/5_b.mp3"],
         pregunta: "Which sentence is true?",
         opciones: [
           "The yellow hat is mine.",
@@ -69,7 +69,7 @@ export default function Tema1_Ej3() {
         correcta: "The yellow hat is his."
       },
       {
-        audio: "/audios/sem7/e3_6.mp3",
+        audio: ["/audios/sem7/6_a.mp3", "/audios/sem7/6_b.mp3"],
         pregunta: "Which sentence is true?",
         opciones: [
           "The red keys are ours.",
@@ -79,7 +79,7 @@ export default function Tema1_Ej3() {
         correcta: "The red keys are ours."
       },
       {
-        audio: "/audios/semX/e3_7.mp3",
+        audio: ["/audios/sem7/7_a.mp3", "/audios/sem7/7_b.mp3"],
         pregunta: "Which sentence is true?",
         opciones: [
           "The black glasses are his.",
@@ -89,7 +89,7 @@ export default function Tema1_Ej3() {
         correcta: "The black glasses are his."
       },
       {
-        audio: "/audios/semX/e3_8.mp3",
+        audio: ["/audios/sem7/8_a.mp3", "/audios/sem7/8_b.mp3"],
         pregunta: "Which sentence is true?",
         opciones: [
           "The green jacket is yours.",
@@ -99,7 +99,7 @@ export default function Tema1_Ej3() {
         correcta: "The green jacket is yours."
       },
       {
-        audio: "/audios/sem7/e3_9.mp3",
+        audio: ["/audios/sem7/9_a.mp3", "/audios/sem7/9_b.mp3"],
         pregunta: "Which sentence is true?",
         opciones: [
           "The silver laptop is mine.",
@@ -109,7 +109,7 @@ export default function Tema1_Ej3() {
         correcta: "The silver laptop is mine."
       },
       {
-        audio: "/audios/sem7/e3_10.mp3",
+        audio: ["/audios/sem7/10_a.mp3", "/audios/sem7/10_b.mp3"],
         pregunta: "Which sentence is true?",
         opciones: [
           "The blue shoes are hers.",
@@ -123,12 +123,23 @@ export default function Tema1_Ej3() {
   );
 
   const actual = ejercicios[index];
-  const audioRef = useRef<HTMLAudioElement | null>(null);
+  const audioRef = useRef(new Audio());
 
-  const playAudio = () => {
-    audioRef.current?.play();
+  const playAudio = async () => {
+    for (let src of actual.audio) {
+      audioRef.current.src = src;
+      await audioRef.current.play();
+
+      // esperar a que termine
+      await new Promise((resolve) => {
+        audioRef.current.onended = resolve;
+      });
+    }
   };
 
+  // ======================
+  // GUARDAR PROGRESO
+  // ======================
   const guardarProgreso = async () => {
     const completados = JSON.parse(localStorage.getItem("ejercicios_completados") || "[]");
 
@@ -157,6 +168,9 @@ export default function Tema1_Ej3() {
     }
   };
 
+  // ======================
+  // VERIFICAR RESPUESTA
+  // ======================
   const verificar = () => {
     if (!seleccion) return;
 
@@ -191,6 +205,9 @@ export default function Tema1_Ej3() {
 
   const esCorrecta = respuesta?.startsWith("Correct");
 
+  // ======================
+  // RENDER
+  // ======================
   return (
     <div className="ejercicio-container">
       {!finalizado ? (
@@ -221,7 +238,6 @@ export default function Tema1_Ej3() {
             >
               🔊
             </button>
-            <audio ref={audioRef} src={actual.audio} />
 
             <div
               className="oracion-box"
@@ -279,9 +295,7 @@ export default function Tema1_Ej3() {
 
             {respuesta && (
               <p
-                className={`respuesta-feedback ${
-                  esCorrecta ? "correcta" : "incorrecta"
-                }`}
+                className={`respuesta-feedback ${esCorrecta ? "correcta" : "incorrecta"}`}
                 style={{
                   fontSize: "1.3rem",
                   margin: "1rem 0",
@@ -319,7 +333,10 @@ export default function Tema1_Ej3() {
         <div className="finalizado" style={{ fontSize: "1.3rem" }}>
           <h2>You have completed the exercise!</h2>
           <p>
-            Correct answers: <strong>{correctas} / {ejercicios.length}</strong>
+            Correct answers:{" "}
+            <strong>
+              {correctas} / {ejercicios.length}
+            </strong>
           </p>
           <p>Redirecting to the start of the level...</p>
         </div>

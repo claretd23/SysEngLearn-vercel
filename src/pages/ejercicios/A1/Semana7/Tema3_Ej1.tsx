@@ -22,16 +22,16 @@ export default function Tema3_Ej1() {
   const [finalizado, setFinalizado] = useState(false);
 
   const ejercicios: EjercicioOpciones[] = [
-    { pregunta: "I met John yesterday. I spoke to ___?", opciones: ["he", "him", "him", "his"], correcta: "him" },
-    { pregunta: "Can you help Sarah? Yes, I can help ___?", opciones: ["her", "her", "she", "hers"], correcta: "her" },
-    { pregunta: "I like this cake. I want to eat ___?", opciones: ["it", "it", "its", "they"], correcta: "it" },
-    { pregunta: "Did you see Anna and Tom? I saw ___ at the park.", opciones: ["them", "them", "they", "their"], correcta: "them" },
-    { pregunta: "I don’t understand this exercise. Can you explain ___?", opciones: ["it", "it", "its", "them"], correcta: "it" },
-    { pregunta: "I love Peter. I often talk to ___?", opciones: ["him", "him", "he", "his"], correcta: "him" },
-    { pregunta: "The teacher is talking to the students. She listens to ___?", opciones: ["they", "them", "them", "theirs"], correcta: "them" },
-    { pregunta: "I saw the movie yesterday. Have you seen ___?", opciones: ["it", "it", "its", "they"], correcta: "it" },
-    { pregunta: "I want to call my friend. Can I speak to ___?", opciones: ["him", "him", "he", "his"], correcta: "him" },
-    { pregunta: "The dog is very cute. I like ___ very much.", opciones: ["it", "it", "its", "they"], correcta: "it" },
+    { pregunta: "I met John yesterday. I spoke to ___?", opciones: ["he", "her", "him", "his"], correcta: "him" },
+    { pregunta: "Can you help Sarah? Yes, I can help ___?", opciones: ["him", "her", "she", "hers"], correcta: "her" },
+    { pregunta: "I like this cake. I want to eat ___?", opciones: ["he", "it", "its", "they"], correcta: "it" },
+    { pregunta: "Did you see Anna and Tom? I saw ___ at the park.", opciones: ["thems", "them", "they", "their"], correcta: "them" },
+    { pregunta: "I don’t understand this exercise. Can you explain ___?", opciones: ["they", "it", "its", "them"], correcta: "it" },
+    { pregunta: "I love Peter. I often talk to ___?", opciones: ["her", "him", "he", "his"], correcta: "him" },
+    { pregunta: "The teacher is talking to the students. She listens to ___?", opciones: ["they", "her", "them", "theirs"], correcta: "them" },
+    { pregunta: "I saw the movie yesterday. Have you seen ___?", opciones: [ "it", "its", "they"], correcta: "it" },
+    { pregunta: "I want to call my friend. Can I speak to ___?", opciones: [ "him", "he", "his"], correcta: "him" },
+    { pregunta: "The dog is very cute. I like ___ very much.", opciones: ["the", "it", "its", "they"], correcta: "it" },
   ];
 
   const actual = ejercicios[index];

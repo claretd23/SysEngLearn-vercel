@@ -10,8 +10,8 @@ interface EjercicioOpciones {
 
 export default function Tema3_Ej1() {
   const { nivel, semana, tema, ejercicio } = useParams();
-  const navigate = useNavigate();
   const id = `${nivel}-${semana}-${tema}-${ejercicio}`;
+  const navigate = useNavigate();
 
   const [index, setIndex] = useState(0);
   const [opcionSeleccionada, setOpcionSeleccionada] = useState<string | null>(null);
@@ -19,61 +19,66 @@ export default function Tema3_Ej1() {
   const [correctas, setCorrectas] = useState(0);
   const [finalizado, setFinalizado] = useState(false);
 
+  // URL del backend
+  const API_URL = import.meta.env.VITE_API_URL;
+  const token = localStorage.getItem("token");
+
   const ejercicios: EjercicioOpciones[] = [
     {
       pregunta: "I met John yesterday. I spoke to ___?",
-      opciones: ["he", "him", "him", "his"],
+      opciones: ["he", "him", "his"],
       correcta: "him",
     },
     {
       pregunta: "Can you help Sarah? Yes, I can help ___?",
-      opciones: ["her", "her", "she", "hers"],
+      opciones: ["her", "she", "hers"],
       correcta: "her",
     },
     {
       pregunta: "I like this cake. I want to eat ___?",
-      opciones: ["it", "it", "its", "they"],
+      opciones: ["it", "its", "they"],
       correcta: "it",
     },
     {
       pregunta: "Did you see Anna and Tom? I saw ___ at the park.",
-      opciones: ["them", "them", "they", "their"],
+      opciones: ["them", "they", "their"],
       correcta: "them",
     },
     {
-      pregunta: "I don’t understand this exercise. Can you explain ___?",
-      opciones: ["it", "it", "its", "them"],
+      pregunta: "I do not understand this exercise. Can you explain ___?",
+      opciones: ["it", "its", "them"],
       correcta: "it",
     },
     {
       pregunta: "I love Peter. I often talk to ___?",
-      opciones: ["him", "him", "he", "his"],
+      opciones: ["him", "he", "his"],
       correcta: "him",
     },
     {
       pregunta: "The teacher is talking to the students. She listens to ___?",
-      opciones: ["they", "them", "them", "theirs"],
+      opciones: ["they", "them", "theirs"],
       correcta: "them",
     },
     {
       pregunta: "I saw the movie yesterday. Have you seen ___?",
-      opciones: ["it", "it", "its", "they"],
+      opciones: ["it", "its", "they"],
       correcta: "it",
     },
     {
       pregunta: "I want to call my friend. Can I speak to ___?",
-      opciones: ["him", "him", "he", "his"],
+      opciones: ["him", "he", "his"],
       correcta: "him",
     },
     {
       pregunta: "The dog is very cute. I like ___ very much.",
-      opciones: ["it", "it", "its", "they"],
+      opciones: ["it", "its", "they"],
       correcta: "it",
     },
   ];
 
   const actual = ejercicios[index];
 
+  // Guardar progreso como en Tema1_Ej1
   const guardarProgreso = async () => {
     const completados = JSON.parse(localStorage.getItem("ejercicios_completados") || "[]");
     if (!completados.includes(id)) {
@@ -81,9 +86,10 @@ export default function Tema3_Ej1() {
       localStorage.setItem("ejercicios_completados", JSON.stringify(completados));
     }
 
+    if (!API_URL || !token) return;
+
     try {
-      const token = localStorage.getItem("token");
-      const res = await fetch("http://localhost:5000/api/progreso", {
+      const res = await fetch(`${API_URL}/api/progreso`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -98,21 +104,29 @@ export default function Tema3_Ej1() {
     }
   };
 
+  // Verificar
   const verificar = () => {
     if (!opcionSeleccionada) return;
 
     if (opcionSeleccionada === actual.correcta) {
-      setRespuesta(`✅ Correct!\n\n${actual.pregunta.replace("___", opcionSeleccionada)}`);
+      setRespuesta("Correct!");
       setCorrectas((prev) => prev + 1);
     } else {
-      setRespuesta(`❌ Incorrect.\n\n${actual.pregunta.replace("___", actual.correcta)}`);
+      setRespuesta("Incorrect.");
     }
   };
 
-  const siguiente = () => {
+  const siguiente = async () => {
     setRespuesta(null);
     setOpcionSeleccionada(null);
-    setIndex(index + 1);
+
+    await guardarProgreso();
+
+    if (index + 1 < ejercicios.length) {
+      setIndex(index + 1);
+    } else {
+      await manejarFinalizacion();
+    }
   };
 
   const manejarFinalizacion = async () => {
@@ -123,6 +137,11 @@ export default function Tema3_Ej1() {
       window.location.reload();
     }, 3000);
   };
+
+  // Texto con respuesta correcta cuando ya respondió
+  const mostrarTexto = respuesta
+    ? actual.pregunta.replace("___", actual.correcta)
+    : actual.pregunta;
 
   return (
     <div className="ejercicio-container">
@@ -135,10 +154,7 @@ export default function Tema3_Ej1() {
             </p>
           </header>
 
-          <section
-            className="tarjeta-ejercicio"
-            style={{ textAlign: "center", fontSize: "1.3rem", padding: "2rem" }}
-          >
+          <section className="tarjeta-ejercicio" style={{ textAlign: "center" }}>
             {/* Pregunta */}
             <div
               className="oracion-box"
@@ -154,7 +170,7 @@ export default function Tema3_Ej1() {
                 whiteSpace: "pre-line",
               }}
             >
-              <p>{respuesta ? respuesta.split("\n").slice(1).join("\n") : actual.pregunta}</p>
+              <p>{mostrarTexto}</p>
             </div>
 
             {/* Opciones */}
@@ -174,7 +190,11 @@ export default function Tema3_Ej1() {
                     key={i}
                     className={`opcion-btn ${opcionSeleccionada === op ? "seleccionada" : ""}`}
                     onClick={() => setOpcionSeleccionada(op)}
-                    style={{ fontSize: "1.2rem", padding: "0.8rem 1.5rem", minWidth: "180px" }}
+                    style={{
+                      fontSize: "1.2rem",
+                      padding: "0.8rem 1.5rem",
+                      minWidth: "180px",
+                    }}
                   >
                     {op}
                   </button>
@@ -182,57 +202,37 @@ export default function Tema3_Ej1() {
               </div>
             )}
 
-            {/* Botón Check */}
-            {!respuesta && (
-              <button
-                onClick={verificar}
-                className="ejercicio-btn"
-                disabled={!opcionSeleccionada}
-                style={{
-                  fontSize: "1.3rem",
-                  padding: "0.8rem 2rem",
-                  marginBottom: "1rem",
-                  borderRadius: "8px",
-                }}
-              >
-                Check
-              </button>
-            )}
-
             {/* Feedback */}
             {respuesta && (
               <p
-                className={`respuesta-feedback ${respuesta.startsWith("✅") ? "correcta" : "incorrecta"}`}
-                style={{ fontSize: "1.3rem", margin: "1rem 0" }}
+                className="respuesta-feedback"
+                style={{
+                  fontSize: "1.3rem",
+                  margin: "1rem 0",
+                  color: respuesta === "Correct!" ? "#32be2dff" : "#DC3545",
+                }}
               >
-                {respuesta.split("\n")[0]}
+                {respuesta}
               </p>
             )}
 
-            {/* Botones siguiente / finalizar */}
-            <div
-              className="botones-siguiente"
-              style={{
-                display: "flex",
-                justifyContent: "center",
-                gap: "1rem",
-                marginTop: "1rem",
-              }}
-            >
+            {/* Botones */}
+            <div className="botones-siguiente" style={{ marginTop: "1rem" }}>
               {respuesta && index < ejercicios.length - 1 && (
                 <button
                   onClick={siguiente}
                   className="ejercicio-btn"
-                  style={{ fontSize: "1.3rem", padding: "0.8rem 2rem", borderRadius: "8px" }}
+                  style={{ fontSize: "1.3rem", padding: "0.8rem 2rem" }}
                 >
                   Next question
                 </button>
               )}
+
               {respuesta && index === ejercicios.length - 1 && (
                 <button
                   onClick={manejarFinalizacion}
                   className="ejercicio-btn"
-                  style={{ fontSize: "1.3rem", padding: "0.8rem 2rem", borderRadius: "8px" }}
+                  style={{ fontSize: "1.3rem", padding: "0.8rem 2rem" }}
                 >
                   Finish
                 </button>
@@ -242,7 +242,7 @@ export default function Tema3_Ej1() {
         </>
       ) : (
         <div className="finalizado" style={{ fontSize: "1.3rem" }}>
-          <h2>✅ You have completed the exercise!</h2>
+          <h2>You have completed the exercise!</h2>
           <p>
             Correct answers: <strong>{correctas} / {ejercicios.length}</strong>
           </p>

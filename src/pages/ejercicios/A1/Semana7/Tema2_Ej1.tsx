@@ -2,6 +2,8 @@ import { useParams, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import "../ejercicios.css";
 
+const API_URL = import.meta.env.VITE_API_URL;
+
 export default function Tema2_Ej1() {
   const { nivel, semana, tema, ejercicio } = useParams();
   const id = `${nivel}-${semana}-${tema}-${ejercicio}`;
@@ -14,60 +16,21 @@ export default function Tema2_Ej1() {
   const [finalizado, setFinalizado] = useState(false);
 
   const ejercicios = [
-    {
-      pregunta: "This bag is not mine. It’s ___?",
-      opciones: ["her", "hers", "she", "him"],
-      correcta: "hers",
-    },
-    {
-      pregunta: "The blue jacket is not ours. It’s ___?",
-      opciones: ["their", "theirs", "ours", "them"],
-      correcta: "theirs",
-    },
-    {
-      pregunta: "I love this notebook. Can I borrow ___?",
-      opciones: ["your", "yours", "you", "yours"],
-      correcta: "yours",
-    },
-    {
-      pregunta: "This sandwich is not mine. It’s ___?",
-      opciones: ["his", "him", "his", "he"],
-      correcta: "his",
-    },
-    {
-      pregunta: "That apartment is not theirs. It’s ___?",
-      opciones: ["ours", "our", "ours", "we"],
-      correcta: "ours",
-    },
-    {
-      pregunta: "The cake is not mine. Can I try ___?",
-      opciones: ["her", "hers", "hers", "she"],
-      correcta: "hers",
-    },
-    {
-      pregunta: "The tickets are not ours. They are ___?",
-      opciones: ["their", "theirs", "theirs", "them"],
-      correcta: "theirs",
-    },
-    {
-      pregunta: "I found a pen. Is this ___?",
-      opciones: ["your", "yours", "you", "yours"],
-      correcta: "yours",
-    },
-    {
-      pregunta: "The bag on the chair is not mine. It’s ___?",
-      opciones: ["hers", "her", "she", "him"],
-      correcta: "hers",
-    },
-    {
-      pregunta: "The shoes outside the shop are not ours. They are ___?",
-      opciones: ["their", "theirs", "theirs", "them"],
-      correcta: "theirs",
-    },
+    { pregunta: "This bag is not mine. It’s ___?", opciones: ["her", "hers", "she", "him"], correcta: "hers" },
+    { pregunta: "The blue jacket is not ours. It’s ___?", opciones: ["their", "theirs", "ours", "them"], correcta: "theirs" },
+    { pregunta: "I love this notebook. Can I borrow ___?", opciones: ["your", "yours", "you", "yours"], correcta: "yours" },
+    { pregunta: "This sandwich is not mine. It’s ___?", opciones: ["his", "him", "his", "he"], correcta: "his" },
+    { pregunta: "That apartment is not theirs. It’s ___?", opciones: ["ours", "our", "ours", "we"], correcta: "ours" },
+    { pregunta: "The cake is not mine. Can I try ___?", opciones: ["her", "hers", "hers", "she"], correcta: "hers" },
+    { pregunta: "The tickets are not ours. They are ___?", opciones: ["their", "theirs", "theirs", "them"], correcta: "theirs" },
+    { pregunta: "I found a pen. Is this ___?", opciones: ["your", "yours", "you", "yours"], correcta: "yours" },
+    { pregunta: "The bag on the chair is not mine. It’s ___?", opciones: ["hers", "her", "she", "him"], correcta: "hers" },
+    { pregunta: "The shoes outside the shop are not ours. They are ___?", opciones: ["their", "theirs", "theirs", "them"], correcta: "theirs" },
   ];
 
   const actual = ejercicios[index];
 
+  // === GUARDAR PROGRESO ===
   const guardarProgreso = async () => {
     const completados = JSON.parse(localStorage.getItem("ejercicios_completados") || "[]");
     if (!completados.includes(id)) {
@@ -77,7 +40,7 @@ export default function Tema2_Ej1() {
 
     try {
       const token = localStorage.getItem("token");
-      const res = await fetch("http://localhost:5000/api/progreso", {
+      const res = await fetch(`${API_URL}/api/progreso`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -86,32 +49,35 @@ export default function Tema2_Ej1() {
         body: JSON.stringify({ nivel, semana, tema, ejercicio }),
       });
 
-      if (!res.ok) console.error("Error al guardar progreso:", res.statusText);
+      if (!res.ok) console.error("Error saving progress:", res.statusText);
     } catch (error) {
-      console.error("Error al guardar el progreso:", error);
+      console.error("Error saving progress:", error);
     }
   };
 
+  // === VERIFICAR RESPUESTA ===
   const verificar = () => {
     if (!opcionSeleccionada) return;
 
     const oracionCompletada = actual.pregunta.replace("___", opcionSeleccionada);
 
     if (opcionSeleccionada === actual.correcta) {
-      setRespuesta(`Correct!\n\n${oracionCompletada}`);
+      setRespuesta(`Correct\n\n${oracionCompletada}`);
       setCorrectas((prev) => prev + 1);
     } else {
       const oracionCorrecta = actual.pregunta.replace("___", actual.correcta);
-      setRespuesta(`Incorrect.\n\n${oracionCorrecta}`);
+      setRespuesta(`Incorrect\n\n${oracionCorrecta}`);
     }
   };
 
-  const siguiente = () => { 
+  // === SIGUIENTE ===
+  const siguiente = () => {
     setRespuesta(null);
     setOpcionSeleccionada(null);
     setIndex(index + 1);
   };
 
+  // === FINALIZAR ===
   const manejarFinalizacion = async () => {
     await guardarProgreso();
     setFinalizado(true);
@@ -144,6 +110,7 @@ export default function Tema2_Ej1() {
               </div>
             )}
 
+            {/* Oración */}
             <div
               className="oracion-box"
               style={{
@@ -161,6 +128,7 @@ export default function Tema2_Ej1() {
               <p>{respuesta ? respuesta.split("\n").slice(1).join("\n") : actual.pregunta}</p>
             </div>
 
+            {/* Opciones */}
             {!respuesta && (
               <div
                 className="opciones-ejercicio"
@@ -185,6 +153,7 @@ export default function Tema2_Ej1() {
               </div>
             )}
 
+            {/* Botón Check */}
             {!respuesta && (
               <button
                 onClick={verificar}
@@ -201,15 +170,19 @@ export default function Tema2_Ej1() {
               </button>
             )}
 
+            {/* Feedback */}
             {respuesta && (
               <p
-                className={`respuesta-feedback ${respuesta.startsWith("✅") ? "correcta" : "incorrecta"}`}
+                className={`respuesta-feedback ${
+                  respuesta.startsWith("Correct") ? "correcta" : "incorrecta"
+                }`}
                 style={{ fontSize: "1.3rem", margin: "1rem 0" }}
               >
                 {respuesta.split("\n")[0]}
               </p>
             )}
 
+            {/* Botones */}
             <div
               className="botones-siguiente"
               style={{
@@ -228,6 +201,7 @@ export default function Tema2_Ej1() {
                   Next question
                 </button>
               )}
+
               {respuesta && index === ejercicios.length - 1 && (
                 <button
                   onClick={manejarFinalizacion}
@@ -242,7 +216,7 @@ export default function Tema2_Ej1() {
         </>
       ) : (
         <div className="finalizado" style={{ fontSize: "1.3rem" }}>
-          <h2>✅ You have completed the exercise!</h2>
+          <h2 className="correcta">You have completed the exercise!</h2>
           <p>
             Correct answers: <strong>{correctas} / {ejercicios.length}</strong>
           </p>

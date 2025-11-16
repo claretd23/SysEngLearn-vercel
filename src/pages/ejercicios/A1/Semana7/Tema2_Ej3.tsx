@@ -19,49 +19,44 @@ export default function Tema2_Ej3() {
   const ejercicios = useMemo(
     () => [
       {
-        audio: ["/audios/ej3/1a.mp3", "/audios/ej3/1b.mp3", "/audios/ej3/1c.mp3"],
+        audio: ["/audios/sem7/1a.mp3", "/audios/sem7/1b.mp3", "/audios/sem7/1c.mp3"],
         pregunta: "Statement: The book on the table belongs to the speaker.",
         correcta: "False"
       },
       {
-        audio: ["/audios/ej3/2a.mp3", "/audios/ej3/2b.mp3"],
+        audio: ["/audios/sem7/2a.mp3", "/audios/sem7/2b.mp3"],
         pregunta: "Statement: The shoes belong to the speaker.",
         correcta: "False"
       },
       {
-        audio: ["/audios/ej3/3a.mp3", "/audios/ej3/3b.mp3"],
+        audio: ["/audios/sem7/3a.mp3", "/audios/sem7/3b.mp3"],
         pregunta: "Statement: The bag belongs to the woman.",
         correcta: "True"
       },
       {
-        audio: ["/audios/ej3/4a.mp3", "/audios/ej3/4b.mp3"],
+        audio: ["/audios/sem7/4a.mp3", "/audios/sem7/4b.mp3"],
         pregunta: "Statement: The laptop belongs to a male person.",
         correcta: "True"
       },
       {
-        audio: ["/audios/ej3/5a.mp3", "/audios/ej3/5b.mp3"],
+        audio: ["/audios/sem7/5a.mp3", "/audios/sem7/5b.mp3"],
         pregunta: "Statement: The jacket belongs to multiple people.",
         correcta: "True"
       },
       {
-        audio: ["/audios/ej3/6a.mp3", "/audios/ej3/6b.mp3"],
-        pregunta: "Statement: The umbrella belongs to B.",
-        correcta: "True"
+        audio: ["/audios/sem7/6a.mp3", "/audios/sem7/6b.mp3"],
+        pregunta: "Statement: The umbrella belongs to the man.",
+        correcta: "False"
       },
       {
-        audio: ["/audios/ej3/7a.mp3", "/audios/ej3/7b.mp3"],
+        audio: ["/audios/sem7/7a.mp3", "/audios/sem7/7b.mp3"],
         pregunta: "Statement: The glasses belong to more than one person.",
         correcta: "True"
       },
       {
-        audio: ["/audios/ej3/8a.mp3", "/audios/ej3/8b.mp3"],
+        audio: ["/audios/sem7/8a.mp3", "/audios/sem7/8b.mp3"],
         pregunta: "Statement: The wallet belongs to a female person.",
         correcta: "False"
-      },
-      {
-        audio: ["/audios/ej3/9a.mp3", "/audios/ej3/9b.mp3"],
-        pregunta: "Statement: The watch belongs to the speaker.",
-        correcta: "True"
       }
     ],
     []
@@ -70,9 +65,6 @@ export default function Tema2_Ej3() {
   const actual = ejercicios[index];
   const audioRef = useRef(new Audio());
 
-  // ======================
-  //   REPRODUCIR AUDIO
-  // ======================
   const playAudio = async () => {
     for (let src of actual.audio) {
       audioRef.current.src = src;

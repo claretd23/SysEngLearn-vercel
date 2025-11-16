@@ -19,7 +19,7 @@ export default function Tema2_Ej1() {
     { pregunta: "This bag is not mine. It’s ___?", opciones: ["her", "hers", "she", "him"], correcta: "hers" },
     { pregunta: "The blue jacket is not ours. It’s ___?", opciones: ["their", "theirs", "ours", "them"], correcta: "theirs" },
     { pregunta: "I love this notebook. Can I borrow ___?", opciones: ["your", "yours", "you", "yours"], correcta: "yours" },
-    { pregunta: "This sandwich is not mine. It’s ___?", opciones: ["his", "him", "his", "he"], correcta: "his" },
+    { pregunta: "This sandwich is not mine. It’s ___?", opciones: ["she", "him", "his", "he"], correcta: "his" },
     { pregunta: "That apartment is not theirs. It’s ___?", opciones: ["ours", "our", "ours", "we"], correcta: "ours" },
     { pregunta: "The cake is not mine. Can I try ___?", opciones: ["her", "hers", "hers", "she"], correcta: "hers" },
     { pregunta: "The tickets are not ours. They are ___?", opciones: ["their", "theirs", "theirs", "them"], correcta: "theirs" },

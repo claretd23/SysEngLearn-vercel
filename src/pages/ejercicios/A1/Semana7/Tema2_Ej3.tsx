@@ -25,7 +25,7 @@ export default function Tema2_Ej3() {
       },
       {
         audio: ["/audios/sem7/2a.mp3", "/audios/sem7/2b.mp3"],
-        pregunta: "Statement: The shoes belong to the speaker.",
+        pregunta: "Statement: The shoes belong to the person asking.",
         correcta: "False"
       },
       {

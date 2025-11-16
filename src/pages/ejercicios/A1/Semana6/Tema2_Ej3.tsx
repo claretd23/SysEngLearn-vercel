@@ -17,7 +17,7 @@ export default function Tema3_Ej3() {
   const token = localStorage.getItem("token");
   const audioRefs = useRef<(HTMLAudioElement | null)[]>([]);
 
-  // === FUNCIONES DE AUDIO ===
+  // FUNCIONES DE AUDIO  
   const playAudios = () => {
     const audios = audioRefs.current;
     if (!audios[0]) return;
@@ -29,55 +29,54 @@ export default function Tema3_Ej3() {
     };
   };
 
-  // === EJERCICIOS ===
   const ejercicios = [
     {
-      audios: ["/audios/sem3/imperatives1_a.mp3", "/audios/sem3/imperatives1_b.mp3"],
+      audios: ["/audios/sem6/1_a.mp3", "/audios/sem3/1_b.mp3","/audios/sem6/1_c.mp3","/audios/sem6/1_d.mp3","/audios/sem6/1_e.mp3"],
       texto: "After 100 metres, ________ right.",
       correcta: ["turn"],
     },
     {
-      audios: ["/audios/sem3/imperatives2_a.mp3", "/audios/sem3/imperatives2_b.mp3"],
+      audios: ["/audios/sem6/2_a.mp3", "/audios/sem6/2_b.mp3"],
       texto: "Please, ________ your books on page 10.",
       correcta: ["open"],
     },
     {
-      audios: ["/audios/sem3/imperatives3_a.mp3", "/audios/sem3/imperatives3_b.mp3"],
+      audios: ["/audios/sem6/3_a.mp3", "/audios/sem6/3_b.mp3"],
       texto: "________ so close to the fire.",
       correcta: ["don't stand"],
     },
     {
-      audios: ["/audios/sem3/imperatives4_a.mp3", "/audios/sem3/imperatives4_b.mp3"],
+      audios: ["/audios/sem6/4_a.mp3", "/audios/sem6/4_b.mp3"],
       texto: "________ faster, we’re almost there!",
       correcta: ["run"],
     },
     {
-      audios: ["/audios/sem3/imperatives5_a.mp3", "/audios/sem3/imperatives5_b.mp3"],
+      audios: ["/audios/sem6/5_a.mp3", "/audios/sem6/5_b.mp3"],
       texto: "________ this medicine twice a day.",
       correcta: ["take"],
     },
     {
-      audios: ["/audios/sem3/imperatives6_a.mp3", "/audios/sem3/imperatives6_b.mp3"],
+      audios: ["/audios/sem6/6_a.mp3", "/audios/sem6/6_b.mp3"],
       texto: "________ here, please.",
       correcta: ["stop"],
     },
     {
-      audios: ["/audios/sem3/imperatives7_a.mp3", "/audios/sem3/imperatives7_b.mp3"],
+      audios: ["/audios/sem6/7_a.mp3", "/audios/sem6/7_b.mp3"],
       texto: "________ your hands before eating.",
       correcta: ["wash"],
     },
     {
-      audios: ["/audios/sem3/imperatives8_a.mp3", "/audios/sem3/imperatives8_b.mp3"],
+      audios: ["/audios/sem6/8_a.mp3", "/audios/sem6/8_b.mp3"],
       texto: "________ attention, everyone.",
       correcta: ["pay"],
     },
     {
-      audios: ["/audios/sem3/imperatives9_a.mp3", "/audios/sem3/imperatives9_b.mp3"],
+      audios: ["/audios/sem6/9_a.mp3", "/audios/sem6/9_b.mp3"],
       texto: "________ pictures inside the museum, please.",
       correcta: ["don't take"],
     },
     {
-      audios: ["/audios/sem3/imperatives10_a.mp3", "/audios/sem3/imperatives10_b.mp3"],
+      audios: ["/audios/sem6/10_a.mp3", "/audios/sem6/10_b.mp3"],
       texto: "________ louder!",
       correcta: ["speak"],
     },
@@ -166,7 +165,7 @@ export default function Tema3_Ej3() {
             {index === 0 && (
               <div className="instruccion-box">
                 <p className="instruccion-ejercicio" style={{ fontSize: "1.2rem" }}>
-                  🎧 Listen to each conversation and complete the sentence with the correct imperative.
+                Listen to each conversation and complete the sentence with the correct imperative.
                 </p>
               </div>
             )}

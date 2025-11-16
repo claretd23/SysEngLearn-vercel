@@ -19,6 +19,10 @@ export default function Tema3_Ej2() {
   const [finalizado, setFinalizado] = useState(false);
   const [oracionMostrada, setOracionMostrada] = useState("");
 
+  // URL base como en tu ejercicio Tema1_Ej1
+  const API_URL = import.meta.env.VITE_API_URL;
+  const token = localStorage.getItem("token");
+
   const ejercicios: EjercicioTexto[] = [
     { oracion: "I like this book. I want to read ___", correcta: "it" },
     { oracion: "Can you help me? Yes, I can help ___", correcta: "you" },
@@ -34,21 +38,23 @@ export default function Tema3_Ej2() {
 
   const actual = ejercicios[index];
 
-  // Inicializa la oración mostrada al cambiar de ejercicio
+  // Actualizar oración al entrar y al cambiar de ejercicio
   useState(() => {
     setOracionMostrada(actual.oracion);
   });
 
   const guardarProgreso = async () => {
     const completados = JSON.parse(localStorage.getItem("ejercicios_completados") || "[]");
+
     if (!completados.includes(id)) {
       completados.push(id);
       localStorage.setItem("ejercicios_completados", JSON.stringify(completados));
     }
 
+    if (!API_URL || !token) return;
+
     try {
-      const token = localStorage.getItem("token");
-      const res = await fetch("http://localhost:5000/api/progreso", {
+      const res = await fetch(`${API_URL}/api/progreso`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -56,6 +62,7 @@ export default function Tema3_Ej2() {
         },
         body: JSON.stringify({ nivel, semana, tema, ejercicio }),
       });
+
       if (!res.ok) console.error("Error al guardar progreso:", res.statusText);
     } catch (error) {
       console.error("Error al guardar el progreso:", error);
@@ -70,16 +77,19 @@ export default function Tema3_Ej2() {
     setOracionMostrada(oracionCompletada);
 
     if (esCorrecta) {
-      setFeedback("✅ Correct!");
+      setFeedback("Correct");
       setCorrectas((prev) => prev + 1);
     } else {
-      setFeedback(`❌ Incorrect.`);
+      setFeedback("Incorrect");
     }
   };
 
-  const siguiente = () => {
+  const siguiente = async () => {
     setFeedback(null);
     setRespuesta("");
+
+    await guardarProgreso();
+
     if (index < ejercicios.length - 1) {
       const nuevoIndex = index + 1;
       setIndex(nuevoIndex);
@@ -113,7 +123,7 @@ export default function Tema3_Ej2() {
             className="tarjeta-ejercicio"
             style={{ textAlign: "center", fontSize: "1.3rem", padding: "2rem" }}
           >
-            {/* Instrucción */}
+            {/* Instrucción solo en la primera oración */}
             {index === 0 && (
               <div className="instruccion-box" style={{ marginBottom: "1rem" }}>
                 <p className="instruccion-ejercicio" style={{ fontSize: "1.1rem" }}>
@@ -122,7 +132,7 @@ export default function Tema3_Ej2() {
               </div>
             )}
 
-            {/* Oración (se actualiza al dar check) */}
+            {/* Oración */}
             <div
               className="oracion-box"
               style={{
@@ -184,7 +194,7 @@ export default function Tema3_Ej2() {
               <p
                 style={{
                   fontSize: "1.3rem",
-                  color: feedback.startsWith("✅") ? "green" : "red",
+                  color: feedback === "Correct" ? "green" : "red",
                   margin: "1rem 0",
                 }}
               >
@@ -210,7 +220,7 @@ export default function Tema3_Ej2() {
         </>
       ) : (
         <div className="finalizado" style={{ fontSize: "1.3rem" }}>
-          <h2>✅ You have completed the exercise!</h2>
+          <h2>You have completed the exercise!</h2>
           <p>
             Correct answers: <strong>{correctas} / {ejercicios.length}</strong>
           </p>

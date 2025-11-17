@@ -2,6 +2,8 @@ import { useParams, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import "../ejercicios.css";
 
+const API_URL = import.meta.env.VITE_API_URL;
+
 export default function Tema1_Ej1() {
   const { nivel, semana, tema, ejercicio } = useParams();
   const id = `${nivel}-${semana}-${tema}-${ejercicio}`;
@@ -23,11 +25,36 @@ export default function Tema1_Ej1() {
 
   const toggleSeleccion = (opcion: string) => {
     if (resultado) return;
+
     setSeleccionadas((prev) =>
       prev.includes(opcion)
         ? prev.filter((o) => o !== opcion)
         : [...prev, opcion]
     );
+  };
+
+  const guardarProgreso = async () => {
+    const completados = JSON.parse(localStorage.getItem("ejercicios_completados") || "[]");
+    if (!completados.includes(id)) {
+      completados.push(id);
+      localStorage.setItem("ejercicios_completados", JSON.stringify(completados));
+    }
+
+    try {
+      const token = localStorage.getItem("token");
+      const res = await fetch(`${API_URL}/api/progreso`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ nivel, semana, tema, ejercicio }),
+      });
+
+      if (!res.ok) console.error("Error saving progress:", res.statusText);
+    } catch (error) {
+      console.error("Error saving progress:", error);
+    }
   };
 
   const verificar = () => {
@@ -38,12 +65,7 @@ export default function Tema1_Ej1() {
     ).length;
     setPuntaje(correctasSeleccionadas);
 
-    // Guardar progreso
-    const completados = JSON.parse(localStorage.getItem("ejercicios_completados") || "[]");
-    if (!completados.includes(id)) {
-      completados.push(id);
-      localStorage.setItem("ejercicios_completados", JSON.stringify(completados));
-    }
+    guardarProgreso();
   };
 
   const manejarFinalizacion = () => {
@@ -60,18 +82,25 @@ export default function Tema1_Ej1() {
         <>
           <header className="ejercicio-header">
             <h1 className="titulo-ejercicio">EXERCISE 1</h1>
+            <p className="progreso-ejercicio">Select all correct answers</p>
           </header>
 
           <section
             className="tarjeta-ejercicio"
-            style={{ textAlign: "center", fontSize: "1.3rem", padding: "2rem" }}
+            style={{
+              textAlign: "center",
+              fontSize: "1.3rem",
+              padding: "2rem",
+            }}
           >
+            {/* Instrucción */}
             <div className="instruccion-box" style={{ marginBottom: "1.5rem" }}>
               <p className="instruccion-ejercicio">
                 Click or select all the options where you can use <b>HOW MUCH</b>.
               </p>
             </div>
 
+            {/* Opciones */}
             <div
               style={{
                 display: "flex",
@@ -84,15 +113,21 @@ export default function Tema1_Ej1() {
               {opciones.map((op) => {
                 const isCorrecta = correctas.includes(op);
                 const estaSeleccionada = seleccionadas.includes(op);
-                const color = resultado
-                  ? isCorrecta
-                    ? "#36aabc"
-                    : estaSeleccionada
-                    ? "#ff5c5c"
-                    : "#fff"
-                  : estaSeleccionada
-                  ? "#bcd03c"
-                  : "#fff";
+
+                // Colores definidos al estilo del EJERCICIO 2
+                let bg = "#fff";
+                let color = "#222a5c";
+
+                if (!resultado && estaSeleccionada) {
+                  bg = "#bcd03c"; // amarillo selección
+                  color = "#222a5c";
+                }
+
+                if (resultado) {
+                  if (isCorrecta) bg = "#36aabc"; // verde
+                  if (!isCorrecta && estaSeleccionada) bg = "#ff5c5c"; // rojo
+                  color = "#fff";
+                }
 
                 return (
                   <button
@@ -102,9 +137,9 @@ export default function Tema1_Ej1() {
                     style={{
                       padding: "0.5rem 1rem",
                       borderRadius: "8px",
-                      minWidth: "120px",
-                      backgroundColor: color,
-                      color: color === "#fff" ? "#222a5c" : "#fff",
+                      minWidth: "130px",
+                      backgroundColor: bg,
+                      color: color,
                       border: "1px solid #222a5c",
                       cursor: resultado ? "not-allowed" : "pointer",
                       fontSize: "1.1rem",
@@ -116,27 +151,38 @@ export default function Tema1_Ej1() {
               })}
             </div>
 
+            {/* Botón Check */}
             {!resultado && (
               <button
                 onClick={verificar}
                 className="ejercicio-btn"
-                style={{ fontSize: "1.3rem", padding: "0.8rem 2rem", borderRadius: "8px" }}
+                style={{
+                  fontSize: "1.3rem",
+                  padding: "0.8rem 2rem",
+                  borderRadius: "8px",
+                }}
               >
                 Check
               </button>
             )}
 
+            {/* Feedback */}
             {resultado && (
               <div style={{ marginTop: "1rem", fontSize: "1.3rem" }}>
-                <p>✅ Correct options are highlighted in blue.</p>
                 <p>
                   You got <strong>{puntaje}</strong> out of{" "}
                   <strong>{correctas.length}</strong> correct.
                 </p>
+
                 <button
                   onClick={manejarFinalizacion}
                   className="ejercicio-btn"
-                  style={{ fontSize: "1.3rem", padding: "0.8rem 2rem", borderRadius: "8px", marginTop: "1rem" }}
+                  style={{
+                    fontSize: "1.3rem",
+                    padding: "0.8rem 2rem",
+                    borderRadius: "8px",
+                    marginTop: "1rem",
+                  }}
                 >
                   Finish
                 </button>
@@ -146,7 +192,7 @@ export default function Tema1_Ej1() {
         </>
       ) : (
         <div className="finalizado" style={{ fontSize: "1.3rem" }}>
-          <h2>✅ You have completed the exercise!</h2>
+          <h2 className="correcta">You have completed the exercise!</h2>
           <p>Redirecting to the start of the level...</p>
         </div>
       )}

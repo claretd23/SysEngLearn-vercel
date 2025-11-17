@@ -2,29 +2,31 @@ import { useParams, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import "../ejercicios.css";
 
+const API_URL = import.meta.env.VITE_API_URL;
+
 export default function Tema3_Ej1() {
   const { nivel, semana, tema, ejercicio } = useParams();
   const id = `${nivel}-${semana}-${tema}-${ejercicio}`;
   const navigate = useNavigate();
 
-  const [respuesta, setRespuesta] = useState<string | null>(null);
-  const [inputValue, setInputValue] = useState<string>("");
+  const [respuestaCorrecta, setRespuestaCorrecta] = useState<boolean | null>(null);
+  const [inputValue, setInputValue] = useState("");
   const [correctas, setCorrectas] = useState(0);
   const [index, setIndex] = useState(0);
   const [finalizado, setFinalizado] = useState(false);
 
-  // ✅ Lista de ejercicios de “Is there / Are there”
+  // Lista de ejercicios “Is there / Are there”
   const ejercicios = [
-    { texto: "___ any students in the classroom?", correcta: ["Are there"] },
-    { texto: "___ a bank near here?", correcta: ["Is there"] },
-    { texto: "___ two apples on the table?", correcta: ["Are there"] },
-    { texto: "___ a supermarket on this street?", correcta: ["Is there"] },
-    { texto: "___ many chairs in the living room?", correcta: ["Are there"] },
-    { texto: "___ a cat under the bed?", correcta: ["Is there"] },
-    { texto: "___ any books on the shelf?", correcta: ["Are there"] },
-    { texto: "___ a post office nearby?", correcta: ["Is there"] },
-    { texto: "___ any mistakes in this text?", correcta: ["Are there"] },
-    { texto: "___ a hospital close to your house?", correcta: ["Is there"] },
+    { texto: "___ any students in the classroom?", correcta: "Are there" },
+    { texto: "___ a bank near here?", correcta: "Is there" },
+    { texto: "___ two apples on the table?", correcta: "Are there" },
+    { texto: "___ a supermarket on this street?", correcta: "Is there" },
+    { texto: "___ many chairs in the living room?", correcta: "Are there" },
+    { texto: "___ a cat under the bed?", correcta: "Is there" },
+    { texto: "___ any books on the shelf?", correcta: "Are there" },
+    { texto: "___ a post office nearby?", correcta: "Is there" },
+    { texto: "___ any mistakes in this text?", correcta: "Are there" },
+    { texto: "___ a hospital close to your house?", correcta: "Is there" },
   ];
 
   const actual = ejercicios[index];
@@ -38,7 +40,7 @@ export default function Tema3_Ej1() {
 
     try {
       const token = localStorage.getItem("token");
-      const res = await fetch("http://localhost:5000/api/progreso", {
+      const res = await fetch(`${API_URL}/api/progreso`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -47,33 +49,32 @@ export default function Tema3_Ej1() {
         body: JSON.stringify({ nivel, semana, tema, ejercicio }),
       });
 
-      if (!res.ok) console.error("Error al guardar progreso:", res.statusText);
+      if (!res.ok) console.error("Error saving progress:", res.statusText);
     } catch (error) {
-      console.error("Error al guardar el progreso:", error);
+      console.error("Error saving progress:", error);
     }
   };
 
   const verificar = () => {
-    const respuestaUsuario = inputValue.trim();
-    if (!respuestaUsuario) return;
+    const resp = inputValue.trim().toLowerCase();
+    if (!resp) return;
 
-    const esCorrecta = actual.correcta.some(
-      (c) => c.toLowerCase() === respuestaUsuario.toLowerCase()
-    );
+    const esCorrecta = resp === actual.correcta.toLowerCase();
 
     if (esCorrecta) {
-      setRespuesta("✅ Correct!");
-      setCorrectas((prev) => prev + 1);
+      setRespuestaCorrecta(true);
+      setCorrectas((p) => p + 1);
     } else {
-      setRespuesta("❌ Incorrect");
-      setInputValue(actual.correcta[0]);
+      setRespuestaCorrecta(false);
+      // mostrar la respuesta correcta en el input para aprendizaje
+      setInputValue(actual.correcta);
     }
   };
 
   const siguiente = () => {
-    setRespuesta(null);
+    setRespuestaCorrecta(null);
     setInputValue("");
-    setIndex(index + 1);
+    setIndex((i) => i + 1);
   };
 
   const manejarFinalizacion = async () => {
@@ -85,9 +86,9 @@ export default function Tema3_Ej1() {
     }, 3000);
   };
 
-  const mostrarTexto = respuesta
-    ? actual.texto.replace("___", actual.correcta[0])
-    : actual.texto;
+  // Mostrar texto ya completado SOLO cuando la respuesta fue verificada
+  const textoMostrado =
+    respuestaCorrecta === true ? actual.texto.replace("___", actual.correcta) : actual.texto;
 
   return (
     <div className="ejercicio-container">
@@ -113,17 +114,17 @@ export default function Tema3_Ej1() {
               className="pregunta-ejercicio"
               style={{ fontSize: "1.5rem", margin: "1rem 0", fontWeight: 500 }}
             >
-              {mostrarTexto}
+              {textoMostrado}
             </p>
 
-            {!respuesta && (
+            {respuestaCorrecta === null && (
               <div
                 className="opciones-ejercicio"
                 style={{
                   display: "flex",
                   justifyContent: "center",
-                  alignItems: "stretch",
                   gap: "1rem",
+                  alignItems: "stretch",
                   margin: "1.5rem 0",
                 }}
               >
@@ -155,17 +156,20 @@ export default function Tema3_Ej1() {
               </div>
             )}
 
-            {respuesta && (
+            {respuestaCorrecta !== null && (
               <p
-                className={`respuesta-feedback ${respuesta.startsWith("✅") ? "correcta" : "incorrecta"}`}
-                style={{ fontSize: "1.3rem", margin: "1rem 0" }}
+                className={`respuesta-feedback ${respuestaCorrecta ? "correcta" : "incorrecta"}`}
+                style={{
+                  fontSize: "1.3rem",
+                  margin: "1rem 0",
+                }}
               >
-                {respuesta}
+                {respuestaCorrecta ? "Correct" : "Incorrect"}
               </p>
             )}
 
-            <div className="botones-siguiente">
-              {respuesta && index < ejercicios.length - 1 && (
+            <div className="botones-siguiente" style={{ display: "flex", justifyContent: "center", gap: "1rem" }}>
+              {respuestaCorrecta !== null && index < ejercicios.length - 1 && (
                 <button
                   onClick={siguiente}
                   className="ejercicio-btn"
@@ -174,7 +178,8 @@ export default function Tema3_Ej1() {
                   Next question
                 </button>
               )}
-              {respuesta && index === ejercicios.length - 1 && (
+
+              {respuestaCorrecta !== null && index === ejercicios.length - 1 && (
                 <button
                   onClick={manejarFinalizacion}
                   className="ejercicio-btn"
@@ -188,7 +193,7 @@ export default function Tema3_Ej1() {
         </>
       ) : (
         <div className="finalizado" style={{ fontSize: "1.3rem" }}>
-          <h2>✅ You have completed the exercise!</h2>
+          <h2 className="correcta">You have completed the exercise!</h2>
           <p>
             Correct answers: <strong>{correctas} / {ejercicios.length}</strong>
           </p>

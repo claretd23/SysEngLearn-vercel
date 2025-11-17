@@ -1,11 +1,13 @@
 import { useParams, useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import "../ejercicios.css";
 
 interface EjercicioMuch {
   oracion: string;
   correcta: string;
 }
+
+const API_URL = import.meta.env.VITE_API_URL;
 
 export default function Tema1_Ej2() {
   const { nivel, semana, tema, ejercicio } = useParams();
@@ -20,23 +22,24 @@ export default function Tema1_Ej2() {
   const [oracionMostrada, setOracionMostrada] = useState("");
 
   const ejercicios: EjercicioMuch[] = [
-    { oracion: "_______ water do you drink every day?", correcta: "Yes" },
-    { oracion: "_______ apples are there in the basket?", correcta: "No" },
-    { oracion: "_______ money do you have in your wallet?", correcta: "Yes" },
-    { oracion: "_______ chairs are in the room?", correcta: "No" },
-    { oracion: "_______ time do we have before the movie starts?", correcta: "Yes" },
-    { oracion: "_______ bottles of milk do you need?", correcta: "No" },
-    { oracion: "_______ rice should I cook for dinner?", correcta: "Yes" },
-    { oracion: "_______ books are on the table?", correcta: "No" },
-    { oracion: "_______ coffee do you want?", correcta: "Yes" },
+    { oracion: "_______ water do you drink every day?", correcta: "yes" },
+    { oracion: "_______ apples are there in the basket?", correcta: "no" },
+    { oracion: "_______ money do you have in your wallet?", correcta: "yes" },
+    { oracion: "_______ chairs are in the room?", correcta: "no" },
+    { oracion: "_______ time do we have before the movie starts?", correcta: "yes" },
+    { oracion: "_______ bottles of milk do you need?", correcta: "no" },
+    { oracion: "_______ rice should I cook for dinner?", correcta: "yes" },
+    { oracion: "_______ books are on the table?", correcta: "no" },
+    { oracion: "_______ coffee do you want?", correcta: "yes" },
   ];
 
   const actual = ejercicios[index];
 
-  useState(() => {
+  useEffect(() => {
     setOracionMostrada(actual.oracion);
-  });
+  }, [index]);
 
+  // === GUARDAR PROGRESO ===
   const guardarProgreso = async () => {
     const completados = JSON.parse(localStorage.getItem("ejercicios_completados") || "[]");
     if (!completados.includes(id)) {
@@ -46,7 +49,7 @@ export default function Tema1_Ej2() {
 
     try {
       const token = localStorage.getItem("token");
-      const res = await fetch("http://localhost:5000/api/progreso", {
+      const res = await fetch(`${API_URL}/api/progreso`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -54,39 +57,41 @@ export default function Tema1_Ej2() {
         },
         body: JSON.stringify({ nivel, semana, tema, ejercicio }),
       });
+
       if (!res.ok) console.error("Error al guardar progreso:", res.statusText);
     } catch (error) {
       console.error("Error al guardar el progreso:", error);
     }
   };
 
+  // === VERIFICAR ===
   const verificar = () => {
-    const esCorrecta = respuesta.trim().toLowerCase() === actual.correcta.toLowerCase();
+    const user = respuesta.trim().toLowerCase();
+    const esCorrecta = user === actual.correcta;
 
-    // ✅ Si es correcta, reemplaza el espacio por "How much"
     if (esCorrecta) {
       setOracionMostrada(actual.oracion.replace("_______", "How much"));
-      setFeedback("✅ Correct!");
+      setFeedback("Correct");
       setCorrectas((prev) => prev + 1);
     } else {
-      // ❌ Si es incorrecta, deja la oración sin completar
       setOracionMostrada(actual.oracion);
-      setFeedback("❌ Incorrect.");
+      setFeedback("Incorrect");
     }
   };
 
+  // === SIGUIENTE ===
   const siguiente = () => {
     setFeedback(null);
     setRespuesta("");
+
     if (index < ejercicios.length - 1) {
-      const nuevoIndex = index + 1;
-      setIndex(nuevoIndex);
-      setOracionMostrada(ejercicios[nuevoIndex].oracion);
+      setIndex(index + 1);
     } else {
       manejarFinalizacion();
     }
   };
 
+  // === FINALIZAR ===
   const manejarFinalizacion = async () => {
     await guardarProgreso();
     setFinalizado(true);
@@ -96,6 +101,7 @@ export default function Tema1_Ej2() {
     }, 3000);
   };
 
+  // === RENDER ===
   return (
     <div className="ejercicio-container">
       {!finalizado ? (
@@ -111,12 +117,12 @@ export default function Tema1_Ej2() {
             className="tarjeta-ejercicio"
             style={{ textAlign: "center", fontSize: "1.3rem", padding: "2rem" }}
           >
-            {/* Instrucción */}
             {index === 0 && (
               <div className="instruccion-box" style={{ marginBottom: "1rem" }}>
-                <p className="instruccion-ejercicio" style={{ fontSize: "1.1rem" }}>
-                  Read each sentence and choose if you can use <b>HOW MUCH</b> or not. <br />
-                  Write <b>Yes</b> if “how much” is correct, and <b>No</b> if it isn’t.
+                <p className="instruccion-ejercicio">
+                  Read each sentence and decide if you can use <b>HOW MUCH</b>.
+                  <br />
+                  Write <b>Yes</b> if it is correct, and <b>No</b> if it is not.
                 </p>
               </div>
             )}
@@ -138,7 +144,7 @@ export default function Tema1_Ej2() {
               <p>{oracionMostrada}</p>
             </div>
 
-            {/* Input */}
+            {/* INPUT */}
             {!feedback && (
               <input
                 type="text"
@@ -160,38 +166,36 @@ export default function Tema1_Ej2() {
               />
             )}
 
-            {/* Botón Check */}
+            {/* BOTÓN CHECK */}
             {!feedback && (
-              <div>
-                <button
-                  onClick={verificar}
-                  className="ejercicio-btn"
-                  disabled={!respuesta.trim()}
-                  style={{
-                    fontSize: "1.3rem",
-                    padding: "0.8rem 2rem",
-                    borderRadius: "8px",
-                  }}
-                >
-                  Check
-                </button>
-              </div>
+              <button
+                onClick={verificar}
+                className="ejercicio-btn"
+                disabled={!respuesta.trim()}
+                style={{
+                  fontSize: "1.3rem",
+                  padding: "0.8rem 2rem",
+                  borderRadius: "8px",
+                }}
+              >
+                Check
+              </button>
             )}
 
-            {/* Feedback */}
+            {/* FEEDBACK */}
             {feedback && (
               <p
                 style={{
                   fontSize: "1.3rem",
-                  color: feedback.startsWith("✅") ? "green" : "red",
-                  margin: "1rem 0",
+                  color: feedback === "Correct" ? "green" : "red",
+                  marginTop: "1rem",
                 }}
               >
                 {feedback}
               </p>
             )}
 
-            {/* Botón siguiente */}
+            {/* BOTÓN SIGUIENTE / FIN */}
             {feedback && (
               <button
                 onClick={siguiente}
@@ -199,6 +203,7 @@ export default function Tema1_Ej2() {
                 style={{
                   fontSize: "1.3rem",
                   padding: "0.8rem 2rem",
+                  marginTop: "1rem",
                   borderRadius: "8px",
                 }}
               >
@@ -209,7 +214,7 @@ export default function Tema1_Ej2() {
         </>
       ) : (
         <div className="finalizado" style={{ fontSize: "1.3rem" }}>
-          <h2>✅ You have completed the exercise!</h2>
+          <h2 className="correcta">You have completed the exercise!</h2>
           <p>
             Correct answers: <strong>{correctas} / {ejercicios.length}</strong>
           </p>

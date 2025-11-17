@@ -2,6 +2,8 @@ import { useParams, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import "../ejercicios.css";
 
+const API_URL = import.meta.env.VITE_API_URL;
+
 interface EjercicioOpciones {
   pregunta: string;
   opciones: string[];
@@ -15,67 +17,28 @@ export default function Tema3_Ej2() {
 
   const [index, setIndex] = useState(0);
   const [opcionSeleccionada, setOpcionSeleccionada] = useState<string | null>(null);
-  const [respuesta, setRespuesta] = useState<string | null>(null);
+  const [respuestaCorrecta, setRespuestaCorrecta] = useState<boolean | null>(null);
   const [correctas, setCorrectas] = useState(0);
   const [finalizado, setFinalizado] = useState(false);
 
   const ejercicios: EjercicioOpciones[] = [
-    {
-      pregunta: "___ any milk in the fridge?",
-      opciones: ["Is there", "Are there", "There are", "There is"],
-      correcta: "Is there",
-    },
-    {
-      pregunta: "___ a park in your neighborhood?",
-      opciones: ["Is there", "Are there", "There are", "Is they"],
-      correcta: "Is there",
-    },
-    {
-      pregunta: "___ five pencils on the desk?",
-      opciones: ["Is there", "Are there", "There is", "Is they"],
-      correcta: "Are there",
-    },
-    {
-      pregunta: "___ a restaurant on this corner?",
-      opciones: ["Are there", "Is there", "There is", "Are there any"],
-      correcta: "Is there",
-    },
-    {
-      pregunta: "___ many people in the library today?",
-      opciones: ["There is", "Are there", "Is there", "There"],
-      correcta: "Are there",
-    },
-    {
-      pregunta: "___ a movie theater in your town?",
-      opciones: ["Is there", "Are there", "There are", "Is they"],
-      correcta: "Is there",
-    },
-    {
-      pregunta: "___ any questions about the lesson?",
-      opciones: ["Are there", "Is there", "There", "There are"],
-      correcta: "Are there",
-    },
-    {
-      pregunta: "___ a good hotel near the beach?",
-      opciones: ["Are there", "Is there", "There is", "There are"],
-      correcta: "Is there",
-    },
-    {
-      pregunta: "___ a car outside your house?",
-      opciones: ["Is they", "Is there", "Are there", "There are"],
-      correcta: "Is there",
-    },
-    {
-      pregunta: "___ two dogs in the yard?",
-      opciones: ["Is there", "There is", "Are there", "Are they"],
-      correcta: "Are there",
-    },
+    { pregunta: "___ any milk in the fridge?", opciones: ["Is there", "Are there", "There are", "There is"], correcta: "Is there" },
+    { pregunta: "___ a park in your neighborhood?", opciones: ["Is there", "Are there", "There are", "Is they"], correcta: "Is there" },
+    { pregunta: "___ five pencils on the desk?", opciones: ["Is there", "Are there", "There is", "Is they"], correcta: "Are there" },
+    { pregunta: "___ a restaurant on this corner?", opciones: ["Are there", "Is there", "There is", "Are there any"], correcta: "Is there" },
+    { pregunta: "___ many people in the library today?", opciones: ["There is", "Are there", "Is there", "There"], correcta: "Are there" },
+    { pregunta: "___ a movie theater in your town?", opciones: ["Is there", "Are there", "There are", "Is they"], correcta: "Is there" },
+    { pregunta: "___ any questions about the lesson?", opciones: ["Are there", "Is there", "There", "There are"], correcta: "Are there" },
+    { pregunta: "___ a good hotel near the beach?", opciones: ["Are there", "Is there", "There is", "There are"], correcta: "Is there" },
+    { pregunta: "___ a car outside your house?", opciones: ["Is they", "Is there", "Are there", "There are"], correcta: "Is there" },
+    { pregunta: "___ two dogs in the yard?", opciones: ["Is there", "There is", "Are there", "Are they"], correcta: "Are there" },
   ];
 
   const actual = ejercicios[index];
 
   const guardarProgreso = async () => {
     const completados = JSON.parse(localStorage.getItem("ejercicios_completados") || "[]");
+
     if (!completados.includes(id)) {
       completados.push(id);
       localStorage.setItem("ejercicios_completados", JSON.stringify(completados));
@@ -83,7 +46,7 @@ export default function Tema3_Ej2() {
 
     try {
       const token = localStorage.getItem("token");
-      const res = await fetch("http://localhost:5000/api/progreso", {
+      const res = await fetch(`${API_URL}/api/progreso`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -101,16 +64,14 @@ export default function Tema3_Ej2() {
   const verificar = () => {
     if (!opcionSeleccionada) return;
 
-    if (opcionSeleccionada === actual.correcta) {
-      setRespuesta(`✅ Correct!\n\n${actual.pregunta.replace("___", opcionSeleccionada)}`);
-      setCorrectas((prev) => prev + 1);
-    } else {
-      setRespuesta(`❌ Incorrect.\n\n${actual.pregunta.replace("___", actual.correcta)}`);
-    }
+    const esCorrecta = opcionSeleccionada === actual.correcta;
+    setRespuestaCorrecta(esCorrecta);
+
+    if ( esCorrecta ) setCorrectas((prev) => prev + 1);
   };
 
   const siguiente = () => {
-    setRespuesta(null);
+    setRespuestaCorrecta(null);
     setOpcionSeleccionada(null);
     setIndex(index + 1);
   };
@@ -118,11 +79,18 @@ export default function Tema3_Ej2() {
   const manejarFinalizacion = async () => {
     await guardarProgreso();
     setFinalizado(true);
+
     setTimeout(() => {
       navigate(`/inicio/${nivel}`);
       window.location.reload();
     }, 3000);
   };
+
+  // Texto mostrado sin emojis y sin repetir la oración
+  const textoMostrado =
+    respuestaCorrecta === null
+      ? actual.pregunta
+      : actual.pregunta.replace("___", respuestaCorrecta ? actual.correcta : actual.correcta);
 
   return (
     <div className="ejercicio-container">
@@ -135,11 +103,8 @@ export default function Tema3_Ej2() {
             </p>
           </header>
 
-          <section
-            className="tarjeta-ejercicio"
-            style={{ textAlign: "center", fontSize: "1.3rem", padding: "2rem" }}
-          >
-            {/* Pregunta */}
+          <section className="tarjeta-ejercicio" style={{ textAlign: "center", padding: "2rem" }}>
+            {/* Oración */}
             <div
               className="oracion-box"
               style={{
@@ -151,14 +116,13 @@ export default function Tema3_Ej2() {
                 maxWidth: "650px",
                 textAlign: "left",
                 fontStyle: "italic",
-                whiteSpace: "pre-line",
               }}
             >
-              <p>{respuesta ? respuesta.split("\n").slice(1).join("\n") : actual.pregunta}</p>
+              <p>{textoMostrado}</p>
             </div>
 
             {/* Opciones */}
-            {!respuesta && (
+            {respuestaCorrecta === null && (
               <div
                 className="opciones-ejercicio"
                 style={{
@@ -183,7 +147,7 @@ export default function Tema3_Ej2() {
             )}
 
             {/* Botón Check */}
-            {!respuesta && (
+            {respuestaCorrecta === null && (
               <button
                 onClick={verificar}
                 className="ejercicio-btn"
@@ -200,18 +164,19 @@ export default function Tema3_Ej2() {
             )}
 
             {/* Feedback */}
-            {respuesta && (
+            {respuestaCorrecta !== null && (
               <p
-                className={`respuesta-feedback ${respuesta.startsWith("✅") ? "correcta" : "incorrecta"}`}
+                className={`respuesta-feedback ${
+                  respuestaCorrecta ? "correcta" : "incorrecta"
+                }`}
                 style={{ fontSize: "1.3rem", margin: "1rem 0" }}
               >
-                {respuesta.split("\n")[0]}
+                {respuestaCorrecta ? "Correct" : "Incorrect"}
               </p>
             )}
 
             {/* Botones siguiente / finalizar */}
             <div
-              className="botones-siguiente"
               style={{
                 display: "flex",
                 justifyContent: "center",
@@ -219,20 +184,21 @@ export default function Tema3_Ej2() {
                 marginTop: "1rem",
               }}
             >
-              {respuesta && index < ejercicios.length - 1 && (
+              {respuestaCorrecta !== null && index < ejercicios.length - 1 && (
                 <button
                   onClick={siguiente}
                   className="ejercicio-btn"
-                  style={{ fontSize: "1.3rem", padding: "0.8rem 2rem", borderRadius: "8px" }}
+                  style={{ fontSize: "1.3rem", padding: "0.8rem 2rem" }}
                 >
                   Next question
                 </button>
               )}
-              {respuesta && index === ejercicios.length - 1 && (
+
+              {respuestaCorrecta !== null && index === ejercicios.length - 1 && (
                 <button
                   onClick={manejarFinalizacion}
                   className="ejercicio-btn"
-                  style={{ fontSize: "1.3rem", padding: "0.8rem 2rem", borderRadius: "8px" }}
+                  style={{ fontSize: "1.3rem", padding: "0.8rem 2rem" }}
                 >
                   Finish
                 </button>
@@ -242,7 +208,7 @@ export default function Tema3_Ej2() {
         </>
       ) : (
         <div className="finalizado" style={{ fontSize: "1.3rem" }}>
-          <h2>✅ You have completed the exercise!</h2>
+          <h2>You have completed the exercise!</h2>
           <p>
             Correct answers: <strong>{correctas} / {ejercicios.length}</strong>
           </p>

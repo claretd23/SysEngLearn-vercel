@@ -2,6 +2,8 @@ import { useParams, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import "../ejercicios.css";
 
+const API_URL = import.meta.env.VITE_API_URL;
+
 interface Ejercicio {
   oracion: string;
   respuesta: string;
@@ -42,15 +44,7 @@ export default function Tema2_Ej2() {
     setRespuestasUsuario(nuevas);
   };
 
-  const verificar = async () => {
-    let aciertos = 0;
-    ejercicios.forEach((ej, i) => {
-      if (respuestasUsuario[i] === ej.respuesta) aciertos++;
-    });
-    setCorrectas(aciertos);
-    setVerificado(true);
-
-    // Guardar progreso en localStorage y backend
+  const guardarProgreso = async () => {
     const completados = JSON.parse(localStorage.getItem("ejercicios_completados") || "[]");
     if (!completados.includes(id)) {
       completados.push(id);
@@ -59,7 +53,7 @@ export default function Tema2_Ej2() {
 
     try {
       const token = localStorage.getItem("token");
-      const res = await fetch("http://localhost:5000/api/progreso", {
+      const res = await fetch(`${API_URL}/api/progreso`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -67,10 +61,22 @@ export default function Tema2_Ej2() {
         },
         body: JSON.stringify({ nivel, semana, tema, ejercicio }),
       });
+
       if (!res.ok) console.error("Error saving progress:", res.statusText);
     } catch (error) {
       console.error("Error saving progress:", error);
     }
+  };
+
+  const verificar = () => {
+    let aciertos = 0;
+    ejercicios.forEach((ej, i) => {
+      if (respuestasUsuario[i] === ej.respuesta) aciertos++;
+    });
+
+    setCorrectas(aciertos);
+    setVerificado(true);
+    guardarProgreso();
   };
 
   const manejarFinalizacion = () => {
@@ -87,24 +93,25 @@ export default function Tema2_Ej2() {
         <>
           <header className="ejercicio-header">
             <h1 className="titulo-ejercicio">EXERCISE 2</h1>
+            <p className="progreso-ejercicio">Fill in the missing word</p>
           </header>
 
           <section className="tarjeta-ejercicio" style={{ padding: "2rem", textAlign: "center" }}>
-            <div className="instruccion-box" style={{ marginBottom: "1rem" }}>
+            {/* Instrucción */}
+            <div className="instruccion-box" style={{ marginBottom: "1.2rem" }}>
               <p className="instruccion-ejercicio">
-                <strong>Instructions:</strong> Complete each question with the correct word.
-                <br />
-                Use <b>HOW MANY</b> for countable nouns.
+                Complete each question with the correct word.  
+                <br />Use <b>HOW MANY</b> for countable nouns.
               </p>
             </div>
 
-            {/* Caja con palabras */}
+            {/* Lista de palabras */}
             <div
               style={{
                 display: "flex",
                 flexWrap: "wrap",
                 justifyContent: "center",
-                gap: "0.7rem",
+                gap: "0.6rem",
                 marginBottom: "1.5rem",
               }}
             >
@@ -112,7 +119,7 @@ export default function Tema2_Ej2() {
                 <span
                   key={i}
                   style={{
-                    backgroundColor: "#2c12bdff",
+                    backgroundColor: "#222a5c",
                     color: "#fff",
                     padding: "0.4rem 0.8rem",
                     borderRadius: "8px",
@@ -124,16 +131,19 @@ export default function Tema2_Ej2() {
               ))}
             </div>
 
-            {/* Lista de oraciones con inputs */}
+            {/* Ejercicios */}
             <div style={{ textAlign: "left", margin: "0 auto", maxWidth: "600px" }}>
               {ejercicios.map((ej, i) => {
                 const esCorrecta = verificado && respuestasUsuario[i] === ej.respuesta;
                 const esIncorrecta =
-                  verificado && respuestasUsuario[i] !== ej.respuesta && respuestasUsuario[i] !== "";
+                  verificado &&
+                  respuestasUsuario[i] !== ej.respuesta &&
+                  respuestasUsuario[i] !== "";
 
                 return (
                   <p key={i} style={{ fontSize: "1.2rem", marginBottom: "1rem" }}>
                     {i + 1}. {ej.oracion.split("______")[0]}
+
                     <input
                       type="text"
                       value={respuestasUsuario[i]}
@@ -142,24 +152,26 @@ export default function Tema2_Ej2() {
                       style={{
                         border: verificado
                           ? esCorrecta
-                            ? "2px solid #4caf50"
+                            ? "2px solid #36aabc"
                             : esIncorrecta
-                            ? "2px solid #e53935"
+                            ? "2px solid #ff5c5c"
                             : "1px solid #ccc"
                           : "1px solid #ccc",
                         borderRadius: "6px",
                         padding: "4px 8px",
-                        width: "120px",
+                        width: "130px",
                         textAlign: "center",
                         margin: "0 6px",
                       }}
                     />
+
                     {ej.oracion.split("______")[1]}
                   </p>
                 );
               })}
             </div>
 
+            {/* Botón Check */}
             {!verificado && (
               <button
                 onClick={verificar}
@@ -170,9 +182,14 @@ export default function Tema2_Ej2() {
               </button>
             )}
 
+            {/* Botón Finish */}
             {verificado && (
-              <div style={{ marginTop: "1rem", fontSize: "1.3rem" }}>
-            
+              <div style={{ marginTop: "1.2rem", fontSize: "1.3rem" }}>
+                <p>
+                  You got <strong>{correctas}</strong> out of{" "}
+                  <strong>{ejercicios.length}</strong> correct.
+                </p>
+
                 <button
                   onClick={manejarFinalizacion}
                   className="ejercicio-btn"
@@ -186,7 +203,7 @@ export default function Tema2_Ej2() {
         </>
       ) : (
         <div className="finalizado" style={{ fontSize: "1.3rem" }}>
-          <h2>✅ You have completed the exercise!</h2>
+          <h2 className="correcta">You have completed the exercise!</h2>
           <p>
             Correct answers: <strong>{correctas} / {ejercicios.length}</strong>
           </p>
@@ -196,4 +213,3 @@ export default function Tema2_Ej2() {
     </div>
   );
 }
-

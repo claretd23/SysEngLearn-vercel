@@ -55,6 +55,7 @@ export default function Tema3_Ej1() {
     }
   };
 
+  // 🔥 AUTOCOMPLETADO AGREGADO AQUÍ
   const verificar = () => {
     const resp = inputValue.trim().toLowerCase();
     if (!resp) return;
@@ -66,9 +67,10 @@ export default function Tema3_Ej1() {
       setCorrectas((p) => p + 1);
     } else {
       setRespuestaCorrecta(false);
-      // mostrar la respuesta correcta en el input para aprendizaje
-      setInputValue(actual.correcta);
     }
+
+    // Autocompletar SIEMPRE con la correcta
+    setInputValue(actual.correcta);
   };
 
   const siguiente = () => {
@@ -86,9 +88,11 @@ export default function Tema3_Ej1() {
     }, 3000);
   };
 
-  // Mostrar texto ya completado SOLO cuando la respuesta fue verificada
+  // Mostrar texto con respuesta correcta solo cuando ya se verificó
   const textoMostrado =
-    respuestaCorrecta === true ? actual.texto.replace("___", actual.correcta) : actual.texto;
+    respuestaCorrecta !== null
+      ? actual.texto.replace("___", actual.correcta)
+      : actual.texto;
 
   return (
     <div className="ejercicio-container">
@@ -142,6 +146,7 @@ export default function Tema3_Ej1() {
                     border: "1px solid #ccc",
                   }}
                 />
+
                 <button
                   onClick={verificar}
                   className="ejercicio-btn"

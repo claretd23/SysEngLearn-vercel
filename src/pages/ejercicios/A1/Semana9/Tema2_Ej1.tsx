@@ -108,7 +108,7 @@ export default function Tema2_Ej1() {
               </div>
             )}
 
-            {/* ORACIÓN CON AUTOCOMPLETADO */}
+            {/* ORACIÓN AUTOCOMPLETADA CUANDO RESPONDE */}
             <div
               className="oracion-box"
               style={{
@@ -138,7 +138,6 @@ export default function Tema2_Ej1() {
                   flexDirection: "column",
                   gap: "1rem",
                   alignItems: "center",
-                  marginBottom: "1rem",
                 }}
               >
                 {actual.opciones.map((op, i) => (
@@ -154,7 +153,7 @@ export default function Tema2_Ej1() {
               </div>
             )}
 
-            {/* FEEDBACK SOLO "CORRECT" / "INCORRECT" */}
+            {/* SOLO "CORRECT" O "INCORRECT" */}
             {respuesta && (
               <p
                 style={{

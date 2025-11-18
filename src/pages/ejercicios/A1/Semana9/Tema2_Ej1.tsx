@@ -7,7 +7,6 @@ interface EjercicioOpciones {
   opciones: string[];
   correcta: string;
 }
-
 const API_URL = import.meta.env.VITE_API_URL;
 
 export default function Tema2_Ej1() {
@@ -105,11 +104,11 @@ export default function Tema2_Ej1() {
           >
             {index === 0 && (
               <div className="instruccion-box">
-                <p>Read the sentence and choose the correct answer.</p>
+                <p>Read the sentence and choose the correct option.</p>
               </div>
             )}
 
-            {/* ORACIÓN MOSTRADA — SE AUTOCOMPLETA CON LA RESPUESTA CORRECTA */}
+            {/* ORACIÓN CON AUTOCOMPLETADO */}
             <div
               className="oracion-box"
               style={{
@@ -120,7 +119,6 @@ export default function Tema2_Ej1() {
                 margin: "1rem auto",
                 maxWidth: "650px",
                 textAlign: "left",
-                fontStyle: "italic",
                 whiteSpace: "pre-line",
               }}
             >
@@ -156,24 +154,7 @@ export default function Tema2_Ej1() {
               </div>
             )}
 
-            {/* BOTÓN CHECK */}
-            {!respuesta && (
-              <button
-                onClick={verificar}
-                className="ejercicio-btn"
-                disabled={!opcionSeleccionada}
-                style={{
-                  fontSize: "1.3rem",
-                  padding: "0.8rem 2rem",
-                  marginBottom: "1rem",
-                  borderRadius: "8px",
-                }}
-              >
-                Check
-              </button>
-            )}
-
-            {/* FEEDBACK (COLOR CORRECTO / INCORRECTO) */}
+            {/* FEEDBACK SOLO "CORRECT" / "INCORRECT" */}
             {respuesta && (
               <p
                 style={{
@@ -187,7 +168,7 @@ export default function Tema2_Ej1() {
               </p>
             )}
 
-            {/* SIGUIENTE / FINALIZAR */}
+            {/* BOTONES */}
             <div
               className="botones-siguiente"
               style={{
@@ -197,6 +178,17 @@ export default function Tema2_Ej1() {
                 marginTop: "1rem",
               }}
             >
+              {!respuesta && (
+                <button
+                  onClick={verificar}
+                  className="ejercicio-btn"
+                  disabled={!opcionSeleccionada}
+                  style={{ fontSize: "1.3rem", padding: "0.8rem 2rem", borderRadius: "8px" }}
+                >
+                  Check
+                </button>
+              )}
+
               {respuesta && index < ejercicios.length - 1 && (
                 <button
                   onClick={siguiente}

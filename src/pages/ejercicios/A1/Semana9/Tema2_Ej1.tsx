@@ -7,8 +7,8 @@ interface EjercicioOpciones {
   opciones: string[];
   correcta: string;
 }
-const API_URL = import.meta.env.VITE_API_URL;
 
+const API_URL = import.meta.env.VITE_API_URL;
 
 export default function Tema2_Ej1() {
   const { nivel, semana, tema, ejercicio } = useParams();
@@ -22,61 +22,21 @@ export default function Tema2_Ej1() {
   const [finalizado, setFinalizado] = useState(false);
 
   const ejercicios: EjercicioOpciones[] = [
-    {
-      pregunta: "_______ a pencil?",
-      opciones: ["You got", "Have you got", "Do you has"],
-      correcta: "Have you got",
-    },
-    {
-      pregunta: "She _______ a cat.",
-      opciones: ["have got", "has got", "do have"],
-      correcta: "has got",
-    },
-    {
-      pregunta: "_______ your sister have a job?",
-      opciones: ["Have", "Has", "Does"],
-      correcta: "Does",
-    },
-    {
-      pregunta: "We _______ any milk left.",
-      opciones: ["doesn’t have", "haven’t got", "hasn’t got"],
-      correcta: "haven’t got",
-    },
-    {
-      pregunta: "_______ they got a car?",
-      opciones: ["Have", "Do", "Has"],
-      correcta: "Have",
-    },
-    {
-      pregunta: "My friends _______ a big apartment.",
-      opciones: ["have got", "has got", "do have"],
-      correcta: "have got",
-    },
-    {
-      pregunta: "_______ you have any questions?",
-      opciones: ["Has", "Have", "Do"],
-      correcta: "Have",
-    },
-    {
-      pregunta: "He _______ a lot of homework.",
-      opciones: ["have got", "has got", "does have"],
-      correcta: "has got",
-    },
-    {
-      pregunta: "_______ your parents got a dog?",
-      opciones: ["Does", "Have", "Do has"],
-      correcta: "Have",
-    },
-    {
-      pregunta: "They _______ two brothers.",
-      opciones: ["has got", "does have", "have got"],
-      correcta: "have got",
-    },
+    { pregunta: "_______ a pencil?", opciones: ["You got", "Have you got", "Do you has"], correcta: "Have you got" },
+    { pregunta: "She _______ a cat.", opciones: ["have got", "has got", "do have"], correcta: "has got" },
+    { pregunta: "_______ your sister have a job?", opciones: ["Have", "Has", "Does"], correcta: "Does" },
+    { pregunta: "We _______ any milk left.", opciones: ["doesn’t have", "haven’t got", "hasn’t got"], correcta: "haven’t got" },
+    { pregunta: "_______ they got a car?", opciones: ["Have", "Do", "Has"], correcta: "Have" },
+    { pregunta: "My friends _______ a big apartment.", opciones: ["have got", "has got", "do have"], correcta: "have got" },
+    { pregunta: "_______ you have any questions?", opciones: ["Has", "Have", "Do"], correcta: "Have" },
+    { pregunta: "He _______ a lot of homework.", opciones: ["have got", "has got", "does have"], correcta: "has got" },
+    { pregunta: "_______ your parents got a dog?", opciones: ["Does", "Have", "Do has"], correcta: "Have" },
+    { pregunta: "They _______ two brothers.", opciones: ["has got", "does have", "have got"], correcta: "have got" },
   ];
 
   const actual = ejercicios[index];
 
-const guardarProgreso = async () => {
+  const guardarProgreso = async () => {
     const completados = JSON.parse(localStorage.getItem("ejercicios_completados") || "[]");
 
     if (!completados.includes(id)) {
@@ -102,15 +62,14 @@ const guardarProgreso = async () => {
     }
   };
 
-
   const verificar = () => {
     if (!opcionSeleccionada) return;
 
     if (opcionSeleccionada === actual.correcta) {
-      setRespuesta(`Correct!\n\n${actual.pregunta.replace("_______", opcionSeleccionada)}`);
+      setRespuesta("Correct");
       setCorrectas((prev) => prev + 1);
     } else {
-      setRespuesta(`Incorrect.\n\n${actual.pregunta.replace("_______", actual.correcta)}`);
+      setRespuesta("Incorrect");
     }
   };
 
@@ -140,18 +99,17 @@ const guardarProgreso = async () => {
             </p>
           </header>
 
-
           <section
             className="tarjeta-ejercicio"
             style={{ textAlign: "center", fontSize: "1.3rem", padding: "2rem" }}
           >
-                        {index === 0 && (
+            {index === 0 && (
               <div className="instruccion-box">
-                <p>Read the dialogue and choose the correct.</p>
+                <p>Read the sentence and choose the correct answer.</p>
               </div>
             )}
 
-            {/* Pregunta */}
+            {/* ORACIÓN MOSTRADA — SE AUTOCOMPLETA CON LA RESPUESTA CORRECTA */}
             <div
               className="oracion-box"
               style={{
@@ -166,10 +124,14 @@ const guardarProgreso = async () => {
                 whiteSpace: "pre-line",
               }}
             >
-              <p>{respuesta ? respuesta.split("\n").slice(1).join("\n") : actual.pregunta}</p>
+              <p>
+                {respuesta
+                  ? actual.pregunta.replace("_______", actual.correcta)
+                  : actual.pregunta}
+              </p>
             </div>
 
-            {/* Opciones */}
+            {/* OPCIONES */}
             {!respuesta && (
               <div
                 className="opciones-ejercicio"
@@ -194,7 +156,7 @@ const guardarProgreso = async () => {
               </div>
             )}
 
-            {/* Botón Check */}
+            {/* BOTÓN CHECK */}
             {!respuesta && (
               <button
                 onClick={verificar}
@@ -211,7 +173,7 @@ const guardarProgreso = async () => {
               </button>
             )}
 
-              {/* Feedback sin emojis */}
+            {/* FEEDBACK (COLOR CORRECTO / INCORRECTO) */}
             {respuesta && (
               <p
                 style={{
@@ -224,7 +186,8 @@ const guardarProgreso = async () => {
                 {respuesta}
               </p>
             )}
-            {/* Botones siguiente / finalizar */}
+
+            {/* SIGUIENTE / FINALIZAR */}
             <div
               className="botones-siguiente"
               style={{
@@ -243,6 +206,7 @@ const guardarProgreso = async () => {
                   Next question
                 </button>
               )}
+
               {respuesta && index === ejercicios.length - 1 && (
                 <button
                   onClick={manejarFinalizacion}

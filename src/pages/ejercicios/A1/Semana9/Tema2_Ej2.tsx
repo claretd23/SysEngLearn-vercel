@@ -77,6 +77,8 @@ export default function Tema2_Ej2() {
     }
   };
 
+
+  
   const siguiente = () => {
     setRespuesta(null);
     setInputValue("");
@@ -92,9 +94,11 @@ export default function Tema2_Ej2() {
     }, 3000);
   };
 
-  const mostrarTexto = respuesta
-    ? actual.texto.replace("_______", actual.correcta[0])
-    : actual.texto;
+// Mostrar la oración SIN duplicarla
+const mostrarTexto = actual.texto.replace(
+  "_______",
+  respuesta ? actual.correcta[0] : "_______"
+);
 
   return (
     <div className="ejercicio-container">

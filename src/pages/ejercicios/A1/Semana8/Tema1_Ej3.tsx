@@ -1,5 +1,5 @@
 import { useParams, useNavigate } from "react-router-dom";
-import { useState, useMemo, useRef } from "react";
+import { useState, useMemo, useRef, useEffect } from "react";
 import "../ejercicios.css";
 
 export default function Tema1_Ej3() {
@@ -15,6 +15,13 @@ export default function Tema1_Ej3() {
 
   const API_URL = import.meta.env.VITE_API_URL;
   const token = localStorage.getItem("token");
+
+  const audioRef = useRef(new Audio());
+
+  const stopAudio = () => {
+    audioRef.current.pause();
+    audioRef.current.currentTime = 0;
+  };
 
   const ejercicios = useMemo(
     () => [
@@ -83,9 +90,10 @@ export default function Tema1_Ej3() {
   );
 
   const actual = ejercicios[index];
-  const audioRef = useRef(new Audio());
 
   const playAudio = async () => {
+    stopAudio(); // detener audio previo
+
     for (let src of actual.audio) {
       audioRef.current.src = src;
       await audioRef.current.play();
@@ -94,6 +102,16 @@ export default function Tema1_Ej3() {
       });
     }
   };
+
+  // 🔴 DETENER AUDIO CUANDO CAMBIA LA PREGUNTA
+  useEffect(() => {
+    stopAudio();
+  }, [index]);
+
+  // 🔴 DETENER AUDIO AL SALIR DEL COMPONENTE
+  useEffect(() => {
+    return () => stopAudio();
+  }, []);
 
   const guardarProgreso = async () => {
     const completados = JSON.parse(localStorage.getItem("ejercicios_completados") || "[]");
@@ -135,6 +153,7 @@ export default function Tema1_Ej3() {
   };
 
   const siguiente = () => {
+    stopAudio(); // detener audio antes del cambio
     setRespuesta(null);
     setSeleccion(null);
 
@@ -146,6 +165,7 @@ export default function Tema1_Ej3() {
   };
 
   const finalizar = async () => {
+    stopAudio(); // detener audio al finalizar
     await guardarProgreso();
     setFinalizado(true);
 

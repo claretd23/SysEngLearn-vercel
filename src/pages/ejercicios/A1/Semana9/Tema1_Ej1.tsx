@@ -103,7 +103,6 @@ export default function Tema1_Ej1() {
               padding: "2rem",
             }}
           >
-            {/* Instrucción */}
             {index === 0 && (
               <div className="instruccion-box" style={{ marginBottom: "1.5rem" }}>
                 <p className="instruccion-ejercicio">
@@ -114,7 +113,7 @@ export default function Tema1_Ej1() {
               </div>
             )}
 
-            {/* Diálogo */}
+            {/* SE AUTOCOMPLETA SIEMPRE CON LA RESPUESTA CORRECTA */}
             <div
               className="dialogo-box"
               style={{
@@ -128,10 +127,13 @@ export default function Tema1_Ej1() {
                 whiteSpace: "pre-line",
               }}
             >
-              <p>{actual.pregunta.replace("______", respuesta === "Correct" ? actual.correcta : "______")}</p>
+              <p>
+                {respuesta
+                  ? actual.pregunta.replace("______", actual.correcta) // <-- SIEMPRE muestra la correcta
+                  : actual.pregunta.replace("______", "______")}
+              </p>
             </div>
 
-            {/* Input */}
             {!respuesta && (
               <div
                 style={{
@@ -171,7 +173,6 @@ export default function Tema1_Ej1() {
               </div>
             )}
 
-            {/* Feedback sin emojis */}
             {respuesta && (
               <p
                 style={{
@@ -185,7 +186,6 @@ export default function Tema1_Ej1() {
               </p>
             )}
 
-            {/* Botones */}
             <div
               className="botones-siguiente"
               style={{

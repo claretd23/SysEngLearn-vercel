@@ -107,10 +107,10 @@ const guardarProgreso = async () => {
     if (!opcionSeleccionada) return;
 
     if (opcionSeleccionada === actual.correcta) {
-      setRespuesta(`✅ Correct!\n\n${actual.pregunta.replace("_______", opcionSeleccionada)}`);
+      setRespuesta(`Correct!\n\n${actual.pregunta.replace("_______", opcionSeleccionada)}`);
       setCorrectas((prev) => prev + 1);
     } else {
-      setRespuesta(`❌ Incorrect.\n\n${actual.pregunta.replace("_______", actual.correcta)}`);
+      setRespuesta(`Incorrect.\n\n${actual.pregunta.replace("_______", actual.correcta)}`);
     }
   };
 
@@ -139,6 +139,12 @@ const guardarProgreso = async () => {
               Question {index + 1} of {ejercicios.length}
             </p>
           </header>
+
+            {index === 0 && (
+              <div className="instruccion-box">
+                <p>Read the dialogue and choose the correct Wh-question.</p>
+              </div>
+            )}
 
           <section
             className="tarjeta-ejercicio"
@@ -250,7 +256,7 @@ const guardarProgreso = async () => {
         </>
       ) : (
         <div className="finalizado" style={{ fontSize: "1.3rem" }}>
-          <h2>✅ You have completed the exercise!</h2>
+          <h2>You have completed the exercise!</h2>
           <p>
             Correct answers: <strong>{correctas} / {ejercicios.length}</strong>
           </p>

@@ -18,7 +18,6 @@ export default function Tema3_Ej3() {
 
   const audioRef = useRef(new Audio());
 
-  // 🔥 EJERCICIOS CON SUS AUDIOS (RUTAS MODIFICADAS)
   const ejercicios = useMemo(
     () => [
       {

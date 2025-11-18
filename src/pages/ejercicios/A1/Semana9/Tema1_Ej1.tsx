@@ -2,6 +2,8 @@ import { useParams, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import "../ejercicios.css";
 
+const API_URL = import.meta.env.VITE_API_URL;
+
 export default function Tema1_Ej1() {
   const { nivel, semana, tema, ejercicio } = useParams();
   const id = `${nivel}-${semana}-${tema}-${ejercicio}`;
@@ -13,7 +15,6 @@ export default function Tema1_Ej1() {
   const [index, setIndex] = useState(0);
   const [finalizado, setFinalizado] = useState(false);
 
-  //  Lista de ejercicios tipo diálogo (Wh-Questions)
   const ejercicios = [
     { pregunta: "A: ______ time do you get up in the morning?\nB: At 7:00 a.m.", correcta: "What" },
     { pregunta: "A: ______ is your favorite teacher?\nB: Mr. Smith.", correcta: "Who" },
@@ -31,6 +32,7 @@ export default function Tema1_Ej1() {
 
   const guardarProgreso = async () => {
     const completados = JSON.parse(localStorage.getItem("ejercicios_completados") || "[]");
+
     if (!completados.includes(id)) {
       completados.push(id);
       localStorage.setItem("ejercicios_completados", JSON.stringify(completados));
@@ -38,7 +40,8 @@ export default function Tema1_Ej1() {
 
     try {
       const token = localStorage.getItem("token");
-      const res = await fetch("http://localhost:5000/api/progreso", {
+
+      const res = await fetch(`${API_URL}/api/progreso`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -58,12 +61,10 @@ export default function Tema1_Ej1() {
     if (!respuestaUsuario) return;
 
     if (respuestaUsuario.toLowerCase() === actual.correcta.toLowerCase()) {
-      const dialogo = actual.pregunta.replace("______", respuestaUsuario);
-      setRespuesta(`✅ Correct!\n\n${dialogo}`);
+      setRespuesta("Correct");
       setCorrectas((prev) => prev + 1);
     } else {
-      const correcto = actual.pregunta.replace("______", actual.correcta);
-      setRespuesta(`❌ Incorrect.\nThe correct answer is "${actual.correcta}".\n\n${correcto}`);
+      setRespuesta("Incorrect");
     }
   };
 
@@ -76,6 +77,7 @@ export default function Tema1_Ej1() {
   const manejarFinalizacion = async () => {
     await guardarProgreso();
     setFinalizado(true);
+
     setTimeout(() => {
       navigate(`/inicio/${nivel}`);
       window.location.reload();
@@ -123,14 +125,13 @@ export default function Tema1_Ej1() {
                 margin: "1rem auto",
                 maxWidth: "600px",
                 textAlign: "left",
-                fontStyle: "italic",
                 whiteSpace: "pre-line",
               }}
             >
-              <p>{respuesta ? respuesta.split("\n").slice(1).join("\n") : actual.pregunta}</p>
+              <p>{actual.pregunta.replace("______", respuesta === "Correct" ? actual.correcta : "______")}</p>
             </div>
 
-            {/* Input de respuesta */}
+            {/* Input */}
             {!respuesta && (
               <div
                 style={{
@@ -155,6 +156,7 @@ export default function Tema1_Ej1() {
                     textAlign: "center",
                   }}
                 />
+
                 <button
                   onClick={verificar}
                   className="ejercicio-btn"
@@ -169,19 +171,21 @@ export default function Tema1_Ej1() {
               </div>
             )}
 
-            {/* Feedback */}
+            {/* Feedback sin emojis */}
             {respuesta && (
               <p
-                className={`respuesta-feedback ${
-                  respuesta.startsWith("✅") ? "correcta" : "incorrecta"
-                }`}
-                style={{ fontSize: "1.3rem", margin: "1rem 0" }}
+                style={{
+                  fontSize: "1.3rem",
+                  margin: "1rem 0",
+                  color: respuesta === "Correct" ? "#36aabc" : "#ff5c5c",
+                  fontWeight: "bold",
+                }}
               >
-                {respuesta.split("\n")[0]}
+                {respuesta}
               </p>
             )}
 
-            {/* Botones siguiente / finalizar */}
+            {/* Botones */}
             <div
               className="botones-siguiente"
               style={{
@@ -195,16 +199,25 @@ export default function Tema1_Ej1() {
                 <button
                   onClick={siguiente}
                   className="ejercicio-btn"
-                  style={{ fontSize: "1.2rem", padding: "0.8rem 2rem", borderRadius: "8px" }}
+                  style={{
+                    fontSize: "1.2rem",
+                    padding: "0.8rem 2rem",
+                    borderRadius: "8px",
+                  }}
                 >
                   Next question
                 </button>
               )}
+
               {respuesta && index === ejercicios.length - 1 && (
                 <button
                   onClick={manejarFinalizacion}
                   className="ejercicio-btn"
-                  style={{ fontSize: "1.2rem", padding: "0.8rem 2rem", borderRadius: "8px" }}
+                  style={{
+                    fontSize: "1.2rem",
+                    padding: "0.8rem 2rem",
+                    borderRadius: "8px",
+                  }}
                 >
                   Finish
                 </button>
@@ -214,9 +227,12 @@ export default function Tema1_Ej1() {
         </>
       ) : (
         <div className="finalizado" style={{ fontSize: "1.3rem" }}>
-          <h2>✅ You have completed the exercise!</h2>
+          <h2>You have completed the exercise!</h2>
           <p>
-            Correct answers: <strong>{correctas} / {ejercicios.length}</strong>
+            Correct answers:{" "}
+            <strong>
+              {correctas} / {ejercicios.length}
+            </strong>
           </p>
           <p>Redirecting to the start of the level...</p>
         </div>

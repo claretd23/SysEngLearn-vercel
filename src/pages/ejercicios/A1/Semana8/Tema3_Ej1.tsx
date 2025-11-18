@@ -55,7 +55,6 @@ export default function Tema3_Ej1() {
     }
   };
 
-  // 🔥 AUTOCOMPLETADO AGREGADO AQUÍ
   const verificar = () => {
     const resp = inputValue.trim().toLowerCase();
     if (!resp) return;

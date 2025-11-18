@@ -1,5 +1,5 @@
 import { useParams, useNavigate } from "react-router-dom";
-import { useState, useMemo, useRef } from "react";
+import { useState, useMemo, useRef, useEffect } from "react";
 import "../ejercicios.css";
 
 export default function Tema3_Ej3() {
@@ -17,6 +17,20 @@ export default function Tema3_Ej3() {
   const token = localStorage.getItem("token");
 
   const audioRef = useRef(new Audio());
+
+  // 👉 Detener audio cuando cambie el ejercicio o se salga del componente
+  useEffect(() => {
+    return () => {
+      audioRef.current.pause();
+      audioRef.current.currentTime = 0;
+    };
+  }, []);
+
+  // 👉 También detener el audio al cambiar de pregunta
+  useEffect(() => {
+    audioRef.current.pause();
+    audioRef.current.currentTime = 0;
+  }, [index]);
 
   const ejercicios = useMemo(
     () => [
@@ -87,6 +101,10 @@ export default function Tema3_Ej3() {
   const actual = ejercicios[index];
 
   const playAudio = async () => {
+    // 👉 Si ya hay audio sonando: lo detiene antes de reproducir otro
+    audioRef.current.pause();
+    audioRef.current.currentTime = 0;
+
     for (let src of actual.audio) {
       audioRef.current.src = src;
       await audioRef.current.play();
@@ -138,15 +156,13 @@ export default function Tema3_Ej3() {
   const siguiente = () => {
     setRespuesta(null);
     setSeleccion(null);
-
-    if (index + 1 < ejercicios.length) {
-      setIndex(index + 1);
-    } else {
-      finalizar();
-    }
+    setIndex((prev) => prev + 1);
   };
 
   const finalizar = async () => {
+    audioRef.current.pause();
+    audioRef.current.currentTime = 0;
+
     await guardarProgreso();
     setFinalizado(true);
 

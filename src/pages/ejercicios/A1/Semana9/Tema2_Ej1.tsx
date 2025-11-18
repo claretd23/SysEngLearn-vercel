@@ -204,16 +204,19 @@ const guardarProgreso = async () => {
               </button>
             )}
 
-            {/* Feedback */}
+              {/* Feedback sin emojis */}
             {respuesta && (
               <p
-                className={`respuesta-feedback ${respuesta.startsWith("✅") ? "correcta" : "incorrecta"}`}
-                style={{ fontSize: "1.3rem", margin: "1rem 0" }}
+                style={{
+                  fontSize: "1.3rem",
+                  margin: "1rem 0",
+                  color: respuesta === "Correct" ? "#19ba1bff" : "#ff5c5c",
+                  fontWeight: "bold",
+                }}
               >
-                {respuesta.split("\n")[0]}
+                {respuesta}
               </p>
             )}
-
             {/* Botones siguiente / finalizar */}
             <div
               className="botones-siguiente"

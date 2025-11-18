@@ -12,8 +12,8 @@ export default function Tema3_Ej2() {
   const [correctas, setCorrectas] = useState(0);
   const [index, setIndex] = useState(0);
   const [finalizado, setFinalizado] = useState(false);
-
-  // ✅ Lista de ejercicios con can / can't
+  const API_URL = import.meta.env.VITE_API_URL;
+  //  Lista de ejercicios con can / can't
   const ejercicios = [
     { texto: "I _______ swim very well. ", correcta: ["can"] },
     { texto: "She _______ speak three languages. ", correcta: ["can"] },
@@ -29,8 +29,9 @@ export default function Tema3_Ej2() {
 
   const actual = ejercicios[index];
 
-  const guardarProgreso = async () => {
+const guardarProgreso = async () => {
     const completados = JSON.parse(localStorage.getItem("ejercicios_completados") || "[]");
+
     if (!completados.includes(id)) {
       completados.push(id);
       localStorage.setItem("ejercicios_completados", JSON.stringify(completados));
@@ -38,7 +39,8 @@ export default function Tema3_Ej2() {
 
     try {
       const token = localStorage.getItem("token");
-      const res = await fetch("http://localhost:5000/api/progreso", {
+
+      const res = await fetch(`${API_URL}/api/progreso`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -47,9 +49,7 @@ export default function Tema3_Ej2() {
         body: JSON.stringify({ nivel, semana, tema, ejercicio }),
       });
 
-      if (!res.ok) {
-        console.error("Error al guardar progreso:", res.statusText);
-      }
+      if (!res.ok) console.error("Error al guardar progreso:", res.statusText);
     } catch (error) {
       console.error("Error al guardar el progreso:", error);
     }
@@ -64,10 +64,10 @@ export default function Tema3_Ej2() {
     );
 
     if (esCorrecta) {
-      setRespuesta("✅ Correct!");
+      setRespuesta("Correct!");
       setCorrectas((prev) => prev + 1);
     } else {
-      setRespuesta("❌ Incorrect");
+      setRespuesta("Incorrect");
       setInputValue(actual.correcta[0]);
     }
   };
@@ -87,7 +87,7 @@ export default function Tema3_Ej2() {
     }, 3000);
   };
 
-  // ✅ Mostrar texto reemplazando la respuesta y eliminando paréntesis
+  // Mostrar texto reemplazando la respuesta y eliminando paréntesis
   const mostrarTexto = respuesta
     ? actual.texto
         .replace("_______", actual.correcta[0])
@@ -160,12 +160,15 @@ export default function Tema3_Ej2() {
               </div>
             )}
 
+            {/* Feedback  */}
             {respuesta && (
               <p
-                className={`respuesta-feedback ${
-                  respuesta.startsWith("✅") ? "correcta" : "incorrecta"
-                }`}
-                style={{ fontSize: "1.3rem", margin: "1rem 0" }}
+                style={{
+                  fontSize: "1.3rem",
+                  margin: "1rem 0",
+                  color: respuesta === "Correct" ? "#19ba1bff" : "#ff5c5c",
+                  fontWeight: "bold",
+                }}
               >
                 {respuesta}
               </p>
@@ -195,7 +198,7 @@ export default function Tema3_Ej2() {
         </>
       ) : (
         <div className="finalizado" style={{ fontSize: "1.3rem" }}>
-          <h2>✅ You have completed the exercise!</h2>
+          <h2>You have completed the exercise!</h2>
           <p>
             Correct answers: <strong>{correctas} / {ejercicios.length}</strong>
           </p>

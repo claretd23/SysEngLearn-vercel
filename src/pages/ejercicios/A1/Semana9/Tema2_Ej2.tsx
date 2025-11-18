@@ -162,15 +162,19 @@ export default function Tema2_Ej2() {
               </div>
             )}
 
+            {/* Feedback sin emojis */}
             {respuesta && (
               <p
-                className={`respuesta-feedback ${respuesta.startsWith("✅") ? "correcta" : "incorrecta"}`}
-                style={{ fontSize: "1.3rem", margin: "1rem 0" }}
+                style={{
+                  fontSize: "1.3rem",
+                  margin: "1rem 0",
+                  color: respuesta === "Correct" ? "#19ba1bff" : "#ff5c5c",
+                  fontWeight: "bold",
+                }}
               >
                 {respuesta}
               </p>
             )}
-
             <div className="botones-siguiente">
               {respuesta && index < ejercicios.length - 1 && (
                 <button

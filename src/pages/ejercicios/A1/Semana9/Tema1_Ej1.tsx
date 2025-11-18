@@ -177,7 +177,7 @@ export default function Tema1_Ej1() {
                 style={{
                   fontSize: "1.3rem",
                   margin: "1rem 0",
-                  color: respuesta === "Correct" ? "#36aabc" : "#ff5c5c",
+                  color: respuesta === "Correct" ? "#19ba1bff" : "#ff5c5c",
                   fontWeight: "bold",
                 }}
               >

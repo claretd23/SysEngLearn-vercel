@@ -12,8 +12,9 @@ export default function Tema2_Ej1() {
   const [correctas, setCorrectas] = useState(0);
   const [index, setIndex] = useState(0);
   const [finalizado, setFinalizado] = useState(false);
+  const API_URL = import.meta.env.VITE_API_URL;
 
-  // ✅ Lista de ejercicios con going to + verbo
+  // Lista de ejercicios con going to + verbo
   const ejercicios = [
     { texto: "I ________ (visit) my grandmother tomorrow.", correcta: ["am going to visit"] },
     { texto: "She ________ (buy) a new dress next week.", correcta: ["is going to buy"] },
@@ -29,8 +30,9 @@ export default function Tema2_Ej1() {
 
   const actual = ejercicios[index];
 
-  const guardarProgreso = async () => {
+const guardarProgreso = async () => {
     const completados = JSON.parse(localStorage.getItem("ejercicios_completados") || "[]");
+
     if (!completados.includes(id)) {
       completados.push(id);
       localStorage.setItem("ejercicios_completados", JSON.stringify(completados));
@@ -38,7 +40,8 @@ export default function Tema2_Ej1() {
 
     try {
       const token = localStorage.getItem("token");
-      const res = await fetch("http://localhost:5000/api/progreso", {
+
+      const res = await fetch(`${API_URL}/api/progreso`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -47,9 +50,7 @@ export default function Tema2_Ej1() {
         body: JSON.stringify({ nivel, semana, tema, ejercicio }),
       });
 
-      if (!res.ok) {
-        console.error("Error al guardar progreso:", res.statusText);
-      }
+      if (!res.ok) console.error("Error al guardar progreso:", res.statusText);
     } catch (error) {
       console.error("Error al guardar el progreso:", error);
     }
@@ -64,10 +65,10 @@ export default function Tema2_Ej1() {
     );
 
     if (esCorrecta) {
-      setRespuesta("✅ Correct!");
+      setRespuesta("Correct!");
       setCorrectas((prev) => prev + 1);
     } else {
-      setRespuesta("❌ Incorrect");
+      setRespuesta("Incorrect");
       setInputValue(actual.correcta[0]);
     }
   };
@@ -195,7 +196,7 @@ export default function Tema2_Ej1() {
         </>
       ) : (
         <div className="finalizado" style={{ fontSize: "1.3rem" }}>
-          <h2>✅ You have completed the exercise!</h2>
+          <h2>You have completed the exercise!</h2>
           <p>
             Correct answers: <strong>{correctas} / {ejercicios.length}</strong>
           </p>

@@ -18,6 +18,7 @@ export default function Tema1_Ej2() {
   const [respuesta, setRespuesta] = useState<string | null>(null);
   const [correctas, setCorrectas] = useState(0);
   const [finalizado, setFinalizado] = useState(false);
+  const API_URL = import.meta.env.VITE_API_URL;
 
   const ejercicios: EjercicioOpciones[] = [
     {
@@ -74,8 +75,9 @@ export default function Tema1_Ej2() {
 
   const actual = ejercicios[index];
 
-  const guardarProgreso = async () => {
+const guardarProgreso = async () => {
     const completados = JSON.parse(localStorage.getItem("ejercicios_completados") || "[]");
+
     if (!completados.includes(id)) {
       completados.push(id);
       localStorage.setItem("ejercicios_completados", JSON.stringify(completados));
@@ -83,7 +85,8 @@ export default function Tema1_Ej2() {
 
     try {
       const token = localStorage.getItem("token");
-      const res = await fetch("http://localhost:5000/api/progreso", {
+
+      const res = await fetch(`${API_URL}/api/progreso`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -102,10 +105,10 @@ export default function Tema1_Ej2() {
     if (!opcionSeleccionada) return;
 
     if (opcionSeleccionada === actual.correcta) {
-      setRespuesta(`✅ Correct!\n\n${actual.correcta}`);
+      setRespuesta(`Correct!\n\n${actual.correcta}`);
       setCorrectas((prev) => prev + 1);
     } else {
-      setRespuesta(`❌ Incorrect.\n\n${actual.correcta}`);
+      setRespuesta(`Incorrect.\n\n${actual.correcta}`);
     }
 
     // Autocompletar automáticamente después de 1.2s
@@ -212,20 +215,24 @@ export default function Tema1_Ej2() {
                 Check
               </button>
             )}
-
+            {/* Feedback sin emojis */}
             {respuesta && (
               <p
-                className={`respuesta-feedback ${respuesta.startsWith("✅") ? "correcta" : "incorrecta"}`}
-                style={{ fontSize: "1.3rem", margin: "1rem 0" }}
+                style={{
+                  fontSize: "1.3rem",
+                  margin: "1rem 0",
+                  color: respuesta === "Correct" ? "#19ba1bff" : "#ff5c5c",
+                  fontWeight: "bold",
+                }}
               >
-                {respuesta.split("\n")[0]}
+                {respuesta}
               </p>
             )}
           </section>
         </>
       ) : (
         <div className="finalizado" style={{ fontSize: "1.3rem" }}>
-          <h2>✅ You have completed the exercise!</h2>
+          <h2>You have completed the exercise!</h2>
           <p>
             Correct answers: <strong>{correctas} / {ejercicios.length}</strong>
           </p>

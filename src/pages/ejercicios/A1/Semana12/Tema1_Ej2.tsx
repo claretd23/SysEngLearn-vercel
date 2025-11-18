@@ -12,6 +12,7 @@ export default function Tema1_Ej2() {
   const [correctas, setCorrectas] = useState(0);
   const [index, setIndex] = useState(0);
   const [finalizado, setFinalizado] = useState(false);
+  const API_URL = import.meta.env.VITE_API_URL;
 
   const ejercicios = [
     { pregunta: "What time is it? 3:00", opciones: ["Three o’clock", "Half past three", "Three thirty"], correcta: "Three o’clock" },
@@ -28,8 +29,9 @@ export default function Tema1_Ej2() {
 
   const actual = ejercicios[index];
 
-  const guardarProgreso = async () => {
+const guardarProgreso = async () => {
     const completados = JSON.parse(localStorage.getItem("ejercicios_completados") || "[]");
+
     if (!completados.includes(id)) {
       completados.push(id);
       localStorage.setItem("ejercicios_completados", JSON.stringify(completados));
@@ -37,7 +39,8 @@ export default function Tema1_Ej2() {
 
     try {
       const token = localStorage.getItem("token");
-      const res = await fetch("http://localhost:5000/api/progreso", {
+
+      const res = await fetch(`${API_URL}/api/progreso`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -57,11 +60,11 @@ export default function Tema1_Ej2() {
 
     const oracionCompletada = `${actual.pregunta} → ${opcionSeleccionada}`;
     if (opcionSeleccionada === actual.correcta) {
-      setRespuesta(`✅ Correct!\n\n${oracionCompletada}`);
+      setRespuesta(`Correct!\n\n${oracionCompletada}`);
       setCorrectas((prev) => prev + 1);
     } else {
       const oracionCorrecta = `${actual.pregunta} → ${actual.correcta}`;
-      setRespuesta(`❌ Incorrect.\n\n${oracionCorrecta}`);
+      setRespuesta(`Incorrect.\n\n${oracionCorrecta}`);
     }
   };
 
@@ -207,7 +210,7 @@ export default function Tema1_Ej2() {
         </>
       ) : (
         <div className="finalizado" style={{ fontSize: "1.3rem" }}>
-          <h2>✅ You have completed the exercise!</h2>
+          <h2>You have completed the exercise!</h2>
           <p>
             Correct answers: <strong>{correctas} / {ejercicios.length}</strong>
           </p>

@@ -23,6 +23,7 @@ export default function Tema3_Ej2() {
   const [paresIncorrectos, setParesIncorrectos] = useState<{ situacion: string; respuesta: string }[]>([]);
   const [finalizado, setFinalizado] = useState(false);
   const [completo, setCompleto] = useState(false);
+  const API_URL = import.meta.env.VITE_API_URL;
 
   const ejercicios: EjercicioMatching[] = [
     { situacion: "You need an umbrella. It’s raining a lot.", respuesta: "D" },
@@ -47,8 +48,9 @@ export default function Tema3_Ej2() {
     if (totalIntentos === ejercicios.length) setCompleto(true);
   }, [paresCorrectos, paresIncorrectos]);
 
-  const guardarProgreso = async () => {
+const guardarProgreso = async () => {
     const completados = JSON.parse(localStorage.getItem("ejercicios_completados") || "[]");
+
     if (!completados.includes(id)) {
       completados.push(id);
       localStorage.setItem("ejercicios_completados", JSON.stringify(completados));
@@ -56,7 +58,8 @@ export default function Tema3_Ej2() {
 
     try {
       const token = localStorage.getItem("token");
-      const res = await fetch("http://localhost:5000/api/progreso", {
+
+      const res = await fetch(`${API_URL}/api/progreso`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -205,7 +208,7 @@ export default function Tema3_Ej2() {
         </>
       ) : (
         <div className="finalizado" style={{ fontSize: "1.3rem" }}>
-          <h2>✅ You have completed the exercise!</h2>
+          <h2> You have completed the exercise!</h2>
           <p>
             Correct pairs: <strong>{Object.keys(paresCorrectos).length}</strong> / {ejercicios.length}
           </p>

@@ -236,13 +236,14 @@ const guardarProgreso = async () => {
               </button>
             )}
 
-            {/* Feedback */}
+            {/* Feedback sin emojis */}
             {respuesta && (
               <p
                 style={{
-                  marginTop: "1rem",
-                  fontSize: "1.2rem",
-                  color: respuesta.startsWith("✅") ? "#2e7d32" : "#c62828",
+                  fontSize: "1.3rem",
+                  margin: "1rem 0",
+                  color: respuesta === "Correct" ? "#19ba1bff" : "#ff5c5c",
+                  fontWeight: "bold",
                 }}
               >
                 {respuesta}

@@ -19,61 +19,61 @@ export default function Tema1_Ej3() {
   const ejercicios = useMemo(
     () => [
       {
-        audio: ["/audios/semX/1_a.mp3", "/audios/semX/1_b.mp3"],
+        audio: ["/audios/sem8/1_a.mp3", "/audios/sem8/1_b.mp3"],
         pregunta: "How much is the apple?",
         opciones: ["One dollar", "Two dollars", "Three dollars"],
         correcta: "Two dollars"
       },
       {
-        audio: ["/audios/semX/2_a.mp3", "/audios/semX/2_b.mp3"],
+        audio: ["/audios/sem8/2_a.mp3", "/audios/sem8/2_b.mp3"],
         pregunta: "How much milk is in the fridge?",
         opciones: ["One liter", "Two liters", "Three liters"],
         correcta: "Two liters"
       },
       {
-        audio: ["/audios/semX/3_a.mp3", "/audios/semX/3_b.mp3"],
+        audio: ["/audios/sem8/3_a.mp3", "/audios/sem8/3_b.mp3"],
         pregunta: "How much is the sandwich?",
         opciones: ["Three dollars", "Four dollars", "Two dollars"],
         correcta: "Three dollars"
       },
       {
-        audio: ["/audios/semX/4_a.mp3", "/audios/semX/4_b.mp3"],
+        audio: ["/audios/sem8/4_a.mp3", "/audios/sem8/4_b.mp3"],
         pregunta: "How much water is in the bottle?",
         opciones: ["One liter", "Two liters", "Three liters"],
         correcta: "One liter"
       },
       {
-        audio: ["/audios/semX/5_a.mp3", "/audios/semX/5_b.mp3"],
+        audio: ["/audios/sem8/5_a.mp3", "/audios/sem8/5_b.mp3"],
         pregunta: "How much cheese is in the fridge?",
         opciones: ["300 grams", "500 grams", "700 grams"],
         correcta: "500 grams"
       },
       {
-        audio: ["/audios/semX/6_a.mp3", "/audios/semX/6_b.mp3"],
+        audio: ["/audios/sem8/6_a.mp3", "/audios/sem8/6_b.mp3"],
         pregunta: "How much is the chocolate?",
         opciones: ["Two dollars", "Three dollars", "Four dollars"],
         correcta: "Two dollars"
       },
       {
-        audio: ["/audios/semX/7_a.mp3", "/audios/semX/7_b.mp3"],
+        audio: ["/audios/sem8/7_a.mp3", "/audios/sem8/7_b.mp3"],
         pregunta: "How much bread is on the table?",
         opciones: ["Two slices", "Three slices", "Four slices"],
         correcta: "Three slices"
       },
       {
-        audio: ["/audios/semX/8_a.mp3", "/audios/semX/8_b.mp3"],
+        audio: ["/audios/sem8/8_a.mp3", "/audios/sem8/8_b.mp3"],
         pregunta: "How much juice is in the glass?",
         opciones: ["One glass", "Two glasses", "Three glasses"],
         correcta: "One glass"
       },
       {
-        audio: ["/audios/semX/9_a.mp3", "/audios/semX/9_b.mp3"],
+        audio: ["/audios/sem8/9_a.mp3", "/audios/sem8/9_b.mp3"],
         pregunta: "How much is the pizza?",
         opciones: ["Five dollars", "Six dollars", "Seven dollars"],
         correcta: "Six dollars"
       },
       {
-        audio: ["/audios/semX/10_a.mp3", "/audios/semX/10_b.mp3"],
+        audio: ["/audios/sem8/10_a.mp3", "/audios/sem8/10_b.mp3"],
         pregunta: "How much sugar is in the jar?",
         opciones: ["Half a kilogram", "One kilogram", "One and a half kilograms"],
         correcta: "Half a kilogram"

@@ -236,19 +236,18 @@ const guardarProgreso = async () => {
               </button>
             )}
 
-            {/* Feedback sin emojis */}
-            {respuesta && (
-              <p
-                style={{
-                  fontSize: "1.3rem",
-                  margin: "1rem 0",
-                  color: respuesta === "Correct" ? "#19ba1bff" : "#ff5c5c",
-                  fontWeight: "bold",
-                }}
-              >
-                {respuesta}
-              </p>
-            )}
+                {respuesta && (
+                  <p
+                    style={{
+                      fontSize: "1.3rem",
+                      margin: "1rem 0",
+                      color: respuesta === "Correct!" ? "#19ba1bff" : "#ff5c5c",
+                      fontWeight: "bold",
+                    }}
+                  >
+                    {respuesta}
+                  </p>
+                )}
 
             {/* Botones siguiente / finalizar */}
             <div style={{ display: "flex", justifyContent: "center", gap: "1rem", marginTop: "1.5rem" }}>

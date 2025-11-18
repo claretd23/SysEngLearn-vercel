@@ -2,6 +2,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import "../ejercicios.css";
 
+
 export default function Tema2_Ej2() {
   const { nivel, semana, tema, ejercicio } = useParams();
   const id = `${nivel}-${semana}-${tema}-${ejercicio}`;
@@ -13,7 +14,9 @@ export default function Tema2_Ej2() {
   const [index, setIndex] = useState(0);
   const [finalizado, setFinalizado] = useState(false);
 
-  // ✅ Lista de ejercicios Have got / Do-Does Have
+  const API_URL = import.meta.env.VITE_API_URL;
+
+  // Lista de ejercicios Have got / Do-Does Have
   const ejercicios = [
     { texto: "I _______ a new phone.", correcta: ["have got"] },
     { texto: "_______ you got a pet?", correcta: ["Have"] },
@@ -31,6 +34,7 @@ export default function Tema2_Ej2() {
 
   const guardarProgreso = async () => {
     const completados = JSON.parse(localStorage.getItem("ejercicios_completados") || "[]");
+
     if (!completados.includes(id)) {
       completados.push(id);
       localStorage.setItem("ejercicios_completados", JSON.stringify(completados));
@@ -38,7 +42,8 @@ export default function Tema2_Ej2() {
 
     try {
       const token = localStorage.getItem("token");
-      const res = await fetch("http://localhost:5000/api/progreso", {
+
+      const res = await fetch(`${API_URL}/api/progreso`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -46,11 +51,13 @@ export default function Tema2_Ej2() {
         },
         body: JSON.stringify({ nivel, semana, tema, ejercicio }),
       });
+
       if (!res.ok) console.error("Error al guardar progreso:", res.statusText);
     } catch (error) {
       console.error("Error al guardar el progreso:", error);
     }
   };
+
 
   const verificar = () => {
     const respuestaUsuario = inputValue.trim();
@@ -61,10 +68,10 @@ export default function Tema2_Ej2() {
     );
 
     if (esCorrecta) {
-      setRespuesta("✅ Correct!");
+      setRespuesta("Correct!");
       setCorrectas((prev) => prev + 1);
     } else {
-      setRespuesta("❌ Incorrect");
+      setRespuesta("Incorrect");
       // Autocomplete con la respuesta correcta
       setInputValue(actual.correcta[0]);
     }
@@ -188,7 +195,7 @@ export default function Tema2_Ej2() {
         </>
       ) : (
         <div className="finalizado" style={{ fontSize: "1.3rem" }}>
-          <h2>✅ You have completed the exercise!</h2>
+          <h2>You have completed the exercise!</h2>
           <p>
             Correct answers: <strong>{correctas} / {ejercicios.length}</strong>
           </p>

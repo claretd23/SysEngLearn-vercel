@@ -2,6 +2,8 @@ import { useParams, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import "../ejercicios.css";
 
+const API_URL = import.meta.env.VITE_API_URL;
+
 export default function Tema1_Ej2() {
   const { nivel, semana, tema, ejercicio } = useParams();
   const id = `${nivel}-${semana}-${tema}-${ejercicio}`;
@@ -14,7 +16,7 @@ export default function Tema1_Ej2() {
   const [index, setIndex] = useState(0);
   const [finalizado, setFinalizado] = useState(false);
 
-  // ✅ Lista de ejercicios tipo conversación
+  // Lista de ejercicios tipo conversación
   const ejercicios = [
     {
       respuesta: "I get up at 6:30 a.m.",
@@ -102,16 +104,18 @@ export default function Tema1_Ej2() {
 
   const actual = ejercicios[index];
 
-  // ✅ Guardar progreso
-  const guardarProgreso = async () => {
+const guardarProgreso = async () => {
     const completados = JSON.parse(localStorage.getItem("ejercicios_completados") || "[]");
+
     if (!completados.includes(id)) {
       completados.push(id);
       localStorage.setItem("ejercicios_completados", JSON.stringify(completados));
     }
+
     try {
       const token = localStorage.getItem("token");
-      const res = await fetch("http://localhost:5000/api/progreso", {
+
+      const res = await fetch(`${API_URL}/api/progreso`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -119,23 +123,25 @@ export default function Tema1_Ej2() {
         },
         body: JSON.stringify({ nivel, semana, tema, ejercicio }),
       });
+
       if (!res.ok) console.error("Error al guardar progreso:", res.statusText);
     } catch (error) {
       console.error("Error al guardar el progreso:", error);
     }
   };
 
-  // ✅ Verificar respuesta
+
+  // Verificar respuesta
   const verificar = () => {
     if (!opcionSeleccionada) return;
 
     setPreguntaCorrecta(actual.correcta);
 
     if (opcionSeleccionada === actual.correcta) {
-      setRespuesta("✅ Correct!");
+      setRespuesta("Correct!");
       setCorrectas((prev) => prev + 1);
     } else {
-      setRespuesta(`❌ Incorrect.`);
+      setRespuesta(`Incorrect.`);
     }
   };
 
@@ -260,7 +266,7 @@ export default function Tema1_Ej2() {
         </>
       ) : (
         <div className="finalizado" style={{ fontSize: "1.3rem" }}>
-          <h2>✅ You have completed the exercise!</h2>
+          <h2>You have completed the exercise!</h2>
           <p>
             Correct answers:{" "}
             <strong>

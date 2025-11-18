@@ -7,6 +7,8 @@ interface EjercicioOpciones {
   opciones: string[];
   correcta: string;
 }
+const API_URL = import.meta.env.VITE_API_URL;
+
 
 export default function Tema2_Ej1() {
   const { nivel, semana, tema, ejercicio } = useParams();
@@ -74,8 +76,9 @@ export default function Tema2_Ej1() {
 
   const actual = ejercicios[index];
 
-  const guardarProgreso = async () => {
+const guardarProgreso = async () => {
     const completados = JSON.parse(localStorage.getItem("ejercicios_completados") || "[]");
+
     if (!completados.includes(id)) {
       completados.push(id);
       localStorage.setItem("ejercicios_completados", JSON.stringify(completados));
@@ -83,7 +86,8 @@ export default function Tema2_Ej1() {
 
     try {
       const token = localStorage.getItem("token");
-      const res = await fetch("http://localhost:5000/api/progreso", {
+
+      const res = await fetch(`${API_URL}/api/progreso`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -97,6 +101,7 @@ export default function Tema2_Ej1() {
       console.error("Error al guardar el progreso:", error);
     }
   };
+
 
   const verificar = () => {
     if (!opcionSeleccionada) return;

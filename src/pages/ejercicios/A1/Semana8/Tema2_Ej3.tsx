@@ -1,5 +1,5 @@
 import { useParams, useNavigate } from "react-router-dom";
-import { useState, useMemo, useRef } from "react";
+import { useState, useMemo, useRef, useEffect } from "react";
 import "../ejercicios.css";
 
 export default function Tema2_Ej3() {
@@ -16,28 +16,41 @@ export default function Tema2_Ej3() {
   const API_URL = import.meta.env.VITE_API_URL;
   const token = localStorage.getItem("token");
 
+  const audioRef = useRef<HTMLAudioElement>(new Audio());
+
+  const stopAudio = () => {
+    audioRef.current.pause();
+    audioRef.current.currentTime = 0;
+  };
+
+  // Se detiene audio al desmontar el componente (salir de la página)
+  useEffect(() => {
+    return () => {
+      stopAudio();
+    };
+  }, []);
 
   const fullDialogue = [
-    "/audios/sem8/A1.mp3", // A: Hi! How many chairs...
-    "/audios/sem8/B1.mp3", // B: There are four chairs.
-    "/audios/sem8/A2.mp3", // A: And how many plates...
-    "/audios/sem8/B2.mp3", // B: There aren’t any plates...
-    "/audios/sem8/A3.mp3", // A: Oh! How many cups...
-    "/audios/sem8/B3.mp3", // B: I have six cups.
-    "/audios/sem8/A4.mp3", // A: Great! How many forks...
-    "/audios/sem8/B4.mp3", // B: There are three forks.
-    "/audios/sem8/A5.mp3", // A: Are there any knives?
-    "/audios/sem8/B5.mp3", // B: No, there aren’t any knives.
-    "/audios/sem8/A6.mp3", // A: How many glasses...
-    "/audios/sem8/B6.mp3", // B: There are five glasses.
-    "/audios/sem8/A7.mp3", // A: Are there any bowls?
-    "/audios/sem8/B7.mp3", // B: Yes, there are two bowls.
-    "/audios/sem8/A8.mp3", // A: And how many spoons...
-    "/audios/sem8/B8.mp3", // B: There are four spoons.
-    "/audios/sem8/A9.mp3", // A: Are there any napkins?
-    "/audios/sem8/B9.mp3", // B: No, there aren’t any napkins.
-    "/audios/sem8/A10.mp3", // A: Finally, how many bottles...
-    "/audios/sem8/B10.mp3"  // B: There are three bottles...
+    "/audios/sem8/A1.mp3",
+    "/audios/sem8/B1.mp3",
+    "/audios/sem8/A2.mp3",
+    "/audios/sem8/B2.mp3",
+    "/audios/sem8/A3.mp3",
+    "/audios/sem8/B3.mp3",
+    "/audios/sem8/A4.mp3",
+    "/audios/sem8/B4.mp3",
+    "/audios/sem8/A5.mp3",
+    "/audios/sem8/B5.mp3",
+    "/audios/sem8/A6.mp3",
+    "/audios/sem8/B6.mp3",
+    "/audios/sem8/A7.mp3",
+    "/audios/sem8/B7.mp3",
+    "/audios/sem8/A8.mp3",
+    "/audios/sem8/B8.mp3",
+    "/audios/sem8/A9.mp3",
+    "/audios/sem8/B9.mp3",
+    "/audios/sem8/A10.mp3",
+    "/audios/sem8/B10.mp3"
   ];
 
   const ejercicios = useMemo(
@@ -107,15 +120,19 @@ export default function Tema2_Ej3() {
   );
 
   const actual = ejercicios[index];
-  const audioRef = useRef(new Audio());
 
+  // -------------------------
+  // AUDIO — SOLO en index 0
+  // -------------------------
   const playAudio = async () => {
+    stopAudio();
+
+    if (index !== 0) return; // 🔥 solo primer ejercicio
+
     for (let src of actual.audio) {
       audioRef.current.src = src;
       await audioRef.current.play();
-      await new Promise((resolve) => {
-        audioRef.current.onended = resolve;
-      });
+      await new Promise(resolve => (audioRef.current.onended = resolve));
     }
   };
 
@@ -134,9 +151,9 @@ export default function Tema2_Ej3() {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
+          Authorization: `Bearer ${token}`
         },
-        body: JSON.stringify({ nivel, semana, tema, ejercicio }),
+        body: JSON.stringify({ nivel, semana, tema, ejercicio })
       });
 
       if (!res.ok) console.error("Error saving:", res.statusText);
@@ -150,24 +167,28 @@ export default function Tema2_Ej3() {
 
     if (seleccion === actual.correcta) {
       setRespuesta("Correct");
-      setCorrectas((prev) => prev + 1);
+      setCorrectas(prev => prev + 1);
     } else {
       setRespuesta(`Incorrect.\n\nCorrect answer: ${actual.correcta}`);
     }
   };
 
   const siguiente = () => {
+    stopAudio(); // 🔥 Detener audio al cambiar pregunta
     setRespuesta(null);
     setSeleccion(null);
+
     if (index + 1 < ejercicios.length) setIndex(index + 1);
     else finalizar();
   };
 
   const finalizar = async () => {
+    stopAudio(); // 🔥 detener audio al finalizar
     await guardarProgreso();
     setFinalizado(true);
 
     setTimeout(() => {
+      stopAudio();
       navigate(`/inicio/${nivel}`);
       window.location.reload();
     }, 3000);
@@ -190,21 +211,24 @@ export default function Tema2_Ej3() {
             className="tarjeta-ejercicio"
             style={{ textAlign: "center", fontSize: "1.3rem", padding: "2rem" }}
           >
+            {/* AUDIO SOLO EN LA PRIMERA PREGUNTA */}
             {index === 0 && (
-              <div className="instruccion-box" style={{ marginBottom: "1.5rem" }}>
-                <p className="instruccion-ejercicio">
-                  Listen to the full dialogue and answer the questions.
-                </p>
-              </div>
-            )}
+              <>
+                <div className="instruccion-box" style={{ marginBottom: "1.5rem" }}>
+                  <p className="instruccion-ejercicio">
+                    Listen to the full dialogue and answer the questions.
+                  </p>
+                </div>
 
-            <button
-              className="btn-audio"
-              style={{ fontSize: "2rem", margin: "1rem 0" }}
-              onClick={playAudio}
-            >
-              🔊
-            </button>
+                <button
+                  className="btn-audio"
+                  style={{ fontSize: "2rem", margin: "1rem 0" }}
+                  onClick={playAudio}
+                >
+                  🔊
+                </button>
+              </>
+            )}
 
             <div
               className="oracion-box"
@@ -216,7 +240,7 @@ export default function Tema2_Ej3() {
                 margin: "1rem auto",
                 maxWidth: "600px",
                 textAlign: "left",
-                fontStyle: "italic",
+                fontStyle: "italic"
               }}
             >
               <p>{actual.pregunta}</p>
@@ -230,7 +254,7 @@ export default function Tema2_Ej3() {
                   flexDirection: "column",
                   gap: "1rem",
                   alignItems: "center",
-                  marginBottom: "1rem",
+                  marginBottom: "1rem"
                 }}
               >
                 {actual.opciones.map((op, i) => (
@@ -241,7 +265,7 @@ export default function Tema2_Ej3() {
                     style={{
                       fontSize: "1.2rem",
                       padding: "0.8rem 1.5rem",
-                      minWidth: "220px",
+                      minWidth: "220px"
                     }}
                   >
                     {op}
@@ -268,7 +292,7 @@ export default function Tema2_Ej3() {
                   margin: "1rem 0",
                   color: esCorrecta ? "green" : "red",
                   fontWeight: 600,
-                  whiteSpace: "pre-line",
+                  whiteSpace: "pre-line"
                 }}
               >
                 {respuesta}
@@ -305,7 +329,7 @@ export default function Tema2_Ej3() {
               {correctas} / {ejercicios.length}
             </strong>
           </p>
-          <p>Redirecting to the start of the level...</p>
+          <p>Redirecting...</p>
         </div>
       )}
     </div>

@@ -140,16 +140,17 @@ const guardarProgreso = async () => {
             </p>
           </header>
 
-            {index === 0 && (
-              <div className="instruccion-box">
-                <p>Read the dialogue and choose the correct Wh-question.</p>
-              </div>
-            )}
 
           <section
             className="tarjeta-ejercicio"
             style={{ textAlign: "center", fontSize: "1.3rem", padding: "2rem" }}
           >
+                        {index === 0 && (
+              <div className="instruccion-box">
+                <p>Read the dialogue and choose the correct.</p>
+              </div>
+            )}
+
             {/* Pregunta */}
             <div
               className="oracion-box"

@@ -102,7 +102,7 @@ export default function Tema1_Ej2_Ordinals() {
     setTimeout(() => navigate(`/inicio/${nivel}`), 2500);
   };
 
-  // 🔹 Si ya completó el ejercicio
+  //  Si ya completó el ejercicio
   if (yaCompletado) {
     return (
       <div className="finalizado">
@@ -115,7 +115,7 @@ export default function Tema1_Ej2_Ordinals() {
     );
   }
 
-  // 🔹 Pantalla de finalización
+  // Pantalla de finalización
   if (finalizado) {
     return (
       <div className="finalizado">
@@ -128,7 +128,7 @@ export default function Tema1_Ej2_Ordinals() {
     );
   }
 
-  // 🔹 Ejercicio activo
+  //  Ejercicio activo
   return (
     <div className="ejercicio-container">
       <header className="ejercicio-header">

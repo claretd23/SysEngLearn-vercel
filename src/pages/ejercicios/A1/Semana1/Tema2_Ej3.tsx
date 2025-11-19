@@ -164,7 +164,7 @@ export default function Tema1_Ej3_Listening() {
                   fontSize: "1.3rem",
                   margin: "1rem 0",
                   fontWeight: 600,
-                  color: respuesta.startsWith("Correct") ? "green" : "red", // ✅ color dinámico
+                  color: respuesta.startsWith("Correct") ? "green" : "red", // 
                 }}
               >
                 {respuesta}

@@ -15,7 +15,7 @@ export default function Tema3_Ej1() {
 
   const [index, setIndex] = useState(0);
   const [opcionSeleccionada, setOpcionSeleccionada] = useState<string | null>(null);
-  const [respuesta, setRespuesta] = useState<string | null>(null);
+  const [respuesta, setRespuesta] = useState<"Correct" | "Incorrect" | null>(null);
   const [correctas, setCorrectas] = useState(0);
   const [finalizado, setFinalizado] = useState(false);
   const API_URL = import.meta.env.VITE_API_URL;
@@ -35,7 +35,7 @@ export default function Tema3_Ej1() {
 
   const actual = ejercicios[index];
 
-const guardarProgreso = async () => {
+  const guardarProgreso = async () => {
     const completados = JSON.parse(localStorage.getItem("ejercicios_completados") || "[]");
 
     if (!completados.includes(id)) {
@@ -65,10 +65,10 @@ const guardarProgreso = async () => {
     if (!opcionSeleccionada) return;
 
     if (opcionSeleccionada === actual.correcta) {
-      setRespuesta(`Correct!\n\n${actual.pregunta}`);
+      setRespuesta("Correct");
       setCorrectas((prev) => prev + 1);
     } else {
-      setRespuesta(`Incorrect.\n\n${actual.pregunta} → ${actual.correcta}`);
+      setRespuesta("Incorrect");
       setOpcionSeleccionada(actual.correcta);
     }
   };
@@ -111,6 +111,7 @@ const guardarProgreso = async () => {
               </div>
             )}
 
+            {/* ORACIÓN MOSTRADA */}
             <div
               className="oracion-box"
               style={{
@@ -125,9 +126,16 @@ const guardarProgreso = async () => {
                 whiteSpace: "pre-line",
               }}
             >
-              <p>{actual.pregunta}</p>
+              <p>
+                {respuesta === null
+                  ? actual.pregunta
+                  : respuesta === "Correct"
+                  ? actual.pregunta
+                  : `${actual.pregunta} → ${actual.correcta}`}
+              </p>
             </div>
 
+            {/* OPCIONES */}
             {!respuesta && (
               <div
                 className="opciones-ejercicio"
@@ -152,6 +160,7 @@ const guardarProgreso = async () => {
               </div>
             )}
 
+            {/* BOTÓN CHECK */}
             {!respuesta && (
               <button
                 onClick={verificar}
@@ -168,7 +177,7 @@ const guardarProgreso = async () => {
               </button>
             )}
 
-            {/* Feedback */}
+            {/* FEEDBACK */}
             {respuesta && (
               <p
                 style={{
@@ -178,9 +187,11 @@ const guardarProgreso = async () => {
                   fontWeight: "bold",
                 }}
               >
-                {respuesta}
+                {respuesta === "Correct" ? "Correct!" : "Incorrect."}
               </p>
             )}
+
+            {/* BOTONES NEXT / FINISH */}
             <div
               className="botones-siguiente"
               style={{

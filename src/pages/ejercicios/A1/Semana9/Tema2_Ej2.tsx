@@ -165,20 +165,18 @@ const mostrarTexto = actual.texto.replace(
                 </button>
               </div>
             )}
-
-            {/* Feedback sin emojis */}
-            {respuesta && (
-              <p
-                style={{
-                  fontSize: "1.3rem",
-                  margin: "1rem 0",
-                  color: respuesta === "Correct" ? "#19ba1bff" : "#ff5c5c",
-                  fontWeight: "bold",
-                }}
-              >
-                {respuesta}
-              </p>
-            )}
+              {respuesta && (
+                <p
+                  style={{
+                    fontSize: "1.3rem",
+                    margin: "1rem 0",
+                    color: respuesta === "Correct!" ? "green" : "red",
+                    fontWeight: "bold",
+                  }}
+                >
+                  {respuesta}
+                </p>
+              )}
             <div className="botones-siguiente">
               {respuesta && index < ejercicios.length - 1 && (
                 <button

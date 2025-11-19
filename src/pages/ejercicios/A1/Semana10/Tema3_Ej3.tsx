@@ -49,98 +49,100 @@ export default function Tema3_Ej3() {
   // ***********************
   const ejercicios = [
     {
-      audios: [
-        "/audios/can/1_a.mp3",
-        "/audios/can/1_b.mp3",
-        "/audios/can/1_c.mp3",
-        "/audios/can/1_d.mp3"
-      ],
-      texto: "Can Max swim?",
-      correcta: ["yes, he can"],
-    },
-    {
-      audios: [
-        "/audios/can/2_a.mp3",
-        "/audios/can/2_b.mp3",
-        "/audios/can/2_c.mp3",
-        "/audios/can/2_d.mp3"
-      ],
-      texto: "Can Anna go to the party?",
-      correcta: ["no, she can't"],
-    },
-    {
-      audios: [
-        "/audios/can/3_a.mp3",
-        "/audios/can/3_b.mp3",
-        "/audios/can/3_c.mp3"
-      ],
-      texto: "Can the students use the computers now?",
-      correcta: ["no, they can't"],
-    },
-    {
-      audios: [
-        "/audios/can/4_a.mp3",
-        "/audios/can/4_b.mp3",
-        "/audios/can/4_c.mp3"
-      ],
-      texto: "Can Carlos eat meat?",
-      correcta: ["no, he can't"],
-    },
-    {
-      audios: [
-        "/audios/can/5_a.mp3",
-        "/audios/can/5_b.mp3",
-        "/audios/can/5_c.mp3"
-      ],
-      texto: "Can they park there?",
-      correcta: ["no, they can't"],
-    },
-    {
-      audios: [
-        "/audios/can/6_a.mp3",
-        "/audios/can/6_b.mp3",
-        "/audios/can/6_c.mp3"
-      ],
-      texto: "Can Sara borrow Ben’s pen?",
-      correcta: ["yes, she can"],
-    },
-    {
-      audios: [
-        "/audios/can/7_a.mp3",
-        "/audios/can/7_b.mp3",
-        "/audios/can/7_c.mp3"
-      ],
-      texto: "Can Leo’s dog climb trees?",
-      correcta: ["no, it can't"],
-    },
-    {
-      audios: [
-        "/audios/can/8_a.mp3",
-        "/audios/can/8_b.mp3",
-        "/audios/can/8_c.mp3"
-      ],
-      texto: "Can Maria speak German?",
-      correcta: ["no, she can't"],
-    },
-    {
-      audios: [
-        "/audios/can/9_a.mp3",
-        "/audios/can/9_b.mp3",
-        "/audios/can/9_c.mp3"
-      ],
-      texto: "Can Ella open the window?",
-      correcta: ["yes, she can"],
-    },
-    {
-      audios: [
-        "/audios/can/10_a.mp3",
-        "/audios/can/10_b.mp3",
-        "/audios/can/10_c.mp3"
-      ],
-      texto: "Can Tim lift the box alone?",
-      correcta: ["no, he can't"],
-    },
-  ];
+
+    audios: [
+      "/audios/sem10/21a.mp3",
+      "/audios/sem10/21b.mp3",
+      "/audios/sem10/21c.mp3",
+      "/audios/sem10/21d.mp3"
+    ],
+    texto: "Can Max swim?",
+    correcta: ["yes, he can"],
+  },
+  {
+    audios: [
+      "/audios/sem10/22a.mp3",
+      "/audios/sem10/22b.mp3",
+      "/audios/sem10/22c.mp3",
+      "/audios/sem10/22d.mp3"
+    ],
+    texto: "Can Anna go to the party?",
+    correcta: ["no, she can't"],
+  },
+  {
+    audios: [
+      "/audios/sem10/23a.mp3",
+      "/audios/sem10/23b.mp3",
+      "/audios/sem10/23c.mp3"
+    ],
+    texto: "Can the students use the computers now?",
+    correcta: ["no, they can't"],
+  },
+  {
+    audios: [
+      "/audios/sem10/24a.mp3",
+      "/audios/sem10/24b.mp3",
+      "/audios/sem10/24c.mp3"
+    ],
+    texto: "Can Carlos eat meat?",
+    correcta: ["no, he can't"],
+  },
+  {
+    audios: [
+      "/audios/sem10/25a.mp3",
+      "/audios/sem10/25b.mp3",
+      "/audios/sem10/25c.mp3"
+    ],
+    texto: "Can they park there?",
+    correcta: ["no, they can't"],
+  },
+  {
+    audios: [
+      "/audios/sem10/26a.mp3",
+      "/audios/sem10/26b.mp3",
+      "/audios/sem10/26c.mp3"
+    ],
+    texto: "Can Sara borrow Ben’s pen?",
+    correcta: ["yes, she can"],
+  },
+  {
+    audios: [
+      "/audios/sem10/27a.mp3",
+      "/audios/sem10/27b.mp3",
+      "/audios/sem10/27c.mp3"
+    ],
+    texto: "Can Leo’s dog climb trees?",
+    correcta: ["no, it can't"],
+  },
+  {
+    audios: [
+      "/audios/sem10/28a.mp3",
+      "/audios/sem10/28b.mp3",
+      "/audios/sem10/28c.mp3"
+    ],
+    texto: "Can Maria speak German?",
+    correcta: ["no, she can't"],
+  },
+  {
+    audios: [
+      "/audios/sem10/29a.mp3",
+      "/audios/sem10/29b.mp3",
+      "/audios/sem10/29c.mp3"
+    ],
+    texto: "Can Ella open the window?",
+    correcta: ["yes, she can"],
+  },
+  {
+    audios: [
+      "/audios/sem10/30a.mp3",
+      "/audios/sem10/30b.mp3",
+      "/audios/sem10/30c.mp3"
+    ],
+    texto: "Can Tim lift the box alone?",
+    correcta: ["no, he can't"],
+  },
+];
+
 
   const actual = ejercicios[index];
 
@@ -248,7 +250,7 @@ export default function Tema3_Ej3() {
                   type="text"
                   value={inputValue}
                   onChange={(e) => setInputValue(e.target.value)}
-                  placeholder=' ("Yes, he can" or "No, she can")'
+                  placeholder='Write your answer (e.g. "Yes, he can")'
                   style={{ fontSize: "1.3rem", padding: "0.8rem 1rem", borderRadius: "8px" }}
                 />
 
@@ -258,17 +260,33 @@ export default function Tema3_Ej3() {
               </div>
             )}
 
-            {respuesta && (
-              <p
-                style={{
-                  fontSize: "1.2rem",
-                  fontWeight: "bold",
-                  color: respuesta === "Correct" ? "#28A745" : "#DC3545",
-                }}
-              >
-                {respuesta}
-              </p>
-            )}
+{respuesta && (
+  <>
+    <p
+      style={{
+        fontSize: "1.2rem",
+        fontWeight: "bold",
+        color: respuesta === "Correct" ? "#28A745" : "#DC3545",
+      }}
+    >
+      {respuesta}
+    </p>
+
+    {respuesta === "Incorrect" && (
+      <p
+        style={{
+          marginTop: "0.5rem",
+          fontSize: "1.1rem",
+          fontWeight: "bold",
+          color: "#DC3545",
+        }}
+      >
+        Correct answer: <span style={{ color: "#000" }}>{actual.correcta[0]}</span>
+      </p>
+    )}
+  </>
+)}
+
 
             {respuesta && index < ejercicios.length - 1 && (
               <button onClick={siguiente} className="ejercicio-btn">

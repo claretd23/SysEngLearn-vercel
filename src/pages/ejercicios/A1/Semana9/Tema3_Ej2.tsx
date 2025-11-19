@@ -20,63 +20,22 @@ export default function Tema3_Ej2() {
   const [finalizado, setFinalizado] = useState(false);
   const API_URL = import.meta.env.VITE_API_URL;
 
-
   const ejercicios: EjercicioOpciones[] = [
-    {
-      pregunta: "_______ is my new phone.",
-      opciones: ["These", "Those", "This"],
-      correcta: "This",
-    },
-    {
-      pregunta: "_______ are my friends from school.",
-      opciones: ["This", "That", "These"],
-      correcta: "These",
-    },
-    {
-      pregunta: "I like _______ dress you’re wearing.",
-      opciones: ["These", "That", "Those"],
-      correcta: "That",
-    },
-    {
-      pregunta: "_______ pencils on the desk are mine.",
-      opciones: ["This", "Those", "That"],
-      correcta: "Those",
-    },
-    {
-      pregunta: "_______ dog over there looks friendly.",
-      opciones: ["These", "That", "This"],
-      correcta: "That",
-    },
-    {
-      pregunta: "_______ is my brother’s computer.",
-      opciones: ["This", "These", "Those"],
-      correcta: "This",
-    },
-    {
-      pregunta: "_______ cookies taste delicious!",
-      opciones: ["These", "This", "That"],
-      correcta: "These",
-    },
-    {
-      pregunta: "Do you see _______ building across the street?",
-      opciones: ["These", "That", "Those"],
-      correcta: "That",
-    },
-    {
-      pregunta: "_______ are not my shoes; they’re yours.",
-      opciones: ["That", "This", "Those"],
-      correcta: "Those",
-    },
-    {
-      pregunta: "_______ is a great idea!",
-      opciones: ["These", "Those", "This"],
-      correcta: "This",
-    },
+    { pregunta: "_______ is my new phone.", opciones: ["These", "Those", "This"], correcta: "This" },
+    { pregunta: "_______ are my friends from school.", opciones: ["This", "That", "These"], correcta: "These" },
+    { pregunta: "I like _______ dress you’re wearing.", opciones: ["These", "That", "Those"], correcta: "That" },
+    { pregunta: "_______ pencils on the desk are mine.", opciones: ["This", "Those", "That"], correcta: "Those" },
+    { pregunta: "_______ dog over there looks friendly.", opciones: ["These", "That", "This"], correcta: "That" },
+    { pregunta: "_______ is my brother’s computer.", opciones: ["This", "These", "Those"], correcta: "This" },
+    { pregunta: "_______ cookies taste delicious!", opciones: ["These", "This", "That"], correcta: "These" },
+    { pregunta: "Do you see _______ building across the street?", opciones: ["These", "That", "Those"], correcta: "That" },
+    { pregunta: "_______ are not my shoes; they’re yours.", opciones: ["That", "This", "Those"], correcta: "Those" },
+    { pregunta: "_______ is a great idea!", opciones: ["These", "Those", "This"], correcta: "This" },
   ];
 
   const actual = ejercicios[index];
 
-const guardarProgreso = async () => {
+  const guardarProgreso = async () => {
     const completados = JSON.parse(localStorage.getItem("ejercicios_completados") || "[]");
 
     if (!completados.includes(id)) {
@@ -102,16 +61,14 @@ const guardarProgreso = async () => {
     }
   };
 
-
-
   const verificar = () => {
     if (!opcionSeleccionada) return;
 
     if (opcionSeleccionada === actual.correcta) {
-      setRespuesta(`Correct!\n\n${actual.pregunta.replace("_______", opcionSeleccionada)}`);
+      setRespuesta("Correct");
       setCorrectas((prev) => prev + 1);
     } else {
-      setRespuesta(`Incorrect.\n\n${actual.pregunta.replace("_______", actual.correcta)}`);
+      setRespuesta("Incorrect");
     }
   };
 
@@ -145,7 +102,6 @@ const guardarProgreso = async () => {
             className="tarjeta-ejercicio"
             style={{ textAlign: "center", fontSize: "1.3rem", padding: "2rem" }}
           >
-            {/* Instrucción solo en la primera pregunta */}
             {index === 0 && (
               <div className="instruccion-box" style={{ marginBottom: "1.5rem" }}>
                 <p className="instruccion-ejercicio" style={{ fontSize: "1.3rem" }}>
@@ -156,7 +112,7 @@ const guardarProgreso = async () => {
               </div>
             )}
 
-            {/* Pregunta */}
+            {/* Pregunta normal o autocompletada */}
             <div
               className="oracion-box"
               style={{
@@ -171,7 +127,12 @@ const guardarProgreso = async () => {
                 whiteSpace: "pre-line",
               }}
             >
-              <p>{respuesta ? respuesta.split("\n").slice(1).join("\n") : actual.pregunta}</p>
+              {!respuesta
+                ? actual.pregunta
+                : actual.pregunta.replace(
+                    "_______",
+                    respuesta === "Correct" ? opcionSeleccionada! : actual.correcta
+                  )}
             </div>
 
             {/* Opciones */}
@@ -216,20 +177,21 @@ const guardarProgreso = async () => {
               </button>
             )}
 
-            {/* Feedback sin emojis */}
+            {/* Correct / Incorrect + oración autocompletada */}
             {respuesta && (
               <p
                 style={{
                   fontSize: "1.3rem",
-                  margin: "1rem 0",
-                  color: respuesta === "Correct" ? "#19ba1bff" : "#ff5c5c",
+                  marginTop: "1rem",
                   fontWeight: "bold",
+                  color: respuesta === "Correct" ? "#19ba1bff" : "#ff5c5c",
                 }}
               >
                 {respuesta}
               </p>
             )}
-            {/* Botones siguiente / finalizar */}
+
+            {/* Botones siguiente o finalizar */}
             <div
               className="botones-siguiente"
               style={{

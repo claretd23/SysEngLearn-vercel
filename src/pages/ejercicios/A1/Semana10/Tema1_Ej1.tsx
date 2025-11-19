@@ -14,14 +14,12 @@ export default function Tema1_Ej1() {
   const [finalizado, setFinalizado] = useState(false);
   const API_URL = import.meta.env.VITE_API_URL;
 
-  // Lista de oraciones para completar con "want" o "would like"
   const ejercicios = [
     { texto: "I _______ a sandwich for lunch.", correcta: ["want"] },
     { texto: "She _______ to visit Paris next year.", correcta: ["would like"] },
     { texto: "They _______ some water, please.", correcta: ["would like"] },
     { texto: "He _______ a new bicycle for his birthday.", correcta: ["wants"] },
     { texto: "We _______ to watch a movie tonight.", correcta: ["would like"] },
-    { texto: "____ you ______ some tea?", correcta: ["would like"] },
     { texto: "I _______ to go shopping this afternoon.", correcta: ["want"] },
     { texto: "My friends _______ to eat pizza for dinner.", correcta: ["would like"] },
     { texto: "She _______ a cup of coffee right now.", correcta: ["wants"] },
@@ -30,7 +28,7 @@ export default function Tema1_Ej1() {
 
   const actual = ejercicios[index];
 
-const guardarProgreso = async () => {
+  const guardarProgreso = async () => {
     const completados = JSON.parse(localStorage.getItem("ejercicios_completados") || "[]");
 
     if (!completados.includes(id)) {
@@ -55,6 +53,7 @@ const guardarProgreso = async () => {
       console.error("Error al guardar el progreso:", error);
     }
   };
+
   const verificar = () => {
     const respuestaUsuario = inputValue.trim().toLowerCase();
     if (!respuestaUsuario) return;
@@ -64,10 +63,10 @@ const guardarProgreso = async () => {
     );
 
     if (esCorrecta) {
-      setRespuesta("Correct!");
+      setRespuesta("correct"); 
       setCorrectas((prev) => prev + 1);
     } else {
-      setRespuesta("Incorrect");
+      setRespuesta("incorrect"); 
       setInputValue(actual.correcta[0]);
     }
   };
@@ -156,19 +155,21 @@ const guardarProgreso = async () => {
                 </button>
               </div>
             )}
-            {/* Feedback */}
+
+            {/* FEEDBACK */}
             {respuesta && (
               <p
                 style={{
                   fontSize: "1.3rem",
                   margin: "1rem 0",
-                  color: respuesta === "Correct" ? "#19ba1bff" : "#ff5c5c",
+                  color: respuesta === "correct" ? "green" : "red",
                   fontWeight: "bold",
                 }}
               >
-                {respuesta}
+                {respuesta === "correct" ? "Correct" : "Incorrect"}
               </p>
             )}
+
             <div className="botones-siguiente">
               {respuesta && index < ejercicios.length - 1 && (
                 <button
@@ -179,6 +180,7 @@ const guardarProgreso = async () => {
                   Next question
                 </button>
               )}
+
               {respuesta && index === ejercicios.length - 1 && (
                 <button
                   onClick={manejarFinalizacion}
@@ -193,7 +195,7 @@ const guardarProgreso = async () => {
         </>
       ) : (
         <div className="finalizado" style={{ fontSize: "1.3rem" }}>
-          <h2> You have completed the exercise!</h2>
+          <h2>You have completed the exercise!</h2>
           <p>
             Correct answers: <strong>{correctas} / {ejercicios.length}</strong>
           </p>

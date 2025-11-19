@@ -29,7 +29,7 @@ export default function Tema2_Ej2() {
 
   const actual = ejercicios[index];
 
-const guardarProgreso = async () => {
+  const guardarProgreso = async () => {
     const completados = JSON.parse(localStorage.getItem("ejercicios_completados") || "[]");
 
     if (!completados.includes(id)) {
@@ -54,16 +54,18 @@ const guardarProgreso = async () => {
       console.error("Error al guardar el progreso:", error);
     }
   };
+
   const verificar = () => {
     if (!opcionSeleccionada) return;
 
     const oracionCompletada = actual.pregunta.replace("________", opcionSeleccionada);
+    
     if (opcionSeleccionada === actual.correcta) {
-      setRespuesta(`Correct!\n\n${oracionCompletada}`);
+      setRespuesta(`Correct\n\n${oracionCompletada}`);
       setCorrectas((prev) => prev + 1);
     } else {
       const oracionCorrecta = actual.pregunta.replace("________", actual.correcta);
-      setRespuesta(` Incorrect.\n\n${oracionCorrecta}`);
+      setRespuesta(`Incorrect\n\n${oracionCorrecta}`);
     }
   };
 
@@ -97,7 +99,6 @@ const guardarProgreso = async () => {
             className="tarjeta-ejercicio"
             style={{ textAlign: "center", fontSize: "1.3rem", padding: "2rem" }}
           >
-            {/* Instrucción (solo en la primera pregunta) */}
             {index === 0 && (
               <div className="instruccion-box" style={{ marginBottom: "1.5rem" }}>
                 <p className="instruccion-ejercicio">
@@ -106,7 +107,6 @@ const guardarProgreso = async () => {
               </div>
             )}
 
-            {/* Oración */}
             <div
               className="oracion-box"
               style={{
@@ -124,7 +124,6 @@ const guardarProgreso = async () => {
               <p>{respuesta ? respuesta.split("\n").slice(1).join("\n") : actual.pregunta}</p>
             </div>
 
-            {/* Opciones */}
             {!respuesta && (
               <div
                 className="opciones-ejercicio"
@@ -149,7 +148,6 @@ const guardarProgreso = async () => {
               </div>
             )}
 
-            {/* Botón Check */}
             {!respuesta && (
               <button
                 onClick={verificar}
@@ -166,17 +164,19 @@ const guardarProgreso = async () => {
               </button>
             )}
 
-            {/* Feedback */}
             {respuesta && (
               <p
-                className={`respuesta-feedback ${respuesta.startsWith("✅") ? "correcta" : "incorrecta"}`}
-                style={{ fontSize: "1.3rem", margin: "1rem 0" }}
+                style={{
+                  fontSize: "1.3rem",
+                  margin: "1rem 0",
+                  fontWeight: "bold",
+                  color: respuesta.startsWith("Correct") ? "#19ba1bff" : "#ff4a4a",
+                }}
               >
                 {respuesta.split("\n")[0]}
               </p>
             )}
 
-            {/* Botones siguiente / finalizar */}
             <div
               className="botones-siguiente"
               style={{
@@ -190,16 +190,25 @@ const guardarProgreso = async () => {
                 <button
                   onClick={siguiente}
                   className="ejercicio-btn"
-                  style={{ fontSize: "1.3rem", padding: "0.8rem 2rem", borderRadius: "8px" }}
+                  style={{
+                    fontSize: "1.3rem",
+                    padding: "0.8rem 2rem",
+                    borderRadius: "8px",
+                  }}
                 >
                   Next question
                 </button>
               )}
+
               {respuesta && index === ejercicios.length - 1 && (
                 <button
                   onClick={manejarFinalizacion}
                   className="ejercicio-btn"
-                  style={{ fontSize: "1.3rem", padding: "0.8rem 2rem", borderRadius: "8px" }}
+                  style={{
+                    fontSize: "1.3rem",
+                    padding: "0.8rem 2rem",
+                    borderRadius: "8px",
+                  }}
                 >
                   Finish
                 </button>

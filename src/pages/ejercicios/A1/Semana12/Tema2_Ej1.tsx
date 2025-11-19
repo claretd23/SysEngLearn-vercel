@@ -89,7 +89,7 @@ export default function Tema2_Ej1() {
 
   const mostrarTexto = respuesta
     ? actual.texto
-        .replace("______", actual.correcta[0])
+        .replace("________", actual.correcta[0])
         .replace(/\s*\(.*?\)/, "")
     : actual.texto;
 

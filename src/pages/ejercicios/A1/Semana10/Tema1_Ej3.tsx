@@ -64,10 +64,10 @@ export default function Tema1_Ej3TrueFalse() {
           "/audios/sem10/2.c.mp3",
         ],
         preguntas: [
-          { texto: "5. Ben would like coffee.", correcta: true },
-          { texto: "6. Sophie wants orange juice.", correcta: true },
-          { texto: "7. Liam would like a drink.", correcta: false },
-          { texto: "8. Everyone wants something to drink.", correcta: false },
+          { texto: "1. Ben would like coffee.", correcta: true },
+          { texto: "2. Sophie wants orange juice.", correcta: true },
+          { texto: "3. Liam would like a drink.", correcta: false },
+          { texto: "4. Everyone wants something to drink.", correcta: false },
         ],
       },
       {
@@ -78,10 +78,10 @@ export default function Tema1_Ej3TrueFalse() {
           "/audios/sem10/3.c.mp3",
         ],
         preguntas: [
-          { texto: "9. Nina wants to go to the park.", correcta: true },
-          { texto: "10. Alex wants to go with Nina.", correcta: false },
-          { texto: "11. Eva would like to go to the park.", correcta: true },
-          { texto: "12. Everyone wants to stay home.", correcta: false },
+          { texto: "1. Nina wants to go to the park.", correcta: true },
+          { texto: "2. Alex wants to go with Nina.", correcta: false },
+          { texto: "3. Eva would like to go to the park.", correcta: true },
+          { texto: "4. Everyone wants to stay home.", correcta: false },
         ],
       },
       {
@@ -92,10 +92,10 @@ export default function Tema1_Ej3TrueFalse() {
           "/audios/sem10/4.c.mp3",
         ],
         preguntas: [
-          { texto: "13. Jack would like pizza.", correcta: true },
-          { texto: "14. Maria wants a pizza.", correcta: false },
-          { texto: "15. Leo wants to eat something.", correcta: false },
-          { texto: "16. Maria wants a salad.", correcta: true },
+          { texto: "1. Jack would like pizza.", correcta: true },
+          { texto: "2. Maria wants a pizza.", correcta: false },
+          { texto: "3. Leo wants to eat something.", correcta: false },
+          { texto: "4. Maria wants a salad.", correcta: true },
         ],
       },
       {
@@ -106,10 +106,10 @@ export default function Tema1_Ej3TrueFalse() {
           "/audios/sem10/5.c.mp3",
         ],
         preguntas: [
-          { texto: "17. David would like a new bike.", correcta: false },
-          { texto: "18. Ella would like new shoes.", correcta: true },
-          { texto: "19. Mark doesn’t want anything.", correcta: true },
-          { texto: "20. Everyone wants something.", correcta: false },
+          { texto: "1. David would like a new bike.", correcta: false },
+          { texto: "2. Ella would like new shoes.", correcta: true },
+          { texto: "3. Mark doesn’t want anything.", correcta: true },
+          { texto: "4. Everyone wants something.", correcta: false },
         ],
       },
       {
@@ -120,10 +120,10 @@ export default function Tema1_Ej3TrueFalse() {
           "/audios/sem10/6.c.mp3",
         ],
         preguntas: [
-          { texto: "21. Lucy wants to watch a movie.", correcta: true },
-          { texto: "22. Tom would like to read a book.", correcta: true },
-          { texto: "23. Anna wants to go out.", correcta: false },
-          { texto: "24. Lucy and Tom want the same thing.", correcta: false },
+          { texto: "1. Lucy wants to watch a movie.", correcta: true },
+          { texto: "2. Tom would like to read a book.", correcta: true },
+          { texto: "3. Anna wants to go out.", correcta: false },
+          { texto: "4. Lucy and Tom want the same thing.", correcta: false },
         ],
       },
       {
@@ -134,10 +134,10 @@ export default function Tema1_Ej3TrueFalse() {
           "/audios/sem10/7.c.mp3",
         ],
         preguntas: [
-          { texto: "25. Carlos would like tea.", correcta: true },
-          { texto: "26. Mia wants coffee.", correcta: true },
-          { texto: "27. Ben wants a drink.", correcta: false },
-          { texto: "28. Everyone wants coffee.", correcta: false },
+          { texto: "1. Carlos would like tea.", correcta: true },
+          { texto: "2. Mia wants coffee.", correcta: true },
+          { texto: "3. Ben wants a drink.", correcta: false },
+          { texto: "4. Everyone wants coffee.", correcta: false },
         ],
       },
       {
@@ -148,10 +148,10 @@ export default function Tema1_Ej3TrueFalse() {
           "/audios/sem10/8.c.mp3",
         ],
         preguntas: [
-          { texto: "29. Ella wants a jacket.", correcta: true },
-          { texto: "30. Sam would like shoes.", correcta: true },
-          { texto: "31. Olivia wants clothes.", correcta: false },
-          { texto: "32. Everyone wants something new.", correcta: true },
+          { texto: "1. Ella wants a jacket.", correcta: true },
+          { texto: "2. Sam would like shoes.", correcta: true },
+          { texto: "3. Olivia wants clothes.", correcta: false },
+          { texto: "4. Everyone wants something new.", correcta: true },
         ],
       },
       {
@@ -162,10 +162,10 @@ export default function Tema1_Ej3TrueFalse() {
           "/audios/sem10/9.c.mp3",
         ],
         preguntas: [
-          { texto: "33. Jack would like pasta.", correcta: true },
-          { texto: "34. Emma wants pasta.", correcta: false },
-          { texto: "35. Noah would like pizza.", correcta: true },
-          { texto: "36. Everyone wants pasta.", correcta: false },
+          { texto: "1. Jack would like pasta.", correcta: true },
+          { texto: "2. Emma wants pasta.", correcta: false },
+          { texto: "3. Noah would like pizza.", correcta: true },
+          { texto: "4. Everyone wants pasta.", correcta: false },
         ],
       },
       {
@@ -176,10 +176,10 @@ export default function Tema1_Ej3TrueFalse() {
           "/audios/sem10/10.c.mp3",
         ],
         preguntas: [
-          { texto: "37. Sophie wants to visit her grandparents.", correcta: true },
-          { texto: "38. Ryan would like to go to the beach.", correcta: true },
-          { texto: "39. Liam wants to travel.", correcta: false },
-          { texto: "40. Everyone wants to go somewhere.", correcta: false },
+          { texto: "1. Sophie wants to visit her grandparents.", correcta: true },
+          { texto: "2. Ryan would like to go to the beach.", correcta: true },
+          { texto: "3. Liam wants to travel.", correcta: false },
+          { texto: "4. Everyone wants to go somewhere.", correcta: false },
         ],
       },
     ],
@@ -315,15 +315,18 @@ export default function Tema1_Ej3TrueFalse() {
               </div>
             )}
 
-            <div style={{ margin: "0.5rem 0" }}>
-              <button
-                className="btn-audio"
-                style={{ fontSize: "1.6rem", padding: "0.4rem 0.8rem" }}
-                onClick={playAudio}
-              >
-                🔊
-              </button>
-            </div>
+           {qIndex === 0 && (
+  <div style={{ margin: "0.5rem 0" }}>
+    <button
+      className="btn-audio"
+      style={{ fontSize: "1.6rem", padding: "0.4rem 0.8rem" }}
+      onClick={playAudio}
+    >
+      🔊
+    </button>
+  </div>
+)}
+
 
             <div
               className="pregunta-box"

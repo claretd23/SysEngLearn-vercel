@@ -29,7 +29,7 @@ export default function Tema2_Ej2() {
 
   const actual = ejercicios[index];
 
-const guardarProgreso = async () => {
+  const guardarProgreso = async () => {
     const completados = JSON.parse(localStorage.getItem("ejercicios_completados") || "[]");
 
     if (!completados.includes(id)) {
@@ -54,16 +54,18 @@ const guardarProgreso = async () => {
       console.error("Error al guardar el progreso:", error);
     }
   };
+
   const verificar = () => {
     if (!opcionSeleccionada) return;
 
-    const oracionCompletada = `${actual.pregunta} → ${opcionSeleccionada}`;
+    const textoMostrar = `${actual.pregunta} → ${opcionSeleccionada}`;
+    const textoCorrecto = `${actual.pregunta} → ${actual.correcta}`;
+
     if (opcionSeleccionada === actual.correcta) {
-      setRespuesta(`Correct!\n\n${oracionCompletada}`);
+      setRespuesta(textoMostrar); // Solo oración, sin "Correct!"
       setCorrectas((prev) => prev + 1);
     } else {
-      const oracionCorrecta = `${actual.pregunta} → ${actual.correcta}`;
-      setRespuesta(`Incorrect.\n\n${oracionCorrecta}`);
+      setRespuesta(textoCorrecto); // Solo oración correcta
     }
   };
 
@@ -82,6 +84,8 @@ const guardarProgreso = async () => {
     }, 3000);
   };
 
+  const esCorrecta = respuesta && respuesta.includes(actual.correcta);
+
   return (
     <div className="ejercicio-container">
       {!finalizado ? (
@@ -97,16 +101,13 @@ const guardarProgreso = async () => {
             className="tarjeta-ejercicio"
             style={{ textAlign: "center", fontSize: "1.3rem", padding: "2rem" }}
           >
-            {/* Instrucción (solo en la primera pregunta) */}
+
             {index === 0 && (
               <div className="instruccion-box" style={{ marginBottom: "1.5rem" }}>
-                <p className="instruccion-ejercicio">
-                  Choose the correct answer.
-                </p>
+                <p className="instruccion-ejercicio">Choose the correct answer.</p>
               </div>
             )}
 
-            {/* Oración */}
             <div
               className="oracion-box"
               style={{
@@ -119,12 +120,13 @@ const guardarProgreso = async () => {
                 textAlign: "left",
                 fontStyle: "italic",
                 whiteSpace: "pre-line",
+                color: respuesta ? (esCorrecta ? "#19ba1b" : "#ff5c5c") : "black",
+                fontWeight: respuesta ? "bold" : "normal",
               }}
             >
-              <p>{respuesta ? respuesta.split("\n").slice(1).join("\n") : actual.pregunta}</p>
+              <p>{respuesta || actual.pregunta}</p>
             </div>
 
-            {/* Opciones */}
             {!respuesta && (
               <div
                 className="opciones-ejercicio"
@@ -141,7 +143,11 @@ const guardarProgreso = async () => {
                     key={i}
                     className={`opcion-btn ${opcionSeleccionada === op ? "seleccionada" : ""}`}
                     onClick={() => setOpcionSeleccionada(op)}
-                    style={{ fontSize: "1.2rem", padding: "0.8rem 1.5rem", minWidth: "200px" }}
+                    style={{
+                      fontSize: "1.2rem",
+                      padding: "0.8rem 1.5rem",
+                      minWidth: "200px",
+                    }}
                   >
                     {op}
                   </button>
@@ -149,7 +155,6 @@ const guardarProgreso = async () => {
               </div>
             )}
 
-            {/* Botón Check */}
             {!respuesta && (
               <button
                 onClick={verificar}
@@ -166,20 +171,6 @@ const guardarProgreso = async () => {
               </button>
             )}
 
-                   {/* Feedback sin emojis */}
-            {respuesta && (
-              <p
-                style={{
-                  fontSize: "1.3rem",
-                  margin: "1rem 0",
-                  color: respuesta === "Correct" ? "#19ba1bff" : "#ff5c5c",
-                  fontWeight: "bold",
-                }}
-              >
-                {respuesta}
-              </p>
-            )}
-            {/* Botones siguiente / finalizar */}
             <div
               className="botones-siguiente"
               style={{
@@ -198,6 +189,7 @@ const guardarProgreso = async () => {
                   Next question
                 </button>
               )}
+
               {respuesta && index === ejercicios.length - 1 && (
                 <button
                   onClick={manejarFinalizacion}

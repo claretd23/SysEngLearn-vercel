@@ -51,9 +51,6 @@ export default function Tema1_Ej3() {
     "/audios/sem9/B10.mp3",
   ];
 
-  // -------------------------
-  // PREGUNTAS SEMANA 9
-  // -------------------------
   const ejercicios = useMemo(
     () => [
       {

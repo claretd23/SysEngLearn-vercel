@@ -49,8 +49,6 @@ export default function Tema1_Ej3TrueFalse() {
           "/audios/sem10/1.b.mp3",
           "/audios/sem10/1.c.mp3",
         ],
-        dialogo:
-          "Emma: I want a new phone.\nTom: I don’t want a phone. I’d like a tablet.\nLisa: I’d like new headphones.",
         preguntas: [
           { texto: "1. Emma wants a new phone.", correcta: true },
           { texto: "2. Tom wants a phone.", correcta: false },
@@ -65,8 +63,6 @@ export default function Tema1_Ej3TrueFalse() {
           "/audios/sem10/2.b.mp3",
           "/audios/sem10/2.c.mp3",
         ],
-        dialogo:
-          "Ben: I’d like some coffee, please.\nSophie: I want orange juice.\nLiam: I don’t want a drink, thanks.",
         preguntas: [
           { texto: "5. Ben would like coffee.", correcta: true },
           { texto: "6. Sophie wants orange juice.", correcta: true },
@@ -81,8 +77,6 @@ export default function Tema1_Ej3TrueFalse() {
           "/audios/sem10/3.b.mp3",
           "/audios/sem10/3.c.mp3",
         ],
-        dialogo:
-          "Nina: I’d like to go to the park.\nAlex: I want to stay home.\nEva: I’d like to go with Nina.",
         preguntas: [
           { texto: "9. Nina wants to go to the park.", correcta: true },
           { texto: "10. Alex wants to go with Nina.", correcta: false },
@@ -97,8 +91,6 @@ export default function Tema1_Ej3TrueFalse() {
           "/audios/sem10/4.b.mp3",
           "/audios/sem10/4.c.mp3",
         ],
-        dialogo:
-          "Jack: I’d like a pizza.\nMaria: I want a salad.\nLeo: I don’t want anything right now.",
         preguntas: [
           { texto: "13. Jack would like pizza.", correcta: true },
           { texto: "14. Maria wants a pizza.", correcta: false },
@@ -113,8 +105,6 @@ export default function Tema1_Ej3TrueFalse() {
           "/audios/sem10/5.b.mp3",
           "/audios/sem10/5.c.mp3",
         ],
-        dialogo:
-          "David: I want a new bike.\nElla: I’d like new shoes.\nMark: I don’t want anything for now.",
         preguntas: [
           { texto: "17. David would like a new bike.", correcta: false },
           { texto: "18. Ella would like new shoes.", correcta: true },
@@ -129,8 +119,6 @@ export default function Tema1_Ej3TrueFalse() {
           "/audios/sem10/6.b.mp3",
           "/audios/sem10/6.c.mp3",
         ],
-        dialogo:
-          "Lucy: I want to watch a movie tonight.\nTom: I’d like to read a book.\nAnna: I don’t want to do anything.",
         preguntas: [
           { texto: "21. Lucy wants to watch a movie.", correcta: true },
           { texto: "22. Tom would like to read a book.", correcta: true },
@@ -145,8 +133,6 @@ export default function Tema1_Ej3TrueFalse() {
           "/audios/sem10/7.b.mp3",
           "/audios/sem10/7.c.mp3",
         ],
-        dialogo:
-          "Carlos: I’d like a cup of tea.\nMia: I want a cup of coffee.\nBen: I don’t want a drink.",
         preguntas: [
           { texto: "25. Carlos would like tea.", correcta: true },
           { texto: "26. Mia wants coffee.", correcta: true },
@@ -161,8 +147,6 @@ export default function Tema1_Ej3TrueFalse() {
           "/audios/sem10/8.b.mp3",
           "/audios/sem10/8.c.mp3",
         ],
-        dialogo:
-          "Ella: I want to buy a new jacket.\nSam: I’d like some new shoes.\nOlivia: I don’t want clothes, I want a bag.",
         preguntas: [
           { texto: "29. Ella wants a jacket.", correcta: true },
           { texto: "30. Sam would like shoes.", correcta: true },
@@ -177,8 +161,6 @@ export default function Tema1_Ej3TrueFalse() {
           "/audios/sem10/9.b.mp3",
           "/audios/sem10/9.c.mp3",
         ],
-        dialogo:
-          "Jack: I’d like to eat pasta.\nEmma: I don’t want pasta, I want rice.\nNoah: I’d like pizza, please.",
         preguntas: [
           { texto: "33. Jack would like pasta.", correcta: true },
           { texto: "34. Emma wants pasta.", correcta: false },
@@ -193,8 +175,6 @@ export default function Tema1_Ej3TrueFalse() {
           "/audios/sem10/10.b.mp3",
           "/audios/sem10/10.c.mp3",
         ],
-        dialogo:
-          "Sophie: I want to visit my grandparents this weekend.\nRyan: I’d like to go to the beach.\nLiam: I don’t want to travel.",
         preguntas: [
           { texto: "37. Sophie wants to visit her grandparents.", correcta: true },
           { texto: "38. Ryan would like to go to the beach.", correcta: true },
@@ -227,15 +207,13 @@ export default function Tema1_Ej3TrueFalse() {
     }
   };
 
-  // stop audio when dialog or question changes
+// Detener el audio cuando cambie el diálogo o la pregunta
   useEffect(() => {
     stopAudio();
-    // reset selection/response when moving to new dialog/question if you want:
-    // but we already control reset on next
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+
   }, [dialogIndex, qIndex]);
 
-  // stop audio on unmount
+
   useEffect(() => {
     return () => stopAudio();
   }, []);
@@ -317,7 +295,7 @@ export default function Tema1_Ej3TrueFalse() {
       {!finalizado ? (
         <>
           <header className="ejercicio-header">
-            <h1 className="titulo-ejercicio">EXERCISE 3 — TRUE / FALSE</h1>
+            <h1 className="titulo-ejercicio">EXERCISE 3</h1>
             <p className="progreso-ejercicio">
               Question {dialogIndex * 4 + qIndex + 1} of {ejercicios.length * 4}
             </p>
@@ -343,27 +321,8 @@ export default function Tema1_Ej3TrueFalse() {
                 style={{ fontSize: "1.6rem", padding: "0.4rem 0.8rem" }}
                 onClick={playAudio}
               >
-                🔊 Play dialogue
+                🔊
               </button>
-            </div>
-
-            <div
-              className="dialogo-box"
-              style={{
-                backgroundColor: "#f4f6fa",
-                borderLeft: "5px solid #222a5c",
-                borderRadius: "8px",
-                padding: "1rem",
-                margin: "0.8rem auto",
-                maxWidth: "720px",
-                textAlign: "left",
-                whiteSpace: "pre-line",
-                fontStyle: "italic",
-              }}
-            >
-              {/* show the dialogue as guide */}
-              <strong>Dialogue {dialogIndex + 1}</strong>
-              <p style={{ marginTop: "0.5rem" }}>{actual.dialogo}</p>
             </div>
 
             <div

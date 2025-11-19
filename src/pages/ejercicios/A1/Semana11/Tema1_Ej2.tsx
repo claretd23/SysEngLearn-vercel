@@ -75,7 +75,7 @@ export default function Tema1_Ej2() {
 
   const actual = ejercicios[index];
 
-const guardarProgreso = async () => {
+  const guardarProgreso = async () => {
     const completados = JSON.parse(localStorage.getItem("ejercicios_completados") || "[]");
 
     if (!completados.includes(id)) {
@@ -105,13 +105,12 @@ const guardarProgreso = async () => {
     if (!opcionSeleccionada) return;
 
     if (opcionSeleccionada === actual.correcta) {
-      setRespuesta(`Correct!`);
+      setRespuesta("Correct!");
       setCorrectas((prev) => prev + 1);
     } else {
-      setRespuesta(`Incorrect.`);
+      setRespuesta("Incorrect.");
     }
 
-    // Autocompletar automáticamente después de 1.2s
     setTimeout(() => {
       if (index < ejercicios.length - 1) {
         siguiente();
@@ -124,7 +123,7 @@ const guardarProgreso = async () => {
   const siguiente = () => {
     setRespuesta(null);
     setOpcionSeleccionada(null);
-    setIndex(index + 1);
+    setIndex((prev) => prev + 1);
   };
 
   const manejarFinalizacion = async () => {
@@ -159,6 +158,7 @@ const guardarProgreso = async () => {
               </div>
             )}
 
+            {/* ⬇ YA NO SE DUPLICA */}
             <div
               className="oracion-box"
               style={{
@@ -170,10 +170,9 @@ const guardarProgreso = async () => {
                 maxWidth: "650px",
                 textAlign: "left",
                 fontStyle: "italic",
-                whiteSpace: "pre-line",
               }}
             >
-              <p>{respuesta ? respuesta.split("\n").slice(1).join("\n") : actual.pregunta}</p>
+              <p>{actual.pregunta}</p>
             </div>
 
             {!respuesta && (
@@ -215,13 +214,13 @@ const guardarProgreso = async () => {
                 Check
               </button>
             )}
-   
+
             {respuesta && (
               <p
                 style={{
                   fontSize: "1.3rem",
                   margin: "1rem 0",
-                  color: respuesta === "Correct" ? "#19ba1bff" : "#ff5c5c",
+                  color: respuesta === "Correct!" ? "#19ba1b" : "#ff5c5c",
                   fontWeight: "bold",
                 }}
               >

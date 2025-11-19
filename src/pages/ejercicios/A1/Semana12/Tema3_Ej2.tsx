@@ -14,23 +14,21 @@ export default function Tema3_Ej2() {
   const [finalizado, setFinalizado] = useState(false);
   const API_URL = import.meta.env.VITE_API_URL;
 
-  //  Lista de ejercicios con will / won’t / Will (interrogativa)
   const ejercicios = [
-    { texto: "I ________ (help) my sister with her homework tomorrow. [afirmativo]", correcta: ["will help"] },
-    { texto: "She ________ (go) to the party if it rains. [negativo]", correcta: ["will not go", "won’t go"] },
-    { texto: "________ you ________ (call) me when you arrive at the station? [interrogativa]", correcta: ["Will you call", "Will / call"] },
-    { texto: "They ________ (finish) the work on time if nobody helps. [negativo]", correcta: ["will not finish", "won’t finish"] },
-    { texto: "He ________ (forget) to bring his notebook. [afirmativo]", correcta: ["will forget"] },
-    { texto: "I ________ (eat) the cake because I’m on a diet. [negativo]", correcta: ["will not eat", "won’t eat"] },
-    { texto: "We ________ (meet) our friends at the café at 6 p.m. [afirmativo]", correcta: ["will meet"] },
-    { texto: "________ she ________ (join) the English class next week? [interrogativa]", correcta: ["Will she join", "Will / join"] },
-    { texto: "They ________ (buy) a new car if they don’t save enough money. [negativo]", correcta: ["will not buy", "won’t buy"] },
-    { texto: "You ________ (enjoy) the film if you like comedies. [afirmativo]", correcta: ["will enjoy"] },
+    { texto: "I ________ (help) my sister with her homework tomorrow. [affirmative]", correcta: ["will help"] },
+    { texto: "She ________ (go) to the party if it rains. [negative]", correcta: ["will not go", "won’t go"] },
+    { texto: "They ________ (finish) the work on time if nobody helps. [negative]", correcta: ["will not finish", "won’t finish"] },
+    { texto: "He ________ (forget) to bring his notebook. [affirmative]", correcta: ["will forget"] },
+    { texto: "I ________ (eat) the cake because I’m on a diet. [negative]", correcta: ["will not eat", "won’t eat"] },
+    { texto: "We ________ (meet) our friends at the café at 6 p.m. [affirmative]", correcta: ["will meet"] },
+    { texto: "________ she ________ (join) the English class next week? [interrogative]", correcta: ["Will she join", "Will / join"] },
+    { texto: "They ________ (buy) a new car if they don’t save enough money. [negative]", correcta: ["will not buy", "won’t buy"] },
+    { texto: "You ________ (enjoy) the film if you like comedies. [affirmative]", correcta: ["will enjoy"] },
   ];
 
   const actual = ejercicios[index];
 
-const guardarProgreso = async () => {
+  const guardarProgreso = async () => {
     const completados = JSON.parse(localStorage.getItem("ejercicios_completados") || "[]");
 
     if (!completados.includes(id)) {
@@ -55,6 +53,7 @@ const guardarProgreso = async () => {
       console.error("Error al guardar el progreso:", error);
     }
   };
+
   const verificar = () => {
     const respuestaUsuario = inputValue.trim().toLowerCase();
     if (!respuestaUsuario) return;
@@ -68,7 +67,6 @@ const guardarProgreso = async () => {
       setCorrectas((prev) => prev + 1);
     } else {
       setRespuesta("Incorrect");
-      setInputValue(actual.correcta[0]);
     }
   };
 
@@ -87,12 +85,11 @@ const guardarProgreso = async () => {
     }, 3000);
   };
 
-  //  Mostrar texto reemplazando la respuesta y eliminando guiones, paréntesis y corchetes
   const mostrarTexto = respuesta
     ? actual.texto
-        .replace(/_+/g, actual.correcta[0])       // reemplaza todos los guiones consecutivos por la respuesta
-        .replace(/\s*\(.*?\)/, "")                // elimina paréntesis
-        .replace(/\s*\[.*?\]/, "")                // elimina corchetes
+        .replace(/_+/g, actual.correcta[0])
+        .replace(/\s*\(.*?\)/, "")
+        .replace(/\s*\[.*?\]/, "")
     : actual.texto;
 
   return (
@@ -164,7 +161,7 @@ const guardarProgreso = async () => {
             {respuesta && (
               <p
                 className={`respuesta-feedback ${
-                  respuesta.startsWith("✅") ? "correcta" : "incorrecta"
+                  respuesta === "Correct!" ? "correcta" : "incorrecta"
                 }`}
                 style={{ fontSize: "1.3rem", margin: "1rem 0" }}
               >

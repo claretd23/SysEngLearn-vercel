@@ -29,7 +29,7 @@ export default function Tema3_Ej1() {
 
   const actual = ejercicios[index];
 
- const guardarProgreso = async () => {
+  const guardarProgreso = async () => {
     const completados = JSON.parse(localStorage.getItem("ejercicios_completados") || "[]");
 
     if (!completados.includes(id)) {
@@ -59,14 +59,14 @@ export default function Tema3_Ej1() {
     if (!opcionSeleccionada) return;
 
     const oracionCompletada = actual.pregunta.replace("________", opcionSeleccionada);
-if (opcionSeleccionada === actual.correcta) {
-  setRespuesta(`Correct!\n\n${oracionCompletada}`);
-  setCorrectas((prev) => prev + 1);
-} else {
-  const oracionCorrecta = actual.pregunta.replace("________", actual.correcta);
-  setRespuesta(`Incorrect.\n\n${oracionCorrecta}`);
-}
 
+    if (opcionSeleccionada === actual.correcta) {
+      setRespuesta(`Correct\n\n${oracionCompletada}`);
+      setCorrectas((prev) => prev + 1);
+    } else {
+      const oracionCorrecta = actual.pregunta.replace("________", actual.correcta);
+      setRespuesta(`Incorrect\n\n${oracionCorrecta}`);
+    }
   };
 
   const siguiente = () => {
@@ -99,16 +99,15 @@ if (opcionSeleccionada === actual.correcta) {
             className="tarjeta-ejercicio"
             style={{ textAlign: "center", fontSize: "1.3rem", padding: "2rem" }}
           >
- {/* Instrucción (solo en la primera pregunta) */}
-{index === 0 && (
-  <div className="instruccion-box" style={{ marginBottom: "1.5rem" }}>
-    <p className="instruccion-ejercicio">
-      Choose the correct option to complete each sentence with "will" (affirmative or negative form).
-    </p>
-  </div>
-)}
 
-            {/* Oración */}
+            {index === 0 && (
+              <div className="instruccion-box" style={{ marginBottom: "1.5rem" }}>
+                <p className="instruccion-ejercicio">
+                  Choose the correct option to complete each sentence with "will" (affirmative or negative form).
+                </p>
+              </div>
+            )}
+
             <div
               className="oracion-box"
               style={{
@@ -126,7 +125,6 @@ if (opcionSeleccionada === actual.correcta) {
               <p>{respuesta ? respuesta.split("\n").slice(1).join("\n") : actual.pregunta}</p>
             </div>
 
-            {/* Opciones */}
             {!respuesta && (
               <div
                 className="opciones-ejercicio"
@@ -151,7 +149,6 @@ if (opcionSeleccionada === actual.correcta) {
               </div>
             )}
 
-            {/* Botón Check */}
             {!respuesta && (
               <button
                 onClick={verificar}
@@ -168,17 +165,19 @@ if (opcionSeleccionada === actual.correcta) {
               </button>
             )}
 
-            {/* Feedback */}
             {respuesta && (
               <p
-                className={`respuesta-feedback ${respuesta.startsWith("✅") ? "correcta" : "incorrecta"}`}
-                style={{ fontSize: "1.3rem", margin: "1rem 0" }}
+                style={{
+                  fontSize: "1.3rem",
+                  margin: "1rem 0",
+                  fontWeight: "bold",
+                  color: respuesta.startsWith("Correct") ? "#19ba1bff" : "#ff4a4a",
+                }}
               >
                 {respuesta.split("\n")[0]}
               </p>
             )}
 
-            {/* Botones siguiente / finalizar */}
             <div
               className="botones-siguiente"
               style={{
@@ -197,6 +196,7 @@ if (opcionSeleccionada === actual.correcta) {
                   Next question
                 </button>
               )}
+
               {respuesta && index === ejercicios.length - 1 && (
                 <button
                   onClick={manejarFinalizacion}

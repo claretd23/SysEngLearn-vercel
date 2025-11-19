@@ -253,25 +253,27 @@ const ejercicios: EjercicioTF[] = useMemo(
   const actualPregunta = actual.preguntas[qIndex];
 
   const playAudio = async () => {
-    stopAudio();
+  stopAudio();
 
-    try {
-      for (let i = 0; i < actual.audio.length; i++) {
-        setSpeakerIndex(i);
+  try {
+    for (let i = 0; i < actual.audio.length; i++) {
+      // Alternar imágenes según el audio
+      setSpeakerIndex(i % actual.speakers.length);
 
-        audioRef.current.src = actual.audio[i];
-        audioRef.current.onended = null;
+      audioRef.current.src = actual.audio[i];
+      audioRef.current.onended = null;
 
-        await audioRef.current.play();
+      await audioRef.current.play();
 
-        await new Promise<void>((resolve) => {
-          audioRef.current.onended = () => resolve();
-        });
-      }
-    } catch (err) {
-      console.error("Audio playback error:", err);
+      await new Promise<void>((resolve) => {
+        audioRef.current.onended = () => resolve();
+      });
     }
-  };
+  } catch (err) {
+    console.error("Audio playback error:", err);
+  }
+};
+
 
   useEffect(() => {
     stopAudio();

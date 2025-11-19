@@ -14,7 +14,6 @@ export default function Tema2_Ej1() {
   const [finalizado, setFinalizado] = useState(false);
   const API_URL = import.meta.env.VITE_API_URL;
 
-  // Lista de ejercicios con palabras de la familia
   const ejercicios = [
     { texto: "My father’s wife is my _______.", correcta: ["mother"] },
     { texto: "My mother’s brother is my _______. ", correcta: ["uncle"] },
@@ -30,7 +29,7 @@ export default function Tema2_Ej1() {
 
   const actual = ejercicios[index];
 
-const guardarProgreso = async () => {
+  const guardarProgreso = async () => {
     const completados = JSON.parse(localStorage.getItem("ejercicios_completados") || "[]");
 
     if (!completados.includes(id)) {
@@ -65,7 +64,7 @@ const guardarProgreso = async () => {
     );
 
     if (esCorrecta) {
-      setRespuesta("Correct!");
+      setRespuesta("Correct");
       setCorrectas((prev) => prev + 1);
     } else {
       setRespuesta("Incorrect");
@@ -88,7 +87,6 @@ const guardarProgreso = async () => {
     }, 3000);
   };
 
-  // ✅ Mostrar texto reemplazando la respuesta y eliminando paréntesis
   const mostrarTexto = respuesta
     ? actual.texto
         .replace("_______", actual.correcta[0])
@@ -160,7 +158,7 @@ const guardarProgreso = async () => {
                 </button>
               </div>
             )}
-                        {/* Feedback sin emojis */}
+
             {respuesta && (
               <p
                 style={{

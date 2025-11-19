@@ -75,7 +75,7 @@ export default function Tema1_Ej2() {
 
   const actual = ejercicios[index];
 
-  const guardarProgreso = async () => {
+const guardarProgreso = async () => {
     const completados = JSON.parse(localStorage.getItem("ejercicios_completados") || "[]");
 
     if (!completados.includes(id)) {
@@ -105,12 +105,13 @@ export default function Tema1_Ej2() {
     if (!opcionSeleccionada) return;
 
     if (opcionSeleccionada === actual.correcta) {
-      setRespuesta("Correct");
+      setRespuesta(`Correct!`);
       setCorrectas((prev) => prev + 1);
     } else {
-      setRespuesta("Incorrect");
+      setRespuesta(`Incorrect.`);
     }
 
+    // Autocompletar automáticamente después de 1.2s
     setTimeout(() => {
       if (index < ejercicios.length - 1) {
         siguiente();
@@ -172,7 +173,7 @@ export default function Tema1_Ej2() {
                 whiteSpace: "pre-line",
               }}
             >
-              <p>{respuesta ? "" : actual.pregunta}</p>
+              <p>{respuesta ? respuesta.split("\n").slice(1).join("\n") : actual.pregunta}</p>
             </div>
 
             {!respuesta && (
@@ -214,7 +215,7 @@ export default function Tema1_Ej2() {
                 Check
               </button>
             )}
-
+   
             {respuesta && (
               <p
                 style={{

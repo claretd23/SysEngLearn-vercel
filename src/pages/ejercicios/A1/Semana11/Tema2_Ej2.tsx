@@ -84,10 +84,6 @@ export default function Tema2_Ej2() {
     }, 3000);
   };
 
-  const colorTexto =
-    respuesta === null ? "black" :
-    respuesta === "Correct" ? "#19ba1bff" : "#ff5c5c";
-
   const textoMostrado =
     respuesta === null
       ? actual.pregunta
@@ -108,20 +104,19 @@ export default function Tema2_Ej2() {
             className="tarjeta-ejercicio"
             style={{ textAlign: "center", fontSize: "1.3rem", padding: "2rem" }}
           >
-
             {index === 0 && (
               <div className="instruccion-box" style={{ marginBottom: "1.5rem" }}>
                 <p className="instruccion-ejercicio">Choose the correct answer.</p>
               </div>
             )}
 
-            {/* SOLO SE MUESTRA 1 VEZ */}
+            {/* Oración SIEMPRE negra */}
             <p
               style={{
                 fontSize: "1.4rem",
                 fontWeight: "bold",
                 marginBottom: "1.5rem",
-                color: colorTexto,
+                color: "black",
               }}
             >
               {textoMostrado}
@@ -138,26 +133,25 @@ export default function Tema2_Ej2() {
                   marginBottom: "1rem",
                 }}
               >
-                {["grandmother","brother","cousin","father","niece",
-                  "uncle","grandparents","daughter-in-law","son-in-law","sister-in-law"]
-                  .filter((op) => op !== undefined)
-                  .slice(index * 3, index * 3 + 3)
-                  .map((op, i) => (
-                    <button
-                      key={i}
-                      className={`opcion-btn ${
-                        opcionSeleccionada === op ? "seleccionada" : ""
-                      }`}
-                      onClick={() => setOpcionSeleccionada(op)}
-                      style={{
-                        fontSize: "1.2rem",
-                        padding: "0.8rem 1.5rem",
-                        minWidth: "200px",
-                      }}
-                    >
-                      {op}
-                    </button>
-                  ))}
+                {actual.correcta &&
+                  [actual.correcta, "x", "y"] // reemplaza con tus opciones reales según tu lógica
+                    .filter(Boolean)
+                    .map((op, i) => (
+                      <button
+                        key={i}
+                        className={`opcion-btn ${
+                          opcionSeleccionada === op ? "seleccionada" : ""
+                        }`}
+                        onClick={() => setOpcionSeleccionada(op)}
+                        style={{
+                          fontSize: "1.2rem",
+                          padding: "0.8rem 1.5rem",
+                          minWidth: "200px",
+                        }}
+                      >
+                        {op}
+                      </button>
+                    ))}
               </div>
             )}
 
@@ -182,7 +176,7 @@ export default function Tema2_Ej2() {
                 style={{
                   fontSize: "1.3rem",
                   margin: "1rem 0",
-                  color: colorTexto,
+                  color: respuesta === "Correct" ? "#19ba1bff" : "#ff5c5c",
                   fontWeight: "bold",
                 }}
               >

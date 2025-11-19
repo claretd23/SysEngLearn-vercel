@@ -7,7 +7,7 @@ export default function Tema3_Ej1() {
   const id = `${nivel}-${semana}-${tema}-${ejercicio}`;
   const navigate = useNavigate();
 
-  const [respuesta, setRespuesta] = useState<string | null>(null);
+  const [respuesta, setRespuesta] = useState<"correct" | "incorrect" | null>(null);
   const [opcionSeleccionada, setOpcionSeleccionada] = useState<string | null>(null);
   const [correctas, setCorrectas] = useState(0);
   const [index, setIndex] = useState(0);
@@ -58,14 +58,11 @@ export default function Tema3_Ej1() {
   const verificar = () => {
     if (!opcionSeleccionada) return;
 
-    const oracionCompletada = actual.pregunta.replace("____", opcionSeleccionada);
-
     if (opcionSeleccionada === actual.correcta) {
-      setRespuesta(`Correct!\n\n${oracionCompletada}`);
+      setRespuesta("correct");
       setCorrectas((prev) => prev + 1);
     } else {
-      const oracionCorrecta = actual.pregunta.replace("____", actual.correcta);
-      setRespuesta(`Incorrect.\n\n${oracionCorrecta}`);
+      setRespuesta("incorrect");
     }
   };
 
@@ -84,6 +81,11 @@ export default function Tema3_Ej1() {
       window.location.reload();
     }, 3000);
   };
+
+  // Construir la oración completada
+  const oracionMostrada = respuesta
+    ? actual.pregunta.replace("____", respuesta === "correct" ? actual.correcta : opcionSeleccionada || "")
+    : actual.pregunta;
 
   return (
     <div className="ejercicio-container">
@@ -108,6 +110,7 @@ export default function Tema3_Ej1() {
               </div>
             )}
 
+            {/* ORACIÓN SIEMPRE EN NEGRO */}
             <div
               className="oracion-box"
               style={{
@@ -119,10 +122,11 @@ export default function Tema3_Ej1() {
                 maxWidth: "600px",
                 textAlign: "left",
                 fontStyle: "italic",
+                color: "black",
                 whiteSpace: "pre-line",
               }}
             >
-              <p>{respuesta ? respuesta.split("\n").slice(1).join("\n") : actual.pregunta}</p>
+              <p>{oracionMostrada}</p>
             </div>
 
             {!respuesta && (
@@ -170,11 +174,11 @@ export default function Tema3_Ej1() {
                 style={{
                   fontSize: "1.3rem",
                   margin: "1rem 0",
-                  color: respuesta.startsWith("Correct") ? "#19ba1b" : "#ff5c5c",
+                  color: respuesta === "correct" ? "#19ba1b" : "#ff5c5c",
                   fontWeight: "bold",
                 }}
               >
-                {respuesta}
+                {respuesta === "correct" ? "Correct!" : "Incorrect."}
               </p>
             )}
 

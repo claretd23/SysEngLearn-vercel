@@ -44,9 +44,6 @@ export default function Tema3_Ej3() {
     reproducir();
   };
 
-  // ***********************
-  //     EJERCICIOS
-  // ***********************
   const ejercicios = [
     {
 

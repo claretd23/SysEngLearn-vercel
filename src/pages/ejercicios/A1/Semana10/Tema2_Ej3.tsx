@@ -92,6 +92,7 @@ export default function Tema2_Ej3() {
         "/audios/sem10/13.a.mp3", // Mom
         "/audios/sem10/13.b.mp3", // Jake
         "/audios/sem10/13.c.mp3", // Mom
+        "/audios/sem10/13.d.mp3", // Jake
       ],
       speakers: [
         { nombre: "Mom", foto: "/img/M3.png" },

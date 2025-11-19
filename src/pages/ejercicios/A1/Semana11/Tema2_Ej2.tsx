@@ -26,6 +26,7 @@ export default function Tema2_Ej2() {
     { pregunta: "Your daughter’s husband is your", opciones: ["cousin", "son-in-law", "nephew"], correcta: "son-in-law" },
     { pregunta: "Your brother’s wife is your", opciones: ["sister-in-law", "aunt", "niece"], correcta: "sister-in-law" },
   ];
+
   const actual = ejercicios[index];
 
   const guardarProgreso = async () => {
@@ -109,7 +110,6 @@ export default function Tema2_Ej2() {
               </div>
             )}
 
-            {/* Oración SIEMPRE negra */}
             <p
               style={{
                 fontSize: "1.4rem",
@@ -132,25 +132,22 @@ export default function Tema2_Ej2() {
                   marginBottom: "1rem",
                 }}
               >
-                {actual.correcta &&
-                  [actual.correcta, "x", "y"] // reemplaza con tus opciones reales según tu lógica
-                    .filter(Boolean)
-                    .map((op, i) => (
-                      <button
-                        key={i}
-                        className={`opcion-btn ${
-                          opcionSeleccionada === op ? "seleccionada" : ""
-                        }`}
-                        onClick={() => setOpcionSeleccionada(op)}
-                        style={{
-                          fontSize: "1.2rem",
-                          padding: "0.8rem 1.5rem",
-                          minWidth: "200px",
-                        }}
-                      >
-                        {op}
-                      </button>
-                    ))}
+                {actual.opciones.map((op, i) => (
+                  <button
+                    key={i}
+                    className={`opcion-btn ${
+                      opcionSeleccionada === op ? "seleccionada" : ""
+                    }`}
+                    onClick={() => setOpcionSeleccionada(op)}
+                    style={{
+                      fontSize: "1.2rem",
+                      padding: "0.8rem 1.5rem",
+                      minWidth: "200px",
+                    }}
+                  >
+                    {op}
+                  </button>
+                ))}
               </div>
             )}
 

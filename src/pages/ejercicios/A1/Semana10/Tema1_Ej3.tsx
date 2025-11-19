@@ -7,10 +7,15 @@ interface PreguntaTF {
   correcta: boolean;
 }
 
+interface Speaker {
+  nombre: string;
+  foto: string;
+}
+
 interface EjercicioTF {
   audio: string[];
-  dialogo: string;
-  preguntas: PreguntaTF[]; // 4 preguntas por diálogo
+  speakers: Speaker[];
+  preguntas: PreguntaTF[];
 }
 
 export default function Tema1_Ej3TrueFalse() {
@@ -18,12 +23,14 @@ export default function Tema1_Ej3TrueFalse() {
   const id = `${nivel}-${semana}-${tema}-${ejercicio}`;
   const navigate = useNavigate();
 
-  const [seleccion, setSeleccion] = useState<string | null>(null); // "True" | "False"
+  const [seleccion, setSeleccion] = useState<string | null>(null);
   const [respuesta, setRespuesta] = useState<string | null>(null);
   const [correctas, setCorrectas] = useState(0);
-  const [dialogIndex, setDialogIndex] = useState(0); // 0..9 (10 diálogos)
-  const [qIndex, setQIndex] = useState(0); // 0..3 (4 preguntas por diálogo)
+  const [dialogIndex, setDialogIndex] = useState(0);
+  const [qIndex, setQIndex] = useState(0);
   const [finalizado, setFinalizado] = useState(false);
+
+  const [speakerIndex, setSpeakerIndex] = useState(0);
 
   const API_URL = import.meta.env.VITE_API_URL;
   const token = localStorage.getItem("token");
@@ -35,19 +42,21 @@ export default function Tema1_Ej3TrueFalse() {
       audioRef.current.pause();
       audioRef.current.currentTime = 0;
       audioRef.current.onended = null;
-    } catch (e) {
-      /* ignore */
-    }
+    } catch (e) {}
   };
 
   const ejercicios: EjercicioTF[] = useMemo(
     () => [
       {
-        // Dialogue 1
         audio: [
           "/audios/sem10/1.a.mp3",
           "/audios/sem10/1.b.mp3",
           "/audios/sem10/1.c.mp3",
+        ],
+        speakers: [
+          { nombre: "Emma", foto: "/img/M2.png" },
+          { nombre: "Tom", foto: "/img/H2.png" },
+          { nombre: "Lisa", foto: "/img/M1.png" },
         ],
         preguntas: [
           { texto: "1. Emma wants a new phone.", correcta: true },
@@ -57,11 +66,15 @@ export default function Tema1_Ej3TrueFalse() {
         ],
       },
       {
-        // Dialogue 2
         audio: [
-          "/audios/sem10/2.a.mp3",
+          "/audios/sem10/2.a.mpmp3",
           "/audios/sem10/2.b.mp3",
           "/audios/sem10/2.c.mp3",
+        ],
+        speakers: [
+          { nombre: "Ben", foto: "/img/sem10/ben.png" },
+          { nombre: "Sophie", foto: "/img/sem10/sophie.png" },
+          { nombre: "Liam", foto: "/img/sem10/liam.png" },
         ],
         preguntas: [
           { texto: "1. Ben would like coffee.", correcta: true },
@@ -71,11 +84,15 @@ export default function Tema1_Ej3TrueFalse() {
         ],
       },
       {
-        // Dialogue 3
         audio: [
           "/audios/sem10/3.a.mp3",
           "/audios/sem10/3.b.mp3",
           "/audios/sem10/3.c.mp3",
+        ],
+        speakers: [
+          { nombre: "Nina", foto: "/img/sem10/nina.png" },
+          { nombre: "Alex", foto: "/img/sem10/alex.png" },
+          { nombre: "Eva", foto: "/img/sem10/eva.png" },
         ],
         preguntas: [
           { texto: "1. Nina wants to go to the park.", correcta: true },
@@ -84,12 +101,17 @@ export default function Tema1_Ej3TrueFalse() {
           { texto: "4. Everyone wants to stay home.", correcta: false },
         ],
       },
+
       {
-        // Dialogue 4
         audio: [
           "/audios/sem10/4.a.mp3",
           "/audios/sem10/4.b.mp3",
           "/audios/sem10/4.c.mp3",
+        ],
+        speakers: [
+          { nombre: "Jack", foto: "/img/sem10/jack.png" },
+          { nombre: "Maria", foto: "/img/sem10/maria.png" },
+          { nombre: "Leo", foto: "/img/sem10/leo.png" },
         ],
         preguntas: [
           { texto: "1. Jack would like pizza.", correcta: true },
@@ -98,12 +120,17 @@ export default function Tema1_Ej3TrueFalse() {
           { texto: "4. Maria wants a salad.", correcta: true },
         ],
       },
+
       {
-        // Dialogue 5
         audio: [
           "/audios/sem10/5.a.mp3",
           "/audios/sem10/5.b.mp3",
           "/audios/sem10/5.c.mp3",
+        ],
+        speakers: [
+          { nombre: "David", foto: "/img/sem10/david.png" },
+          { nombre: "Ella", foto: "/img/sem10/ella.png" },
+          { nombre: "Mark", foto: "/img/sem10/mark.png" },
         ],
         preguntas: [
           { texto: "1. David would like a new bike.", correcta: false },
@@ -112,12 +139,17 @@ export default function Tema1_Ej3TrueFalse() {
           { texto: "4. Everyone wants something.", correcta: false },
         ],
       },
+
       {
-        // Dialogue 6
         audio: [
           "/audios/sem10/6.a.mp3",
           "/audios/sem10/6.b.mp3",
           "/audios/sem10/6.c.mp3",
+        ],
+        speakers: [
+          { nombre: "Lucy", foto: "/img/sem10/lucy.png" },
+          { nombre: "Tom", foto: "/img/sem10/tom.png" },
+          { nombre: "Anna", foto: "/img/sem10/anna.png" },
         ],
         preguntas: [
           { texto: "1. Lucy wants to watch a movie.", correcta: true },
@@ -126,12 +158,17 @@ export default function Tema1_Ej3TrueFalse() {
           { texto: "4. Lucy and Tom want the same thing.", correcta: false },
         ],
       },
+
       {
-        // Dialogue 7
         audio: [
           "/audios/sem10/7.a.mp3",
           "/audios/sem10/7.b.mp3",
           "/audios/sem10/7.c.mp3",
+        ],
+        speakers: [
+          { nombre: "Carlos", foto: "/img/sem10/carlos.png" },
+          { nombre: "Mia", foto: "/img/sem10/mia.png" },
+          { nombre: "Ben", foto: "/img/sem10/ben.png" },
         ],
         preguntas: [
           { texto: "1. Carlos would like tea.", correcta: true },
@@ -140,12 +177,17 @@ export default function Tema1_Ej3TrueFalse() {
           { texto: "4. Everyone wants coffee.", correcta: false },
         ],
       },
+
       {
-        // Dialogue 8
         audio: [
           "/audios/sem10/8.a.mp3",
           "/audios/sem10/8.b.mp3",
           "/audios/sem10/8.c.mp3",
+        ],
+        speakers: [
+          { nombre: "Ella", foto: "/img/sem10/ella.png" },
+          { nombre: "Sam", foto: "/img/sem10/sam.png" },
+          { nombre: "Olivia", foto: "/img/sem10/olivia.png" },
         ],
         preguntas: [
           { texto: "1. Ella wants a jacket.", correcta: true },
@@ -154,12 +196,17 @@ export default function Tema1_Ej3TrueFalse() {
           { texto: "4. Everyone wants something new.", correcta: true },
         ],
       },
+
       {
-        // Dialogue 9
         audio: [
           "/audios/sem10/9.a.mp3",
           "/audios/sem10/9.b.mp3",
           "/audios/sem10/9.c.mp3",
+        ],
+        speakers: [
+          { nombre: "Jack", foto: "/img/sem10/jack.png" },
+          { nombre: "Emma", foto: "/img/sem10/emma.png" },
+          { nombre: "Noah", foto: "/img/sem10/noah.png" },
         ],
         preguntas: [
           { texto: "1. Jack would like pasta.", correcta: true },
@@ -168,12 +215,17 @@ export default function Tema1_Ej3TrueFalse() {
           { texto: "4. Everyone wants pasta.", correcta: false },
         ],
       },
+
       {
-        // Dialogue 10
         audio: [
           "/audios/sem10/10.a.mp3",
           "/audios/sem10/10.b.mp3",
           "/audios/sem10/10.c.mp3",
+        ],
+        speakers: [
+          { nombre: "Sophie", foto: "/img/sem10/sophie.png" },
+          { nombre: "Ryan", foto: "/img/sem10/ryan.png" },
+          { nombre: "Liam", foto: "/img/sem10/liam.png" },
         ],
         preguntas: [
           { texto: "1. Sophie wants to visit her grandparents.", correcta: true },
@@ -193,11 +245,14 @@ export default function Tema1_Ej3TrueFalse() {
     stopAudio();
 
     try {
-      for (let src of actual.audio) {
-        audioRef.current.src = src;
-        // Important: remove previous onended to avoid multiple resolves
+      for (let i = 0; i < actual.audio.length; i++) {
+        setSpeakerIndex(i);
+
+        audioRef.current.src = actual.audio[i];
         audioRef.current.onended = null;
+
         await audioRef.current.play();
+
         await new Promise<void>((resolve) => {
           audioRef.current.onended = () => resolve();
         });
@@ -207,12 +262,9 @@ export default function Tema1_Ej3TrueFalse() {
     }
   };
 
-// Detener el audio cuando cambie el diálogo o la pregunta
   useEffect(() => {
     stopAudio();
-
   }, [dialogIndex, qIndex]);
-
 
   useEffect(() => {
     return () => stopAudio();
@@ -267,7 +319,6 @@ export default function Tema1_Ej3TrueFalse() {
     if (qIndex + 1 < actual.preguntas.length) {
       setQIndex(qIndex + 1);
     } else {
-      // pasar al siguiente diálogo
       if (dialogIndex + 1 < ejercicios.length) {
         setDialogIndex(dialogIndex + 1);
         setQIndex(0);
@@ -305,7 +356,6 @@ export default function Tema1_Ej3TrueFalse() {
             className="tarjeta-ejercicio"
             style={{ textAlign: "center", fontSize: "1.05rem", padding: "1.5rem" }}
           >
-            {/* Instructions shown once */}
             {dialogIndex === 0 && qIndex === 0 && (
               <div className="instruccion-box" style={{ marginBottom: "1rem" }}>
                 <p className="instruccion-ejercicio">
@@ -315,18 +365,29 @@ export default function Tema1_Ej3TrueFalse() {
               </div>
             )}
 
-           {qIndex === 0 && (
-  <div style={{ margin: "0.5rem 0" }}>
-    <button
-      className="btn-audio"
-      style={{ fontSize: "1.6rem", padding: "0.4rem 0.8rem" }}
-      onClick={playAudio}
-    >
-      🔊
-    </button>
-  </div>
-)}
+            {qIndex === 0 && (
+              <div style={{ margin: "0.5rem 0" }}>
+                <button
+                  className="btn-audio"
+                  style={{ fontSize: "1.6rem", padding: "0.4rem 0.8rem" }}
+                  onClick={playAudio}
+                >
+                  🔊
+                </button>
+              </div>
+            )}
 
+            {/* FOTO + NOMBRE DEL HABLANTE */}
+            <div style={{ margin: "1rem 0" }}>
+              <img
+                src={actual.speakers[speakerIndex].foto}
+                alt={actual.speakers[speakerIndex].nombre}
+                style={{ width: "140px", borderRadius: "12px", marginBottom: "0.5rem" }}
+              />
+              <p style={{ fontSize: "1.1rem", fontWeight: "600" }}>
+                ({actual.speakers[speakerIndex].nombre})
+              </p>
+            </div>
 
             <div
               className="pregunta-box"
@@ -391,29 +452,31 @@ export default function Tema1_Ej3TrueFalse() {
                 </p>
               )}
 
-              {respuesta && (dialogIndex * 4 + qIndex + 1) < ejercicios.length * 4 && (
-                <div style={{ marginTop: "0.6rem" }}>
-                  <button
-                    onClick={siguiente}
-                    className="ejercicio-btn"
-                    style={{ fontSize: "1.05rem", padding: "0.6rem 1.4rem" }}
-                  >
-                    Next
-                  </button>
-                </div>
-              )}
+              {respuesta &&
+                (dialogIndex * 4 + qIndex + 1) < ejercicios.length * 4 && (
+                  <div style={{ marginTop: "0.6rem" }}>
+                    <button
+                      onClick={siguiente}
+                      className="ejercicio-btn"
+                      style={{ fontSize: "1.05rem", padding: "0.6rem 1.4rem" }}
+                    >
+                      Next
+                    </button>
+                  </div>
+                )}
 
-              {respuesta && (dialogIndex * 4 + qIndex + 1) === ejercicios.length * 4 && (
-                <div style={{ marginTop: "0.6rem" }}>
-                  <button
-                    onClick={finalizar}
-                    className="ejercicio-btn"
-                    style={{ fontSize: "1.05rem", padding: "0.6rem 1.4rem" }}
-                  >
-                    Finish
-                  </button>
-                </div>
-              )}
+              {respuesta &&
+                (dialogIndex * 4 + qIndex + 1) === ejercicios.length * 4 && (
+                  <div style={{ marginTop: "0.6rem" }}>
+                    <button
+                      onClick={finalizar}
+                      className="ejercicio-btn"
+                      style={{ fontSize: "1.05rem", padding: "0.6rem 1.4rem" }}
+                    >
+                      Finish
+                    </button>
+                  </div>
+                )}
             </div>
           </section>
         </>

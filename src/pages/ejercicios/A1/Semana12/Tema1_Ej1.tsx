@@ -29,7 +29,7 @@ export default function Tema1_Ej1() {
 
   const actual = ejercicios[index];
 
-const guardarProgreso = async () => {
+  const guardarProgreso = async () => {
     const completados = JSON.parse(localStorage.getItem("ejercicios_completados") || "[]");
 
     if (!completados.includes(id)) {
@@ -58,11 +58,14 @@ const guardarProgreso = async () => {
   const verificar = () => {
     if (!respuesta) return;
 
-    if (respuesta.trim().toLowerCase() === actual.correcta.toLowerCase()) {
-      setFeedback(`Correct! ${actual.hora} → ${actual.correcta}`);
+    const usuario = respuesta.trim().toLowerCase();
+    const correcta = actual.correcta.toLowerCase();
+
+    if (usuario === correcta) {
+      setFeedback("Correct");
       setCorrectas((prev) => prev + 1);
     } else {
-      setFeedback(`Incorrect. ${actual.hora} → ${actual.correcta}`);
+      setFeedback("Incorrect");
     }
   };
 
@@ -75,6 +78,7 @@ const guardarProgreso = async () => {
   const manejarFinalizacion = async () => {
     await guardarProgreso();
     setFinalizado(true);
+
     setTimeout(() => {
       navigate(`/inicio/${nivel}`);
       window.location.reload();
@@ -96,7 +100,7 @@ const guardarProgreso = async () => {
             className="tarjeta-ejercicio"
             style={{ textAlign: "center", fontSize: "1.3rem", padding: "2rem" }}
           >
-            {/* Instrucción (solo en la primera pregunta) */}
+            {/* Instrucción */}
             {index === 0 && (
               <div className="instruccion-box" style={{ marginBottom: "1.5rem" }}>
                 <p className="instruccion-ejercicio">
@@ -105,7 +109,7 @@ const guardarProgreso = async () => {
               </div>
             )}
 
-            {/* Hora */}
+            {/* Hora mostrada */}
             <div
               className="oracion-box"
               style={{
@@ -117,12 +121,13 @@ const guardarProgreso = async () => {
                 maxWidth: "600px",
                 textAlign: "center",
                 fontStyle: "italic",
+                color: "black",
               }}
             >
               <p>{actual.hora}</p>
             </div>
 
-            {/* Input de respuesta */}
+            {/* Input */}
             {!feedback && (
               <input
                 type="text"
@@ -159,44 +164,53 @@ const guardarProgreso = async () => {
               </button>
             )}
 
-            {/* Feedback */}
+            {/* Feedback (Correct / Incorrect) */}
             {feedback && (
               <p
-                className={`respuesta-feedback ${feedback.startsWith("✅") ? "correcta" : "incorrecta"}`}
-                style={{ fontSize: "1.3rem", margin: "1rem 0" }}
+                style={{
+                  fontSize: "1.3rem",
+                  margin: "1rem 0",
+                  color: feedback === "Correct" ? "#19ba1bff" : "#ff5c5c",
+                  fontWeight: "bold",
+                }}
               >
                 {feedback}
               </p>
             )}
 
-            {/* Feedback sin emojis */}
-            {respuesta && (
-              <p
-                style={{
-                  fontSize: "1.3rem",
-                  margin: "1rem 0",
-                  color: respuesta === "Correct" ? "#19ba1bff" : "#ff5c5c",
-                  fontWeight: "bold",
-                }}
-              >
-                {respuesta}
+            {/* Mostrar la respuesta correcta siempre en negro */}
+            {feedback && (
+              <p style={{ fontSize: "1.2rem", color: "black", marginTop: "0.5rem" }}>
+                {actual.hora} → {actual.correcta}
               </p>
             )}
-            {/* Botones siguiente / finalizar */}
+
+            {/* Botones */}
             {feedback && index < ejercicios.length - 1 && (
               <button
                 onClick={siguiente}
                 className="ejercicio-btn"
-                style={{ fontSize: "1.3rem", padding: "0.8rem 2rem", borderRadius: "8px", marginBottom: "1rem" }}
+                style={{
+                  fontSize: "1.3rem",
+                  padding: "0.8rem 2rem",
+                  borderRadius: "8px",
+                  marginTop: "1rem",
+                }}
               >
                 Next question
               </button>
             )}
+
             {feedback && index === ejercicios.length - 1 && (
               <button
                 onClick={manejarFinalizacion}
                 className="ejercicio-btn"
-                style={{ fontSize: "1.3rem", padding: "0.8rem 2rem", borderRadius: "8px", marginBottom: "1rem" }}
+                style={{
+                  fontSize: "1.3rem",
+                  padding: "0.8rem 2rem",
+                  borderRadius: "8px",
+                  marginTop: "1rem",
+                }}
               >
                 Finish
               </button>

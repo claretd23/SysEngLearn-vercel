@@ -60,6 +60,7 @@ const ejercicios: EjercicioTF[] = useMemo(
         { nombre: "Anna", foto: "/img/M1.png" },
         { nombre: "Tom", foto: "/img/H1.png" },
       ],
+      speakerOrder: [0, 1, 0, 1],
       preguntas: [
         { texto: "1. Tom is watching a movie.", correcta: true },
         { texto: "2. Anna is cooking spaghetti.", correcta: true },
@@ -79,6 +80,7 @@ const ejercicios: EjercicioTF[] = useMemo(
         { nombre: "Ben", foto: "/img/H2.png" },
         { nombre: "Mia", foto: "/img/M2.png" },
       ],
+      speakerOrder: [0, 1, 0],
       preguntas: [
         { texto: "1. Mia is studying.", correcta: true },
         { texto: "2. Her brother is studying too.", correcta: false },
@@ -99,6 +101,7 @@ const ejercicios: EjercicioTF[] = useMemo(
         { nombre: "Mom", foto: "/img/M3.png" },
         { nombre: "Jake", foto: "/img/H3.png" },
       ],
+      speakerOrder: [0, 1, 0, 1],
       preguntas: [
         { texto: "1. Jake is eating breakfast.", correcta: true },
         { texto: "2. Jake is drinking milk.", correcta: false },
@@ -118,6 +121,7 @@ const ejercicios: EjercicioTF[] = useMemo(
         { nombre: "Lisa", foto: "/img/M4.png" },
         { nombre: "Alex", foto: "/img/H4.png" },
       ],
+      speakerOrder: [0, 1, 0],
       preguntas: [
         { texto: "1. The kids are running.", correcta: true },
         { texto: "2. The dog is sleeping.", correcta: false },
@@ -137,6 +141,7 @@ const ejercicios: EjercicioTF[] = useMemo(
         { nombre: "Teacher", foto: "/img/H5.png" },
         { nombre: "Emma", foto: "/img/M5.png" },
       ],
+      speakerOrder: [0, 1, 0],
       preguntas: [
         { texto: "1. Emma is writing.", correcta: true },
         { texto: "2. Lucas is talking.", correcta: true },
@@ -151,12 +156,12 @@ const ejercicios: EjercicioTF[] = useMemo(
         "/audios/sem10/16.a.mp3",
         "/audios/sem10/16.b.mp3",
         "/audios/sem10/16.c.mp3",
-        "/audios/sem10/16.d.mp3",
       ],
       speakers: [
         { nombre: "David", foto: "/img/H6.png" },
         { nombre: "Olivia", foto: "/img/M6.png" },
       ],
+      speakerOrder: [0, 1, 0],
       preguntas: [
         { texto: "1. Olivia is cleaning her room.", correcta: true },
         { texto: "2. David is helping in the kitchen.", correcta: true },
@@ -177,6 +182,7 @@ const ejercicios: EjercicioTF[] = useMemo(
         { nombre: "Mark", foto: "/img/H7.png" },
         { nombre: "Liam", foto: "/img/H8.png" },
       ],
+      speakerOrder: [0, 1, 0, 1],
       preguntas: [
         { texto: "1. Sophie is talking on the phone.", correcta: true },
         { texto: "2. Emily is reading.", correcta: true },
@@ -192,21 +198,22 @@ const ejercicios: EjercicioTF[] = useMemo(
         "/audios/sem10/18.b.mp3",
         "/audios/sem10/18.c.mp3",
         "/audios/sem10/18.d.mp3",
-      ],
-      speakers: [
-        { nombre: "Carlos", foto: "/img/H1.png" },
-        { nombre: "Maria", foto: "/img/M1.png" },
-      ],
-      preguntas: [
-        { texto: "1. Carlos and Maria are eating soup.", correcta: true },
-        { texto: "2. Maria is drinking juice.", correcta: false },
-        { texto: "3. Maria is drinking water.", correcta: true },
-        { texto: "4. Carlos is not eating anything.", correcta: false },
-      ],
-    },
-
+  ],
+  speakers: [
+    { nombre: "Waiter", foto: "/img/waiter.png" },
+    { nombre: "Carlos", foto: "/img/carlos.png" },
+    { nombre: "Maria", foto: "/img/maria.png" }
+  ],
+  speakerOrder: [0, 1, 0, 2],
+  preguntas: [
+    { texto: "Carlos and Maria are eating soup.", correcta: true },
+    { texto: "Maria is drinking juice.", correcta: false },
+    { texto: "Maria is drinking water.", correcta: true },
+    { texto: "Carlos is not eating anything.", correcta: false }
+  ]
+},
     // DIALOGUE 9 – Sophie y Tom
-    {
+{
       audio: [
         "/audios/sem10/19.a.mp3",
         "/audios/sem10/19.b.mp3",
@@ -217,6 +224,7 @@ const ejercicios: EjercicioTF[] = useMemo(
         { nombre: "Sophie", foto: "/img/M2.png" },
         { nombre: "Tom", foto: "/img/H3.png" },
       ],
+      speakerOrder: [0, 1, 0, 1],
       preguntas: [
         { texto: "1. It’s raining.", correcta: true },
         { texto: "2. The children are inside.", correcta: false },
@@ -237,6 +245,7 @@ const ejercicios: EjercicioTF[] = useMemo(
         { nombre: "Dad", foto: "/img/H4.png" },
         { nombre: "Ben", foto: "/img/H2.png" },
       ],
+      speakerOrder: [0, 1, 0, 1],
       preguntas: [
         { texto: "1. Ben is drawing.", correcta: true },
         { texto: "2. Ben’s sister is drawing too.", correcta: false },
@@ -252,13 +261,14 @@ const ejercicios: EjercicioTF[] = useMemo(
   const actual = ejercicios[dialogIndex];
   const actualPregunta = actual.preguntas[qIndex];
 
-  const playAudio = async () => {
+const playAudio = async () => {
   stopAudio();
 
   try {
     for (let i = 0; i < actual.audio.length; i++) {
-      // Alternar imágenes según el audio
-      setSpeakerIndex(i % actual.speakers.length);
+      
+      // Elegir quién habla en este audio
+      setSpeakerIndex(actual.speakerOrder[i] ?? 0);
 
       audioRef.current.src = actual.audio[i];
       audioRef.current.onended = null;
@@ -273,6 +283,7 @@ const ejercicios: EjercicioTF[] = useMemo(
     console.error("Audio playback error:", err);
   }
 };
+
 
 
   useEffect(() => {

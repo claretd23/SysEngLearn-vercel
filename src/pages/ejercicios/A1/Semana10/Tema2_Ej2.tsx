@@ -15,9 +15,12 @@ export default function Tema2_Ej2() {
 
   const [index, setIndex] = useState(0);
   const [opcionSeleccionada, setOpcionSeleccionada] = useState<string | null>(null);
-  const [respuesta, setRespuesta] = useState<string | null>(null);
+  const [respuestaCorrecta, setRespuestaCorrecta] = useState<boolean | null>(null);
+  const [oracionFinal, setOracionFinal] = useState("");
   const [correctas, setCorrectas] = useState(0);
-  const [finalizado, setFinalizado] = useState(false);  const API_URL = import.meta.env.VITE_API_URL;
+  const [finalizado, setFinalizado] = useState(false);
+
+  const API_URL = import.meta.env.VITE_API_URL;
 
   const ejercicios: EjercicioOpciones[] = [
     { pregunta: "Anna: Hi, Tom! What _______  now?", opciones: ["are you doing", "do you do", "doing"], correcta: "are you doing" },
@@ -34,18 +37,36 @@ export default function Tema2_Ej2() {
 
   const actual = ejercicios[index];
 
-const guardarProgreso = async () => {
-    const completados = JSON.parse(localStorage.getItem("ejercicios_completados") || "[]");
+  const verificar = () => {
+    if (!opcionSeleccionada) return;
 
-    if (!completados.includes(id)) {
-      completados.push(id);
-      localStorage.setItem("ejercicios_completados", JSON.stringify(completados));
-    }
+    const esCorrecta = opcionSeleccionada === actual.correcta;
+    setRespuestaCorrecta(esCorrecta);
 
+    const autocompletada = actual.pregunta.replace("_______", esCorrecta ? opcionSeleccionada : actual.correcta);
+    setOracionFinal(autocompletada);
+
+    if (esCorrecta) setCorrectas(prev => prev + 1);
+  };
+
+  const siguiente = () => {
+    setRespuestaCorrecta(null);
+    setOpcionSeleccionada(null);
+    setOracionFinal("");
+    setIndex(index + 1);
+  };
+
+  const manejarFinalizacion = async () => {
     try {
-      const token = localStorage.getItem("token");
+      // Solo guardar localStorage sin repetir
+      const completados = JSON.parse(localStorage.getItem("ejercicios_completados") || "[]");
+      if (!completados.includes(id)) {
+        completados.push(id);
+        localStorage.setItem("ejercicios_completados", JSON.stringify(completados));
+      }
 
-      const res = await fetch(`${API_URL}/api/progreso`, {
+      const token = localStorage.getItem("token");
+      await fetch(`${API_URL}/api/progreso`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -53,33 +74,10 @@ const guardarProgreso = async () => {
         },
         body: JSON.stringify({ nivel, semana, tema, ejercicio }),
       });
-
-      if (!res.ok) console.error("Error al guardar progreso:", res.statusText);
-    } catch (error) {
-      console.error("Error al guardar el progreso:", error);
+    } catch (err) {
+      console.error(err);
     }
-  };
 
-  const verificar = () => {
-    if (!opcionSeleccionada) return;
-
-    if (opcionSeleccionada === actual.correcta) {
-      setRespuesta(`Correct!\n\n${actual.pregunta.replace("_______", opcionSeleccionada)}`);
-      setCorrectas((prev) => prev + 1);
-    } else {
-      setRespuesta(`Incorrect.\n\n${actual.pregunta.replace("_______", actual.correcta)}`);
-      setOpcionSeleccionada(actual.correcta);
-    }
-  };
-
-  const siguiente = () => {
-    setRespuesta(null);
-    setOpcionSeleccionada(null);
-    setIndex(index + 1);
-  };
-
-  const manejarFinalizacion = async () => {
-    await guardarProgreso();
     setFinalizado(true);
     setTimeout(() => {
       navigate(`/inicio/${nivel}`);
@@ -98,10 +96,8 @@ const guardarProgreso = async () => {
             </p>
           </header>
 
-          <section
-            className="tarjeta-ejercicio"
-            style={{ textAlign: "center", fontSize: "1.3rem", padding: "2rem" }}
-          >
+          <section className="tarjeta-ejercicio" style={{ textAlign: "center", fontSize: "1.3rem", padding: "2rem" }}>
+
             {index === 0 && (
               <div className="instruccion-box" style={{ marginBottom: "1.5rem" }}>
                 <p className="instruccion-ejercicio" style={{ fontSize: "1.3rem" }}>
@@ -121,23 +117,13 @@ const guardarProgreso = async () => {
                 maxWidth: "650px",
                 textAlign: "left",
                 fontStyle: "italic",
-                whiteSpace: "pre-line",
               }}
             >
-              <p>{respuesta ? respuesta.split("\n").slice(1).join("\n") : actual.pregunta}</p>
+              <p>{oracionFinal || actual.pregunta}</p>
             </div>
 
-            {!respuesta && (
-              <div
-                className="opciones-ejercicio"
-                style={{
-                  display: "flex",
-                  flexDirection: "column",
-                  gap: "1rem",
-                  alignItems: "center",
-                  marginBottom: "1rem",
-                }}
-              >
+            {!respuestaCorrecta && respuestaCorrecta !== false && (
+              <div className="opciones-ejercicio" style={{ display: "flex", flexDirection: "column", gap: "1rem", alignItems: "center" }}>
                 {actual.opciones.map((op, i) => (
                   <button
                     key={i}
@@ -151,64 +137,43 @@ const guardarProgreso = async () => {
               </div>
             )}
 
-            {!respuesta && (
+            {respuestaCorrecta === null && (
               <button
                 onClick={verificar}
                 className="ejercicio-btn"
                 disabled={!opcionSeleccionada}
-                style={{
-                  fontSize: "1.3rem",
-                  padding: "0.8rem 2rem",
-                  marginBottom: "1rem",
-                  borderRadius: "8px",
-                }}
+                style={{ fontSize: "1.3rem", padding: "0.8rem 2rem", marginTop: "1rem" }}
               >
                 Check
               </button>
             )}
 
-            {/* Feedback sin emojis */}
-            {respuesta && (
+            {respuestaCorrecta !== null && (
               <p
                 style={{
                   fontSize: "1.3rem",
                   margin: "1rem 0",
-                  color: respuesta === "Correct" ? "#19ba1bff" : "#ff5c5c",
                   fontWeight: "bold",
+                  color: respuestaCorrecta ? "green" : "red",
                 }}
               >
-                {respuesta}
+                {respuestaCorrecta ? "Correct" : "Incorrect"}
               </p>
             )}
 
-            <div
-              className="botones-siguiente"
-              style={{
-                display: "flex",
-                justifyContent: "center",
-                gap: "1rem",
-                marginTop: "1rem",
-              }}
-            >
-              {respuesta && index < ejercicios.length - 1 && (
-                <button
-                  onClick={siguiente}
-                  className="ejercicio-btn"
-                  style={{ fontSize: "1.3rem", padding: "0.8rem 2rem", borderRadius: "8px" }}
-                >
-                  Next question
-                </button>
-              )}
-              {respuesta && index === ejercicios.length - 1 && (
-                <button
-                  onClick={manejarFinalizacion}
-                  className="ejercicio-btn"
-                  style={{ fontSize: "1.3rem", padding: "0.8rem 2rem", borderRadius: "8px" }}
-                >
-                  Finish
-                </button>
-              )}
-            </div>
+            {respuestaCorrecta !== null && (
+              <div style={{ marginTop: "1rem" }}>
+                {index < ejercicios.length - 1 ? (
+                  <button onClick={siguiente} className="ejercicio-btn" style={{ padding: "0.8rem 2rem" }}>
+                    Next question
+                  </button>
+                ) : (
+                  <button onClick={manejarFinalizacion} className="ejercicio-btn" style={{ padding: "0.8rem 2rem" }}>
+                    Finish
+                  </button>
+                )}
+              </div>
+            )}
           </section>
         </>
       ) : (

@@ -35,7 +35,7 @@ export default function Tema1_Ej1() {
 
   const actual = ejercicios[index];
 
-const guardarProgreso = async () => {
+  const guardarProgreso = async () => {
     const completados = JSON.parse(localStorage.getItem("ejercicios_completados") || "[]");
 
     if (!completados.includes(id)) {
@@ -61,19 +61,14 @@ const guardarProgreso = async () => {
     }
   };
 
-  const reemplazarEspacio = (texto: string, palabra: string) => {
-    // Reemplaza cualquier cantidad de guiones bajos o espacios
-    return texto.replace(/_+/g, palabra).replace(/ {3,}/g, palabra);
-  };
-
   const verificar = () => {
     if (!opcionSeleccionada) return;
 
     if (opcionSeleccionada === actual.correcta) {
-      setRespuesta(`Correct!\n\n${reemplazarEspacio(actual.pregunta, opcionSeleccionada)}`);
+      setRespuesta("Correct");
       setCorrectas((prev) => prev + 1);
     } else {
-      setRespuesta(`Incorrect.\n\n${reemplazarEspacio(actual.pregunta, actual.correcta)}`);
+      setRespuesta("Incorrect");
     }
   };
 
@@ -110,6 +105,7 @@ const guardarProgreso = async () => {
               </div>
             )}
 
+            {/* ORACIÓN FINAL O ORIGINAL */}
             <div
               className="oracion-box"
               style={{
@@ -124,9 +120,16 @@ const guardarProgreso = async () => {
                 whiteSpace: "pre-line",
               }}
             >
-              <p>{respuesta ? respuesta.split("\n").slice(1).join("\n") : actual.pregunta}</p>
+              <p>
+                {respuesta === null
+                  ? actual.pregunta
+                  : respuesta === "Correct"
+                  ? actual.pregunta.replace(/_+/g, actual.correcta)
+                  : actual.pregunta.replace(/_+/g, actual.correcta)}
+              </p>
             </div>
 
+            {/* OPCIONES */}
             {!respuesta && (
               <div
                 className="opciones-ejercicio"
@@ -151,6 +154,7 @@ const guardarProgreso = async () => {
               </div>
             )}
 
+            {/* BOTÓN CHECK */}
             {!respuesta && (
               <button
                 onClick={verificar}
@@ -167,7 +171,7 @@ const guardarProgreso = async () => {
               </button>
             )}
 
-            {/* Feedback sin emojis */}
+            {/* FEEDBACK */}
             {respuesta && (
               <p
                 style={{
@@ -177,10 +181,11 @@ const guardarProgreso = async () => {
                   fontWeight: "bold",
                 }}
               >
-                {respuesta}
+                {respuesta === "Correct" ? "Correct!" : "Incorrect."}
               </p>
             )}
 
+            {/* SIGUIENTE / FIN */}
             <div className="botones-siguiente" style={{ display: "flex", justifyContent: "center", gap: "1rem", marginTop: "1rem" }}>
               {respuesta && index < ejercicios.length - 1 && (
                 <button
@@ -191,6 +196,7 @@ const guardarProgreso = async () => {
                   Next question
                 </button>
               )}
+
               {respuesta && index === ejercicios.length - 1 && (
                 <button
                   onClick={manejarFinalizacion}

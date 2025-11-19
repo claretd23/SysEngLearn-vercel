@@ -87,7 +87,7 @@ export default function Tema2_Ej2() {
   const textoMostrado =
     respuesta === null
       ? actual.pregunta
-      : actual.pregunta.replace("_______", actual.correcta);
+      : `${actual.pregunta} → ${actual.correcta}`;
 
   return (
     <div className="ejercicio-container">

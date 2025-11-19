@@ -75,7 +75,7 @@ export default function Tema1_Ej2() {
 
   const actual = ejercicios[index];
 
-const guardarProgreso = async () => {
+  const guardarProgreso = async () => {
     const completados = JSON.parse(localStorage.getItem("ejercicios_completados") || "[]");
 
     if (!completados.includes(id)) {
@@ -105,13 +105,12 @@ const guardarProgreso = async () => {
     if (!opcionSeleccionada) return;
 
     if (opcionSeleccionada === actual.correcta) {
-      setRespuesta(`Correct!\n\n${actual.correcta}`);
+      setRespuesta("Correct");
       setCorrectas((prev) => prev + 1);
     } else {
-      setRespuesta(`Incorrect.\n\n${actual.correcta}`);
+      setRespuesta("Incorrect");
     }
 
-    // Autocompletar automáticamente después de 1.2s
     setTimeout(() => {
       if (index < ejercicios.length - 1) {
         siguiente();
@@ -173,7 +172,7 @@ const guardarProgreso = async () => {
                 whiteSpace: "pre-line",
               }}
             >
-              <p>{respuesta ? respuesta.split("\n").slice(1).join("\n") : actual.pregunta}</p>
+              <p>{respuesta ? "" : actual.pregunta}</p>
             </div>
 
             {!respuesta && (
@@ -215,7 +214,7 @@ const guardarProgreso = async () => {
                 Check
               </button>
             )}
-            {/* Feedback sin emojis */}
+
             {respuesta && (
               <p
                 style={{

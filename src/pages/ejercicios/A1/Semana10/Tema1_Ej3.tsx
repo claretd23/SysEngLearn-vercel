@@ -72,9 +72,9 @@ export default function Tema1_Ej3TrueFalse() {
           "/audios/sem10/2.c.mp3",
         ],
         speakers: [
-          { nombre: "Ben", foto: "/img/sem10/ben.png" },
-          { nombre: "Sophie", foto: "/img/sem10/sophie.png" },
-          { nombre: "Liam", foto: "/img/sem10/liam.png" },
+          { nombre: "Ben", foto: "/img/H1.png" },
+          { nombre: "Sophie", foto: "/img/M3.png" },
+          { nombre: "Liam", foto: "/img/H3.png"},
         ],
         preguntas: [
           { texto: "1. Ben would like coffee.", correcta: true },
@@ -90,9 +90,9 @@ export default function Tema1_Ej3TrueFalse() {
           "/audios/sem10/3.c.mp3",
         ],
         speakers: [
-          { nombre: "Nina", foto: "/img/sem10/nina.png" },
-          { nombre: "Alex", foto: "/img/sem10/alex.png" },
-          { nombre: "Eva", foto: "/img/sem10/eva.png" },
+          { nombre: "Nina", foto: "/img/M4.png" },
+          { nombre: "Alex", foto: "/img/H4.png" },
+          { nombre: "Eva", foto: "/img/M5.png" },
         ],
         preguntas: [
           { texto: "1. Nina wants to go to the park.", correcta: true },
@@ -109,9 +109,9 @@ export default function Tema1_Ej3TrueFalse() {
           "/audios/sem10/4.c.mp3",
         ],
         speakers: [
-          { nombre: "Jack", foto: "/img/sem10/jack.png" },
-          { nombre: "Maria", foto: "/img/sem10/maria.png" },
-          { nombre: "Leo", foto: "/img/sem10/leo.png" },
+          { nombre: "Jack", foto: "/img/H5.png" },
+          { nombre: "Maria", foto: "/img/M6.png" },
+          { nombre: "Leo", foto: "/img/H6.png" },
         ],
         preguntas: [
           { texto: "1. Jack would like pizza.", correcta: true },
@@ -128,9 +128,9 @@ export default function Tema1_Ej3TrueFalse() {
           "/audios/sem10/5.c.mp3",
         ],
         speakers: [
-          { nombre: "David", foto: "/img/sem10/david.png" },
-          { nombre: "Ella", foto: "/img/sem10/ella.png" },
-          { nombre: "Mark", foto: "/img/sem10/mark.png" },
+          { nombre: "David", foto:"/img/H7.png" },
+          { nombre: "Ella", foto: "/img/M7.png" },
+          { nombre: "Mark", foto: "/img/H1.png" },
         ],
         preguntas: [
           { texto: "1. David would like a new bike.", correcta: false },
@@ -147,9 +147,9 @@ export default function Tema1_Ej3TrueFalse() {
           "/audios/sem10/6.c.mp3",
         ],
         speakers: [
-          { nombre: "Lucy", foto: "/img/sem10/lucy.png" },
-          { nombre: "Tom", foto: "/img/sem10/tom.png" },
-          { nombre: "Anna", foto: "/img/sem10/anna.png" },
+          { nombre: "Lucy", foto:"/img/M8.png" },
+          { nombre: "Tom", foto: "/img/H4.png" },
+          { nombre: "Anna", foto: "/img/M2.png" },
         ],
         preguntas: [
           { texto: "1. Lucy wants to watch a movie.", correcta: true },
@@ -166,9 +166,9 @@ export default function Tema1_Ej3TrueFalse() {
           "/audios/sem10/7.c.mp3",
         ],
         speakers: [
-          { nombre: "Carlos", foto: "/img/sem10/carlos.png" },
-          { nombre: "Mia", foto: "/img/sem10/mia.png" },
-          { nombre: "Ben", foto: "/img/sem10/ben.png" },
+          { nombre: "Carlos", foto:"/img/H2.png" },
+          { nombre: "Mia", foto: "/img/M4.png" },
+          { nombre: "Ben", foto: "/img/H6.png" },
         ],
         preguntas: [
           { texto: "1. Carlos would like tea.", correcta: true },
@@ -185,9 +185,9 @@ export default function Tema1_Ej3TrueFalse() {
           "/audios/sem10/8.c.mp3",
         ],
         speakers: [
-          { nombre: "Ella", foto: "/img/sem10/ella.png" },
-          { nombre: "Sam", foto: "/img/sem10/sam.png" },
-          { nombre: "Olivia", foto: "/img/sem10/olivia.png" },
+          { nombre: "Ella", foto: "/img/M6.png" },
+          { nombre: "Sam", foto: "/img/M1.png" },
+          { nombre: "Olivia", foto: "/img/M8.png" },
         ],
         preguntas: [
           { texto: "1. Ella wants a jacket.", correcta: true },
@@ -204,9 +204,9 @@ export default function Tema1_Ej3TrueFalse() {
           "/audios/sem10/9.c.mp3",
         ],
         speakers: [
-          { nombre: "Jack", foto: "/img/sem10/jack.png" },
-          { nombre: "Emma", foto: "/img/sem10/emma.png" },
-          { nombre: "Noah", foto: "/img/sem10/noah.png" },
+          { nombre: "Jack", foto: "/img/H7.png" },
+          { nombre: "Emma", foto: "/img/M3.png"},
+          { nombre: "Noah", foto: "/img/M5.png" },
         ],
         preguntas: [
           { texto: "1. Jack would like pasta.", correcta: true },
@@ -223,9 +223,9 @@ export default function Tema1_Ej3TrueFalse() {
           "/audios/sem10/10.c.mp3",
         ],
         speakers: [
-          { nombre: "Sophie", foto: "/img/sem10/sophie.png" },
-          { nombre: "Ryan", foto: "/img/sem10/ryan.png" },
-          { nombre: "Liam", foto: "/img/sem10/liam.png" },
+          { nombre: "Sophie", foto: "/img/M8.png" },
+          { nombre: "Ryan", foto: "/img/H2.png" },
+          { nombre: "Liam", foto: "/img/H6.png" },
         ],
         preguntas: [
           { texto: "1. Sophie wants to visit her grandparents.", correcta: true },
@@ -365,18 +365,6 @@ export default function Tema1_Ej3TrueFalse() {
               </div>
             )}
 
-            {qIndex === 0 && (
-              <div style={{ margin: "0.5rem 0" }}>
-                <button
-                  className="btn-audio"
-                  style={{ fontSize: "1.6rem", padding: "0.4rem 0.8rem" }}
-                  onClick={playAudio}
-                >
-                  🔊
-                </button>
-              </div>
-            )}
-
             {/* FOTO + NOMBRE DEL HABLANTE */}
             <div style={{ margin: "1rem 0" }}>
               <img
@@ -388,6 +376,19 @@ export default function Tema1_Ej3TrueFalse() {
                 ({actual.speakers[speakerIndex].nombre})
               </p>
             </div>
+
+
+            {qIndex === 0 && (
+              <div style={{ margin: "0.5rem 0" }}>
+                <button
+                  className="btn-audio"
+                  style={{ fontSize: "1.6rem", padding: "0.4rem 0.8rem" }}
+                  onClick={playAudio}
+                >
+                  🔊
+                </button>
+              </div>
+            )}
 
             <div
               className="pregunta-box"

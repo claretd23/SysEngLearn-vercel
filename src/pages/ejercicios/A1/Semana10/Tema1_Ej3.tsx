@@ -365,17 +365,20 @@ export default function Tema1_Ej3TrueFalse() {
               </div>
             )}
 
-            {/* FOTO + NOMBRE DEL HABLANTE */}
-            <div style={{ margin: "1rem 0" }}>
-              <img
-                src={actual.speakers[speakerIndex].foto}
-                alt={actual.speakers[speakerIndex].nombre}
-                style={{ width: "140px", borderRadius: "12px", marginBottom: "0.5rem" }}
-              />
-              <p style={{ fontSize: "1.1rem", fontWeight: "600" }}>
-                ({actual.speakers[speakerIndex].nombre})
-              </p>
-            </div>
+{/* FOTO + NOMBRE DEL HABLANTE — SOLO EN EL PRIMER EJERCICIO */}
+{qIndex === 0 && (
+  <div style={{ margin: "1rem 0" }}>
+    <img
+      src={actual.speakers[speakerIndex].foto}
+      alt={actual.speakers[speakerIndex].nombre}
+      style={{ width: "140px", borderRadius: "12px", marginBottom: "0.5rem" }}
+    />
+    <p style={{ fontSize: "1.1rem", fontWeight: "600" }}>
+      ({actual.speakers[speakerIndex].nombre})
+    </p>
+  </div>
+)}
+
 
 
             {qIndex === 0 && (

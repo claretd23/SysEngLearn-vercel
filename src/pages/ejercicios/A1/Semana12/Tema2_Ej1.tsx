@@ -55,6 +55,7 @@ export default function Tema2_Ej1() {
     }
   };
 
+  // 💥 AHORA es completamente case-insensitive
   const verificar = () => {
     const respuestaUsuario = inputValue.trim().toLowerCase();
     if (!respuestaUsuario) return;
@@ -87,9 +88,10 @@ export default function Tema2_Ej1() {
     }, 3000);
   };
 
+  // 💥 corregido: replace con "______" (6 guiones)
   const mostrarTexto = respuesta
     ? actual.texto
-        .replace("________", actual.correcta[0])
+        .replace("______", actual.correcta[0])
         .replace(/\s*\(.*?\)/, "")
     : actual.texto;
 
@@ -105,7 +107,6 @@ export default function Tema2_Ej1() {
           </header>
 
           <section className="tarjeta-ejercicio" style={{ textAlign: "center" }}>
-
             {index === 0 && (
               <div className="instruccion-box">
                 <p className="instruccion-ejercicio" style={{ fontSize: "1.3rem" }}>
@@ -120,7 +121,7 @@ export default function Tema2_Ej1() {
                 fontSize: "1.5rem",
                 margin: "1rem 0",
                 fontWeight: 500,
-                color: "#000", // <- SIEMPRE NEGRO
+                color: "#000",
               }}
             >
               {mostrarTexto}

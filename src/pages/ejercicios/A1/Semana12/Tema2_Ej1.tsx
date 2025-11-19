@@ -14,7 +14,6 @@ export default function Tema2_Ej1() {
   const [finalizado, setFinalizado] = useState(false);
   const API_URL = import.meta.env.VITE_API_URL;
 
-  // Lista de ejercicios con going to + verbo
   const ejercicios = [
     { texto: "I ________ (visit) my grandmother tomorrow.", correcta: ["am going to visit"] },
     { texto: "She ________ (buy) a new dress next week.", correcta: ["is going to buy"] },
@@ -30,7 +29,7 @@ export default function Tema2_Ej1() {
 
   const actual = ejercicios[index];
 
-const guardarProgreso = async () => {
+  const guardarProgreso = async () => {
     const completados = JSON.parse(localStorage.getItem("ejercicios_completados") || "[]");
 
     if (!completados.includes(id)) {
@@ -88,10 +87,9 @@ const guardarProgreso = async () => {
     }, 3000);
   };
 
-  // ✅ Mostrar texto reemplazando la respuesta y eliminando paréntesis
   const mostrarTexto = respuesta
     ? actual.texto
-        .replace("_______", actual.correcta[0])
+        .replace("______", actual.correcta[0])
         .replace(/\s*\(.*?\)/, "")
     : actual.texto;
 
@@ -107,6 +105,7 @@ const guardarProgreso = async () => {
           </header>
 
           <section className="tarjeta-ejercicio" style={{ textAlign: "center" }}>
+
             {index === 0 && (
               <div className="instruccion-box">
                 <p className="instruccion-ejercicio" style={{ fontSize: "1.3rem" }}>
@@ -117,7 +116,12 @@ const guardarProgreso = async () => {
 
             <p
               className="pregunta-ejercicio"
-              style={{ fontSize: "1.5rem", margin: "1rem 0", fontWeight: 500 }}
+              style={{
+                fontSize: "1.5rem",
+                margin: "1rem 0",
+                fontWeight: 500,
+                color: "#000", // <- SIEMPRE NEGRO
+              }}
             >
               {mostrarTexto}
             </p>
@@ -147,6 +151,7 @@ const guardarProgreso = async () => {
                     border: "1px solid #ccc",
                   }}
                 />
+
                 <button
                   onClick={verificar}
                   className="ejercicio-btn"
@@ -164,7 +169,7 @@ const guardarProgreso = async () => {
             {respuesta && (
               <p
                 className={`respuesta-feedback ${
-                  respuesta.startsWith("✅") ? "correcta" : "incorrecta"
+                  respuesta === "Correct!" ? "correcta" : "incorrecta"
                 }`}
                 style={{ fontSize: "1.3rem", margin: "1rem 0" }}
               >
@@ -182,6 +187,7 @@ const guardarProgreso = async () => {
                   Next question
                 </button>
               )}
+
               {respuesta && index === ejercicios.length - 1 && (
                 <button
                   onClick={manejarFinalizacion}

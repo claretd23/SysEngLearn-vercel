@@ -45,15 +45,16 @@ export default function Tema2_Ej3() {
     } catch (e) {}
   };
 
-  // NUEVAS PREGUNTAS Y DIÁLOGOS AÑADIDOS
-  const ejercicios: EjercicioTF[] = useMemo(
-    () => [
-      {
+// EJERCICIO 3 – DATOS REALES YA CORREGIDOS
+const ejercicios: EjercicioTF[] = useMemo(
+  () => [
+    // DIALOGUE 1 – Anna y Tom
+    {
       audio: [
-        "/audios/sem10/11.a.mp3", // Anna
-        "/audios/sem10/11.b.mp3", // Tom
-        "/audios/sem10/11.c.mp3", // Anna
-        "/audios/sem10/11.d.mp3", // Tom
+        "/audios/sem10/11.a.mp3",
+        "/audios/sem10/11.b.mp3",
+        "/audios/sem10/11.c.mp3",
+        "/audios/sem10/11.d.mp3",
       ],
       speakers: [
         { nombre: "Anna", foto: "/img/M1.png" },
@@ -67,12 +68,12 @@ export default function Tema2_Ej3() {
       ],
     },
 
-    // EJE 2 - Ben y Mia
+    // DIALOGUE 2 – Ben y Mia
     {
       audio: [
-        "/audios/sem10/12.a.mp3", // Ben
-        "/audios/sem10/12.b.mp3", // Mia
-        "/audios/sem10/12.c.mp3", // Ben
+        "/audios/sem10/12.a.mp3",
+        "/audios/sem10/12.b.mp3",
+        "/audios/sem10/12.c.mp3",
       ],
       speakers: [
         { nombre: "Ben", foto: "/img/H2.png" },
@@ -86,13 +87,13 @@ export default function Tema2_Ej3() {
       ],
     },
 
-    // EJE 3 - Mom y Jake
+    // DIALOGUE 3 – Mom y Jake
     {
       audio: [
-        "/audios/sem10/13.a.mp3", // Mom
-        "/audios/sem10/13.b.mp3", // Jake
-        "/audios/sem10/13.c.mp3", // Mom
-        "/audios/sem10/13.d.mp3", // Jake
+        "/audios/sem10/13.a.mp3",
+        "/audios/sem10/13.b.mp3",
+        "/audios/sem10/13.c.mp3",
+        "/audios/sem10/13.d.mp3",
       ],
       speakers: [
         { nombre: "Mom", foto: "/img/M3.png" },
@@ -106,12 +107,12 @@ export default function Tema2_Ej3() {
       ],
     },
 
-    // EJE 4 - Lisa y Alex
+    // DIALOGUE 4 – Lisa y Alex
     {
       audio: [
-        "/audios/sem10/14.a.mp3", // Lisa
-        "/audios/sem10/14.b.mp3", // Alex
-        "/audios/sem10/14.c.mp3", // Lisa
+        "/audios/sem10/14.a.mp3",
+        "/audios/sem10/14.b.mp3",
+        "/audios/sem10/14.c.mp3",
       ],
       speakers: [
         { nombre: "Lisa", foto: "/img/M4.png" },
@@ -123,121 +124,130 @@ export default function Tema2_Ej3() {
         { texto: "3. Lisa is taking a picture.", correcta: true },
         { texto: "4. Everyone is at the park.", correcta: true },
       ],
-    },// EJE 5 - Sofia y Daniel
-{
-  audio: [
-    "/audios/sem10/15.a.mp3", // Sofia
-    "/audios/sem10/15.b.mp3", // Daniel
-    "/audios/sem10/15.c.mp3", // Sofia
-  ],
-  speakers: [
-    { nombre: "Sofia", foto: "/img/M5.png" },
-    { nombre: "Daniel", foto: "/img/H5.png" }
-  ],
-  preguntas: [
-    { texto: "1. Sofia wants a hot chocolate.", correcta: true },
-    { texto: "2. Daniel wants a hot chocolate.", correcta: false },
-    { texto: "3. Daniel wants a coffee.", correcta: true },
-    { texto: "4. Sofia wants a coffee.", correcta: false }
-  ]
-},
+    },
 
-// EJE 6 - Olivia y Mark
-{
-  audio: [
-    "/audios/sem10/16.a.mp3", // Olivia
-    "/audios/sem10/16.b.mp3", // Mark
-    "/audios/sem10/16.c.mp3", // Olivia
-  ],
-  speakers: [
-    { nombre: "Olivia", foto: "/img/M6.png" },
-    { nombre: "Mark", foto: "/img/H6.png" }
-  ],
-  preguntas: [
-    { texto: "1. Olivia wants to read a book.", correcta: true },
-    { texto: "2. Mark wants to read a book too.", correcta: false },
-    { texto: "3. Mark wants to watch a movie.", correcta: true },
-    { texto: "4. Olivia wants to watch a movie.", correcta: false }
-  ]
-},
+    // DIALOGUE 5 – Teacher y Emma
+    {
+      audio: [
+        "/audios/sem10/15.a.mp3",
+        "/audios/sem10/15.b.mp3",
+        "/audios/sem10/15.c.mp3",
+      ],
+      speakers: [
+        { nombre: "Teacher", foto: "/img/H5.png" },
+        { nombre: "Emma", foto: "/img/M5.png" },
+      ],
+      preguntas: [
+        { texto: "1. Emma is writing.", correcta: true },
+        { texto: "2. Lucas is talking.", correcta: true },
+        { texto: "3. Emma and Lucas are doing the same activity.", correcta: false },
+        { texto: "4. Lucas is writing.", correcta: false },
+      ],
+    },
 
-// EJE 7 - Emma y Chris
-{
-  audio: [
-    "/audios/sem10/17.a.mp3", // Emma
-    "/audios/sem10/17.b.mp3", // Chris
-    "/audios/sem10/17.c.mp3", // Emma
-  ],
-  speakers: [
-    { nombre: "Emma", foto: "/img/M7.png" },
-    { nombre: "Chris", foto: "/img/H7.png" }
-  ],
-  preguntas: [
-    { texto: "1. Emma wants to go shopping.", correcta: true },
-    { texto: "2. Chris wants to go shopping too.", correcta: false },
-    { texto: "3. Chris wants to play basketball.", correcta: true },
-    { texto: "4. Emma wants to play basketball.", correcta: false }
-  ]
-},
+    // DIALOGUE 6 – David y Olivia
+    {
+      audio: [
+        "/audios/sem10/16.a.mp3",
+        "/audios/sem10/16.b.mp3",
+        "/audios/sem10/16.c.mp3",
+        "/audios/sem10/16.d.mp3",
+      ],
+      speakers: [
+        { nombre: "David", foto: "/img/H6.png" },
+        { nombre: "Olivia", foto: "/img/M6.png" },
+      ],
+      preguntas: [
+        { texto: "1. Olivia is cleaning her room.", correcta: true },
+        { texto: "2. David is helping in the kitchen.", correcta: true },
+        { texto: "3. Olivia is watching TV.", correcta: false },
+        { texto: "4. David isn’t doing anything.", correcta: false },
+      ],
+    },
 
-// EJE 8 - Nina y Leo
-{
-  audio: [
-    "/audios/sem10/18.a.mp3", // Nina
-    "/audios/sem10/18.b.mp3", // Leo
-    "/audios/sem10/18.c.mp3", // Nina
-  ],
-  speakers: [
-    { nombre: "Nina", foto: "/img/M5.png" },
-    { nombre: "Leo", foto: "/img/H1.png" }
-  ],
-  preguntas: [
-    { texto: "1. Nina wants to buy a gift.", correcta: true },
-    { texto: "2. Leo wants to buy a gift too.", correcta: false },
-    { texto: "3. Leo wants to buy a book.", correcta: true },
-    { texto: "4. Nina wants to buy a book.", correcta: false }
-  ]
-},
+    // DIALOGUE 7 – Mark y Liam
+    {
+      audio: [
+        "/audios/sem10/17.a.mp3",
+        "/audios/sem10/17.b.mp3",
+        "/audios/sem10/17.c.mp3",
+        "/audios/sem10/17.d.mp3",
+      ],
+      speakers: [
+        { nombre: "Mark", foto: "/img/H7.png" },
+        { nombre: "Liam", foto: "/img/H8.png" },
+      ],
+      preguntas: [
+        { texto: "1. Sophie is talking on the phone.", correcta: true },
+        { texto: "2. Emily is reading.", correcta: true },
+        { texto: "3. Sophie is reading.", correcta: false },
+        { texto: "4. Emily is on the phone.", correcta: false },
+      ],
+    },
 
-// EJE 9 - Paula y Kevin
-{
-  audio: [
-    "/audios/sem10/19.a.mp3", // Paula
-    "/audios/sem10/19.b.mp3", // Kevin
-    "/audios/sem10/19.c.mp3", // Paula
-  ],
-  speakers: [
-    { nombre: "Paula", foto: "/img/M2.png" },
-    { nombre: "Kevin", foto: "/img/H6.png" }
-  ],
-  preguntas: [
-    { texto: "1. Paula wants a salad.", correcta: true },
-    { texto: "2. Kevin wants a salad too.", correcta: false },
-    { texto: "3. Kevin wants pizza.", correcta: true },
-    { texto: "4. Paula wants pizza.", correcta: false }
-  ]
-},
+    // DIALOGUE 8 – Carlos y Maria
+    {
+      audio: [
+        "/audios/sem10/18.a.mp3",
+        "/audios/sem10/18.b.mp3",
+        "/audios/sem10/18.c.mp3",
+        "/audios/sem10/18.d.mp3",
+      ],
+      speakers: [
+        { nombre: "Carlos", foto: "/img/H1.png" },
+        { nombre: "Maria", foto: "/img/M1.png" },
+      ],
+      preguntas: [
+        { texto: "1. Carlos and Maria are eating soup.", correcta: true },
+        { texto: "2. Maria is drinking juice.", correcta: false },
+        { texto: "3. Maria is drinking water.", correcta: true },
+        { texto: "4. Carlos is not eating anything.", correcta: false },
+      ],
+    },
 
-// EJE 10 - Lily y Adam
-{
-  audio: [
-    "/audios/sem10/20.a.mp3", // Lily
-    "/audios/sem10/20.b.mp3", // Adam
-    "/audios/sem10/20.c.mp3", // Lily
+    // DIALOGUE 9 – Sophie y Tom
+    {
+      audio: [
+        "/audios/sem10/19.a.mp3",
+        "/audios/sem10/19.b.mp3",
+        "/audios/sem10/19.c.mp3",
+        "/audios/sem10/19.d.mp3",
+      ],
+      speakers: [
+        { nombre: "Sophie", foto: "/img/M2.png" },
+        { nombre: "Tom", foto: "/img/H3.png" },
+      ],
+      preguntas: [
+        { texto: "1. It’s raining.", correcta: true },
+        { texto: "2. The children are inside.", correcta: false },
+        { texto: "3. Tom is bringing umbrellas.", correcta: true },
+        { texto: "4. The children are getting wet.", correcta: true },
+      ],
+    },
+
+    // DIALOGUE 10 – Dad y Ben
+    {
+      audio: [
+        "/audios/sem10/20.a.mp3",
+        "/audios/sem10/20.b.mp3",
+        "/audios/sem10/20.c.mp3",
+        "/audios/sem10/20.d.mp3",
+      ],
+      speakers: [
+        { nombre: "Dad", foto: "/img/H4.png" },
+        { nombre: "Ben", foto: "/img/H2.png" },
+      ],
+      preguntas: [
+        { texto: "1. Ben is drawing.", correcta: true },
+        { texto: "2. Ben’s sister is drawing too.", correcta: false },
+        { texto: "3. Ben’s sister is watching TV.", correcta: true },
+        { texto: "4. Both kids are reading.", correcta: false },
+      ],
+    },
   ],
-  speakers: [
-    { nombre: "Lily", foto: "/img/M3.png" },
-    { nombre: "Adam", foto: "/img/H4.png" }
-  ],
-  preguntas: [
-    { texto: "1. Lily wants to practice soccer.", correcta: true },
-    { texto: "2. Adam wants to practice soccer too.", correcta: false },
-    { texto: "3. Adam wants to rest.", correcta: true },
-    { texto: "4. Lily wants to rest.", correcta: false }
-  ]
-},
-    []
+  []
 );
+
 
   const actual = ejercicios[dialogIndex];
   const actualPregunta = actual.preguntas[qIndex];

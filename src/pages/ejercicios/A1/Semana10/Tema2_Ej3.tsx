@@ -180,7 +180,7 @@ const ejercicios: EjercicioTF[] = useMemo(
       ],
       speakers: [
         { nombre: "Mark", foto: "/img/H7.png" },
-        { nombre: "Liam", foto: "/img/H8.png" },
+        { nombre: "Liam", foto: "/img/H3.png" },
       ],
       speakerOrder: [0, 1, 0, 1],
       preguntas: [
@@ -200,9 +200,9 @@ const ejercicios: EjercicioTF[] = useMemo(
         "/audios/sem10/18.d.mp3",
   ],
   speakers: [
-    { nombre: "Waiter", foto: "/img/waiter.png" },
-    { nombre: "Carlos", foto: "/img/carlos.png" },
-    { nombre: "Maria", foto: "/img/maria.png" }
+    { nombre: "Waiter", foto: "/img/H4.png" },
+    { nombre: "Carlos", foto: "/img/H3.png" },
+    { nombre: "Maria", foto: "/img/M2.png" }
   ],
   speakerOrder: [0, 1, 0, 2],
   preguntas: [

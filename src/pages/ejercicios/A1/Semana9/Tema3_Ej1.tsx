@@ -2,7 +2,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import "../ejercicios.css";
 
-export default function Tema1_Ej1() {
+export default function Tema3_Ej1() {
   const { nivel, semana, tema, ejercicio } = useParams();
   const id = `${nivel}-${semana}-${tema}-${ejercicio}`;
   const navigate = useNavigate();
@@ -15,7 +15,6 @@ export default function Tema1_Ej1() {
 
   const API_URL = import.meta.env.VITE_API_URL;
 
-  // Lista de ejercicios This / These / That / Those
   const ejercicios = [
     { texto: "_______ is my favorite T-shirt.", correcta: ["This"] },
     { texto: "_______ shoes are too small for me.", correcta: ["These"] },
@@ -31,8 +30,10 @@ export default function Tema1_Ej1() {
 
   const actual = ejercicios[index];
 
- const guardarProgreso = async () => {
-    const completados = JSON.parse(localStorage.getItem("ejercicios_completados") || "[]");
+  const guardarProgreso = async () => {
+    const completados = JSON.parse(
+      localStorage.getItem("ejercicios_completados") || "[]"
+    );
 
     if (!completados.includes(id)) {
       completados.push(id);
@@ -57,7 +58,6 @@ export default function Tema1_Ej1() {
     }
   };
 
-
   const verificar = () => {
     const respuestaUsuario = inputValue.trim();
     if (!respuestaUsuario) return;
@@ -67,11 +67,10 @@ export default function Tema1_Ej1() {
     );
 
     if (esCorrecta) {
-      setRespuesta("Correct!");
+      setRespuesta("Correct!"); // ← coincide con el color verde
       setCorrectas((prev) => prev + 1);
     } else {
       setRespuesta("Incorrect");
-      // Autocomplete con la respuesta correcta
       setInputValue(actual.correcta[0]);
     }
   };
@@ -161,19 +160,20 @@ export default function Tema1_Ej1() {
               </div>
             )}
 
-              {/* Feedback sin emojis */}
-            {respuesta && (
-              <p
-                style={{
-                  fontSize: "1.3rem",
-                  margin: "1rem 0",
-                  color: respuesta === "Correct" ? "#19ba1bff" : "#ff5c5c",
-                  fontWeight: "bold",
-                }}
-              >
-                {respuesta}
-              </p>
-            )}
+            {/* Feedback con color */}
+{respuesta && (
+  <p
+    style={{
+      fontSize: "1.3rem",
+      margin: "1rem 0",
+      color: respuesta === "Correct!" ? "green" : "red",
+      fontWeight: "bold",
+    }}
+  >
+    {respuesta}
+  </p>
+)}
+
 
             <div className="botones-siguiente">
               {respuesta && index < ejercicios.length - 1 && (
@@ -185,6 +185,7 @@ export default function Tema1_Ej1() {
                   Next question
                 </button>
               )}
+
               {respuesta && index === ejercicios.length - 1 && (
                 <button
                   onClick={manejarFinalizacion}

@@ -248,7 +248,7 @@ export default function Tema3_Ej3() {
                   type="text"
                   value={inputValue}
                   onChange={(e) => setInputValue(e.target.value)}
-                  placeholder='Write your answer (e.g. "Yes, he can")'
+                  placeholder=' ("Yes, he can" or "No, she can")'
                   style={{ fontSize: "1.3rem", padding: "0.8rem 1rem", borderRadius: "8px" }}
                 />
 

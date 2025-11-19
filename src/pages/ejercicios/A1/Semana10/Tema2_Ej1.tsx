@@ -14,7 +14,6 @@ export default function Tema2_Ej1() {
   const [finalizado, setFinalizado] = useState(false);
   const API_URL = import.meta.env.VITE_API_URL;
 
-  // Lis ta de ejercicios con Present Continuous
   const ejercicios = [
     { texto: "She _______ (read) a book right now.", correcta: ["is reading"] },
     { texto: "I _______ (listen) to music at the moment.", correcta: ["am listening"] },
@@ -30,7 +29,7 @@ export default function Tema2_Ej1() {
 
   const actual = ejercicios[index];
 
- const guardarProgreso = async () => {
+  const guardarProgreso = async () => {
     const completados = JSON.parse(localStorage.getItem("ejercicios_completados") || "[]");
 
     if (!completados.includes(id)) {
@@ -56,7 +55,6 @@ export default function Tema2_Ej1() {
     }
   };
 
-
   const verificar = () => {
     const respuestaUsuario = inputValue.trim().toLowerCase();
     if (!respuestaUsuario) return;
@@ -66,7 +64,7 @@ export default function Tema2_Ej1() {
     );
 
     if (esCorrecta) {
-      setRespuesta("Correct!");
+      setRespuesta("Correct");
       setCorrectas((prev) => prev + 1);
     } else {
       setRespuesta("Incorrect");
@@ -88,12 +86,12 @@ export default function Tema2_Ej1() {
       window.location.reload();
     }, 3000);
   };
-const mostrarTexto = respuesta
-  ? actual.texto
-      .replace("_______", actual.correcta[0])  // sustituye el espacio
-      .replace(/\s*\(.*?\)/, "")               // elimina los paréntesis y su contenido
-  : actual.texto;
 
+  const mostrarTexto = respuesta
+    ? actual.texto
+        .replace("_______", actual.correcta[0])
+        .replace(/\s*\(.*?\)/, "")
+    : actual.texto;
 
   return (
     <div className="ejercicio-container">
@@ -161,7 +159,6 @@ const mostrarTexto = respuesta
               </div>
             )}
 
-            {/* Feedback */}
             {respuesta && (
               <p
                 style={{

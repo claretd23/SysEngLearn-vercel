@@ -13,7 +13,7 @@ export default function Tema3_Ej2() {
   const [index, setIndex] = useState(0);
   const [finalizado, setFinalizado] = useState(false);
   const API_URL = import.meta.env.VITE_API_URL;
-  //  Lista de ejercicios con can / can't
+
   const ejercicios = [
     { texto: "I _______ swim very well. ", correcta: ["can"] },
     { texto: "She _______ speak three languages. ", correcta: ["can"] },
@@ -29,7 +29,7 @@ export default function Tema3_Ej2() {
 
   const actual = ejercicios[index];
 
-const guardarProgreso = async () => {
+  const guardarProgreso = async () => {
     const completados = JSON.parse(localStorage.getItem("ejercicios_completados") || "[]");
 
     if (!completados.includes(id)) {
@@ -64,7 +64,7 @@ const guardarProgreso = async () => {
     );
 
     if (esCorrecta) {
-      setRespuesta("Correct!");
+      setRespuesta("Correct");
       setCorrectas((prev) => prev + 1);
     } else {
       setRespuesta("Incorrect");
@@ -87,7 +87,6 @@ const guardarProgreso = async () => {
     }, 3000);
   };
 
-  // Mostrar texto reemplazando la respuesta y eliminando paréntesis
   const mostrarTexto = respuesta
     ? actual.texto
         .replace("_______", actual.correcta[0])
@@ -160,7 +159,7 @@ const guardarProgreso = async () => {
               </div>
             )}
 
-            {/* Feedback  */}
+            {/* Feedback */}
             {respuesta && (
               <p
                 style={{

@@ -15,16 +15,16 @@ export default function Tema2_Ej2() {
   const API_URL = import.meta.env.VITE_API_URL;
 
   const ejercicios = [
-    { pregunta: "Your mother’s mother is your", opciones: ["aunt", "grandmother", "cousin"], correcta: "grandmother" },
-    { pregunta: "Your father’s son is your", opciones: ["cousin", "brother", "uncle"], correcta: "brother" },
-    { pregunta: "Your aunt’s daughter is your", opciones: ["niece", "cousin", "sister"], correcta: "cousin" },
-    { pregunta: "Your mother’s husband is your", opciones: ["uncle", "father", "brother"], correcta: "father" },
-    { pregunta: "Your brother’s daughter is your", opciones: ["niece", "cousin", "sister"], correcta: "niece" },
-    { pregunta: "Your father’s brother is your", opciones: ["uncle", "cousin", "grandfather"], correcta: "uncle" },
-    { pregunta: "Your parents’ parents are your", opciones: ["uncles", "cousins", "grandparents"], correcta: "grandparents" },
-    { pregunta: "Your son’s wife is your", opciones: ["daughter-in-law", "niece", "cousin"], correcta: "daughter-in-law" },
-    { pregunta: "Your daughter’s husband is your", opciones: ["cousin", "son-in-law", "nephew"], correcta: "son-in-law" },
-    { pregunta: "Your brother’s wife is your", opciones: ["sister-in-law", "aunt", "niece"], correcta: "sister-in-law" },
+    { pregunta: "Your mother’s mother is your _______.", correcta: "grandmother" },
+    { pregunta: "Your father’s son is your _______.", correcta: "brother" },
+    { pregunta: "Your aunt’s daughter is your _______.", correcta: "cousin" },
+    { pregunta: "Your mother’s husband is your _______.", correcta: "father" },
+    { pregunta: "Your brother’s daughter is your _______.", correcta: "niece" },
+    { pregunta: "Your father’s brother is your _______.", correcta: "uncle" },
+    { pregunta: "Your parents’ parents are your _______.", correcta: "grandparents" },
+    { pregunta: "Your son’s wife is your _______.", correcta: "daughter-in-law" },
+    { pregunta: "Your daughter’s husband is your _______.", correcta: "son-in-law" },
+    { pregunta: "Your brother’s wife is your _______.", correcta: "sister-in-law" },
   ];
 
   const actual = ejercicios[index];
@@ -58,14 +58,13 @@ export default function Tema2_Ej2() {
   const verificar = () => {
     if (!opcionSeleccionada) return;
 
-    const textoMostrar = `${actual.pregunta} → ${opcionSeleccionada}`;
-    const textoCorrecto = `${actual.pregunta} → ${actual.correcta}`;
+    const esCorrecta = opcionSeleccionada === actual.correcta;
 
-    if (opcionSeleccionada === actual.correcta) {
-      setRespuesta(textoMostrar); // Solo oración, sin "Correct!"
+    if (esCorrecta) {
+      setRespuesta("Correct");
       setCorrectas((prev) => prev + 1);
     } else {
-      setRespuesta(textoCorrecto); // Solo oración correcta
+      setRespuesta("Incorrect");
     }
   };
 
@@ -78,13 +77,21 @@ export default function Tema2_Ej2() {
   const manejarFinalizacion = async () => {
     await guardarProgreso();
     setFinalizado(true);
+
     setTimeout(() => {
       navigate(`/inicio/${nivel}`);
       window.location.reload();
     }, 3000);
   };
 
-  const esCorrecta = respuesta && respuesta.includes(actual.correcta);
+  const colorTexto =
+    respuesta === null ? "black" :
+    respuesta === "Correct" ? "#19ba1bff" : "#ff5c5c";
+
+  const textoMostrado =
+    respuesta === null
+      ? actual.pregunta
+      : actual.pregunta.replace("_______", actual.correcta);
 
   return (
     <div className="ejercicio-container">
@@ -108,24 +115,17 @@ export default function Tema2_Ej2() {
               </div>
             )}
 
-            <div
-              className="oracion-box"
+            {/* SOLO SE MUESTRA 1 VEZ */}
+            <p
               style={{
-                backgroundColor: "#f4f6fa",
-                borderLeft: "5px solid #222a5c",
-                borderRadius: "8px",
-                padding: "1.5rem",
-                margin: "1rem auto",
-                maxWidth: "600px",
-                textAlign: "left",
-                fontStyle: "italic",
-                whiteSpace: "pre-line",
-                color: respuesta ? (esCorrecta ? "#19ba1b" : "#ff5c5c") : "black",
-                fontWeight: respuesta ? "bold" : "normal",
+                fontSize: "1.4rem",
+                fontWeight: "bold",
+                marginBottom: "1.5rem",
+                color: colorTexto,
               }}
             >
-              <p>{respuesta || actual.pregunta}</p>
-            </div>
+              {textoMostrado}
+            </p>
 
             {!respuesta && (
               <div
@@ -138,20 +138,26 @@ export default function Tema2_Ej2() {
                   marginBottom: "1rem",
                 }}
               >
-                {actual.opciones.map((op, i) => (
-                  <button
-                    key={i}
-                    className={`opcion-btn ${opcionSeleccionada === op ? "seleccionada" : ""}`}
-                    onClick={() => setOpcionSeleccionada(op)}
-                    style={{
-                      fontSize: "1.2rem",
-                      padding: "0.8rem 1.5rem",
-                      minWidth: "200px",
-                    }}
-                  >
-                    {op}
-                  </button>
-                ))}
+                {["grandmother","brother","cousin","father","niece",
+                  "uncle","grandparents","daughter-in-law","son-in-law","sister-in-law"]
+                  .filter((op) => op !== undefined)
+                  .slice(index * 3, index * 3 + 3)
+                  .map((op, i) => (
+                    <button
+                      key={i}
+                      className={`opcion-btn ${
+                        opcionSeleccionada === op ? "seleccionada" : ""
+                      }`}
+                      onClick={() => setOpcionSeleccionada(op)}
+                      style={{
+                        fontSize: "1.2rem",
+                        padding: "0.8rem 1.5rem",
+                        minWidth: "200px",
+                      }}
+                    >
+                      {op}
+                    </button>
+                  ))}
               </div>
             )}
 
@@ -171,6 +177,19 @@ export default function Tema2_Ej2() {
               </button>
             )}
 
+            {respuesta && (
+              <p
+                style={{
+                  fontSize: "1.3rem",
+                  margin: "1rem 0",
+                  color: colorTexto,
+                  fontWeight: "bold",
+                }}
+              >
+                {respuesta}
+              </p>
+            )}
+
             <div
               className="botones-siguiente"
               style={{
@@ -184,7 +203,7 @@ export default function Tema2_Ej2() {
                 <button
                   onClick={siguiente}
                   className="ejercicio-btn"
-                  style={{ fontSize: "1.3rem", padding: "0.8rem 2rem", borderRadius: "8px" }}
+                  style={{ fontSize: "1.3rem", padding: "0.8rem 2rem" }}
                 >
                   Next question
                 </button>
@@ -194,7 +213,7 @@ export default function Tema2_Ej2() {
                 <button
                   onClick={manejarFinalizacion}
                   className="ejercicio-btn"
-                  style={{ fontSize: "1.3rem", padding: "0.8rem 2rem", borderRadius: "8px" }}
+                  style={{ fontSize: "1.3rem", padding: "0.8rem 2rem" }}
                 >
                   Finish
                 </button>

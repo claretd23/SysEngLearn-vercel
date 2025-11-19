@@ -23,13 +23,13 @@ export default function Tema1_Ej2() {
     { pregunta: "What time is it? 1:00", opciones: ["One o’clock", "One thirty", "Half past one"], correcta: "One o’clock" },
     { pregunta: "What time is it? 11:30", opciones: ["Eleven thirty", "Half past eleven", "Eleven o’clock"], correcta: "Half past eleven" },
     { pregunta: "What time is it? 4:00", opciones: ["Four o’clock", "Half past four", "Four thirty"], correcta: "Four o’clock" },
-    { pregunta: "What time is it? 5:00", opciones: ["Five o’clock", "Half past five", "Five thirty"], correcta: "Five o’clock" },
+    { pregunta: "What time is it? 5:00", opciones: ["Five o’clock", "Half past five", "Five treinta"], correcta: "Five o’clock" },
     { pregunta: "What time is it? 7:30", opciones: ["Seven thirty", "Half past seven", "Seven o’clock"], correcta: "Half past seven" },
   ];
 
   const actual = ejercicios[index];
 
-const guardarProgreso = async () => {
+  const guardarProgreso = async () => {
     const completados = JSON.parse(localStorage.getItem("ejercicios_completados") || "[]");
 
     if (!completados.includes(id)) {
@@ -58,13 +58,11 @@ const guardarProgreso = async () => {
   const verificar = () => {
     if (!opcionSeleccionada) return;
 
-    const oracionCompletada = `${actual.pregunta} → ${opcionSeleccionada}`;
     if (opcionSeleccionada === actual.correcta) {
-      setRespuesta(`Correct!\n\n${oracionCompletada}`);
+      setRespuesta("Correct");
       setCorrectas((prev) => prev + 1);
     } else {
-      const oracionCorrecta = `${actual.pregunta} → ${actual.correcta}`;
-      setRespuesta(`Incorrect.\n\n${oracionCorrecta}`);
+      setRespuesta("Incorrect");
     }
   };
 
@@ -98,7 +96,6 @@ const guardarProgreso = async () => {
             className="tarjeta-ejercicio"
             style={{ textAlign: "center", fontSize: "1.3rem", padding: "2rem" }}
           >
-            {/* Instrucción (solo en la primera pregunta) */}
             {index === 0 && (
               <div className="instruccion-box" style={{ marginBottom: "1.5rem" }}>
                 <p className="instruccion-ejercicio">
@@ -107,7 +104,6 @@ const guardarProgreso = async () => {
               </div>
             )}
 
-            {/* Oración */}
             <div
               className="oracion-box"
               style={{
@@ -122,10 +118,9 @@ const guardarProgreso = async () => {
                 whiteSpace: "pre-line",
               }}
             >
-              <p>{respuesta ? respuesta.split("\n").slice(1).join("\n") : actual.pregunta}</p>
+              <p>{actual.pregunta}</p>
             </div>
 
-            {/* Opciones */}
             {!respuesta && (
               <div
                 className="opciones-ejercicio"
@@ -150,7 +145,6 @@ const guardarProgreso = async () => {
               </div>
             )}
 
-            {/* Botón Check */}
             {!respuesta && (
               <button
                 onClick={verificar}
@@ -167,17 +161,19 @@ const guardarProgreso = async () => {
               </button>
             )}
 
-            {/* Feedback */}
             {respuesta && (
               <p
-                className={`respuesta-feedback ${respuesta.startsWith("✅") ? "correcta" : "incorrecta"}`}
-                style={{ fontSize: "1.3rem", margin: "1rem 0" }}
+                style={{
+                  fontSize: "1.4rem",
+                  margin: "1rem 0",
+                  fontWeight: "bold",
+                  color: respuesta === "Correct" ? "#19ba1bff" : "#ff5c5c",
+                }}
               >
-                {respuesta.split("\n")[0]}
+                {respuesta}
               </p>
             )}
 
-            {/* Botones siguiente / finalizar */}
             <div
               className="botones-siguiente"
               style={{

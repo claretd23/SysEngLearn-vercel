@@ -137,7 +137,7 @@ export default function Tema3_Ej3() {
       setRespuesta("Correct");
       setCorrectas((prev) => prev + 1);
     } else {
-      setRespuesta(`Incorrect. The answer is "${actual.correcta}".`);
+      setRespuesta(`Incorrect.`);
     }
   };
 
@@ -153,7 +153,7 @@ export default function Tema3_Ej3() {
     setTimeout(() => navigate(`/inicio/${nivel}`), 2500);
   };
 
-  // 🔹 Si ya completó el ejercicio
+  // Si ya completó el ejercicio
   if (yaCompletado) {
     return (
       <div className="finalizado">
@@ -197,7 +197,15 @@ export default function Tema3_Ej3() {
           </div>
         )}
 
-        <audio controls src={actual.audio} className="audio-ejercicio"></audio>
+<button
+  className="btn-audio"
+  onClick={() => {
+    const audio = new Audio(actual.audio);
+    audio.play();
+  }}
+>
+  🔊
+</button>
 
         <img src={actual.imagen} alt="Exercise" className="imagen-completa" />
 

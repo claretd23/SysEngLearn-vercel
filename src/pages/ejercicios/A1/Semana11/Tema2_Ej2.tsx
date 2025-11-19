@@ -15,18 +15,17 @@ export default function Tema2_Ej2() {
   const API_URL = import.meta.env.VITE_API_URL;
 
   const ejercicios = [
-    { pregunta: "Your mother’s mother is your _______.", correcta: "grandmother" },
-    { pregunta: "Your father’s son is your _______.", correcta: "brother" },
-    { pregunta: "Your aunt’s daughter is your _______.", correcta: "cousin" },
-    { pregunta: "Your mother’s husband is your _______.", correcta: "father" },
-    { pregunta: "Your brother’s daughter is your _______.", correcta: "niece" },
-    { pregunta: "Your father’s brother is your _______.", correcta: "uncle" },
-    { pregunta: "Your parents’ parents are your _______.", correcta: "grandparents" },
-    { pregunta: "Your son’s wife is your _______.", correcta: "daughter-in-law" },
-    { pregunta: "Your daughter’s husband is your _______.", correcta: "son-in-law" },
-    { pregunta: "Your brother’s wife is your _______.", correcta: "sister-in-law" },
+    { pregunta: "Your mother’s mother is your", opciones: ["aunt", "grandmother", "cousin"], correcta: "grandmother" },
+    { pregunta: "Your father’s son is your", opciones: ["cousin", "brother", "uncle"], correcta: "brother" },
+    { pregunta: "Your aunt’s daughter is your", opciones: ["niece", "cousin", "sister"], correcta: "cousin" },
+    { pregunta: "Your mother’s husband is your", opciones: ["uncle", "father", "brother"], correcta: "father" },
+    { pregunta: "Your brother’s daughter is your", opciones: ["niece", "cousin", "sister"], correcta: "niece" },
+    { pregunta: "Your father’s brother is your", opciones: ["uncle", "cousin", "grandfather"], correcta: "uncle" },
+    { pregunta: "Your parents’ parents are your", opciones: ["uncles", "cousins", "grandparents"], correcta: "grandparents" },
+    { pregunta: "Your son’s wife is your", opciones: ["daughter-in-law", "niece", "cousin"], correcta: "daughter-in-law" },
+    { pregunta: "Your daughter’s husband is your", opciones: ["cousin", "son-in-law", "nephew"], correcta: "son-in-law" },
+    { pregunta: "Your brother’s wife is your", opciones: ["sister-in-law", "aunt", "niece"], correcta: "sister-in-law" },
   ];
-
   const actual = ejercicios[index];
 
   const guardarProgreso = async () => {

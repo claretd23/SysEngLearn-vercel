@@ -67,7 +67,7 @@ export default function Tema1_Ej3TrueFalse() {
       },
       {
         audio: [
-          "/audios/sem10/2.a.mpmp3",
+          "/audios/sem10/2.a.mp3",
           "/audios/sem10/2.b.mp3",
           "/audios/sem10/2.c.mp3",
         ],

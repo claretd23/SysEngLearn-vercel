@@ -15,9 +15,11 @@ export default function Tema1_Ej2() {
 
   const [index, setIndex] = useState(0);
   const [opcionSeleccionada, setOpcionSeleccionada] = useState<string | null>(null);
-  const [respuesta, setRespuesta] = useState<string | null>(null);
+  const [mostrarOracion, setMostrarOracion] = useState<string>(""); 
+  const [estadoRespuesta, setEstadoRespuesta] = useState<"correct" | "incorrect" | null>(null);
   const [correctas, setCorrectas] = useState(0);
   const [finalizado, setFinalizado] = useState(false);
+
   const API_URL = import.meta.env.VITE_API_URL;
 
   const ejercicios: EjercicioOpciones[] = [
@@ -47,7 +49,7 @@ export default function Tema1_Ej2() {
       correcta: "want",
     },
     {
-      pregunta: "Tom: Great! What _______ your brother?",
+      pregunta: "Tom: What _______ your brother?",
       opciones: ["does your brother want", "wants your brother", "do your brother want"],
       correcta: "does your brother want",
     },
@@ -57,7 +59,7 @@ export default function Tema1_Ej2() {
       correcta: "wants",
     },
     {
-      pregunta: "Tom: And your sister?\nAnna: She _______ a cup of tea.",
+      pregunta: "Anna: She _______ a cup of tea.",
       opciones: ["wants", "would like", "want"],
       correcta: "would like",
     },
@@ -75,7 +77,7 @@ export default function Tema1_Ej2() {
 
   const actual = ejercicios[index];
 
-const guardarProgreso = async () => {
+  const guardarProgreso = async () => {
     const completados = JSON.parse(localStorage.getItem("ejercicios_completados") || "[]");
 
     if (!completados.includes(id)) {
@@ -104,18 +106,22 @@ const guardarProgreso = async () => {
   const verificar = () => {
     if (!opcionSeleccionada) return;
 
-    if (opcionSeleccionada === actual.correcta) {
-      setRespuesta(`Correct!\n\n${actual.pregunta.replace("_______", opcionSeleccionada)}`);
-      setCorrectas((prev) => prev + 1);
+    const correcta = opcionSeleccionada === actual.correcta;
+
+    if (correcta) {
+      setEstadoRespuesta("correct");
+      setCorrectas((p) => p + 1);
+      setMostrarOracion(actual.pregunta.replace("_______", opcionSeleccionada));
     } else {
-      // Si es incorrecta, muestra la correcta en el input
-      setRespuesta(`Incorrect.\n\n${actual.pregunta.replace("_______", actual.correcta)}`);
+      setEstadoRespuesta("incorrect");
+      setMostrarOracion(actual.pregunta.replace("_______", actual.correcta));
       setOpcionSeleccionada(actual.correcta);
     }
   };
 
   const siguiente = () => {
-    setRespuesta(null);
+    setEstadoRespuesta(null);
+    setMostrarOracion("");
     setOpcionSeleccionada(null);
     setIndex(index + 1);
   };
@@ -126,7 +132,7 @@ const guardarProgreso = async () => {
     setTimeout(() => {
       navigate(`/inicio/${nivel}`);
       window.location.reload();
-    }, 3000);
+    }, 2500);
   };
 
   return (
@@ -140,10 +146,7 @@ const guardarProgreso = async () => {
             </p>
           </header>
 
-          <section
-            className="tarjeta-ejercicio"
-            style={{ textAlign: "center", fontSize: "1.3rem", padding: "2rem" }}
-          >
+          <section className="tarjeta-ejercicio" style={{ textAlign: "center", fontSize: "1.3rem", padding: "2rem" }}>
             {index === 0 && (
               <div className="instruccion-box" style={{ marginBottom: "1.5rem" }}>
                 <p className="instruccion-ejercicio" style={{ fontSize: "1.3rem" }}>
@@ -166,86 +169,66 @@ const guardarProgreso = async () => {
                 whiteSpace: "pre-line",
               }}
             >
-              <p>{respuesta ? respuesta.split("\n").slice(1).join("\n") : actual.pregunta}</p>
+              <p>{mostrarOracion || actual.pregunta}</p>
             </div>
 
-            {!respuesta && (
-              <div
-                className="opciones-ejercicio"
-                style={{
-                  display: "flex",
-                  flexDirection: "column",
-                  gap: "1rem",
-                  alignItems: "center",
-                  marginBottom: "1rem",
-                }}
-              >
-                {actual.opciones.map((op, i) => (
-                  <button
-                    key={i}
-                    className={`opcion-btn ${opcionSeleccionada === op ? "seleccionada" : ""}`}
-                    onClick={() => setOpcionSeleccionada(op)}
-                    style={{ fontSize: "1.2rem", padding: "0.8rem 1.5rem", minWidth: "180px" }}
-                  >
-                    {op}
-                  </button>
-                ))}
-              </div>
+            {!estadoRespuesta && (
+              <>
+                <div
+                  className="opciones-ejercicio"
+                  style={{
+                    display: "flex",
+                    flexDirection: "column",
+                    gap: "1rem",
+                    alignItems: "center",
+                    marginBottom: "1rem",
+                  }}
+                >
+                  {actual.opciones.map((op, i) => (
+                    <button
+                      key={i}
+                      className={`opcion-btn ${opcionSeleccionada === op ? "seleccionada" : ""}`}
+                      onClick={() => setOpcionSeleccionada(op)}
+                      style={{ fontSize: "1.2rem", padding: "0.8rem 1.5rem", minWidth: "180px" }}
+                    >
+                      {op}
+                    </button>
+                  ))}
+                </div>
+
+                <button
+                  onClick={verificar}
+                  className="ejercicio-btn"
+                  disabled={!opcionSeleccionada}
+                  style={{ fontSize: "1.3rem", padding: "0.8rem 2rem", borderRadius: "8px" }}
+                >
+                  Check
+                </button>
+              </>
             )}
 
-            {!respuesta && (
-              <button
-                onClick={verificar}
-                className="ejercicio-btn"
-                disabled={!opcionSeleccionada}
-                style={{
-                  fontSize: "1.3rem",
-                  padding: "0.8rem 2rem",
-                  marginBottom: "1rem",
-                  borderRadius: "8px",
-                }}
-              >
-                Check
-              </button>
-            )}
-
-             {/* Feedback sin emojis */}
-            {respuesta && (
+            {estadoRespuesta && (
               <p
                 style={{
                   fontSize: "1.3rem",
                   margin: "1rem 0",
-                  color: respuesta === "Correct" ? "#19ba1bff" : "#ff5c5c",
                   fontWeight: "bold",
+                  color: estadoRespuesta === "correct" ? "#19ba1bff" : "#ff5c5c",
                 }}
               >
-                {respuesta}
+                {estadoRespuesta === "correct" ? "Correct" : "Incorrect"}
               </p>
             )}
-            <div
-              className="botones-siguiente"
-              style={{
-                display: "flex",
-                justifyContent: "center",
-                gap: "1rem",
-                marginTop: "1rem",
-              }}
-            >
-              {respuesta && index < ejercicios.length - 1 && (
-                <button
-                  onClick={siguiente}
-                  className="ejercicio-btn"
-                  style={{ fontSize: "1.3rem", padding: "0.8rem 2rem", borderRadius: "8px" }}
-                >
+
+            <div className="botones-siguiente" style={{ display: "flex", justifyContent: "center", gap: "1rem", marginTop: "1rem" }}>
+              {estadoRespuesta && index < ejercicios.length - 1 && (
+                <button onClick={siguiente} className="ejercicio-btn" style={{ fontSize: "1.3rem", padding: "0.8rem 2rem" }}>
                   Next question
                 </button>
               )}
-              {respuesta && index === ejercicios.length - 1 && (
-                <button
-                  onClick={manejarFinalizacion}
-                  className="ejercicio-btn"
-                  style={{ fontSize: "1.3rem", padding: "0.8rem 2rem", borderRadius: "8px" }}
-                >
+
+              {estadoRespuesta && index === ejercicios.length - 1 && (
+                <button onClick={manejarFinalizacion} className="ejercicio-btn" style={{ fontSize: "1.3rem", padding: "0.8rem 2rem" }}>
                   Finish
                 </button>
               )}

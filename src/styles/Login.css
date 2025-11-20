@@ -24,7 +24,7 @@
 /* === SECCIÓN IZQUIERDA (LOGO/IMAGEN) === */
 .login-left {
   flex: 1;
-  background: linear-gradient(163deg, #a4a5aa 0%, #dbddcf 100%);
+  background: linear-gradient(163deg, #FFF 0%, #dbddcf 100%);
   display: flex;
   justify-content: center;
   align-items: center;

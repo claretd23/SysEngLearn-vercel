@@ -35,61 +35,108 @@ export default function Tema3_Ej3() {
     "/audios/sem11/24.mp3",
     "/audios/sem11/25.mp3",
   ];
- const ejercicios = useMemo(
-    () => [
-      {
-        audio: fullDialogue,
-        pregunta: "What will Tom do tomorrow?",
-        opciones: [
-          "He will go to the park and take his dog",
-          "He will stay home and watch TV",
-          "He will go shopping and play football",
-        ],
-        correcta: "He will go to the park and take his dog",
-      },
-      {
-        audio: fullDialogue,
-        pregunta: "Will Tom stay at home all day?",
-        opciones: [
-          "Yes, and he will read a book",
-          "No, he will go to the park and maybe meet Paul",
-          "No, he will go swimming and clean his room",
-        ],
-        correcta: "No, he will go to the park and maybe meet Paul",
-      },
-      {
-        audio: fullDialogue,
-        pregunta: "What will Tom take to the park?",
-        opciones: [
-          "His football and his backpack",
-          "His dog and maybe meet Paul",
-          "His sister and his bike",
-        ],
-        correcta: "His dog and maybe meet Paul",
-      },
-      {
-        audio: fullDialogue,
-        pregunta: "Will Tom play football if it rains?",
-        opciones: [
-          "Yes, he will play with Paul",
-          "No, he won’t play and the football will stay at home",
-          "Maybe, he will play later in the evening",
-        ],
-        correcta: "No, he won’t play and the football will stay at home",
-      },
-      {
-        audio: fullDialogue,
-        pregunta: "Where will Emma go tomorrow?",
-        opciones: [
-          "To the library and she will do her homework",
-          "To the park and she will play football",
-          "To the cinema and she will meet Paul",
-        ],
-        correcta: "To the library and she will do her homework",
-      },
+const ejercicios = [
+  {
+    audio: fullDialogue,
+    pregunta: "What will Tom do tomorrow?",
+    opciones: [
+      "He will go to the park and take his dog",
+      "He will stay home and watch TV",
+      "He will go shopping and play football",
     ],
-    []
-  );
+    correcta: "He will go to the park and take his dog",
+  },
+  {
+    audio: fullDialogue,
+    pregunta: "Will Tom stay at home all day?",
+    opciones: [
+      "Yes, and he will read a book",
+      "No, he will go to the park and maybe meet Paul",
+      "No, he will go swimming and clean his room",
+    ],
+    correcta: "No, he will go to the park and maybe meet Paul",
+  },
+  {
+    audio: fullDialogue,
+    pregunta: "What will Tom take to the park?",
+    opciones: [
+      "His football and his backpack",
+      "His dog and maybe meet Paul",
+      "His sister and his bike",
+    ],
+    correcta: "His dog and maybe meet Paul",
+  },
+  {
+    audio: fullDialogue,
+    pregunta: "Will Tom play football if it rains?",
+    opciones: [
+      "Yes, he will play with Paul",
+      "No, he won’t play and the football will stay at home",
+      "Maybe, he will play later in the evening",
+    ],
+    correcta: "No, he won’t play and the football will stay at home",
+  },
+  {
+    audio: fullDialogue,
+    pregunta: "Where will Emma go tomorrow?",
+    opciones: [
+      "To the library and she will do her homework",
+      "To the park and she will play football",
+      "To the cinema and she will meet Paul",
+    ],
+    correcta: "To the library and she will do her homework",
+  },
+  {
+    audio: fullDialogue,
+    pregunta: "Will Emma go shopping after the library?",
+    opciones: [
+      "Yes, and she will buy a book",
+      "No, she won’t go shopping and she has too much homework",
+      "Maybe, she will go with her brother",
+    ],
+    correcta: "No, she won’t go shopping and she has too much homework",
+  },
+  {
+    audio: fullDialogue,
+    pregunta: "What does Emma think about the library in the morning?",
+    opciones: [
+      "It will be noisy and crowded",
+      "It will be closed and she will go home",
+      "It will be quiet and she will study",
+    ],
+    correcta: "It will be quiet and she will study",
+  },
+  {
+    audio: fullDialogue,
+    pregunta: "Will Emma’s brother go to the library with her?",
+    opciones: [
+      "Yes, and he will help her with homework",
+      "No, he won’t go and he will play video games at home",
+      "Maybe, he will go and bring his friend",
+    ],
+    correcta: "No, he won’t go and he will play video games at home",
+  },
+  {
+    audio: fullDialogue,
+    pregunta: "What will Paul bring to the park?",
+    opciones: [
+      "His football and some drinks",
+      "His dog and a ball",
+      "His bicycle and backpack",
+    ],
+    correcta: "His football and some drinks",
+  },
+  {
+    audio: fullDialogue,
+    pregunta: "What will Tom do if the park is wet?",
+    opciones: [
+      "He will play football with Paul",
+      "He will go to the library and meet his brother",
+      "He won’t play football and will take his dog home",
+    ],
+    correcta: "He won’t play football and will take his dog home",
+  },
+];
 
   const actual = ejercicios[index];
 

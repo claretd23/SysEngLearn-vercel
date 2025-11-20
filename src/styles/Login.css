@@ -1,4 +1,4 @@
-/* === RESET PARA FULLSCREEN === */
+/* === RESET === */
 html, body {
   height: 100%;
   margin: 0;
@@ -14,71 +14,58 @@ html, body {
   display: flex;
   justify-content: center;
   align-items: center;
+  padding: 0; 
 }
 
-/* === LOGIN — SE ADAPTA POR RESOLUCIÓN === */
+/* === TARJETA LOGIN === */
 .login-wrapper {
   display: flex;
   flex-direction: row;
-  width: 100%;
-  height: 100%;
-  max-width: none;
-  border-radius: 0;
+  width: 75%;           /* 👈 Tamaño ideal y armonioso */
+  max-width: 1100px;    /* 👈 No crecer demasiado */
+  height: 75%;          /* 👈 Altura controlada */
+  max-height: 720px;
+  
+  background: #fff;
+  border-radius: 30px;
   overflow: hidden;
+  box-shadow: 0 15px 40px rgba(0,0,0,0.12);
 }
 
-/* ===== DESKTOP: ACTIVAR TARJETA ===== */
-@media (min-width: 1024px) {
-  .login-wrapper {
-    width: 900px;
-    height: 580px;
-    background: #ffffff;
-    border-radius: 20px;
-    box-shadow: 0 10px 32px rgba(0,0,0,0.15);
-  }
-}
-
-/* === SECCIÓN IZQUIERDA (LOGO) === */
+/* === IZQUIERDA LOGO === */
 .login-left {
   flex: 1;
   background: linear-gradient(160deg, #ffffff 0%, #e7e8e0 100%);
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 2em 3em;
-  border-right: 1px solid rgba(0, 0, 0, 0.05);
+  padding: 2em;
 }
 
 .login-left img {
-  max-width: 260px;
-  width: 100%;
+  max-width: 330px;     /* 👈 Más grande */
+  width: 90%;
   height: auto;
   border-radius: 18px;
-  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.18);
-  transition: 0.25s ease-in-out;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.15);
 }
 
-.login-left img:hover {
-  transform: scale(1.03);
-}
-
-/* === SECCIÓN DERECHA (FORMULARIO) === */
+/* === DERECHA FORM === */
 .login-right {
-  flex: 1.2;
+  flex: 1.1;
+  background: #ffffff;
+  padding: 3.8em 3em;
   display: flex;
   flex-direction: column;
   justify-content: center;
-  padding: 4em 3.5em;
-  background-color: #ffffff;
 }
 
 .login-right h2 {
   text-align: center;
-  margin-bottom: 2em;
+  margin-bottom: 1.8em;
   color: #222a5c;
-  font-size: 1.9em;
+  font-size: 2em;
   font-weight: 800;
-  letter-spacing: -0.5px;
 }
 
 /* === CAMPOS === */
@@ -91,12 +78,11 @@ html, body {
   background-color: #eef2ff;
   border-radius: 10px;
   box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.08);
-  color: #222a5c;
 }
 
 .input-icon {
-  height: 1.5em;
-  width: 1.5em;
+  height: 1.4em;
+  width: 1.4em;
   fill: #aabc37;
 }
 
@@ -105,8 +91,7 @@ html, body {
   outline: none;
   background: transparent;
   width: 100%;
-  font-size: 1.05em;
-  color: #222a5c;
+  font-size: 1em;
 }
 
 /* === BOTONES === */
@@ -114,71 +99,44 @@ html, body {
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 1.2em;
-  margin-top: 2.2em;
+  margin-top: 1.8em;
 }
 
 .button1 {
-  padding: 0.8em 2em;
+  padding: 0.75em 2.3em;
   border-radius: 10px;
   border: none;
   background: linear-gradient(160deg, #aabc36 0%, #222a5c 100%);
   color: #fff;
-  font-size: 1.05em;
-  cursor: pointer;
-  transition: 0.3s ease-in-out;
-  font-weight: 600;
-  letter-spacing: 0.4px;
-}
-
-.button1:hover {
-  background: linear-gradient(160deg, #222a5c 0%, #aabc36 100%);
-  transform: translateY(-3px);
-}
-
-.button2 {
-  padding: 0.8em 2em;
-  border-radius: 10px;
-  border: none;
-  background: #eef1f5;
-  color: #222a5c;
-  font-size: 1.05em;
+  font-size: 1em;
   cursor: pointer;
   font-weight: 600;
   transition: 0.25s;
 }
 
-.button2:hover {
-  background: #e3e6ea;
+.button1:hover {
   transform: translateY(-3px);
+  background: linear-gradient(160deg, #222a5c 0%, #aabc36 100%);
 }
 
-/* === LINK RECUPERACIÓN === */
 .info-text {
   text-align: center;
-  margin-top: 1.5em;
-  font-size: 0.95em;
+  margin-top: 1.4em;
 }
 
 .info-text a {
   color: #222a5c;
   text-decoration: none;
   font-weight: 600;
-  transition: 0.3s;
 }
 
-.info-text a:hover {
-  color: #4c5ec4;
-}
-
-/* === RESPONSIVE === */
+/* === MOBILE === */
 @media (max-width: 768px) {
   .login-wrapper {
     flex-direction: column;
-  }
-
-  .login-left {
-    padding: 2em;
+    width: 92%;
+    height: auto;
+    padding: 2em 0;
   }
 
   .login-left img {
@@ -187,18 +145,13 @@ html, body {
   }
 
   .login-right {
-    padding: 2.5em 1.8em;
-  }
-
-  .btn {
-    flex-direction: column;
-    gap: 0.8em;
+    padding: 2em 1.5em;
   }
 }
 
 @media (max-width: 480px) {
   .login-right {
-    padding: 2em 1.2em;
+    padding: 1.8em 1em;
   }
 
   .input-field {

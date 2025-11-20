@@ -8,46 +8,31 @@ html, body {
 /* === CONTENEDOR PRINCIPAL (FULL SCREEN) === */
 .main-container {
   height: 100vh;
-  width: 100vw;   /*  ANCHO COMPLETO */
+  width: 100vw;
   display: flex;
   justify-content: center;
   align-items: center;
   background: #f0f2f5;
-
-  /*  Importante: quita padding/margins de donde NO van */
   padding: 0;
   margin: 0;
 }
 
-
-/* === LOGIN — MISMO DISEÑO PERO FULLSCREEN === */
+/* === LOGIN FULLSCREEN — LIMPIO (SIN DUPLICADOS) === */
 .login-wrapper {
   display: flex;
-  flex-direction: row;
-  width: 100%;
-  height: 100%;
+  width: 100vw;
+  height: 100vh;
+  margin: 0;
+  padding: 0;
 
-  /* ❌ Quitamos la "tarjeta" ❌ */
+  /* Quitamos tarjeta */
   max-width: none;
   border-radius: 0;
   box-shadow: none;
   overflow: hidden;
 }
-.login-wrapper {
-  display: flex;
-  width: 100vw;   /* 👈 FULL WIDTH REAL */
-  height: 100vh;  /* 👈 FULL HEIGHT REAL */
-  margin: 0;
-  padding: 0;
 
-  /* ❌ Elimina por completo estas propiedades */
-  max-width: none;
-  border-radius: 0;
-  box-shadow: none;
-}
-
-
-/* === SECCIÓN IZQUIERDA (LOGO) — IGUAL === */
+/* === SECCIÓN IZQUIERDA (LOGO) === */
 .login-left {
   flex: 1;
   background: linear-gradient(163deg, #FFF 0%, #dbddcf 100%);
@@ -65,7 +50,7 @@ html, body {
   box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
 }
 
-/* === SECCIÓN DERECHA (FORMULARIO) — IGUAL === */
+/* === SECCIÓN DERECHA (FORMULARIO) === */
 .login-right {
   flex: 1.2;
   display: flex;
@@ -73,6 +58,7 @@ html, body {
   justify-content: center;
   padding: 3em 2.5em;
   background-color: #fcfcfd;
+  height: 100%;
 }
 
 .login-right h2 {
@@ -83,7 +69,7 @@ html, body {
   font-weight: 700;
 }
 
-/* === CAMPOS — IGUAL === */
+/* === CAMPOS === */
 .field {
   display: flex;
   align-items: center;
@@ -111,7 +97,7 @@ html, body {
   color: #222a5c;
 }
 
-/* === BOTONES — IGUAL === */
+/* === BOTONES === */
 .btn {
   display: flex;
   justify-content: center;
@@ -152,7 +138,7 @@ html, body {
   transform: translateY(-2px);
 }
 
-/* === LINK RECUPERACIÓN — IGUAL === */
+/* === LINK RECUPERACIÓN === */
 .info-text {
   text-align: center;
   margin-top: 1em;
@@ -169,7 +155,7 @@ html, body {
   color: #3645a2;
 }
 
-/* === RESPONSIVE — MISMO QUE TENÍAS === */
+/* === RESPONSIVE === */
 @media (max-width: 768px) {
   .login-wrapper {
     flex-direction: column;

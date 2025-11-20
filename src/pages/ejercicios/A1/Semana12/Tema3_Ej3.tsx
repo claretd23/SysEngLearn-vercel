@@ -92,7 +92,7 @@ export default function Tema3_Ej3() {
 
   const actual = ejercicios[index];
 
-  // Reproducción automática de audios en secuencia (solo en la primera pregunta)
+  // Reproducción automática del audio
   const playAudio = () => {
     if (index !== 0 || !audioRef.current) return;
     setAudioIndex(0);
@@ -199,10 +199,9 @@ export default function Tema3_Ej3() {
             className="tarjeta-ejercicio"
             style={{ textAlign: "center", fontSize: "1.3rem", padding: "2rem" }}
           >
-            {/* AUDIO SOLO EN LA PRIMERA PREGUNTA */}
             {index === 0 && (
               <>
-                <div className="instruccion-box" style={{ marginBottom: "1.5rem" }}>
+                <div className="instruccion-box">
                   <p className="instruccion-ejercicio">
                     Listen to the dialogue carefully and answer the questions.
                   </p>
@@ -236,26 +235,12 @@ export default function Tema3_Ej3() {
             </div>
 
             {!respuesta && (
-              <div
-                className="opciones-ejercicio"
-                style={{
-                  display: "flex",
-                  flexDirection: "column",
-                  gap: "1rem",
-                  alignItems: "center",
-                  marginBottom: "1rem",
-                }}
-              >
+              <div className="opciones-ejercicio">
                 {actual.opciones.map((op, i) => (
                   <button
                     key={i}
                     className={`opcion-btn ${seleccion === op ? "seleccionada" : ""}`}
                     onClick={() => setSeleccion(op)}
-                    style={{
-                      fontSize: "1.2rem",
-                      padding: "0.8rem 1.5rem",
-                      minWidth: "220px",
-                    }}
                   >
                     {op}
                   </button>
@@ -264,11 +249,7 @@ export default function Tema3_Ej3() {
             )}
 
             {!respuesta && seleccion && (
-              <button
-                onClick={verificar}
-                className="ejercicio-btn"
-                style={{ fontSize: "1.3rem", padding: "0.8rem 2rem" }}
-              >
+              <button onClick={verificar} className="ejercicio-btn">
                 Check
               </button>
             )}
@@ -276,41 +257,33 @@ export default function Tema3_Ej3() {
             {respuesta && (
               <p
                 className={`respuesta-feedback ${esCorrecta ? "correcta" : "incorrecta"}`}
-                style={{
-                  fontSize: "1.3rem",
-                  margin: "1rem 0",
-                  color: esCorrecta ? "green" : "red",
-                  fontWeight: 600,
-                  whiteSpace: "pre-line",
-                }}
               >
                 {respuesta}
               </p>
             )}
 
             {respuesta && index < ejercicios.length - 1 && (
-              <button
-                onClick={siguiente}
-                className="ejercicio-btn"
-                style={{ fontSize: "1.3rem", padding: "0.8rem 2rem" }}
-              >
+              <button onClick={siguiente} className="ejercicio-btn">
                 Next question
               </button>
             )}
 
             {respuesta && index === ejercicios.length - 1 && (
-              <button
-                onClick={finalizar}
-                className="ejercicio-btn"
-                style={{ fontSize: "1.3rem", padding: "0.8rem 2rem" }}
-              >
+              <button onClick={finalizar} className="ejercicio-btn">
                 Finish
               </button>
             )}
           </section>
         </>
       ) : (
-        <div className="finalizado" style={{ fontSize: "1.3rem" }}>
+        <div
+          className="finalizado"
+          style={{
+            fontSize: "1.3rem",
+            textAlign: "center",
+            marginTop: "3rem",
+          }}
+        >
           <h2>You have completed the exercise!</h2>
           <p>
             Correct answers:{" "}

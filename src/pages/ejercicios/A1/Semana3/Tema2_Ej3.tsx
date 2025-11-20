@@ -52,7 +52,7 @@ export default function Tema3_Ej3() {
       ],
     },
     { texto: "Where is Fatima from?", correcta: [ "she is from turkey", "turkey","from turkey"] },
-    { texto: "Is Ali Mexican?", correcta: ["no, he isn't","no",  "no, he is not"] },
+    { texto: "Is Ali Mexican?", correcta: ["no, she isn't","no, she isn't Mexican","no", "no, she is not Mexican","no, she is not"] },
     { texto: "Is Laura Turkish?", correcta: ["no, she isn't turkish", "no, she isn't", "no, she is not"] },
     { texto: "Where is Yara from?", correcta: ["colombia", "she is from colombia", "from colombia"] },
     { texto: "Is Marco Mexican?", correcta:  ["no, he is not mexican","no, he isn't mexican", "no, he isn't"] },
@@ -89,19 +89,19 @@ export default function Tema3_Ej3() {
       console.error("Error al guardar progreso:", error);
     }
   };
-
-  // ------------------ VERIFICAR ------------------
- const verificar = () => {
+const verificar = () => {
   const user = inputValue.trim().toLowerCase();
   if (!user) return;
 
-  const esCorrecta = actual.correcta.some((c) => user === c);
+  const esCorrecta = actual.correcta.some(
+    (c) => user === c.toLowerCase()
+  );
 
   if (esCorrecta) {
     setRespuesta("Correct");
     setCorrectas((prev) => prev + 1);
   } else {
-    setRespuesta(`Incorrect — Correct answer: ${actual.correcta[0]}`);
+    setRespuesta(`Incorrect \n\n Correct answer: ${actual.correcta[0]}`);
   }
 };
 

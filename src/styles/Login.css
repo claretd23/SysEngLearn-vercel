@@ -1,12 +1,21 @@
-/* === CONTENEDOR PRINCIPAL === */
+/* === RESET PARA QUE TODO OCUPE LA PANTALLA COMPLETA === */
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* === CONTENEDOR PRINCIPAL FULLSCREEN === */
 .main-container {
   display: flex;
   justify-content: center;
   align-items: center;
-  min-height: 100vh;
+  height: 100vh;     /* Ocupa toda la pantalla */
+  width: 100vw;      /* Toda la anchura */
   background: linear-gradient(135deg, #f5f7fa 0%, #e4ebf5 100%);
   padding: 2em;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  box-sizing: border-box;
 }
 
 /* === LOGIN HORIZONTAL === */
@@ -24,12 +33,11 @@
 /* === SECCIÓN IZQUIERDA (LOGO/IMAGEN) === */
 .login-left {
   flex: 1;
-  background: linear-gradient(163deg, #FFF 0%, #dbddcf 100%);
+  background: linear-gradient(163deg, #fff 0%, #dbddcf 100%);
   display: flex;
   justify-content: center;
   align-items: center;
   padding: 2em;
-  color: #fff;
 }
 
 .login-left img {
@@ -58,7 +66,7 @@
   font-weight: 700;
 }
 
-/* CAMPOS */
+/* === CAMPOS === */
 .field {
   display: flex;
   align-items: center;
@@ -86,7 +94,7 @@
   color: #222a5c;
 }
 
-/* BOTONES */
+/* === BOTONES === */
 .btn {
   display: flex;
   justify-content: center;
@@ -127,7 +135,7 @@
   transform: translateY(-2px);
 }
 
-/* LINK RECUPERACIÓN */
+/* === LINK RECUPERACIÓN === */
 .info-text {
   text-align: center;
   margin-top: 1em;
@@ -144,23 +152,7 @@
   color: #3645a2;
 }
 
-.main-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 100vh;
-  background: #f0f2f5;
-  padding: 2em;
-}
-
-.login-center {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  max-width: 400px;
-  width: 100%;
-}
-
+/* === LOGO GENERAL (SI SE USA EN OTROS COMPONENTES) === */
 .logo {
   display: flex;
   justify-content: center;
@@ -171,7 +163,8 @@
   max-width: 180px;
   height: auto;
 }
-/* === 🔹 ESTILOS RESPONSIVOS PARA MÓVIL === */
+
+/* === 🔹 RESPONSIVE PARA TABLET Y MÓVIL === */
 @media (max-width: 768px) {
   .login-wrapper {
     flex-direction: column;
@@ -203,6 +196,11 @@
     font-size: 0.95em;
   }
 
+  .btn {
+    flex-direction: column;
+    gap: 0.8em;
+  }
+
   .button1,
   .button2 {
     width: 100%;
@@ -210,17 +208,12 @@
     font-size: 1em;
   }
 
-  .btn {
-    flex-direction: column;
-    gap: 0.8em;
-  }
-
   .info-text {
     font-size: 0.9em;
   }
 }
 
-/* === 🔹 AJUSTE EXTRA PARA TELÉFONOS PEQUEÑOS (menos de 480px) === */
+/* === 🔹 EXTRA PARA TELÉFONOS MUY PEQUEÑOS === */
 @media (max-width: 480px) {
   .main-container {
     padding: 1em;

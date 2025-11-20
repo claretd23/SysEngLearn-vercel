@@ -235,13 +235,13 @@ export default function Tema1_Ej3() {
   };
 
 const finalizar = async () => {
-  // Mostrar la pantalla final inmediatamente
+  // Mostrar pantalla final
   setMostrarFinal(true);
 
-  // Guardar progreso como antes
+  // Guardar progreso
   await guardarProgreso();
 
-  // Redirigir como en tus otros ejercicios
+  // Redirección automática
   setTimeout(() => {
     navigate(`/inicio/${nivel}`);
     window.location.reload();
@@ -357,16 +357,28 @@ const finalizar = async () => {
   </button>
 )}
 
-{/* PANTALLA DE FINALIZADO: aparece solo después de presionar Finish */}
 {mostrarFinal && (
-  <div className="finalizado" style={{ fontSize: "1.3rem", marginTop: "2rem" }}>
+  <div
+    className="finalizado"
+    style={{
+      fontSize: "1.3rem",
+      textAlign: "center",
+      marginTop: "2rem",
+      display: "flex",
+      flexDirection: "column",
+      gap: "1rem",
+      alignItems: "center",
+    }}
+  >
     <h2>You have completed the exercise!</h2>
+
     <p>
       Correct answers:{" "}
       <strong>
         {correctas} / {ejercicios.length * 5}
       </strong>
     </p>
+
     <p>Redirecting to the start of the level...</p>
   </div>
 )}

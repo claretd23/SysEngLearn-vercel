@@ -190,7 +190,7 @@ export default function Tema1_Ej3() {
           style={{ fontWeight: "bold", fontSize: "1.5rem", margin: "1rem 0" }}
           onClick={playAudio}
         >
-          Audio
+          🔊
         </button>
         <audio ref={audioRef} />
 
@@ -208,7 +208,7 @@ export default function Tema1_Ej3() {
                       padding: "0.3rem 0.8rem",
                     }}
                   >
-                    T
+                    
                   </button>
                   <button
                     onClick={() => toggleRespuesta(i, false)}

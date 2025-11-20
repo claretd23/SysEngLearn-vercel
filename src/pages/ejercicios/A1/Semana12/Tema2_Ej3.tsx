@@ -146,7 +146,7 @@ export default function Tema2_Ej3() {
               style={{ fontWeight: "bold", fontSize: "1.5rem", margin: "1rem 0" }}
               onClick={playAudio}
             >
-              Audio
+              🔊
             </button>
             <audio ref={audioRef} />
 

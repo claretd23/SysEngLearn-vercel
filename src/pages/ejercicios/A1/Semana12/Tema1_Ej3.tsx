@@ -47,91 +47,91 @@ export default function Tema1_Ej3() {
           { texto: "Emma arrives early for English class.", correcta: true },
         ],
       },
-  {
-    audios: ["/audios/sem12/3a.mp3", "/audios/sem12/3b.mp3"],
-    preguntas: [
-      { texto: "Lunch is at 12:30.", correcta: true },
-      { texto: "Dinner is at 6:50.", correcta: true },
-      { texto: "Lunch is at 12:15.", correcta: false },
-      { texto: "Dinner is after lunch.", correcta: true },
-      { texto: "Dinner is at 7:10.", correcta: false },
-    ],
-  },
-  {
-    audios: ["/audios/sem12/4a.mp3", "/audios/sem12/4b.mp3"],
-    preguntas: [
-      { texto: "Swimming lesson is at 4:20.", correcta: true },
-      { texto: "Piano lesson is at 5:10.", correcta: true },
-      { texto: "Swimming lesson is at 4:10.", correcta: false },
-      { texto: "Piano lesson is before swimming.", correcta: false },
-      { texto: "Jake needs a towel for swimming.", correcta: true },
-    ],
-  },
-  {
-    audios: ["/audios/sem12/5a.mp3", "/audios/sem12/5b.mp3"],
-    preguntas: [
-      { texto: "The movie starts at 7:50.", correcta: true },
-      { texto: "Dinner is at 6:20.", correcta: true },
-      { texto: "The movie starts at 8:10.", correcta: false },
-      { texto: "Dinner is after the movie.", correcta: false },
-      { texto: "They will get popcorn before the movie.", correcta: true },
-    ],
-  },
-  {
-    audios: ["/audios/sem12/6a.mp3", "/audios/sem12/6b.mp3"],
-    preguntas: [
-      { texto: "Piano lesson is at 3:15.", correcta: true },
-      { texto: "Swimming class is at 5:40.", correcta: true },
-      { texto: "Piano lesson is at 3:00.", correcta: false },
-      { texto: "Swimming is before piano.", correcta: false },
-      { texto: "Emma can practice before piano.", correcta: true },
-    ],
-  },
-  {
-    audios: ["/audios/sem12/7a.mp3", "/audios/sem12/7b.mp3"],
-    preguntas: [
-      { texto: "Football match is at 5:40.", correcta: true },
-      { texto: "Homework is finished at 4:15.", correcta: true },
-      { texto: "Football match is before homework.", correcta: false },
-      { texto: "Football match is at 6:20.", correcta: false },
-      { texto: "Jake finishes homework before dinner.", correcta: true },
-    ],
-  },
-  {
-    audios: ["/audios/sem12/8a.mp3", "/audios/sem12/8b.mp3"],
-    preguntas: [
-      { texto: "Picnic starts at 11:10.", correcta: true },
-      { texto: "Ice cream is at 1:40.", correcta: true },
-      { texto: "Ice cream is before the picnic.", correcta: false },
-      { texto: "Picnic is at 10:50.", correcta: false },
-      { texto: "They meet at the park.", correcta: true },
-    ],
-  },
-  {
-    audios: ["/audios/sem12/9a.mp3", "/audios/sem12/9b.mp3"],
-    preguntas: [
-      { texto: "Bedtime is at 8:30.", correcta: true },
-      { texto: "Wake-up time is at 6:10.", correcta: true },
-      { texto: "Bedtime is before wake-up.", correcta: true },
-      { texto: "Wake-up time is at 6:30.", correcta: false },
-      { texto: "Kids wake up before 7:00.", correcta: true },
-    ],
-  },
-  {
-    audios: ["/audios/sem12/10a.mp3", "/audios/sem12/10b.mp3"],
-    preguntas: [
-      { texto: "The bus leaves at 7:40.", correcta: true },
-      { texto: "Breakfast is at 7:15.", correcta: true },
-      { texto: "The bus leaves after breakfast.", correcta: true },
-      { texto: "Breakfast is at 7:40.", correcta: false },
-      { texto: "The bus leaves at 8:00.", correcta: false },
-    ],
-  },
+      {
+        audios: ["/audios/sem12/3a.mp3", "/audios/sem12/3b.mp3"],
+        preguntas: [
+          { texto: "Lunch is at 12:30.", correcta: true },
+          { texto: "Dinner is at 6:50.", correcta: true },
+          { texto: "Lunch is at 12:15.", correcta: false },
+          { texto: "Dinner is after lunch.", correcta: true },
+          { texto: "Dinner is at 7:10.", correcta: false },
+        ],
+      },
+      {
+        audios: ["/audios/sem12/4a.mp3", "/audios/sem12/4b.mp3"],
+        preguntas: [
+          { texto: "Swimming lesson is at 4:20.", correcta: true },
+          { texto: "Piano lesson is at 5:10.", correcta: true },
+          { texto: "Swimming lesson is at 4:10.", correcta: false },
+          { texto: "Piano lesson is before swimming.", correcta: false },
+          { texto: "Jake needs a towel for swimming.", correcta: true },
+        ],
+      },
+      {
+        audios: ["/audios/sem12/5a.mp3", "/audios/sem12/5b.mp3"],
+        preguntas: [
+          { texto: "The movie starts at 7:50.", correcta: true },
+          { texto: "Dinner is at 6:20.", correcta: true },
+          { texto: "The movie starts at 8:10.", correcta: false },
+          { texto: "Dinner is after the movie.", correcta: false },
+          { texto: "They will get popcorn before the movie.", correcta: true },
+        ],
+      },
+      {
+        audios: ["/audios/sem12/6a.mp3", "/audios/sem12/6b.mp3"],
+        preguntas: [
+          { texto: "Piano lesson is at 3:15.", correcta: true },
+          { texto: "Swimming class is at 5:40.", correcta: true },
+          { texto: "Piano lesson is at 3:00.", correcta: false },
+          { texto: "Swimming is before piano.", correcta: false },
+          { texto: "Emma can practice before piano.", correcta: true },
+        ],
+      },
+      {
+        audios: ["/audios/sem12/7a.mp3", "/audios/sem12/7b.mp3"],
+        preguntas: [
+          { texto: "Football match is at 5:40.", correcta: true },
+          { texto: "Homework is finished at 4:15.", correcta: true },
+          { texto: "Football match is before homework.", correcta: false },
+          { texto: "Football match is at 6:20.", correcta: false },
+          { texto: "Jake finishes homework before dinner.", correcta: true },
+        ],
+      },
+      {
+        audios: ["/audios/sem12/8a.mp3", "/audios/sem12/8b.mp3"],
+        preguntas: [
+          { texto: "Picnic starts at 11:10.", correcta: true },
+          { texto: "Ice cream is at 1:40.", correcta: true },
+          { texto: "Ice cream is before the picnic.", correcta: false },
+          { texto: "Picnic is at 10:50.", correcta: false },
+          { texto: "They meet at the park.", correcta: true },
+        ],
+      },
+      {
+        audios: ["/audios/sem12/9a.mp3", "/audios/sem12/9b.mp3"],
+        preguntas: [
+          { texto: "Bedtime is at 8:30.", correcta: true },
+          { texto: "Wake-up time is at 6:10.", correcta: true },
+          { texto: "Bedtime is before wake-up.", correcta: true },
+          { texto: "Wake-up time is at 6:30.", correcta: false },
+          { texto: "Kids wake up before 7:00.", correcta: true },
+        ],
+      },
+      {
+        audios: ["/audios/sem12/10a.mp3", "/audios/sem12/10b.mp3"],
+        preguntas: [
+          { texto: "The bus leaves at 7:40.", correcta: true },
+          { texto: "Breakfast is at 7:15.", correcta: true },
+          { texto: "The bus leaves after breakfast.", correcta: true },
+          { texto: "Breakfast is at 7:40.", correcta: false },
+          { texto: "The bus leaves at 8:00.", correcta: false },
+        ],
+      },
     ],
     []
   );
 
- const actual = ejercicios[index];
+  const actual = ejercicios[index];
 
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const [isPlaying, setIsPlaying] = useState(false);
@@ -161,18 +161,15 @@ export default function Tema1_Ej3() {
     playSequential(0);
   };
 
-  // Reset audio when changing exercise
   useEffect(() => {
     if (audioRef.current) {
       audioRef.current.pause();
       audioRef.current.currentTime = 0;
       audioRef.current.onended = null;
     }
-
     setIsPlaying(false);
   }, [index]);
 
-  // Reset on unmount
   useEffect(() => {
     return () => {
       if (audioRef.current) {
@@ -203,7 +200,6 @@ export default function Tema1_Ej3() {
   const siguiente = () => {
     setRespuestas(Array(5).fill(null));
     setFinalizado(false);
-
     if (index + 1 < ejercicios.length) {
       setIndex(index + 1);
     } else {
@@ -237,7 +233,6 @@ export default function Tema1_Ej3() {
 
   const finalizar = async () => {
     await guardarProgreso();
-
     setTimeout(() => {
       navigate(`/inicio/${nivel}`);
       window.location.reload();
@@ -254,16 +249,13 @@ export default function Tema1_Ej3() {
         </p>
       </header>
 
-      <section
-        className="tarjeta-ejercicio"
-        style={{ textAlign: "center", padding: "2rem" }}
-      >
+      <section className="tarjeta-ejercicio" style={{ textAlign: "center", padding: "2rem" }}>
         <p className="instruccion-ejercicio">
           Listen carefully to each dialogue. Mark each statement as True (T) or False (F).
         </p>
 
-        {/* AUDIO */}
         <audio ref={audioRef} />
+
         <button
           className="btn-audio"
           style={{ fontWeight: "bold", fontSize: "1.5rem", margin: "1rem 0" }}
@@ -273,7 +265,6 @@ export default function Tema1_Ej3() {
           🔊
         </button>
 
-        {/* PREGUNTAS */}
         <div className="oracion-box" style={{ margin: "1rem auto", maxWidth: "600px" }}>
           {actual.preguntas.map((p, i) => (
             <div
@@ -282,17 +273,17 @@ export default function Tema1_Ej3() {
                 display: "flex",
                 justifyContent: "space-between",
                 marginBottom: "0.8rem",
+                alignItems: "center",
               }}
             >
               <span>{p.texto}</span>
 
               {!finalizado ? (
-                <div>
+                <div style={{ display: "flex", gap: "0.5rem" }}>
                   <button
                     onClick={() => toggleRespuesta(i, true)}
                     style={{
                       backgroundColor: respuestas[i] === true ? "#bcd03c" : "#f4f4f4",
-                      marginRight: "0.5rem",
                       padding: "0.3rem 0.8rem",
                     }}
                   >
@@ -323,7 +314,7 @@ export default function Tema1_Ej3() {
           ))}
         </div>
 
-        {/* CHECK */}
+        {/* BOTÓN CHECK */}
         {!finalizado && (
           <button
             onClick={verificar}
@@ -334,28 +325,39 @@ export default function Tema1_Ej3() {
           </button>
         )}
 
-        {/* NEXT */}
+        {/* BOTÓN NEXT */}
         {finalizado && index < ejercicios.length - 1 && (
           <button
             onClick={siguiente}
             className="ejercicio-btn"
             style={{ fontSize: "1.3rem", padding: "0.8rem 2rem", marginTop: "1rem" }}
           >
-            Next exercise
+            Next
           </button>
         )}
 
-        {/* FINAL */}
+        {/* FINISH */}
         {finalizado && index === ejercicios.length - 1 && (
-          <div style={{ marginTop: "1rem" }}>
-            <h2>You have completed the exercise!</h2>
-            <p>
-              Correct statements:{" "}
-              <strong>
-                {correctas} / {ejercicios.length * 5}
-              </strong>
-            </p>
-          </div>
+          <>
+            <button
+              onClick={finalizar}
+              className="ejercicio-btn"
+              style={{ fontSize: "1.3rem", padding: "0.8rem 2rem", marginTop: "1rem" }}
+            >
+              Finish
+            </button>
+
+            <div className="finalizado" style={{ fontSize: "1.3rem", marginTop: "2rem" }}>
+              <h2>You have completed the exercise!</h2>
+              <p>
+                Correct answers:{" "}
+                <strong>
+                  {correctas} / {ejercicios.length * 5}
+                </strong>
+              </p>
+              <p>Redirecting to the start of the level...</p>
+            </div>
+          </>
         )}
       </section>
     </div>

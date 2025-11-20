@@ -238,7 +238,6 @@ export default function Tema1_Ej3() {
     }, 2500);
   };
 
-  // ⛔⛔⛔ AQUÍ ESTÁ EL CAMBIO IMPORTANTE
   // Si mostrarFinal es true → SOLO mostramos la pantalla final
   if (mostrarFinal) {
     return (

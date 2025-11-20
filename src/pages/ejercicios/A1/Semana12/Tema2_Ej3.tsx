@@ -19,9 +19,13 @@ export default function Tema2_Ej3() {
   const [correctas, setCorrectas] = useState(0);
   const [index, setIndex] = useState(0);
   const [finalizado, setFinalizado] = useState(false);
-  const [audioIndex, setAudioIndex] = useState<number | null>(null); // null = no iniciar audio
+  const [mostrarFinal, setMostrarFinal] = useState(false);
 
+  const [audioIndex, setAudioIndex] = useState<number | null>(null);
   const audioRef = useRef<HTMLAudioElement | null>(null);
+
+  const API_URL = import.meta.env.VITE_API_URL;
+  const token = localStorage.getItem("token");
 
   const ejercicios: MCQ[] = useMemo(
     () => [
@@ -91,28 +95,26 @@ export default function Tema2_Ej3() {
 
   const actual = ejercicios[index];
 
-  //  INICIA LA SECUENCIA SOLO SI PRESIONAS EL BOTÓN
+  // 🎧 Reproduce los audios en secuencia (conversación)
   const playAudio = () => {
-    setAudioIndex(0); // ahora sí empieza el audio
+    setAudioIndex(0);
   };
 
-  //  REPRODUCCIÓN AUTOMÁTICA EN SECUENCIA
   useEffect(() => {
-    if (audioIndex === null) return; // evita reproducción automática
+    if (audioIndex === null) return;
     if (!audioRef.current) return;
 
-    const currentSrc = actual.audios[audioIndex];
-    if (!currentSrc) return;
+    const src = actual.audios[audioIndex];
+    if (!src) return;
 
-    audioRef.current.src = currentSrc;
+    audioRef.current.src = src;
     audioRef.current.play();
 
     const handleEnded = () => {
-      // si hay otro audio, sigue
       if (audioIndex + 1 < actual.audios.length) {
         setAudioIndex(audioIndex + 1);
       } else {
-        setAudioIndex(null); // al terminar la secuencia, se detiene todo
+        setAudioIndex(null);
       }
     };
 
@@ -120,12 +122,32 @@ export default function Tema2_Ej3() {
     return () => audioRef.current?.removeEventListener("ended", handleEnded);
   }, [audioIndex, actual.audios]);
 
-  // --- LÓGICA DE RESPUESTAS ---
+  // Detener audio al salir o cambiar ejercicio
+  useEffect(() => {
+    return () => {
+      if (audioRef.current) {
+        audioRef.current.pause();
+        audioRef.current.currentTime = 0;
+      }
+    };
+  }, [index]);
+
+  // detiene audio si sales del componente
+  useEffect(() => {
+    return () => {
+      if (audioRef.current) {
+        audioRef.current.pause();
+        audioRef.current.currentTime = 0;
+      }
+    };
+  }, []);
+
+  // ✔ lógica de respuesta
   const verificar = () => {
     if (!seleccion) return;
     if (seleccion === actual.correcta) {
       setRespuesta("Correct");
-      setCorrectas((prev) => prev + 1);
+      setCorrectas((p) => p + 1);
     } else {
       setRespuesta(`Incorrect.\n\nCorrect answer: ${actual.correcta}`);
     }
@@ -134,73 +156,136 @@ export default function Tema2_Ej3() {
   const siguiente = () => {
     setRespuesta(null);
     setSeleccion(null);
-    setAudioIndex(null); // detener audios
+    setAudioIndex(null);
+
     if (index + 1 < ejercicios.length) {
       setIndex(index + 1);
     } else {
-      setFinalizado(true);
+      finalizar();
     }
   };
 
+  // Guardar progreso
+  const guardarProgreso = async () => {
+    const completados = JSON.parse(localStorage.getItem("ejercicios_completados") || "[]");
+
+    if (!completados.includes(id)) {
+      completados.push(id);
+      localStorage.setItem("ejercicios_completados", JSON.stringify(completados));
+    }
+
+    if (!token) return;
+
+    try {
+      await fetch(`${API_URL}/api/progreso`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ nivel, semana, tema, ejercicio }),
+      });
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  const finalizar = async () => {
+    setMostrarFinal(true);
+    await guardarProgreso();
+
+    setTimeout(() => {
+      navigate(`/inicio/${nivel}`);
+      window.location.reload();
+    }, 2500);
+  };
+
+  // 🎉 PANTALLA FINAL como la del ejercicio anterior
+  if (mostrarFinal) {
+    return (
+      <div className="ejercicio-container">
+        <div className="finalizado" style={{ textAlign: "center", padding: "2rem" }}>
+          <h2>You have completed the exercise!</h2>
+          <p>
+            Correct answers:{" "}
+            <strong>{correctas} / {ejercicios.length}</strong>
+          </p>
+          <p>Redirecting to the start of the level...</p>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="ejercicio-container">
-      {!finalizado && (
-        <>
-          <header className="ejercicio-header">
-            <h1 className="titulo-ejercicio">EXERCISE 3</h1>
-            <p className="progreso-ejercicio">Question {index + 1} of {ejercicios.length}</p>
-          </header>
+      <header className="ejercicio-header">
+        <h1 className="titulo-ejercicio">EXERCISE 3</h1>
+        <p className="progreso-ejercicio">
+          Question {index + 1} of {ejercicios.length}
+        </p>
+      </header>
 
-          <section className="tarjeta-ejercicio" style={{ textAlign: "center", padding: "2rem" }}>
-            <div className="instruccion-box" style={{ marginBottom: "1.5rem" }}>
-              <p className="instruccion-ejercicio">
-                Listen carefully to each dialogue. Choose the correct answer.
-              </p>
-            </div>
+      <section className="tarjeta-ejercicio" style={{ textAlign: "center", padding: "2rem" }}>
+        
+        <p className="instruccion-ejercicio">
+          Listen carefully to the conversation and choose the correct answer.
+        </p>
 
+        <button
+          className="btn-audio"
+          style={{ fontWeight: "bold", fontSize: "1.5rem", margin: "1rem 0" }}
+          onClick={playAudio}
+        >
+          🔊
+        </button>
+
+        <audio ref={audioRef} />
+
+        <h3 style={{ marginTop: "1rem" }}>{actual.pregunta}</h3>
+
+        <div className="opciones-ejercicio" style={{ display: "flex", flexDirection: "column", gap: "1rem", marginTop: "1rem" }}>
+          {actual.opciones.map((op, i) => (
             <button
-              className="btn-audio"
-              style={{ fontWeight: "bold", fontSize: "1.5rem", margin: "1rem 0" }}
-              onClick={playAudio}
+              key={i}
+              className={`opcion-btn ${seleccion === op ? "seleccionada" : ""}`}
+              onClick={() => setSeleccion(op)}
             >
-              🔊
+              {op}
             </button>
+          ))}
+        </div>
 
-            <audio ref={audioRef} />
+        {!respuesta && seleccion && (
+          <button onClick={verificar} className="ejercicio-btn">
+            Check
+          </button>
+        )}
 
-            <div className="opciones-ejercicio" style={{ display: "flex", flexDirection: "column", gap: "1rem", marginTop: "1rem" }}>
-              {actual.opciones.map((op, i) => (
-                <button
-                  key={i}
-                  className={`opcion-btn ${seleccion === op ? "seleccionada" : ""}`}
-                  onClick={() => setSeleccion(op)}
-                >
-                  {op}
-                </button>
-              ))}
-            </div>
+        {respuesta && (
+          <p
+            style={{
+              fontSize: "1.3rem",
+              margin: "1rem 0",
+              color: respuesta === "Correct" ? "green" : "red",
+              whiteSpace: "pre-line"
+            }}
+          >
+            {respuesta}
+          </p>
+        )}
 
-            {!respuesta && seleccion && (
-              <button onClick={verificar} className="ejercicio-btn">Check</button>
-            )}
+        {respuesta && index < ejercicios.length - 1 && (
+          <button onClick={siguiente} className="ejercicio-btn">
+            Next
+          </button>
+        )}
 
-            {respuesta && (
-              <p
-                className={`respuesta-feedback ${respuesta === "Correct" ? "correcta" : "incorrecta"}`}
-                style={{ fontSize: "1.3rem", margin: "1rem 0", color: respuesta === "Correct" ? "green" : "red", fontWeight: 600, whiteSpace: "pre-line" }}
-              >
-                {respuesta}
-              </p>
-            )}
-
-            {respuesta && index < ejercicios.length - 1 && (
-              <button onClick={siguiente} className="ejercicio-btn">
-                Next question
-              </button>
-            )}
-          </section>
-        </>
-      )}
+        {respuesta && index === ejercicios.length - 1 && (
+          <button onClick={finalizar} className="ejercicio-btn">
+            Finish
+          </button>
+        )}
+      </section>
     </div>
   );
 }

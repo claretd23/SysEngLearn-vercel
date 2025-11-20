@@ -25,7 +25,6 @@ export default function Tema1_Ej3() {
   const API_URL = import.meta.env.VITE_API_URL;
   const token = localStorage.getItem("token");
 
-
   const ejercicios: EjercicioTF[] = useMemo(
     () => [
       {
@@ -132,60 +131,57 @@ export default function Tema1_Ej3() {
     []
   );
 
-  const actual = ejercicios[index];
+ const actual = ejercicios[index];
 
- const audioRef = useRef<HTMLAudioElement | null>(null);
-  const [audioIndex, setAudioIndex] = useState(0);
+  const audioRef = useRef<HTMLAudioElement | null>(null);
   const [isPlaying, setIsPlaying] = useState(false);
 
- const reproducirAudio = () => {
-  if (!audioRef.current) return;
-
-  setIsPlaying(true);
-  let audios = actual.audios;
-
-  const playSequential = (i: number) => {
+  const reproducirAudio = () => {
     if (!audioRef.current) return;
 
-    audioRef.current.src = audios[i];
-    audioRef.current.play();
+    setIsPlaying(true);
+    const audios = actual.audios;
 
-    audioRef.current.onended = () => {
-      if (i + 1 < audios.length) {
-        playSequential(i + 1);
-      } else {
-        audioRef.current.onended = null; // limpiar evento
-        setIsPlaying(false);
-      }
+    const playSequential = (i: number) => {
+      if (!audioRef.current) return;
+
+      audioRef.current.src = audios[i];
+      audioRef.current.play();
+
+      audioRef.current.onended = () => {
+        if (i + 1 < audios.length) {
+          playSequential(i + 1);
+        } else {
+          audioRef.current.onended = null;
+          setIsPlaying(false);
+        }
+      };
     };
+
+    playSequential(0);
   };
 
-  playSequential(0);
-};
-
-  //  Detener audio cuando se cambia de ejercicio o se sale
-// Resetear audio cuando cambia el ejercicio
-useEffect(() => {
-  if (audioRef.current) {
-    audioRef.current.pause();
-    audioRef.current.currentTime = 0;
-    audioRef.current.onended = null; // <-- MUY IMPORTANTE
-  }
-
-  setAudioIndex(0);
-  setIsPlaying(false);
-}, [index]);
- // cada vez que cambia el ejercicio
-useEffect(() => {
-  return () => {
+  // Reset audio when changing exercise
+  useEffect(() => {
     if (audioRef.current) {
       audioRef.current.pause();
       audioRef.current.currentTime = 0;
       audioRef.current.onended = null;
     }
-  };
-}, []);
 
+    setIsPlaying(false);
+  }, [index]);
+
+  // Reset on unmount
+  useEffect(() => {
+    return () => {
+      if (audioRef.current) {
+        audioRef.current.pause();
+        audioRef.current.currentTime = 0;
+        audioRef.current.onended = null;
+      }
+    };
+  }, []);
 
   const toggleRespuesta = (i: number, valor: boolean) => {
     const nuevas = [...respuestas];
@@ -206,7 +202,6 @@ useEffect(() => {
 
   const siguiente = () => {
     setRespuestas(Array(5).fill(null));
-    setAudioIndex(0);
     setFinalizado(false);
 
     if (index + 1 < ejercicios.length) {
@@ -246,7 +241,7 @@ useEffect(() => {
     setTimeout(() => {
       navigate(`/inicio/${nivel}`);
       window.location.reload();
-    }, 3000);
+    }, 2500);
   };
 
   return (
@@ -259,7 +254,10 @@ useEffect(() => {
         </p>
       </header>
 
-      <section className="tarjeta-ejercicio" style={{ textAlign: "center", padding: "2rem" }}>
+      <section
+        className="tarjeta-ejercicio"
+        style={{ textAlign: "center", padding: "2rem" }}
+      >
         <p className="instruccion-ejercicio">
           Listen carefully to each dialogue. Mark each statement as True (T) or False (F).
         </p>
@@ -353,7 +351,9 @@ useEffect(() => {
             <h2>You have completed the exercise!</h2>
             <p>
               Correct statements:{" "}
-              <strong>{correctas} / {ejercicios.length * 5}</strong>
+              <strong>
+                {correctas} / {ejercicios.length * 5}
+              </strong>
             </p>
           </div>
         )}

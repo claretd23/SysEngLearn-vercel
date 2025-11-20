@@ -27,19 +27,17 @@ export default function Tema3_Ej3() {
     }
   };
 
-  // Detener audio al cambiar de ejercicio
   useEffect(() => {
     stopAudio();
   }, [index]);
 
-  // Detener audio al salir del componente
   useEffect(() => {
     return () => stopAudio();
   }, []);
 
   // ------------------ EJERCICIOS ------------------
   const ejercicios = [
-    { texto: "Where is Sofia from?", correcta: [ "she is from mexico", "from mexico","mexico",] },
+    { texto: "Where is Sofia from?", correcta: ["she is from mexico", "from mexico", "mexico"] },
     {
       texto: "Peter is from Canada. Is he American?",
       correcta: [
@@ -51,14 +49,14 @@ export default function Tema3_Ej3() {
         "no, he is canadian",
       ],
     },
-    { texto: "Where is Fatima from?", correcta: [ "she is from turkey", "turkey","from turkey"] },
-    { texto: "Is Ali Mexican?", correcta: ["no, she isn't","no, she isn't Mexican","no", "no, she is not Mexican","no, she is not"] },
+    { texto: "Where is Fatima from?", correcta: ["she is from turkey", "turkey", "from turkey"] },
+    { texto: "Is Ali Mexican?", correcta: ["no, she isn't", "no, she isn't mexican", "no", "no, she is not mexican", "no, she is not"] },
     { texto: "Is Laura Turkish?", correcta: ["no, she isn't turkish", "no, she isn't", "no, she is not"] },
     { texto: "Where is Yara from?", correcta: ["colombia", "she is from colombia", "from colombia"] },
-    { texto: "Is Marco Mexican?", correcta:  ["no, he is not mexican","no, he isn't mexican", "no, he isn't"] },
-    { texto: "Where is Marco from?", correcta: [ "he is from spain","spain", "from spain"] },
-    { texto: "Where is Yara from?", correcta: [ "she is from colombia","colombia", "from colombia"] },
-    { texto: "Is Yara Spanish?", correcta: [ "no, she isn't Spanish", "no, she is not", "no", "no, she is not Spanish", "no, she isn't"] },
+    { texto: "Is Marco Mexican?", correcta: ["no, he is not mexican", "no, he isn't mexican", "no, he isn't"] },
+    { texto: "Where is Marco from?", correcta: ["he is from spain", "spain", "from spain"] },
+    { texto: "Where is Yara from?", correcta: ["she is from colombia", "colombia", "from colombia"] },
+    { texto: "Is Yara Spanish?", correcta: ["no, she isn't spanish", "no, she is not", "no", "no, she is not spanish", "no, she isn't"] },
   ];
 
   const actual = ejercicios[index];
@@ -89,22 +87,21 @@ export default function Tema3_Ej3() {
       console.error("Error al guardar progreso:", error);
     }
   };
-const verificar = () => {
-  const user = inputValue.trim().toLowerCase();
-  if (!user) return;
 
-  const esCorrecta = actual.correcta.some(
-    (c) => user === c.toLowerCase()
-  );
+  // ------------------ VERIFICAR ------------------
+  const verificar = () => {
+    const user = inputValue.trim().toLowerCase();
+    if (!user) return;
 
-  if (esCorrecta) {
-    setRespuesta("Correct");
-    setCorrectas((prev) => prev + 1);
-  } else {
-    setRespuesta(`Incorrect \n\n Correct answer: ${actual.correcta[0]}`);
-  }
-};
+    const esCorrecta = actual.correcta.some((c) => user === c.toLowerCase());
 
+    if (esCorrecta) {
+      setRespuesta("Correct");
+      setCorrectas((prev) => prev + 1);
+    } else {
+      setRespuesta(`Incorrect\n\nCorrect answer: ${actual.correcta[0]}`);
+    }
+  };
 
   // ------------------ SIGUIENTE ------------------
   const siguiente = () => {
@@ -138,10 +135,18 @@ const verificar = () => {
           </header>
 
           <section className="tarjeta-ejercicio" style={{ textAlign: "center" }}>
+
+            {/* ------------------ INSTRUCCIONES ------------------ */}
             {index === 0 && (
               <div className="instruccion-box">
                 <p className="instruccion-ejercicio" style={{ fontSize: "1.2rem" }}>
-                  Listen to the audio and answer the questions.
+                  Listen to the audio and answer the questions.<br /><br />
+                  <strong>You can answer using:</strong><br />
+                  • Short answers: <em>"yes", "no"</em><br />
+                  • Full sentences: <em>"she is from ___"</em><br />
+                  • Contractions: <em>"no, he isn't"</em><br />
+                  • Country only: <em>"Brazil"</em>, <em>"Japan"</em><br />
+                  • With or without “from”: <em>"from Canada"</em> / <em>"Canada"</em>
                 </p>
               </div>
             )}
@@ -205,17 +210,16 @@ const verificar = () => {
             {/* FEEDBACK */}
             {respuesta && (
               <p
-  className="respuesta-feedback"
-  style={{
-    fontSize: "1.2rem",
-    margin: "1rem 0",
-    fontWeight: "bold",
-    color: respuesta.startsWith("Correct") ? "#28A745" : "#DC3545",
-  }}
->
-  {respuesta}
-</p>
-
+                className="respuesta-feedback"
+                style={{
+                  fontSize: "1.2rem",
+                  margin: "1rem 0",
+                  fontWeight: "bold",
+                  color: respuesta.startsWith("Correct") ? "#28A745" : "#DC3545",
+                }}
+              >
+                {respuesta}
+              </p>
             )}
 
             {/* BOTONES SIGUIENTE / FINALIZAR */}

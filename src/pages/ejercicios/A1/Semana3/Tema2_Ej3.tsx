@@ -1,6 +1,9 @@
 import { useParams, useNavigate } from "react-router-dom";
 import { useState, useRef } from "react";
 import "../ejercicios.css";
+import { useParams, useNavigate } from "react-router-dom";
+import { useState, useRef } from "react";
+import "../ejercicios.css";
 
 export default function Tema3_Ej3() {
   const { nivel, semana, tema, ejercicio } = useParams();
@@ -22,18 +25,51 @@ export default function Tema3_Ej3() {
   };
 
   const ejercicios = [
-    { texto: "Sofia is from Mexico. She is ______.", correcta: ["Mexican"] },
-    { texto: "Peter is from Canada. He is ______.", correcta: ["Canadian"] },
-    { texto: "Fatima is from Turkey. She is ______.", correcta: ["Turkish"] },
-    { texto: "Ali is from India. He is ______.", correcta: ["Indian"] },
-    { texto: "Laura is from Italy. She is ______.", correcta: ["Italian"] },
-    { texto: "Yara is from Colombia. She is ______.", correcta: ["Colombian"] },
+    {
+      texto: "Where is Sofia from?",
+      correcta: ["Mexico", "She is from Mexico"],
+    },
+    {
+      texto: "Peter is from Canada. Is he American?",
+      correcta: ["No", "No, he isn't","No, he is Canadian", "No, he isn´t american", "no, he is not american" ],
+    },
+    {
+      texto: "Where is Fatima from?",
+      correcta: ["Turkey", "She is from Turkey"],
+    },
+    {
+      texto: "Is Ali Mexican?",
+      correcta: ["No", "No, he isn't"],
+    },
+    {
+      texto: "Is Laura Turkish?",
+      correcta: ["No", "No, she isn't"],
+    },
+    {
+      texto: "Where is Yara from?",
+      correcta: ["Colombia", "She is from Colombia"],
+    },
+    {
+      texto: "Is Marco Mexican?",
+      correcta: ["No", "No, he isn't"],
+    },
+    {
+      texto: "Where is Marco from?",
+      correcta: ["Spain", "He is from Spain"],
+    },
+    {
+      texto: "Where is Yara from?",
+      correcta: ["Colombia", "She is from Colombia"],
+    },
+    {
+      texto: "Is Yara Spanish?",
+      correcta: ["No", "No, she isn't"],
+    },
   ];
 
   const actual = ejercicios[index];
-
   // === GUARDAR PROGRESO ===
-  const guardarProgreso = async () => {
+ const guardarProgreso = async () => {
     const completados = JSON.parse(localStorage.getItem("ejercicios_completados") || "[]");
     if (!completados.includes(id)) {
       completados.push(id);
@@ -73,7 +109,7 @@ export default function Tema3_Ej3() {
       setCorrectas((prev) => prev + 1);
     } else {
       setRespuesta("Incorrect");
-      setInputValue(actual.correcta[0]);
+      setInputValue(actual.correcta[0]); // muestra una correcta
     }
   };
 
@@ -95,7 +131,7 @@ export default function Tema3_Ej3() {
   };
 
   const mostrarTexto = respuesta
-    ? actual.texto.replace("______", actual.correcta[0])
+    ? actual.texto
     : actual.texto;
 
   return (
@@ -113,7 +149,7 @@ export default function Tema3_Ej3() {
             {index === 0 && (
               <div className="instruccion-box">
                 <p className="instruccion-ejercicio" style={{ fontSize: "1.2rem" }}>
-                  🎧 Listen to the audio and complete the sentences with the correct nationality.
+                  🎧 Listen to the audio and answer the questions.
                 </p>
               </div>
             )}
@@ -162,7 +198,7 @@ export default function Tema3_Ej3() {
                   value={inputValue}
                   onChange={(e) => setInputValue(e.target.value)}
                   className="input-respuesta"
-                  placeholder="Type the nationality"
+                  placeholder="Write your answer"
                   style={{
                     fontSize: "1.3rem",
                     padding: "0.8rem 1rem",
@@ -184,7 +220,7 @@ export default function Tema3_Ej3() {
               </div>
             )}
 
-            {/* === RETROALIMENTACIÓN === */}
+            {/* === FEEDBACK === */}
             {respuesta && (
               <p
                 className="respuesta-feedback"

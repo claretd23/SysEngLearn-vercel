@@ -3,176 +3,185 @@ html, body {
   height: 100%;
   margin: 0;
   padding: 0;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
-/* === CONTENEDOR PRINCIPAL === */
+/* === CONTENEDOR PRINCIPAL (FULL SCREEN) === */
 .main-container {
   height: 100vh;
   width: 100vw;
   display: flex;
   justify-content: center;
   align-items: center;
-  background: linear-gradient(135deg, #f5f7fa 0%, #e4ebf5 100%);
+  background: #f0f2f5;
+}
+
+/* === LOGIN — MISMO DISEÑO PERO FULLSCREEN === */
+.login-wrapper {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  height: 100%;
+
+  /* ❌ Quitamos la "tarjeta" ❌ */
+  max-width: none;
+  border-radius: 0;
+  box-shadow: none;
   overflow: hidden;
 }
 
-/* === LOGIN FULLSCREEN (SIN TARJETA) === */
-.login-wrapper {
-  display: flex;
-  flex-direction: column;
-  width: 100vw;
-  height: 100vh;
-  background: #ffffff; /* Fondo total */
-  border-radius: 0;    /* Quitamos borde redondeado */
-  box-shadow: none;    /* Quitamos sombra */
-  overflow-y: auto;
-}
-
-/* === SECCIÓN SUPERIOR (LOGO) === */
+/* === SECCIÓN IZQUIERDA (LOGO) — IGUAL === */
 .login-left {
   flex: 1;
+  background: linear-gradient(163deg, #FFF 0%, #dbddcf 100%);
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 2.5em 1.5em;
-  background: linear-gradient(163deg, #ffffff 0%, #e8eada 100%);
+  padding: 2em;
 }
 
 .login-left img {
-  max-width: 250px;
-  width: 70%;
+  max-width: 280px;
+  width: 100%;
   height: auto;
+  border-radius: 15px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
 }
 
-/* === SECCIÓN INFERIOR (FORMULARIO) === */
+/* === SECCIÓN DERECHA (FORMULARIO) — IGUAL === */
 .login-right {
-  flex: 1.4;
+  flex: 1.2;
   display: flex;
   flex-direction: column;
-  justify-content: flex-start;
-  padding: 2.2em 2em;
-  width: 100%;
+  justify-content: center;
+  padding: 3em 2.5em;
+  background-color: #fcfcfd;
 }
 
 .login-right h2 {
   text-align: center;
   margin-bottom: 1.5em;
   color: #222a5c;
-  font-size: 1.7em;
+  font-size: 1.6em;
   font-weight: 700;
 }
 
-/* === CAMPOS DE TEXTO === */
+/* === CAMPOS — IGUAL === */
 .field {
-  background: #eef2ff;
-  padding: 0.9em 1.2em;
-  border-radius: 12px;
   display: flex;
   align-items: center;
-  gap: 0.6em;
-  margin-bottom: 1.2em;
+  gap: 0.7em;
+  padding: 0.7em 1em;
+  margin-bottom: 1em;
+  background-color: #f0f4ff;
+  border-radius: 8px;
   box-shadow: inset 1px 3px 8px rgba(0, 0, 0, 0.1);
+  color: #222a5c;
 }
 
 .input-icon {
-  width: 1.5em;
-  height: 1.5em;
+  height: 1.4em;
+  width: 1.4em;
   fill: #aabc37;
 }
 
 .input-field {
-  width: 100%;
   border: none;
   outline: none;
   background: transparent;
+  width: 100%;
   font-size: 1em;
   color: #222a5c;
 }
 
-/* === BOTONES === */
+/* === BOTONES — IGUAL === */
 .btn {
-  margin-top: 2em;
   display: flex;
-  flex-direction: column;
+  justify-content: center;
+  align-items: center;
   gap: 1em;
+  margin-top: 1.8em;
 }
 
 .button1 {
-  width: 100%;
-  padding: 0.8em;
-  border: none;
+  padding: 0.6em 1.5em;
   border-radius: 8px;
-  background: linear-gradient(160deg, #bcd03c, #222a5c);
+  border: none;
+  background: linear-gradient(163deg, #aabc36 0%, #373c5e 100%);
   color: #fff;
-  font-size: 1.1em;
+  font-size: 1em;
   cursor: pointer;
-  transition: 0.3s ease;
+  transition: 0.3s ease-in-out;
 }
 
 .button1:hover {
-  background: linear-gradient(160deg, #222a5c, #bcd03c);
+  background: linear-gradient(163deg, #373c5e 0%, #aabc36 100%);
   transform: translateY(-2px);
 }
 
 .button2 {
-  width: 100%;
-  padding: 0.8em;
-  border: none;
-  background: #f2f4f7;
-  color: #222a5c;
+  padding: 0.6em 1.5em;
   border-radius: 8px;
-  font-size: 1.05em;
+  border: none;
+  background: #f0f2f5;
+  color: #222a5c;
+  font-size: 1em;
   cursor: pointer;
-  transition: 0.3s ease;
+  transition: 0.3s;
 }
 
 .button2:hover {
-  background: #e5e7ea;
+  background: #e3e6ea;
+  transform: translateY(-2px);
 }
 
-/* === LINK DE RECUPERACIÓN === */
+/* === LINK RECUPERACIÓN — IGUAL === */
 .info-text {
   text-align: center;
-  margin-top: 1.5em;
+  margin-top: 1em;
 }
 
 .info-text a {
-  color: #aabc37;
-  font-weight: 600;
+  color: #211a4d;
   text-decoration: none;
+  font-weight: 600;
+  transition: color 0.3s;
 }
 
 .info-text a:hover {
-  color: #899c2f;
+  color: #3645a2;
 }
 
-/* === FOOTER === */
-.info-text span {
-  color: #222a5c;
-}
-
-/* === RESPONSIVE === */
+/* === RESPONSIVE — MISMO QUE TENÍAS === */
 @media (max-width: 768px) {
   .login-wrapper {
     flex-direction: column;
   }
 
   .login-left {
-    padding: 2em 1em;
+    padding: 1.5em;
+  }
+
+  .login-left img {
+    max-width: 180px;
+    box-shadow: none;
   }
 
   .login-right {
-    padding: 1.5em 1.2em;
+    padding: 2em 1.5em;
   }
 
-  .login-right h2 {
-    font-size: 1.4em;
+  .btn {
+    flex-direction: column;
+    gap: 0.8em;
   }
 }
 
 @media (max-width: 480px) {
-  .login-left img {
-    max-width: 180px;
+  .login-right {
+    padding: 1.5em 1em;
+  }
+
+  .input-field {
+    font-size: 0.9em;
   }
 }

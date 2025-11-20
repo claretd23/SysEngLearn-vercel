@@ -1,5 +1,5 @@
 import { useParams, useNavigate } from "react-router-dom";
-import { useState, useRef, useEffect } from "react";
+import { useState, useMemo, useRef } from "react";
 import "../ejercicios.css";
 
 interface MCQ {
@@ -13,199 +13,234 @@ export default function Tema1_Ej3() {
   const { nivel, semana, tema, ejercicio } = useParams();
   const id = `${nivel}-${semana}-${tema}-${ejercicio}`;
   const navigate = useNavigate();
+  const API_URL = import.meta.env.VITE_API_URL;
 
-  const data: MCQ[] = [
-    {
-      pregunta: "Whose pencil is it?",
-      opciones: ["Lily’s", "Mark’s", "The teacher’s"],
-      correcta: "Mark’s",
-      audios: [
-        "/audios/sem11/1_1.mp3",
-        "/audios/sem11/1_2.mp3",
-        "/audios/sem11/1_3.mp3",
-        "/audios/sem11/1_4.mp3",
-      ],
-    },
-    {
-      pregunta: "Whose phone is on the table?",
-      opciones: ["Sara’s", "Emma’s", "Tom’s"],
-      correcta: "Emma’s",
-      audios: [
-        "/audios/sem11/2_1.mp3",
-        "/audios/sem11/2_2.mp3",
-        "/audios/sem11/2_3.mp3",
-        "/audios/sem11/2_4.mp3",
-      ],
-    },
-    {
-      pregunta: "Whose shoes are by the door?",
-      opciones: ["Amy’s", "Mom’s", "Dad’s"],
-      correcta: "Dad’s",
-      audios: [
-        "/audios/sem11/3_1.mp3",
-        "/audios/sem11/3_2.mp3",
-        "/audios/sem11/3_3.mp3",
-        "/audios/sem11/3_4.mp3",
-      ],
-    },
-    {
-      pregunta: "Whose backpack is blue?",
-      opciones: ["Nina’s", "Ben’s", "No one’s"],
-      correcta: "Ben’s",
-      audios: [
-        "/audios/sem11/4_1.mp3",
-        "/audios/sem11/4_2.mp3",
-        "/audios/sem11/4_3.mp3",
-        "/audios/sem11/4_4.mp3",
-      ],
-    },
-    {
-      pregunta: "Whose sandwich is it?",
-      opciones: ["Paul’s", "Jane’s", "Jack’s"],
-      correcta: "Jack’s",
-      audios: [
-        "/audios/sem11/5_1.mp3",
-        "/audios/sem11/5_2.mp3",
-        "/audios/sem11/5_3.mp3",
-        "/audios/sem11/5_4.mp3",
-      ],
-    },
-  ];
+  const ejercicios: MCQ[] = useMemo(
+    () => [
+      {
+        pregunta: "Whose pencil is it?",
+        opciones: ["Lily’s", "Mark’s", "The teacher’s"],
+        correcta: "Mark’s",
+        audios: [
+          "/audios/sem11/1_1.mp3",
+          "/audios/sem11/1_2.mp3",
+          "/audios/sem11/1_3.mp3",
+          "/audios/sem11/1_4.mp3",
+        ],
+      },
+      {
+        pregunta: "Whose phone is on the table?",
+        opciones: ["Sara’s", "Emma’s", "Tom’s"],
+        correcta: "Emma’s",
+        audios: [
+          "/audios/sem11/2_1.mp3",
+          "/audios/sem11/2_2.mp3",
+          "/audios/sem11/2_3.mp3",
+          "/audios/sem11/2_4.mp3",
+        ],
+      },
+      {
+        pregunta: "Whose shoes are by the door?",
+        opciones: ["Amy’s", "Mom’s", "Dad’s"],
+        correcta: "Dad’s",
+        audios: [
+          "/audios/sem11/3_1.mp3",
+          "/audios/sem11/3_2.mp3",
+          "/audios/sem11/3_3.mp3",
+          "/audios/sem11/3_4.mp3",
+        ],
+      },
+      {
+        pregunta: "Whose backpack is blue?",
+        opciones: ["Nina’s", "Ben’s", "No one’s"],
+        correcta: "Ben’s",
+        audios: [
+          "/audios/sem11/4_1.mp3",
+          "/audios/sem11/4_2.mp3",
+          "/audios/sem11/4_3.mp3",
+          "/audios/sem11/4_4.mp3",
+        ],
+      },
+      {
+        pregunta: "Whose sandwich is it?",
+        opciones: ["Paul’s", "Jane’s", "Jack’s"],
+        correcta: "Jack’s",
+        audios: [
+          "/audios/sem11/5_1.mp3",
+          "/audios/sem11/5_2.mp3",
+          "/audios/sem11/5_3.mp3",
+          "/audios/sem11/5_4.mp3",
+        ],
+      },
+    ],
+    []
+  );
 
   const [index, setIndex] = useState(0);
-  const actual = data[index];
+  const actual = ejercicios[index];
 
-  const [seleccion, setSeleccion] = useState<string | null>(null);
   const [respuesta, setRespuesta] = useState<string | null>(null);
+  const [opcionSeleccionada, setOpcionSeleccionada] = useState<string | null>(null);
+  const [correctas, setCorrectas] = useState(0);
+  const [finalizado, setFinalizado] = useState(false);
 
-  const audioRef = useRef(new Audio());
+  const audioRefs = useRef<(HTMLAudioElement | null)[]>([]);
 
-  const stopAudio = () => {
-    audioRef.current.pause();
-    audioRef.current.currentTime = 0;
-    audioRef.current.onended = null;
+  // === REPRODUCIR AUDIOS ===
+  const playSequence = () => {
+    audioRefs.current.forEach((audio, i) => {
+      if (!audio) return;
+      audio.onended = () => {
+        if (i + 1 < audioRefs.current.length) {
+          setTimeout(() => audioRefs.current[i + 1]?.play(), 600);
+        }
+      };
+    });
+
+    audioRefs.current[0]?.play();
   };
 
-  const playAudio = async () => {
-    stopAudio();
+  // === GUARDAR PROGRESO ===
+  const guardarProgreso = async () => {
     try {
-      for (let src of actual.audios) {
-        audioRef.current.src = src;
+      const token = localStorage.getItem("token");
 
-        await audioRef.current.play();
+      const res = await fetch(`${API_URL}/api/progreso`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ nivel, semana, tema, ejercicio }),
+      });
 
-        await new Promise((resolve) => {
-          audioRef.current.onended = resolve;
-        });
+      if (res.ok) {
+        const completados = JSON.parse(localStorage.getItem("ejercicios_completados") || "[]");
+        if (!completados.includes(id)) {
+          completados.push(id);
+          localStorage.setItem("ejercicios_completados", JSON.stringify(completados));
+        }
       }
-    } catch (e) {
-      console.error("Audio error:", e);
+    } catch (err) {
+      console.error("Error al guardar progreso:", err);
     }
   };
 
-  useEffect(() => {
-    stopAudio();
-  }, [index]);
+  // === VERIFICAR RESPUESTA ===
+  const verificar = () => {
+    if (!opcionSeleccionada) return;
 
-  useEffect(() => {
-    return () => stopAudio();
-  }, []);
-
-  const checkAnswer = () => {
-    if (!seleccion) return;
-    if (seleccion === actual.correcta) setRespuesta("Correct");
-    else setRespuesta(`Incorrect. Correct answer: ${actual.correcta}`);
-  };
-
-  const nextQuestion = () => {
-    stopAudio();
-    setRespuesta(null);
-    setSeleccion(null);
-
-    if (index < data.length - 1) {
-      setIndex(index + 1);
+    if (opcionSeleccionada === actual.correcta) {
+      setRespuesta("Correct!");
+      setCorrectas((prev) => prev + 1);
     } else {
-      navigate(`/fin/${id}`);
+      setRespuesta(`The correct answer is "${actual.correcta}".`);
     }
   };
 
-  const esCorrecta = respuesta?.startsWith("Correct");
+  // === SIGUIENTE ===
+  const siguiente = () => {
+    setRespuesta(null);
+    setOpcionSeleccionada(null);
+    setIndex((prev) => prev + 1);
+  };
+
+  // === FINALIZACIÓN ===
+  const finalizar = async () => {
+    await guardarProgreso();
+    setFinalizado(true);
+    setTimeout(() => navigate(`/inicio/${nivel}`), 2500);
+  };
+
+  // === PANTALLA FINAL ===
+  if (finalizado) {
+    return (
+      <div className="finalizado" style={{ fontSize: "1.3rem" }}>
+        <h2>You have completed the exercise!</h2>
+        <p>
+          Correct answers: <strong>{correctas} / {ejercicios.length}</strong>
+        </p>
+        <p>Redirecting to the start of the level...</p>
+      </div>
+    );
+  }
 
   return (
     <div className="ejercicio-container">
-      <h1 className="titulo-ejercicio">EXERCISE 3 — Listening</h1>
-      <p className="progreso-ejercicio">
-        Question {index + 1} of {data.length}
-      </p>
+      <header className="ejercicio-header">
+        <h1 className="titulo-ejercicio">EXERCISE 3 — Listening</h1>
+        <p className="progreso-ejercicio">
+          Question {index + 1} of {ejercicios.length}
+        </p>
+      </header>
 
-      {/* Botón de audio — solo uno */}
-      {!respuesta && (
-        <button className="btn-audio" onClick={playAudio}>
-          🔊 Listen
-        </button>
-      )}
-
-      <section className="tarjeta-ejercicio" style={{ padding: "1.5rem" }}>
-        <p className="pregunta-texto">{actual.pregunta}</p>
-
-        {/* OPCIONES */}
-        {!respuesta && (
-          <div className="opciones-container">
-            {actual.opciones.map((op) => (
-              <button
-                key={op}
-                className={`opcion-btn ${seleccion === op ? "seleccionada" : ""}`}
-                onClick={() => setSeleccion(op)}
-              >
-                {op}
-              </button>
-            ))}
+      <section className="tarjeta-ejercicio" style={{ textAlign: "center" }}>
+        {index === 0 && (
+          <div className="instruccion-box" style={{ fontSize: "1.3rem" }}>
+            <p>Listen and choose the correct answer.</p>
           </div>
         )}
 
-        {/* BOTÓN CHECK */}
-        {!respuesta && seleccion && (
-          <button
-            className="ejercicio-btn"
-            onClick={checkAnswer}
-            style={{ marginTop: "1rem" }}
-          >
-            Check
-          </button>
+        {/* Botón de audio */}
+        <button
+          className="btn-audio"
+          style={{ fontSize: "2rem", margin: "1rem 0" }}
+          onClick={playSequence}
+        >
+          🔊
+        </button>
+
+        {actual.audios.map((src, i) => (
+          <audio key={i} ref={(el) => (audioRefs.current[i] = el)} src={src} />
+        ))}
+
+        <p style={{ fontSize: "1.3rem", margin: "1rem 0" }}>{actual.pregunta}</p>
+
+        {!respuesta && (
+          <>
+            <div className="opciones-ejercicio">
+              {actual.opciones.map((op) => (
+                <button
+                  key={op}
+                  className={`opcion-btn ${opcionSeleccionada === op ? "seleccionada" : ""}`}
+                  onClick={() => setOpcionSeleccionada(op)}
+                >
+                  {op}
+                </button>
+              ))}
+            </div>
+
+            <button
+              onClick={verificar}
+              className="ejercicio-btn"
+              disabled={!opcionSeleccionada}
+              style={{ marginTop: "1rem" }}
+            >
+              Check
+            </button>
+          </>
         )}
 
-        {/* RESULTADO */}
         {respuesta && (
           <p
-            className={`respuesta-feedback ${esCorrecta ? "correcta" : "incorrecta"}`}
-            style={{
-              marginTop: "1.2rem",
-              color: esCorrecta ? "green" : "red",
-              fontWeight: 700,
-              whiteSpace: "pre-line",
-            }}
+            className={`respuesta-feedback ${
+              respuesta.startsWith("Correct") ? "correcta" : "incorrecta"
+            }`}
+            style={{ fontSize: "1.3rem", margin: "1rem 0" }}
           >
             {respuesta}
           </p>
         )}
 
-        {/* NEXT o FINISH */}
-        {respuesta && index < data.length - 1 && (
-          <button
-            className="ejercicio-btn"
-            onClick={nextQuestion}
-            style={{ marginTop: "1rem" }}
-          >
-            Next
+        {/* NEXT / FINISH */}
+        {respuesta && index < ejercicios.length - 1 && (
+          <button className="ejercicio-btn" onClick={siguiente}>
+            Next question
           </button>
         )}
 
-        {respuesta && index === data.length - 1 && (
-          <button
-            className="ejercicio-btn"
-            onClick={nextQuestion}
-            style={{ marginTop: "1rem" }}
-          >
+        {respuesta && index === ejercicios.length - 1 && (
+          <button className="ejercicio-btn" onClick={finalizar}>
             Finish
           </button>
         )}

@@ -172,7 +172,7 @@ export default function Tema1_Ej3() {
                       <button
                         onClick={() => toggleRespuesta(i, false)}
                         style={{
-                          backgroundColor: respuestas[i] === false ? "#264ca5ff" : "#f4f4f4",
+                          backgroundColor: respuestas[i] === false ? "#bcd03c" : "#f4f4f4",
                           padding: "0.3rem 0.8rem",
                         }}
                       >

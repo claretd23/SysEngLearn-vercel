@@ -1,5 +1,5 @@
 import '../styles/Login.css';
-import logo from "../../assets/LOGODA.svg";
+import logo from "../../src/assets/LG.svg";
 import { Link, useNavigate } from 'react-router-dom';
 import { useState, useContext, FormEvent } from 'react';
 import { loginUser } from '../services/apiClient';

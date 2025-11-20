@@ -1,5 +1,5 @@
 import '../styles/ForgotPassword.css';
-import logo from "../../assets/LOGO.svg";
+import logo from "../../src/assets/LG.svg";
 import { useState } from 'react';
 import { useSearchParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';

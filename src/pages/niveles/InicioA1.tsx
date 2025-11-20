@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import "./InicioA1.css";
-import logo from "../../assets/LOGODA.svg";
+import logo from "../../assets/LG.svg";
 import { Link } from "react-router-dom";
 
 const semanas = [
@@ -22,7 +22,7 @@ export default function InicioA1() {
   const [ejerciciosCompletados, setEjerciciosCompletados] = useState<string[]>([]);
   const [mostrarBoton, setMostrarBoton] = useState(false);
 
-  // ✅ Mantiene la semana actual en localStorage
+  //  Mantiene la semana actual en localStorage
   const [semanaActual, setSemanaActual] = useState(() => {
     const semanaGuardada = localStorage.getItem("semanaActualA1");
     return semanaGuardada ? parseInt(semanaGuardada) : 0;

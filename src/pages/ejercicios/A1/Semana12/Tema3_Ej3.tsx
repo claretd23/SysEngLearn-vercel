@@ -228,102 +228,109 @@ export default function Tema3_Ej3() {
             </p>
           </header>
 
-          <section className="tarjeta-ejercicio" style={{ textAlign: "center", padding: "2rem" }}>
-            {index === 0 && (
-              <>
-                <p className="instruccion-ejercicio">
-                  Listen to the dialogue carefully and answer the questions.
-                </p>
+ <section className="tarjeta-ejercicio" style={{ textAlign: "center", padding: "2rem" }}>
 
-                <button className="btn-audio" onClick={playAudio} style={{ fontSize: "2rem" }}>
-                  🔊
-                </button>
-                <audio ref={audioRef} />
-              </>
-            )}
+  {!respuesta ? (
+    <>
+      {index === 0 && (
+        <>
+          <p className="instruccion-ejercicio">
+            Listen to the dialogue carefully and answer the questions.
+          </p>
 
-            <div
-              style={{
-                backgroundColor: "#f4f6fa",
-                borderLeft: "5px solid #222a5c",
-                borderRadius: "8px",
-                padding: "1.5rem",
-                margin: "1rem auto",
-                maxWidth: "600px",
-                textAlign: "left",
-                fontStyle: "italic",
-              }}
-            >
-              <p>{actual.pregunta}</p>
-            </div>
+          <button className="btn-audio" onClick={playAudio} style={{ fontSize: "2rem" }}>
+            🔊
+          </button>
+          <audio ref={audioRef} />
+        </>
+      )}
 
-            {/* INCISOS EN COLUMNAS */}
-            <div
-              className="opciones-ejercicio"
-              style={{
-                display: "flex",
-                flexWrap: "wrap",
-                gap: "1rem",
-                justifyContent: "center",
-                marginBottom: "1rem",
-              }}
-            >
-              {actual.opciones.map((op, i) => (
-                <button
-                  key={i}
-                  className={`opcion-btn ${seleccion === op ? "seleccionada" : ""}`}
-                  onClick={() => setSeleccion(op)}
-                  style={{
-                    fontSize: "1.2rem",
-                    padding: "0.8rem 1.5rem",
-                    minWidth: "230px",
-                  }}
-                >
-                  {op}
-                </button>
-              ))}
-            </div>
+      <div
+        style={{
+          backgroundColor: "#f4f6fa",
+          borderLeft: "5px solid #222a5c",
+          borderRadius: "8px",
+          padding: "1.5rem",
+          margin: "1rem auto",
+          maxWidth: "600px",
+          textAlign: "left",
+          fontStyle: "italic",
+        }}
+      >
+        <p>{actual.pregunta}</p>
+      </div>
 
-            {/* CHECK FIJO */}
-            {!respuesta ? (
-              <button
-                onClick={verificar}
-                disabled={!seleccion}
-                className="ejercicio-btn"
-                style={{
-                  fontSize: "1.3rem",
-                  padding: "0.8rem 2rem",
-                  opacity: seleccion ? 1 : 0.5,
-                }}
-              >
-                Check
-              </button>
-            ) : (
-              <>
-                <p
-                  style={{
-                    fontSize: "1.3rem",
-                    margin: "1rem 0",
-                    color: respuesta === "Correct" ? "green" : "red",
-                    whiteSpace: "pre-line",
-                    fontWeight: 600,
-                  }}
-                >
-                  {respuesta}
-                </p>
+      {/* OPCIONES — estilo del Tema2_Ej3 */}
+      <div
+        className="opciones-ejercicio"
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          gap: "1rem",
+          alignItems: "center",
+          marginBottom: "1.5rem"
+        }}
+      >
+        {actual.opciones.map((op, i) => (
+          <button
+            key={i}
+            className={`opcion-btn ${seleccion === op ? "seleccionada" : ""}`}
+            onClick={() => setSeleccion(op)}
+            style={{
+              fontSize: "1.2rem",
+              padding: "0.8rem 1.5rem",
+              minWidth: "250px",
+              textAlign: "center"
+            }}
+          >
+            {op}
+          </button>
+        ))}
+      </div>
 
-                {index < ejercicios.length - 1 ? (
-                  <button onClick={siguiente} className="ejercicio-btn">
-                    Next
-                  </button>
-                ) : (
-                  <button onClick={finalizar} className="ejercicio-btn">
-                    Finish
-                  </button>
-                )}
-              </>
-            )}
-          </section>
+      {/* ✔ Botón Check — siempre visible */}
+      <button
+        onClick={verificar}
+        className="ejercicio-btn"
+        disabled={!seleccion}
+        style={{
+          fontSize: "1.3rem",
+          padding: "0.8rem 2rem",
+          opacity: seleccion ? 1 : 0.5,
+          cursor: seleccion ? "pointer" : "not-allowed"
+        }}
+      >
+        Check
+      </button>
+    </>
+  ) : (
+    <>
+      <p
+        style={{
+          fontSize: "1.3rem",
+          margin: "1rem 0",
+          color: respuesta === "Correct" ? "green" : "red",
+          whiteSpace: "pre-line",
+          fontWeight: 600,
+        }}
+      >
+        {respuesta}
+      </p>
+
+      {index < ejercicios.length - 1 ? (
+        <button onClick={siguiente} className="ejercicio-btn">
+          Next
+        </button>
+      ) : (
+        <button onClick={finalizar} className="ejercicio-btn">
+          Finish
+        </button>
+      )}
+    </>
+  )}
+
+</section>
+
         </>
       ) : (
         <div className="finalizado">

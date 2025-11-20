@@ -8,12 +8,17 @@ html, body {
 /* === CONTENEDOR PRINCIPAL (FULL SCREEN) === */
 .main-container {
   height: 100vh;
-  width: 100vw;
+  width: 100vw;   /*  ANCHO COMPLETO */
   display: flex;
   justify-content: center;
   align-items: center;
   background: #f0f2f5;
+
+  /*  Importante: quita padding/margins de donde NO van */
+  padding: 0;
+  margin: 0;
 }
+
 
 /* === LOGIN — MISMO DISEÑO PERO FULLSCREEN === */
 .login-wrapper {
@@ -28,6 +33,19 @@ html, body {
   box-shadow: none;
   overflow: hidden;
 }
+.login-wrapper {
+  display: flex;
+  width: 100vw;   /* 👈 FULL WIDTH REAL */
+  height: 100vh;  /* 👈 FULL HEIGHT REAL */
+  margin: 0;
+  padding: 0;
+
+  /* ❌ Elimina por completo estas propiedades */
+  max-width: none;
+  border-radius: 0;
+  box-shadow: none;
+}
+
 
 /* === SECCIÓN IZQUIERDA (LOGO) — IGUAL === */
 .login-left {

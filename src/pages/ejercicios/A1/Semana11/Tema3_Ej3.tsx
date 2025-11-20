@@ -19,64 +19,64 @@ export default function Tema3_Ej3() {
   const ejercicios = useMemo(
     () => [
       {
-        audio: "/audios/sem11/11.mp3",
-        pregunta: "Who are Anna and Max?",
-        opciones: ["Emma’s sisters", "Emma’s cousins", "Emma’s grandparents"],
-        correcta: "Emma’s cousins",
+        audios: ["/audios/weather/1a.mp3", "/audios/weather/1b.mp3"],
+        pregunta: "What is the weather today?",
+        opciones: ["Rainy", "Sunny", "Snowy"],
+        correcta: "Sunny",
       },
       {
-        audio: "/audios/sem11/12.mp3",
-        pregunta: "Who is Kate?",
-        opciones: ["Ben’s cousin", "Ben’s sister", "Ben’s aunt"],
-        correcta: "Ben’s sister",
+        audios: ["/audios/weather/2a.mp3", "/audios/weather/2b.mp3"],
+        pregunta: "What will the weather be like this afternoon?",
+        opciones: ["Rainy and windy", "Sunny", "Snowy"],
+        correcta: "Rainy and windy",
       },
       {
-        audio: "/audios/sem11/13.mp3",
-        pregunta: "Who is Mia?",
-        opciones: ["Lily’s cousin", "Lily’s sister", "Lily’s aunt"],
-        correcta: "Lily’s cousin",
+        audios: ["/audios/weather/3a.mp3", "/audios/weather/3b.mp3"],
+        pregunta: "What is the weather like in the morning?",
+        opciones: ["Sunny", "Cloudy", "Snowy"],
+        correcta: "Cloudy",
       },
       {
-        audio: "/audios/sem11/14.mp3",
-        pregunta: "Who is Ben?",
-        opciones: ["Tom’s brother", "Tom’s cousin", "Tom’s father"],
-        correcta: "Tom’s brother",
+        audios: ["/audios/weather/4a.mp3", "/audios/weather/4b.mp3"],
+        pregunta: "What is the temperature today?",
+        opciones: ["0°C", "20°C", "10°C"],
+        correcta: "0°C",
       },
       {
-        audio: "/audios/sem11/15.mp3",
-        pregunta: "Who is older, Sara or Emma?",
-        opciones: ["Sara", "Emma", "Leo"],
-        correcta: "Emma",
+        audios: ["/audios/weather/5a.mp3", "/audios/weather/5b.mp3"],
+        pregunta: "What is the weather like today?",
+        opciones: ["Hot", "Cold", "Rainy"],
+        correcta: "Hot",
       },
       {
-        audio: "/audios/sem11/16.mp3",
-        pregunta: "Who is Lucas’ uncle?",
-        opciones: ["John", "Paul", "Kate"],
-        correcta: "Paul",
+        audios: ["/audios/weather/6a.mp3", "/audios/weather/6b.mp3"],
+        pregunta: "What is the weather condition?",
+        opciones: ["Foggy", "Sunny", "Windy"],
+        correcta: "Foggy",
       },
       {
-        audio: "/audios/sem11/17.mp3",
-        pregunta: "Who is Alex?",
-        opciones: ["Anna’s cousin", "Anna’s brother", "Anna’s uncle"],
-        correcta: "Anna’s cousin",
+        audios: ["/audios/weather/7a.mp3", "/audios/weather/7b.mp3"],
+        pregunta: "What is the weather like this afternoon?",
+        opciones: ["Sunny", "Windy", "Rainy"],
+        correcta: "Windy",
       },
       {
-        audio: "/audios/sem11/18.mp3",
-        pregunta: "Who is Rachel?",
-        opciones: ["Paul’s cousin", "Paul’s aunt", "Paul’s grandmother"],
-        correcta: "Paul’s aunt",
+        audios: ["/audios/weather/8a.mp3", "/audios/weather/8b.mp3"],
+        pregunta: "What will happen this evening?",
+        opciones: ["Thunderstorm", "Sunny", "Fog"],
+        correcta: "Thunderstorm",
       },
       {
-        audio: "/audios/sem11/19.mp3",
-        pregunta: "Who is Max?",
-        opciones: ["Mia’s brother", "Mia’s cousin", "Mia’s uncle"],
-        correcta: "Mia’s cousin",
+        audios: ["/audios/weather/9a.mp3", "/audios/weather/9b.mp3"],
+        pregunta: "What is the weather now?",
+        opciones: ["Snowy", "Light rain", "Sunny"],
+        correcta: "Light rain",
       },
       {
-        audio: "/audios/sem11/20.mp3",
-        pregunta: "Who is Lily?",
-        opciones: ["Jake’s sister", "Jake’s cousin", "Jake’s aunt"],
-        correcta: "Jake’s sister",
+        audios: ["/audios/weather/10a.mp3", "/audios/weather/10b.mp3"],
+        pregunta: "What is the temperature today?",
+        opciones: ["0°C", "-2°C", "5°C"],
+        correcta: "-2°C",
       },
     ],
     []
@@ -84,9 +84,20 @@ export default function Tema3_Ej3() {
 
   const actual = ejercicios[index];
   const audioRef = useRef<HTMLAudioElement | null>(null);
+  const [audioIndex, setAudioIndex] = useState(0);
 
+  // Reproduce ambos audios en secuencia
   const playAudio = () => {
-    audioRef.current?.play();
+    if (!audioRef.current) return;
+    audioRef.current.src = actual.audios[audioIndex];
+    audioRef.current.play();
+    audioRef.current.onended = () => {
+      if (audioIndex + 1 < actual.audios.length) {
+        setAudioIndex((prev) => prev + 1);
+      } else {
+        setAudioIndex(0);
+      }
+    };
   };
 
   const guardarProgreso = async () => {
@@ -109,9 +120,7 @@ export default function Tema3_Ej3() {
         body: JSON.stringify({ nivel, semana, tema, ejercicio }),
       });
 
-      if (!res.ok) {
-        console.error("Error saving progress:", res.statusText);
-      }
+      if (!res.ok) console.error("Error saving progress:", res.statusText);
     } catch (error) {
       console.error("Progress error:", error);
     }
@@ -131,6 +140,7 @@ export default function Tema3_Ej3() {
   const siguiente = () => {
     setRespuesta(null);
     setSeleccion(null);
+    setAudioIndex(0);
 
     if (index + 1 < ejercicios.length) {
       setIndex(index + 1);
@@ -169,19 +179,19 @@ export default function Tema3_Ej3() {
             {index === 0 && (
               <div className="instruccion-box" style={{ marginBottom: "1.5rem" }}>
                 <p className="instruccion-ejercicio">
-                  Listen carefully to each dialogue. Choose the correct answer (a, b, or c) to show who each person is in the family.
+                  Listen carefully to each dialogue or forecast. Choose the correct answer (a, b, or c) based on the weather description. Focus on weather vocabulary: sunny, rainy, windy, cloudy, hot, cold, snow, fog, thunderstorm.
                 </p>
               </div>
             )}
 
             <button
               className="btn-audio"
-              style={{ fontSize: "2rem", margin: "1rem 0" }}
+              style={{ fontWeight: "bold", fontSize: "1.5rem", margin: "1rem 0" }}
               onClick={playAudio}
             >
-              🔊
+              Audio
             </button>
-            <audio ref={audioRef} src={actual.audio} />
+            <audio ref={audioRef} />
 
             <div
               className="oracion-box"

@@ -1,5 +1,6 @@
 import { useParams, useNavigate } from "react-router-dom";
 import { useState, useMemo, useRef, useEffect } from "react";
+
 import "../ejercicios.css";
 
 interface PreguntaTF {
@@ -16,6 +17,8 @@ export default function Tema1_Ej3() {
   const { nivel, semana, tema, ejercicio } = useParams();
   const id = `${nivel}-${semana}-${tema}-${ejercicio}`;
   const navigate = useNavigate();
+  const [mostrarFinal, setMostrarFinal] = useState(false);
+
 
   const [respuestas, setRespuestas] = useState<(boolean | null)[]>(Array(5).fill(null));
   const [correctas, setCorrectas] = useState(0);
@@ -231,13 +234,20 @@ export default function Tema1_Ej3() {
     }
   };
 
-  const finalizar = async () => {
-    await guardarProgreso();
-    setTimeout(() => {
-      navigate(`/inicio/${nivel}`);
-      window.location.reload();
-    }, 2500);
-  };
+const finalizar = async () => {
+  // Mostrar la pantalla final inmediatamente
+  setMostrarFinal(true);
+
+  // Guardar progreso como antes
+  await guardarProgreso();
+
+  // Redirigir como en tus otros ejercicios
+  setTimeout(() => {
+    navigate(`/inicio/${nivel}`);
+    window.location.reload();
+  }, 2500);
+};
+
 
   return (
     <div className="ejercicio-container">
@@ -336,30 +346,27 @@ export default function Tema1_Ej3() {
           </button>
         )}
 
-        {/* FINISH */}
-        {finalizado && index === ejercicios.length - 1 && (
-          <>
-            <button
-              onClick={finalizar}
-              className="ejercicio-btn"
-              style={{ fontSize: "1.3rem", padding: "0.8rem 2rem", marginTop: "1rem" }}
-            >
-              Finish
-            </button>
+       {/* FINAL: botón Finish igual al otro ejercicio */}
+{finalizado && index === ejercicios.length - 1 && !mostrarFinal && (
+  <button
+    onClick={finalizar}
+    className="ejercicio-btn"
+    style={{ fontSize: "1.3rem", padding: "0.8rem 2rem", marginTop: "1rem" }}
+  >
+    Finish
+  </button>
+)}
 
-            <div className="finalizado" style={{ fontSize: "1.3rem", marginTop: "2rem" }}>
-              <h2>You have completed the exercise!</h2>
-              <p>
-                Correct answers:{" "}
-                <strong>
-                  {correctas} / {ejercicios.length * 5}
-                </strong>
-              </p>
-              <p>Redirecting to the start of the level...</p>
-            </div>
-          </>
-        )}
-      </section>
-    </div>
-  );
-}
+{/* PANTALLA DE FINALIZADO: aparece solo después de presionar Finish */}
+{mostrarFinal && (
+  <div className="finalizado" style={{ fontSize: "1.3rem", marginTop: "2rem" }}>
+    <h2>You have completed the exercise!</h2>
+    <p>
+      Correct answers:{" "}
+      <strong>
+        {correctas} / {ejercicios.length * 5}
+      </strong>
+    </p>
+    <p>Redirecting to the start of the level...</p>
+  </div>
+)}

@@ -91,20 +91,20 @@ export default function Tema3_Ej3() {
   };
 
   // ------------------ VERIFICAR ------------------
-  const verificar = () => {
-    const user = inputValue.trim().toLowerCase();
-    if (!user) return;
+ const verificar = () => {
+  const user = inputValue.trim().toLowerCase();
+  if (!user) return;
 
-    const esCorrecta = actual.correcta.some((c) => user === c);
+  const esCorrecta = actual.correcta.some((c) => user === c);
 
-    if (esCorrecta) {
-      setRespuesta("Correct");
-      setCorrectas((prev) => prev + 1);
-    } else {
-      setRespuesta("Incorrect");
-      setInputValue(actual.correcta[0]);
-    }
-  };
+  if (esCorrecta) {
+    setRespuesta("Correct");
+    setCorrectas((prev) => prev + 1);
+  } else {
+    setRespuesta(`Incorrect — Correct answer: ${actual.correcta[0]}`);
+  }
+};
+
 
   // ------------------ SIGUIENTE ------------------
   const siguiente = () => {
@@ -205,16 +205,17 @@ export default function Tema3_Ej3() {
             {/* FEEDBACK */}
             {respuesta && (
               <p
-                className="respuesta-feedback"
-                style={{
-                  fontSize: "1.2rem",
-                  margin: "1rem 0",
-                  fontWeight: "bold",
-                  color: respuesta === "Correct" ? "#28A745" : "#DC3545",
-                }}
-              >
-                {respuesta}
-              </p>
+  className="respuesta-feedback"
+  style={{
+    fontSize: "1.2rem",
+    margin: "1rem 0",
+    fontWeight: "bold",
+    color: respuesta.startsWith("Correct") ? "#28A745" : "#DC3545",
+  }}
+>
+  {respuesta}
+</p>
+
             )}
 
             {/* BOTONES SIGUIENTE / FINALIZAR */}

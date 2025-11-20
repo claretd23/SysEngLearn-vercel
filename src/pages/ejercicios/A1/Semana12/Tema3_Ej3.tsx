@@ -35,8 +35,7 @@ export default function Tema3_Ej3() {
     "/audios/sem11/24.mp3",
     "/audios/sem11/25.mp3",
   ];
-
-  const ejercicios = useMemo(
+ const ejercicios = useMemo(
     () => [
       {
         audio: fullDialogue,
@@ -200,7 +199,7 @@ export default function Tema3_Ej3() {
                   style={{ fontSize: "2rem", margin: "1rem 0" }}
                   onClick={playAudio}
                 >
-                  🔊
+                🔊
                 </button>
               </>
             )}
@@ -243,7 +242,7 @@ export default function Tema3_Ej3() {
                       minWidth: "220px",
                     }}
                   >
-                    {op === actual.correcta ? <strong>{op}</strong> : op}
+                    {op}
                   </button>
                 ))}
               </div>

@@ -88,18 +88,32 @@ export default function Tema2_Ej3() {
 
   const actual = ejercicios[index];
 
+
+  // Reproduce los audios en secuencia automáticamente
   const playAudio = () => {
     if (!audioRef.current) return;
-    audioRef.current.src = actual.audios[audioIndex];
+    setAudioIndex(0); // empieza desde el primer audio
+  };
+
+  useEffect(() => {
+    if (!audioRef.current) return;
+    const currentAudio = actual.audios[audioIndex];
+    if (!currentAudio) return;
+
+    audioRef.current.src = currentAudio;
     audioRef.current.play();
-    audioRef.current.onended = () => {
+
+    const handleEnded = () => {
       if (audioIndex + 1 < actual.audios.length) {
-        setAudioIndex((prev) => prev + 1);
-      } else {
-        setAudioIndex(0);
+        setAudioIndex(audioIndex + 1);
       }
     };
-  };
+
+    audioRef.current.addEventListener("ended", handleEnded);
+    return () => {
+      audioRef.current?.removeEventListener("ended", handleEnded);
+    };
+  }, [audioIndex, index, actual.audios]);
 
   const verificar = () => {
     if (!seleccion) return;
@@ -125,7 +139,7 @@ export default function Tema2_Ej3() {
 
   return (
     <div className="ejercicio-container">
-      {!finalizado ? (
+      {!finalizado && (
         <>
           <header className="ejercicio-header">
             <h1 className="titulo-ejercicio">EXERCISE 3</h1>
@@ -202,7 +216,7 @@ export default function Tema2_Ej3() {
             )}
           </section>
         </>
-      ) : null}
+      )}
     </div>
   );
 }

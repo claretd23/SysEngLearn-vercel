@@ -54,9 +54,6 @@ export default function Tema1_Ej3() {
           { texto: "Dinner is at 7:10.", correcta: false },
         ],
       },
-
-      // ... (continúan los 7 ejercicios restantes)
-
     ],
     []
   );
@@ -65,36 +62,26 @@ export default function Tema1_Ej3() {
 
   // --- AUDIO ---
   const audioRef = useRef<HTMLAudioElement | null>(null);
-  const [audioIndex, setAudioIndex] = useState(0);
 
-  const playAudio = () => {
+  const reproducirSecuencia = () => {
     if (!audioRef.current) return;
-    setAudioIndex(0); // siempre inicia el primer audio
+
+    let i = 0;
+
+    const reproducir = () => {
+      audioRef.current!.src = actual.audios[i];
+      audioRef.current!.play();
+
+      audioRef.current!.onended = () => {
+        i++;
+        if (i < actual.audios.length) {
+          reproducir();
+        }
+      };
+    };
+
+    reproducir();
   };
-
-  useEffect(() => {
-    if (!audioRef.current) return;
-
-    const src = actual.audios[audioIndex];
-    if (!src) return;
-
-    audioRef.current.src = src;
-    audioRef.current.play();
-
-    const handleEnded = () => {
-      if (audioIndex + 1 < actual.audios.length) {
-        setAudioIndex((prev) => prev + 1);
-      } else {
-        setAudioIndex(0);
-      }
-    };
-
-    audioRef.current.addEventListener("ended", handleEnded);
-
-    return () => {
-      audioRef.current?.removeEventListener("ended", handleEnded);
-    };
-  }, [audioIndex, actual]);
 
   // --- RESPUESTAS ---
   useEffect(() => {
@@ -122,7 +109,6 @@ export default function Tema1_Ej3() {
     if (index + 1 < ejercicios.length) {
       setIndex(index + 1);
       setFinalizado(false);
-      setAudioIndex(0);
     } else {
       setFinalizado(true);
     }
@@ -151,7 +137,7 @@ export default function Tema1_Ej3() {
             <button
               className="btn-audio"
               style={{ fontWeight: "bold", fontSize: "1.5rem", margin: "1rem 0" }}
-              onClick={playAudio}
+              onClick={reproducirSecuencia}
             >
               🔊
             </button>
@@ -186,7 +172,7 @@ export default function Tema1_Ej3() {
                       <button
                         onClick={() => toggleRespuesta(i, false)}
                         style={{
-                          backgroundColor: respuestas[i] === false ? "#bcd03c" : "#f4f4f4",
+                          backgroundColor: respuestas[i] === false ? "#264ca5ff" : "#f4f4f4",
                           padding: "0.3rem 0.8rem",
                         }}
                       >

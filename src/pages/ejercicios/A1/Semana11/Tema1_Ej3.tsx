@@ -70,61 +70,6 @@ export default function Tema1_Ej3() {
         "/audios/sem11/5_4.mp3",
       ],
     },
-    {
-      pregunta: "Whose notebook is it?",
-      opciones: ["The teacher’s", "Lisa’s", "Anna’s"],
-      correcta: "Lisa’s",
-      audios: [
-        "/audios/sem11/6_1.mp3",
-        "/audios/sem11/6_2.mp3",
-        "/audios/sem11/6_3.mp3",
-        "/audios/sem11/6_4.mp3",
-      ],
-    },
-    {
-      pregunta: "Whose jacket is on the chair?",
-      opciones: ["Emma’s", "Emma’s brother’s", "Mark’s"],
-      correcta: "Emma’s brother’s",
-      audios: [
-        "/audios/sem11/7_1.mp3",
-        "/audios/sem11/7_2.mp3",
-        "/audios/sem11/7_3.mp3",
-        "/audios/sem11/7_4.mp3",
-      ],
-    },
-    {
-      pregunta: "Whose water bottle is red?",
-      opciones: ["Mia’s", "Jake’s", "Anna’s"],
-      correcta: "Jake’s",
-      audios: [
-        "/audios/sem11/8_1.mp3",
-        "/audios/sem11/8_2.mp3",
-        "/audios/sem11/8_3.mp3",
-        "/audios/sem11/8_4.mp3",
-      ],
-    },
-    {
-      pregunta: "Whose car is outside?",
-      opciones: ["Tom’s", "His uncle’s", "His dad’s"],
-      correcta: "His uncle’s",
-      audios: [
-        "/audios/sem11/9_1.mp3",
-        "/audios/sem11/9_2.mp3",
-        "/audios/sem11/9_3.mp3",
-        "/audios/sem11/9_4.mp3",
-      ],
-    },
-    {
-      pregunta: "Whose dog is in the garden?",
-      opciones: ["Sam’s", "Lara’s", "The neighbor’s"],
-      correcta: "The neighbor’s",
-      audios: [
-        "/audios/sem11/10_1.mp3",
-        "/audios/sem11/10_2.mp3",
-        "/audios/sem11/10_3.mp3",
-        "/audios/sem11/10_4.mp3",
-      ],
-    },
   ];
 
   const [index, setIndex] = useState(0);
@@ -138,18 +83,23 @@ export default function Tema1_Ej3() {
   const stopAudio = () => {
     audioRef.current.pause();
     audioRef.current.currentTime = 0;
+    audioRef.current.onended = null;
   };
 
   const playAudio = async () => {
     stopAudio();
+    try {
+      for (let src of actual.audios) {
+        audioRef.current.src = src;
 
-    for (let src of actual.audios) {
-      audioRef.current.src = src;
-      await audioRef.current.play();
+        await audioRef.current.play();
 
-      await new Promise((resolve) => {
-        audioRef.current.onended = resolve;
-      });
+        await new Promise((resolve) => {
+          audioRef.current.onended = resolve;
+        });
+      }
+    } catch (e) {
+      console.error("Audio error:", e);
     }
   };
 
@@ -161,91 +111,105 @@ export default function Tema1_Ej3() {
     return () => stopAudio();
   }, []);
 
-  function checkAnswer() {
+  const checkAnswer = () => {
     if (!seleccion) return;
     if (seleccion === actual.correcta) setRespuesta("Correct");
-    else setRespuesta("Incorrect");
-  }
+    else setRespuesta(`Incorrect. Correct answer: ${actual.correcta}`);
+  };
 
-  function nextQuestion() {
-    setSeleccion(null);
-    setRespuesta(null);
+  const nextQuestion = () => {
     stopAudio();
+    setRespuesta(null);
+    setSeleccion(null);
 
     if (index < data.length - 1) {
       setIndex(index + 1);
     } else {
       navigate(`/fin/${id}`);
     }
-  }
+  };
+
+  const esCorrecta = respuesta?.startsWith("Correct");
 
   return (
     <div className="ejercicio-container">
-      <h2>Listening – Exercise 3 ({index + 1}/{data.length})</h2>
+      <h1 className="titulo-ejercicio">EXERCISE 3 — Listening</h1>
+      <p className="progreso-ejercicio">
+        Question {index + 1} of {data.length}
+      </p>
 
-      {/* 🔊 Un solo botón */}
-      <button className="audio-button" onClick={playAudio}>
-        🔊 Listen
-      </button>
-
-      <p className="pregunta">{actual.pregunta}</p>
-
-      <div className="opciones-container">
-        {actual.opciones.map((opc) => (
-          <label
-            key={opc}
-            className={`opcion ${seleccion === opc ? "opcion-seleccionada" : ""}`}
-          >
-            <input
-              type="radio"
-              name="opcion"
-              value={opc}
-              checked={seleccion === opc}
-              onChange={() => setSeleccion(opc)}
-              disabled={!!respuesta}
-            />
-            {opc}
-          </label>
-        ))}
-      </div>
-
+      {/* Botón de audio — solo uno */}
       {!respuesta && (
-        <button className="check-button" onClick={checkAnswer}>
-          Check
+        <button className="btn-audio" onClick={playAudio}>
+          🔊 Listen
         </button>
       )}
 
-      {respuesta && (
-        <>
+      <section className="tarjeta-ejercicio" style={{ padding: "1.5rem" }}>
+        <p className="pregunta-texto">{actual.pregunta}</p>
+
+        {/* OPCIONES */}
+        {!respuesta && (
+          <div className="opciones-container">
+            {actual.opciones.map((op) => (
+              <button
+                key={op}
+                className={`opcion-btn ${seleccion === op ? "seleccionada" : ""}`}
+                onClick={() => setSeleccion(op)}
+              >
+                {op}
+              </button>
+            ))}
+          </div>
+        )}
+
+        {/* BOTÓN CHECK */}
+        {!respuesta && seleccion && (
+          <button
+            className="ejercicio-btn"
+            onClick={checkAnswer}
+            style={{ marginTop: "1rem" }}
+          >
+            Check
+          </button>
+        )}
+
+        {/* RESULTADO */}
+        {respuesta && (
           <p
+            className={`respuesta-feedback ${esCorrecta ? "correcta" : "incorrecta"}`}
             style={{
-              fontSize: "1.2rem",
-              fontWeight: "bold",
-              color: respuesta === "Correct" ? "#28A745" : "#DC3545",
+              marginTop: "1.2rem",
+              color: esCorrecta ? "green" : "red",
+              fontWeight: 700,
+              whiteSpace: "pre-line",
             }}
           >
             {respuesta}
           </p>
+        )}
 
-          {respuesta === "Incorrect" && (
-            <p
-              style={{
-                marginTop: "0.5rem",
-                fontSize: "1.1rem",
-                fontWeight: "bold",
-                color: "#DC3545",
-              }}
-            >
-              Correct answer:{" "}
-              <span style={{ color: "#000" }}>{actual.correcta}</span>
-            </p>
-          )}
-
-          <button className="next-button" onClick={nextQuestion}>
+        {/* NEXT o FINISH */}
+        {respuesta && index < data.length - 1 && (
+          <button
+            className="ejercicio-btn"
+            onClick={nextQuestion}
+            style={{ marginTop: "1rem" }}
+          >
             Next
           </button>
-        </>
-      )}
+        )}
+
+        {respuesta && index === data.length - 1 && (
+          <button
+            className="ejercicio-btn"
+            onClick={nextQuestion}
+            style={{ marginTop: "1rem" }}
+          >
+            Finish
+          </button>
+        )}
+      </section>
     </div>
   );
 }

@@ -116,17 +116,6 @@ export default function Tema1_Ej3() {
           "/audios/sem11/9_4.mp3",
         ],
       },
-      {
-        pregunta: "Whose dog is in the garden?",
-        opciones: ["Sam’s", "Lara’s", "The neighbor’s"],
-        correcta: "The neighbor’s",
-        audios: [
-          "/audios/sem11/10_1.mp3",
-          "/audios/sem11/10_2.mp3",
-          "/audios/sem11/10_3.mp3",
-          "/audios/sem11/10_4.mp3",
-        ],
-      },
     ],
     []
   );

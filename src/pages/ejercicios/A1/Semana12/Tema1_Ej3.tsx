@@ -1,5 +1,5 @@
 import { useParams, useNavigate } from "react-router-dom";
-import { useState, useMemo, useRef } from "react";
+import { useState, useMemo, useRef, useEffect } from "react";
 import "../ejercicios.css";
 
 interface PreguntaTF {
@@ -24,6 +24,7 @@ export default function Tema1_Ej3() {
 
   const API_URL = import.meta.env.VITE_API_URL;
   const token = localStorage.getItem("token");
+
 
   const ejercicios: EjercicioTF[] = useMemo(
     () => [
@@ -137,22 +138,50 @@ export default function Tema1_Ej3() {
   const [audioIndex, setAudioIndex] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
 
+  // 🔊 Reproducir conversación completa
   const reproducirAudio = () => {
     if (!audioRef.current) return;
 
     setIsPlaying(true);
-    audioRef.current.src = actual.audios[audioIndex];
-    audioRef.current.play();
+    const audios = actual.audios;
 
-    audioRef.current.onended = () => {
-      if (audioIndex + 1 < actual.audios.length) {
-        setAudioIndex((prev) => prev + 1);
-      } else {
-        setAudioIndex(0);
-        setIsPlaying(false);
+    const playSequential = (i: number) => {
+      if (!audioRef.current) return;
+
+      audioRef.current.src = audios[i];
+      audioRef.current.play();
+
+      audioRef.current.onended = () => {
+        if (i + 1 < audios.length) {
+          playSequential(i + 1); // siguiente audio
+        } else {
+          setIsPlaying(false);
+        }
+      };
+    };
+
+    playSequential(0);
+  };
+
+  //  Detener audio cuando se cambia de ejercicio o se sale
+  useEffect(() => {
+    return () => {
+      if (audioRef.current) {
+        audioRef.current.pause();
+        audioRef.current.currentTime = 0;
       }
     };
-  };
+  }, [index]); // cada vez que cambia el ejercicio
+
+  useEffect(() => {
+    return () => {
+      // cleanup al salir del componente
+      if (audioRef.current) {
+        audioRef.current.pause();
+        audioRef.current.currentTime = 0;
+      }
+    };
+  }, []);
 
   const toggleRespuesta = (i: number, valor: boolean) => {
     const nuevas = [...respuestas];
@@ -231,17 +260,18 @@ export default function Tema1_Ej3() {
           Listen carefully to each dialogue. Mark each statement as True (T) or False (F).
         </p>
 
+        {/* AUDIO */}
+        <audio ref={audioRef} />
         <button
           className="btn-audio"
-          style={{ fontWeight: "bold", fontSize: "1.6rem", margin: "1rem 0" }}
+          style={{ fontWeight: "bold", fontSize: "1.5rem", margin: "1rem 0" }}
           onClick={reproducirAudio}
+          disabled={isPlaying}
         >
-          {isPlaying ? "⏸️" : "🔊"}
+          🔊
         </button>
 
-        <audio ref={audioRef} />
-
-        {/* LISTA DE LAS 5 ORACIONES CON BOTONES */}
+        {/* PREGUNTAS */}
         <div className="oracion-box" style={{ margin: "1rem auto", maxWidth: "600px" }}>
           {actual.preguntas.map((p, i) => (
             <div
@@ -291,7 +321,7 @@ export default function Tema1_Ej3() {
           ))}
         </div>
 
-        {/* BUTTON CHECK */}
+        {/* CHECK */}
         {!finalizado && (
           <button
             onClick={verificar}
@@ -302,7 +332,7 @@ export default function Tema1_Ej3() {
           </button>
         )}
 
-        {/* NEXT BUTTON */}
+        {/* NEXT */}
         {finalizado && index < ejercicios.length - 1 && (
           <button
             onClick={siguiente}
@@ -313,7 +343,7 @@ export default function Tema1_Ej3() {
           </button>
         )}
 
-        {/* FINAL MESSAGE */}
+        {/* FINAL */}
         {finalizado && index === ejercicios.length - 1 && (
           <div style={{ marginTop: "1rem" }}>
             <h2>You have completed the exercise!</h2>

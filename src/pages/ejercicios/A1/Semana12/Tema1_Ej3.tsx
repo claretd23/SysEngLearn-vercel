@@ -138,50 +138,54 @@ export default function Tema1_Ej3() {
   const [audioIndex, setAudioIndex] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
 
-  // 🔊 Reproducir conversación completa
-  const reproducirAudio = () => {
+ const reproducirAudio = () => {
+  if (!audioRef.current) return;
+
+  setIsPlaying(true);
+  let audios = actual.audios;
+
+  const playSequential = (i: number) => {
     if (!audioRef.current) return;
 
-    setIsPlaying(true);
-    const audios = actual.audios;
+    audioRef.current.src = audios[i];
+    audioRef.current.play();
 
-    const playSequential = (i: number) => {
-      if (!audioRef.current) return;
-
-      audioRef.current.src = audios[i];
-      audioRef.current.play();
-
-      audioRef.current.onended = () => {
-        if (i + 1 < audios.length) {
-          playSequential(i + 1); // siguiente audio
-        } else {
-          setIsPlaying(false);
-        }
-      };
+    audioRef.current.onended = () => {
+      if (i + 1 < audios.length) {
+        playSequential(i + 1);
+      } else {
+        audioRef.current.onended = null; // limpiar evento
+        setIsPlaying(false);
+      }
     };
-
-    playSequential(0);
   };
 
-  //  Detener audio cuando se cambia de ejercicio o se sale
-  useEffect(() => {
-    return () => {
-      if (audioRef.current) {
-        audioRef.current.pause();
-        audioRef.current.currentTime = 0;
-      }
-    };
-  }, [index]); // cada vez que cambia el ejercicio
+  playSequential(0);
+};
 
-  useEffect(() => {
-    return () => {
-      // cleanup al salir del componente
-      if (audioRef.current) {
-        audioRef.current.pause();
-        audioRef.current.currentTime = 0;
-      }
-    };
-  }, []);
+  //  Detener audio cuando se cambia de ejercicio o se sale
+// Resetear audio cuando cambia el ejercicio
+useEffect(() => {
+  if (audioRef.current) {
+    audioRef.current.pause();
+    audioRef.current.currentTime = 0;
+    audioRef.current.onended = null; // <-- MUY IMPORTANTE
+  }
+
+  setAudioIndex(0);
+  setIsPlaying(false);
+}, [index]);
+ // cada vez que cambia el ejercicio
+useEffect(() => {
+  return () => {
+    if (audioRef.current) {
+      audioRef.current.pause();
+      audioRef.current.currentTime = 0;
+      audioRef.current.onended = null;
+    }
+  };
+}, []);
+
 
   const toggleRespuesta = (i: number, valor: boolean) => {
     const nuevas = [...respuestas];

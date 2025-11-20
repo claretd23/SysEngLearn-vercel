@@ -253,41 +253,89 @@ export default function Tema1_Ej3() {
             <audio ref={audioRef} />
 
             {/* Texto */}
-            <div
-              className="oracion-box"
-              style={{
-                backgroundColor: "#f4f6fa",
-                borderLeft: "5px solid #222a5c",
-                borderRadius: "8px",
-                padding: "1.5rem",
-                margin: "1rem auto",
-                maxWidth: "650px",
-                fontStyle: "italic",
-              }}
-            >
-              <p>{actual.preguntas[0].texto}</p>
-            </div>
+<div
+  style={{
+    width: "90%",
+    maxWidth: "700px",
+    margin: "1.5rem auto",
+    backgroundColor: "white",
+    borderRadius: "12px",
+    padding: "1.8rem",
+    boxShadow: "0 4px 10px rgba(0,0,0,0.08)",
+    borderLeft: "6px solid #1e2a78",
+  }}
+>
+  <p
+    style={{
+      fontSize: "1.4rem",
+      lineHeight: "1.6",
+      fontStyle: "italic",
+      color: "#222",
+      margin: 0,
+      padding: 0,
+    }}
+  >
+    {actual.preguntas[0].texto}
+  </p>
+</div>
 
-            {/* Botones T/F */}
-            {!respuesta && (
-              <div style={{ display: "flex", gap: "1rem", justifyContent: "center" }}>
-                <button
-                  className={`opcion-btn ${seleccion === true ? "seleccionada" : ""}`}
-                  onClick={() => setSeleccion(true)}
-                  style={{ padding: "0.8rem 2rem", fontSize: "1.3rem" }}
-                >
-                  True
-                </button>
 
-                <button
-                  className={`opcion-btn ${seleccion === false ? "seleccionada" : ""}`}
-                  onClick={() => setSeleccion(false)}
-                  style={{ padding: "0.8rem 2rem", fontSize: "1.3rem" }}
-                >
-                  False
-                </button>
-              </div>
-            )}
+           {/* BOTONES TRUE / FALSE - DISEÑO ORIGINAL */}
+{!respuesta && (
+  <div
+    style={{
+      display: "flex",
+      gap: "2rem",
+      justifyContent: "center",
+      marginTop: "1.5rem",
+    }}
+  >
+    {/* TRUE */}
+    <button
+      onClick={() => setSeleccion(true)}
+      style={{
+        padding: "1rem 2.5rem",
+        fontSize: "1.5rem",
+        borderRadius: "50px",
+        border: seleccion === true ? "3px solid #1e2a78" : "2px solid #ccc",
+        backgroundColor: seleccion === true ? "#eaf0ff" : "white",
+        color: "#1e2a78",
+        fontWeight: 700,
+        cursor: "pointer",
+        transition: "0.3s",
+        boxShadow:
+          seleccion === true
+            ? "0 4px 10px rgba(0,0,0,0.15)"
+            : "0 2px 8px rgba(0,0,0,0.08)",
+      }}
+    >
+      TRUE
+    </button>
+
+    {/* FALSE */}
+    <button
+      onClick={() => setSeleccion(false)}
+      style={{
+        padding: "1rem 2.5rem",
+        fontSize: "1.5rem",
+        borderRadius: "50px",
+        border: seleccion === false ? "3px solid #b10e0e" : "2px solid #ccc",
+        backgroundColor: seleccion === false ? "#ffecec" : "white",
+        color: "#b10e0e",
+        fontWeight: 700,
+        cursor: "pointer",
+        transition: "0.3s",
+        boxShadow:
+          seleccion === false
+            ? "0 4px 10px rgba(0,0,0,0.15)"
+            : "0 2px 8px rgba(0,0,0,0.08)",
+      }}
+    >
+      FALSE
+    </button>
+  </div>
+)}
+
 
             {/* Botón Check */}
             {!respuesta && seleccion !== null && (

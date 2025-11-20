@@ -72,21 +72,74 @@ export default function Tema1_Ej3() {
           "/audios/sem11/5_4.mp3",
         ],
       },
+      {
+        pregunta: "Whose notebook is it?",
+        opciones: ["The teacher’s", "Lisa’s", "Anna’s"],
+        correcta: "Lisa’s",
+        audios: [
+          "/audios/sem11/6_1.mp3",
+          "/audios/sem11/6_2.mp3",
+          "/audios/sem11/6_3.mp3",
+          "/audios/sem11/6_4.mp3",
+        ],
+      },
+      {
+        pregunta: "Whose jacket is on the chair?",
+        opciones: ["Emma’s", "Emma’s brother’s", "Mark’s"],
+        correcta: "Emma’s brother’s",
+        audios: [
+          "/audios/sem11/7_1.mp3",
+          "/audios/sem11/7_2.mp3",
+          "/audios/sem11/7_3.mp3",
+          "/audios/sem11/7_4.mp3",
+        ],
+      },
+      {
+        pregunta: "Whose water bottle is red?",
+        opciones: ["Mia’s", "Jake’s", "Anna’s"],
+        correcta: "Jake’s",
+        audios: [
+          "/audios/sem11/8_1.mp3",
+          "/audios/sem11/8_2.mp3",
+          "/audios/sem11/8_3.mp3",
+          "/audios/sem11/8_4.mp3",
+        ],
+      },
+      {
+        pregunta: "Whose car is outside?",
+        opciones: ["Tom’s", "His uncle’s", "His dad’s"],
+        correcta: "His uncle’s",
+        audios: [
+          "/audios/sem11/9_1.mp3",
+          "/audios/sem11/9_2.mp3",
+          "/audios/sem11/9_3.mp3",
+          "/audios/sem11/9_4.mp3",
+        ],
+      },
+      {
+        pregunta: "Whose dog is in the garden?",
+        opciones: ["Sam’s", "Lara’s", "The neighbor’s"],
+        correcta: "The neighbor’s",
+        audios: [
+          "/audios/sem11/10_1.mp3",
+          "/audios/sem11/10_2.mp3",
+          "/audios/sem11/10_3.mp3",
+          "/audios/sem11/10_4.mp3",
+        ],
+      },
     ],
     []
   );
 
+  // --- resto del código igual ---
   const [index, setIndex] = useState(0);
   const actual = ejercicios[index];
-
   const [opcionSeleccionada, setOpcionSeleccionada] = useState<string | null>(null);
   const [respuesta, setRespuesta] = useState<string | null>(null);
   const [correctas, setCorrectas] = useState(0);
   const [finalizado, setFinalizado] = useState(false);
-
   const audioRefs = useRef<(HTMLAudioElement | null)[]>([]);
 
-  // === REPRODUCIR AUDIOS EN SECUENCIA ===
   const playSequence = () => {
     audioRefs.current.forEach((audio, i) => {
       if (!audio) return;
@@ -99,7 +152,6 @@ export default function Tema1_Ej3() {
     audioRefs.current[0]?.play();
   };
 
-  // === GUARDAR PROGRESO ===
   const guardarProgreso = async () => {
     try {
       const token = localStorage.getItem("token");
@@ -124,7 +176,6 @@ export default function Tema1_Ej3() {
     }
   };
 
-  // === VERIFICAR RESPUESTA ===
   const verificar = () => {
     if (!opcionSeleccionada) return;
     if (opcionSeleccionada === actual.correcta) {
@@ -135,14 +186,12 @@ export default function Tema1_Ej3() {
     }
   };
 
-  // === SIGUIENTE PREGUNTA ===
   const siguiente = () => {
     setOpcionSeleccionada(null);
     setRespuesta(null);
     setIndex((prev) => prev + 1);
   };
 
-  // === FINALIZAR EJERCICIO ===
   const finalizar = async () => {
     await guardarProgreso();
     setFinalizado(true);
@@ -177,7 +226,6 @@ export default function Tema1_Ej3() {
           </div>
         )}
 
-        {/* Botón de audio solo en la primera pregunta */}
         {index === 0 && (
           <>
             <button className="btn-audio" onClick={playSequence} style={{ fontSize: "2rem", margin: "1rem 0" }}>
@@ -191,19 +239,8 @@ export default function Tema1_Ej3() {
 
         <p style={{ fontSize: "1.3rem", margin: "1rem 0" }}>{actual.pregunta}</p>
 
-        {/* Opciones */}
         {!respuesta && (
-          <div
-            className="opciones-container"
-            style={{
-              display: "flex",
-              flexDirection: "column",
-              gap: "1rem",
-              alignItems: "center",
-              width: "100%",
-              marginTop: "1rem",
-            }}
-          >
+          <div className="opciones-container" style={{ display: "flex", flexDirection: "column", gap: "1rem", alignItems: "center", width: "100%", marginTop: "1rem" }}>
             {actual.opciones.map((op) => (
               <button
                 key={op}
@@ -217,17 +254,12 @@ export default function Tema1_Ej3() {
           </div>
         )}
 
-        {/* Feedback */}
         {respuesta && (
-          <p
-            className={`respuesta-feedback ${respuesta.startsWith("Correct") ? "correcta" : "incorrecta"}`}
-            style={{ fontSize: "1.3rem", margin: "1rem 0" }}
-          >
+          <p className={`respuesta-feedback ${respuesta.startsWith("Correct") ? "correcta" : "incorrecta"}`} style={{ fontSize: "1.3rem", margin: "1rem 0" }}>
             {respuesta}
           </p>
         )}
 
-        {/* Botones NEXT / FINISH */}
         {respuesta && index < ejercicios.length - 1 && (
           <button className="ejercicio-btn" onClick={siguiente}>
             Next question
@@ -239,7 +271,6 @@ export default function Tema1_Ej3() {
           </button>
         )}
 
-        {/* Botón de verificar */}
         {!respuesta && opcionSeleccionada && (
           <button className="ejercicio-btn" onClick={verificar}>
             Check

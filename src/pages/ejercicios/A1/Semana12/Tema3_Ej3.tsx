@@ -30,69 +30,120 @@ export default function Tema3_Ej3() {
 
   // Solo 5 audios
   const fullDialogue = [
-    "/audios/sem11/21.mp3",
-    "/audios/sem11/22.mp3",
-    "/audios/sem11/23.mp3",
-    "/audios/sem11/24.mp3",
-    "/audios/sem11/25.mp3",
+    "/audios/sem12/21.mp3",
+    "/audios/sem12/22.mp3",
+    "/audios/sem12/23.mp3",
+    "/audios/sem12/24.mp3",
+    "/audios/sem12/25.mp3",
   ];
 
-  const ejercicios = [
-    {
-      audio: fullDialogue,
-      pregunta: "What will Tom do tomorrow?",
-      opciones: [
-        "He will go to the park and take his dog",
-        "He will stay home and watch TV",
-        "He will go shopping and play football",
-      ],
-      correcta: "He will go to the park and take his dog",
-    },
-    {
-      audio: fullDialogue,
-      pregunta: "Will Tom stay at home all day?",
-      opciones: [
-        "Yes, and he will read a book",
-        "No, he will go to the park and maybe meet Paul",
-        "No, he will go swimming and clean his room",
-      ],
-      correcta: "No, he will go to the park and maybe meet Paul",
-    },
-    {
-      audio: fullDialogue,
-      pregunta: "What will Tom take to the park?",
-      opciones: [
-        "His football and his backpack",
-        "His dog and maybe meet Paul",
-        "His sister and his bike",
-      ],
-      correcta: "His dog and maybe meet Paul",
-    },
-    {
-      audio: fullDialogue,
-      pregunta: "Will Tom play football if it rains?",
-      opciones: [
-        "Yes, he will play with Paul",
-        "No, he won’t play and the football will stay at home",
-        "Maybe, he will play later in the evening",
-      ],
-      correcta: "No, he won’t play and the football will stay at home",
-    },
-    {
-      audio: fullDialogue,
-      pregunta: "Where will Emma go tomorrow?",
-      opciones: [
-        "To the library and she will do her homework",
-        "To the park and she will play football",
-        "To the cinema and she will meet Paul",
-      ],
-      correcta: "To the library and she will do her homework",
-    },
-  ];
+const ejercicios = [
+  {
+    audio: fullDialogue,
+    pregunta: "What will Tom do tomorrow?",
+    opciones: [
+      "He will go to the park and take his dog",
+      "He will stay home and watch TV",
+      "He will go shopping and play football",
+    ],
+    correcta: "He will go to the park and take his dog",
+  },
+  {
+    audio: fullDialogue,
+    pregunta: "Will Tom stay at home all day?",
+    opciones: [
+      "Yes, and he will read a book",
+      "No, he will go to the park and maybe meet Paul",
+      "No, he will go swimming and clean his room",
+    ],
+    correcta: "No, he will go to the park and maybe meet Paul",
+  },
+  {
+    audio: fullDialogue,
+    pregunta: "What will Tom take to the park?",
+    opciones: [
+      "His football and his backpack",
+      "His dog and maybe meet Paul",
+      "His sister and his bike",
+    ],
+    correcta: "His dog and maybe meet Paul",
+  },
+  {
+    audio: fullDialogue,
+    pregunta: "Will Tom play football if it rains?",
+    opciones: [
+      "Yes, he will play with Paul",
+      "No, he won’t play and the football will stay at home",
+      "Maybe, he will play later in the evening",
+    ],
+    correcta: "No, he won’t play and the football will stay at home",
+  },
+  {
+    audio: fullDialogue,
+    pregunta: "Where will Emma go tomorrow?",
+    opciones: [
+      "To the library and she will do her homework",
+      "To the park and she will play football",
+      "To the cinema and she will meet Paul",
+    ],
+    correcta: "To the library and she will do her homework",
+  },
+  {
+    audio: fullDialogue,
+    pregunta: "Will Emma go shopping after the library?",
+    opciones: [
+      "Yes, and she will buy a book",
+      "No, she won’t go shopping and she has too much homework",
+      "Maybe, she will go with her brother",
+    ],
+    correcta: "No, she won’t go shopping and she has too much homework",
+  },
+  {
+    audio: fullDialogue,
+    pregunta: "What does Emma think about the library in the morning?",
+    opciones: [
+      "It will be noisy and crowded",
+      "It will be closed and she will go home",
+      "It will be quiet and she will study",
+    ],
+    correcta: "It will be quiet and she will study",
+  },
+  {
+    audio: fullDialogue,
+    pregunta: "Will Emma’s brother go to the library with her?",
+    opciones: [
+      "Yes, and he will help her with homework",
+      "No, he won’t go and he will play video games at home",
+      "Maybe, he will go and bring his friend",
+    ],
+    correcta: "No, he won’t go and he will play video games at home",
+  },
+  {
+    audio: fullDialogue,
+    pregunta: "What will Paul bring to the park?",
+    opciones: [
+      "His football and some drinks",
+      "His dog and a ball",
+      "His bicycle and backpack",
+    ],
+    correcta: "His football and some drinks",
+  },
+  {
+    audio: fullDialogue,
+    pregunta: "What will Tom do if the park is wet?",
+    opciones: [
+      "He will play football with Paul",
+      "He will go to the library and meet his brother",
+      "He won’t play football and will take his dog home",
+    ],
+    correcta: "He won’t play football and will take his dog home",
+  },
+];
+
 
   const actual = ejercicios[index];
 
-  // Reproducción automática del audio
+  // Reproducción automática de audios en secuencia (solo en la primera pregunta)
   const playAudio = () => {
     if (index !== 0 || !audioRef.current) return;
     setAudioIndex(0);
@@ -199,9 +250,10 @@ export default function Tema3_Ej3() {
             className="tarjeta-ejercicio"
             style={{ textAlign: "center", fontSize: "1.3rem", padding: "2rem" }}
           >
+            {/* AUDIO SOLO EN LA PRIMERA PREGUNTA */}
             {index === 0 && (
               <>
-                <div className="instruccion-box">
+                <div className="instruccion-box" style={{ marginBottom: "1.5rem" }}>
                   <p className="instruccion-ejercicio">
                     Listen to the dialogue carefully and answer the questions.
                   </p>
@@ -234,22 +286,55 @@ export default function Tema3_Ej3() {
               <p>{actual.pregunta}</p>
             </div>
 
-            {!respuesta && (
-              <div className="opciones-ejercicio">
-                {actual.opciones.map((op, i) => (
-                  <button
-                    key={i}
-                    className={`opcion-btn ${seleccion === op ? "seleccionada" : ""}`}
-                    onClick={() => setSeleccion(op)}
-                  >
-                    {op}
-                  </button>
-                ))}
-              </div>
-            )}
+ {/* OPCIONES */}
+{!respuesta && (
+  <div
+    className="opciones-ejercicio"
+    style={{
+      display: "flex",
+      flexDirection: "row",
+      flexWrap: "wrap",
+      gap: "1rem",
+      justifyContent: "center",
+      marginBottom: "1rem",
+    }}
+  >
+    {actual.opciones.map((op, i) => (
+      <button
+        key={i}
+        className={`opcion-btn ${seleccion === op ? "seleccionada" : ""}`}
+        onClick={() => setSeleccion(op)}
+        style={{
+          fontSize: "1.2rem",
+          padding: "0.8rem 1.5rem",
+          minWidth: "220px",
+        }}
+      >
+        {op}
+      </button>
+    ))}
+  </div>
+)}
+
+{/* BOTÓN CHECK */}
+{!respuesta && seleccion && (
+  <button
+    onClick={verificar}
+    className="ejercicio-btn"
+    style={{ fontSize: "1.3rem", padding: "0.8rem 2rem" }}
+  >
+    Check
+  </button>
+)}
+
+
 
             {!respuesta && seleccion && (
-              <button onClick={verificar} className="ejercicio-btn">
+              <button
+                onClick={verificar}
+                className="ejercicio-btn"
+                style={{ fontSize: "1.3rem", padding: "0.8rem 2rem" }}
+              >
                 Check
               </button>
             )}
@@ -257,33 +342,41 @@ export default function Tema3_Ej3() {
             {respuesta && (
               <p
                 className={`respuesta-feedback ${esCorrecta ? "correcta" : "incorrecta"}`}
+                style={{
+                  fontSize: "1.3rem",
+                  margin: "1rem 0",
+                  color: esCorrecta ? "green" : "red",
+                  fontWeight: 600,
+                  whiteSpace: "pre-line",
+                }}
               >
                 {respuesta}
               </p>
             )}
 
             {respuesta && index < ejercicios.length - 1 && (
-              <button onClick={siguiente} className="ejercicio-btn">
+              <button
+                onClick={siguiente}
+                className="ejercicio-btn"
+                style={{ fontSize: "1.3rem", padding: "0.8rem 2rem" }}
+              >
                 Next question
               </button>
             )}
 
             {respuesta && index === ejercicios.length - 1 && (
-              <button onClick={finalizar} className="ejercicio-btn">
+              <button
+                onClick={finalizar}
+                className="ejercicio-btn"
+                style={{ fontSize: "1.3rem", padding: "0.8rem 2rem" }}
+              >
                 Finish
               </button>
             )}
           </section>
         </>
       ) : (
-        <div
-          className="finalizado"
-          style={{
-            fontSize: "1.3rem",
-            textAlign: "center",
-            marginTop: "3rem",
-          }}
-        >
+        <div className="finalizado" style={{ fontSize: "1.3rem" }}>
           <h2>You have completed the exercise!</h2>
           <p>
             Correct answers:{" "}

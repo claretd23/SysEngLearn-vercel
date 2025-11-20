@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import "./InicioB2.css";
-import logo from "../../assets/logo.png";
+import logo from "../../assets/LOGO.svg";
 import { Link } from "react-router-dom";
 
 const semanas = [

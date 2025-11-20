@@ -17,8 +17,8 @@ export default function Tema1_Ej3() {
   const { nivel, semana, tema, ejercicio } = useParams();
   const id = `${nivel}-${semana}-${tema}-${ejercicio}`;
   const navigate = useNavigate();
-  const [mostrarFinal, setMostrarFinal] = useState(false);
 
+  const [mostrarFinal, setMostrarFinal] = useState(false);
 
   const [respuestas, setRespuestas] = useState<(boolean | null)[]>(Array(5).fill(null));
   const [correctas, setCorrectas] = useState(0);
@@ -152,9 +152,8 @@ export default function Tema1_Ej3() {
       audioRef.current.play();
 
       audioRef.current.onended = () => {
-        if (i + 1 < audios.length) {
-          playSequential(i + 1);
-        } else {
+        if (i + 1 < audios.length) playSequential(i + 1);
+        else {
           audioRef.current.onended = null;
           setIsPlaying(false);
         }
@@ -191,11 +190,9 @@ export default function Tema1_Ej3() {
 
   const verificar = () => {
     let correctasActual = 0;
-
     respuestas.forEach((r, i) => {
       if (r === actual.preguntas[i].correcta) correctasActual++;
     });
-
     setCorrectas((prev) => prev + correctasActual);
     setFinalizado(true);
   };
@@ -203,11 +200,8 @@ export default function Tema1_Ej3() {
   const siguiente = () => {
     setRespuestas(Array(5).fill(null));
     setFinalizado(false);
-    if (index + 1 < ejercicios.length) {
-      setIndex(index + 1);
-    } else {
-      finalizar();
-    }
+    if (index + 1 < ejercicios.length) setIndex(index + 1);
+    else finalizar();
   };
 
   const guardarProgreso = async () => {
@@ -234,26 +228,45 @@ export default function Tema1_Ej3() {
     }
   };
 
-const finalizar = async () => {
-  // Mostrar pantalla final
-  setMostrarFinal(true);
+  const finalizar = async () => {
+    setMostrarFinal(true);
+    await guardarProgreso();
 
-  // Guardar progreso
-  await guardarProgreso();
+    setTimeout(() => {
+      navigate(`/inicio/${nivel}`);
+      window.location.reload();
+    }, 2500);
+  };
 
-  // Redirección automática
-  setTimeout(() => {
-    navigate(`/inicio/${nivel}`);
-    window.location.reload();
-  }, 2500);
-};
-
+  // ⛔⛔⛔ AQUÍ ESTÁ EL CAMBIO IMPORTANTE
+  // Si mostrarFinal es true → SOLO mostramos la pantalla final
+  if (mostrarFinal) {
+    return (
+      <div className="ejercicio-container">
+        <div
+          className="finalizado"
+          style={{
+            fontSize: "1.4rem",
+            textAlign: "center",
+            padding: "2rem",
+            marginTop: "2rem",
+          }}
+        >
+          <h2>You have completed the exercise!</h2>
+          <p>
+            Correct answers:{" "}
+            <strong>{correctas} / {ejercicios.length * 5}</strong>
+          </p>
+          <p>Redirecting to the start of the level...</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="ejercicio-container">
       <header className="ejercicio-header">
         <h1 className="titulo-ejercicio">EXERCISE 3</h1>
-
         <p className="progreso-ejercicio">
           Question {index + 1} of {ejercicios.length}
         </p>
@@ -324,7 +337,6 @@ const finalizar = async () => {
           ))}
         </div>
 
-        {/* BOTÓN CHECK */}
         {!finalizado && (
           <button
             onClick={verificar}
@@ -335,7 +347,6 @@ const finalizar = async () => {
           </button>
         )}
 
-        {/* BOTÓN NEXT */}
         {finalizado && index < ejercicios.length - 1 && (
           <button
             onClick={siguiente}
@@ -346,39 +357,16 @@ const finalizar = async () => {
           </button>
         )}
 
-       {/* FINAL: botón Finish igual al otro ejercicio */}
-{finalizado && index === ejercicios.length - 1 && !mostrarFinal && (
-  <button
-    onClick={finalizar}
-    className="ejercicio-btn"
-    style={{ fontSize: "1.3rem", padding: "0.8rem 2rem", marginTop: "1rem" }}
-  >
-    Finish
-  </button>
-)}
-
-{mostrarFinal && (
-  <div
-    className="finalizado"
-    style={{
-      fontSize: "1.3rem",
-      textAlign: "center",
-      marginTop: "2rem",
-      display: "flex",
-      flexDirection: "column",
-      gap: "1rem",
-      alignItems: "center",
-    }}
-  >
-    <h2>You have completed the exercise!</h2>
-
-    <p>
-      Correct answers:{" "}
-      <strong>
-        {correctas} / {ejercicios.length * 5}
-      </strong>
-    </p>
-
-    <p>Redirecting to the start of the level...</p>
-  </div>
-)}
+        {finalizado && index === ejercicios.length - 1 && (
+          <button
+            onClick={finalizar}
+            className="ejercicio-btn"
+            style={{ fontSize: "1.3rem", padding: "0.8rem 2rem", marginTop: "1rem" }}
+          >
+            Finish
+          </button>
+        )}
+      </section>
+    </div>
+  );
+}

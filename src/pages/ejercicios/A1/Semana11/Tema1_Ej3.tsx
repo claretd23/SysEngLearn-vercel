@@ -79,24 +79,23 @@ export default function Tema1_Ej3() {
   const [index, setIndex] = useState(0);
   const actual = ejercicios[index];
 
-  const [respuesta, setRespuesta] = useState<string | null>(null);
   const [opcionSeleccionada, setOpcionSeleccionada] = useState<string | null>(null);
+  const [respuesta, setRespuesta] = useState<string | null>(null);
   const [correctas, setCorrectas] = useState(0);
   const [finalizado, setFinalizado] = useState(false);
 
   const audioRefs = useRef<(HTMLAudioElement | null)[]>([]);
 
-  // === REPRODUCIR AUDIOS ===
+  // === REPRODUCIR AUDIOS EN SECUENCIA ===
   const playSequence = () => {
     audioRefs.current.forEach((audio, i) => {
       if (!audio) return;
       audio.onended = () => {
         if (i + 1 < audioRefs.current.length) {
-          setTimeout(() => audioRefs.current[i + 1]?.play(), 600);
+          setTimeout(() => audioRefs.current[i + 1]?.play(), 500);
         }
       };
     });
-
     audioRefs.current[0]?.play();
   };
 
@@ -104,7 +103,6 @@ export default function Tema1_Ej3() {
   const guardarProgreso = async () => {
     try {
       const token = localStorage.getItem("token");
-
       const res = await fetch(`${API_URL}/api/progreso`, {
         method: "POST",
         headers: {
@@ -129,7 +127,6 @@ export default function Tema1_Ej3() {
   // === VERIFICAR RESPUESTA ===
   const verificar = () => {
     if (!opcionSeleccionada) return;
-
     if (opcionSeleccionada === actual.correcta) {
       setRespuesta("Correct!");
       setCorrectas((prev) => prev + 1);
@@ -138,21 +135,20 @@ export default function Tema1_Ej3() {
     }
   };
 
-  // === SIGUIENTE ===
+  // === SIGUIENTE PREGUNTA ===
   const siguiente = () => {
-    setRespuesta(null);
     setOpcionSeleccionada(null);
+    setRespuesta(null);
     setIndex((prev) => prev + 1);
   };
 
-  // === FINALIZACIÓN ===
+  // === FINALIZAR EJERCICIO ===
   const finalizar = async () => {
     await guardarProgreso();
     setFinalizado(true);
     setTimeout(() => navigate(`/inicio/${nivel}`), 2500);
   };
 
-  // === PANTALLA FINAL ===
   if (finalizado) {
     return (
       <div className="finalizado" style={{ fontSize: "1.3rem" }}>
@@ -168,7 +164,7 @@ export default function Tema1_Ej3() {
   return (
     <div className="ejercicio-container">
       <header className="ejercicio-header">
-        <h1 className="titulo-ejercicio">EXERCISE 3 — Listening</h1>
+        <h1 className="titulo-ejercicio">EXERCISE 3</h1>
         <p className="progreso-ejercicio">
           Question {index + 1} of {ejercicios.length}
         </p>
@@ -181,67 +177,72 @@ export default function Tema1_Ej3() {
           </div>
         )}
 
-        {/* Botón de audio */}
-        <button
-          className="btn-audio"
-          style={{ fontSize: "2rem", margin: "1rem 0" }}
-          onClick={playSequence}
-        >
-          🔊
-        </button>
-
-        {actual.audios.map((src, i) => (
-          <audio key={i} ref={(el) => (audioRefs.current[i] = el)} src={src} />
-        ))}
-
-        <p style={{ fontSize: "1.3rem", margin: "1rem 0" }}>{actual.pregunta}</p>
-
-        {!respuesta && (
+        {/* Botón de audio solo en la primera pregunta */}
+        {index === 0 && (
           <>
-            <div className="opciones-ejercicio">
-              {actual.opciones.map((op) => (
-                <button
-                  key={op}
-                  className={`opcion-btn ${opcionSeleccionada === op ? "seleccionada" : ""}`}
-                  onClick={() => setOpcionSeleccionada(op)}
-                >
-                  {op}
-                </button>
-              ))}
-            </div>
-
-            <button
-              onClick={verificar}
-              className="ejercicio-btn"
-              disabled={!opcionSeleccionada}
-              style={{ marginTop: "1rem" }}
-            >
-              Check
+            <button className="btn-audio" onClick={playSequence} style={{ fontSize: "2rem", margin: "1rem 0" }}>
+              🔊
             </button>
+            {actual.audios.map((src, i) => (
+              <audio key={i} ref={(el) => (audioRefs.current[i] = el)} src={src} />
+            ))}
           </>
         )}
 
+        <p style={{ fontSize: "1.3rem", margin: "1rem 0" }}>{actual.pregunta}</p>
+
+        {/* Opciones */}
+        {!respuesta && (
+          <div
+            className="opciones-container"
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              gap: "1rem",
+              alignItems: "center",
+              width: "100%",
+              marginTop: "1rem",
+            }}
+          >
+            {actual.opciones.map((op) => (
+              <button
+                key={op}
+                className={`opcion-btn ${opcionSeleccionada === op ? "seleccionada" : ""}`}
+                onClick={() => setOpcionSeleccionada(op)}
+                style={{ fontSize: "1.2rem", padding: "0.8rem 1.5rem", minWidth: "220px" }}
+              >
+                {op}
+              </button>
+            ))}
+          </div>
+        )}
+
+        {/* Feedback */}
         {respuesta && (
           <p
-            className={`respuesta-feedback ${
-              respuesta.startsWith("Correct") ? "correcta" : "incorrecta"
-            }`}
+            className={`respuesta-feedback ${respuesta.startsWith("Correct") ? "correcta" : "incorrecta"}`}
             style={{ fontSize: "1.3rem", margin: "1rem 0" }}
           >
             {respuesta}
           </p>
         )}
 
-        {/* NEXT / FINISH */}
+        {/* Botones NEXT / FINISH */}
         {respuesta && index < ejercicios.length - 1 && (
           <button className="ejercicio-btn" onClick={siguiente}>
             Next question
           </button>
         )}
-
         {respuesta && index === ejercicios.length - 1 && (
           <button className="ejercicio-btn" onClick={finalizar}>
             Finish
+          </button>
+        )}
+
+        {/* Botón de verificar */}
+        {!respuesta && opcionSeleccionada && (
+          <button className="ejercicio-btn" onClick={verificar}>
+            Check
           </button>
         )}
       </section>

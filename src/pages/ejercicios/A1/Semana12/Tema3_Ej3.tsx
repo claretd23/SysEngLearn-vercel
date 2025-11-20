@@ -259,37 +259,37 @@ export default function Tema3_Ej3() {
     <p>{actual.pregunta}</p>
   </div>
 
-  {/* Opciones */}
-  <div
-    className="opciones-ejercicio"
-    style={{
-      display: "flex",
-      flexDirection: "column",
-      gap: "1rem",
-      alignItems: "center",
-      marginBottom: "1.5rem"
-    }}
-  >
-    {actual.opciones.map((op, i) => (
-      <button
-        key={i}
-        className={`opcion-btn ${seleccion === op ? "seleccionada" : ""}`}
-        onClick={() => setSeleccion(op)}
-        disabled={!!respuesta}    // ❗ Evita cambiar opción después del Check
-        style={{
-          fontSize: "1.2rem",
-          padding: "0.8rem 1.5rem",
-          minWidth: "250px",
-          textAlign: "center",
-          opacity: respuesta ? 0.7 : 1
-        }}
-      >
-        {op}
-      </button>
-    ))}
-  </div>
+  {/* OPCIONES — solo si NO hay respuesta */}
+  {!respuesta && (
+    <div
+      className="opciones-ejercicio"
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        gap: "1rem",
+        alignItems: "center",
+        marginBottom: "1.5rem"
+      }}
+    >
+      {actual.opciones.map((op, i) => (
+        <button
+          key={i}
+          className={`opcion-btn ${seleccion === op ? "seleccionada" : ""}`}
+          onClick={() => setSeleccion(op)}
+          style={{
+            fontSize: "1.2rem",
+            padding: "0.8rem 1.5rem",
+            minWidth: "250px",
+            textAlign: "center"
+          }}
+        >
+          {op}
+        </button>
+      ))}
+    </div>
+  )}
 
-  {/* Mensaje Correct / Incorrect debajo de las opciones */}
+  {/* Mensaje debajo */}
   {respuesta && (
     <p
       style={{
@@ -304,7 +304,7 @@ export default function Tema3_Ej3() {
     </p>
   )}
 
-  {/* Botones Check / Next / Finish */}
+  {/* Botón Check / Next / Finish */}
   {!respuesta ? (
     <button
       onClick={verificar}
@@ -330,7 +330,6 @@ export default function Tema3_Ej3() {
   )}
 
 </section>
-
 
         </>
       ) : (

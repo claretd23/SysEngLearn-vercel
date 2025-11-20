@@ -39,26 +39,26 @@ export default function Tema3_Ej3() {
 
   // ------------------ EJERCICIOS ------------------
   const ejercicios = [
-    { texto: "Where is Sofia from?", correcta: ["mexico", "she is from mexico", "from mexico"] },
+    { texto: "Where is Sofia from?", correcta: [ "she is from mexico", "from mexico","mexico",] },
     {
       texto: "Peter is from Canada. Is he American?",
       correcta: [
+        "no, he is not american",
         "no",
         "no, he isn't",
         "no, he is not",
         "no, he isn't american",
-        "no, he is not american",
         "no, he is canadian",
       ],
     },
-    { texto: "Where is Fatima from?", correcta: ["turkey", "she is from turkey", "from turkey"] },
-    { texto: "Is Ali Mexican?", correcta: ["no", "no, he isn't", "no, he is not"] },
-    { texto: "Is Laura Turkish?", correcta: ["no", "no, she isn't", "no, she is not"] },
+    { texto: "Where is Fatima from?", correcta: [ "she is from turkey", "turkey","from turkey"] },
+    { texto: "Is Ali Mexican?", correcta: ["no, he isn't","no",  "no, he is not"] },
+    { texto: "Is Laura Turkish?", correcta: ["no, she isn't turkish", "no, she isn't", "no, she is not"] },
     { texto: "Where is Yara from?", correcta: ["colombia", "she is from colombia", "from colombia"] },
-    { texto: "Is Marco Mexican?", correcta: ["no", "no, he isn't", "no, he is not"] },
-    { texto: "Where is Marco from?", correcta: ["spain", "he is from spain", "from spain"] },
-    { texto: "Where is Yara from?", correcta: ["colombia", "she is from colombia", "from colombia"] },
-    { texto: "Is Yara Spanish?", correcta: ["no", "no, she isn't", "no, she is not"] },
+    { texto: "Is Marco Mexican?", correcta:  ["no, he is not mexican","no, he isn't mexican", "no, he isn't"] },
+    { texto: "Where is Marco from?", correcta: [ "he is from spain","spain", "from spain"] },
+    { texto: "Where is Yara from?", correcta: [ "she is from colombia","colombia", "from colombia"] },
+    { texto: "Is Yara Spanish?", correcta: [ "no, she isn't Spanish", "no, she is not", "no", "no, she is not Spanish", "no, she isn't"] },
   ];
 
   const actual = ejercicios[index];

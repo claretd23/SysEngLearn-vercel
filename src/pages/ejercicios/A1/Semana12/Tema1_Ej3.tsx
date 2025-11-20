@@ -134,18 +134,33 @@ export default function Tema1_Ej3() {
   const actual = ejercicios[index];
 
   // Reproduce ambos audios en secuencia
-  const playAudio = () => {
-    if (!audioRef.current) return;
-    audioRef.current.src = actual.audios[audioIndex];
-    audioRef.current.play();
-    audioRef.current.onended = () => {
-      if (audioIndex + 1 < actual.audios.length) {
-        setAudioIndex((prev) => prev + 1);
-      } else {
-        setAudioIndex(0);
-      }
-    };
+// Reproduce ambos audios en secuencia
+const playAudio = () => {
+  if (!audioRef.current) return;
+  setAudioIndex(0); // empieza desde el primer audio
+};
+
+// Efecto que se ejecuta cuando cambia audioIndex
+useEffect(() => {
+  if (!audioRef.current) return;
+  const currentAudio = ejercicios[index].audios[audioIndex];
+  if (!currentAudio) return;
+
+  audioRef.current.src = currentAudio;
+  audioRef.current.play();
+
+  const handleEnded = () => {
+    if (audioIndex + 1 < ejercicios[index].audios.length) {
+      setAudioIndex(audioIndex + 1); // pasa al siguiente audio
+    }
   };
+
+  audioRef.current.addEventListener("ended", handleEnded);
+  return () => {
+    audioRef.current?.removeEventListener("ended", handleEnded);
+  };
+}, [audioIndex, index, ejercicios]);
+
 
   const toggleRespuesta = (i: number, valor: boolean) => {
     const nuevas = [...respuestas];
@@ -208,7 +223,7 @@ export default function Tema1_Ej3() {
                       padding: "0.3rem 0.8rem",
                     }}
                   >
-                    
+                    T
                   </button>
                   <button
                     onClick={() => toggleRespuesta(i, false)}

@@ -1,5 +1,5 @@
 import { useParams, useNavigate } from "react-router-dom";
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import "../ejercicios.css";
 
 export default function Tema3_Ej3() {
@@ -17,14 +17,29 @@ export default function Tema3_Ej3() {
   const token = localStorage.getItem("token");
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
+  // ------------------ AUDIO ------------------
   const playAudio = () => audioRef.current?.play();
 
-  // ------------------------- EJERCICIOS -------------------------
+  const stopAudio = () => {
+    if (audioRef.current) {
+      audioRef.current.pause();
+      audioRef.current.currentTime = 0;
+    }
+  };
+
+  // Detener audio al cambiar de ejercicio
+  useEffect(() => {
+    stopAudio();
+  }, [index]);
+
+  // Detener audio al salir del componente
+  useEffect(() => {
+    return () => stopAudio();
+  }, []);
+
+  // ------------------ EJERCICIOS ------------------
   const ejercicios = [
-    {
-      texto: "Where is Sofia from?",
-      correcta: ["mexico", "she is from mexico", "from mexico"],
-    },
+    { texto: "Where is Sofia from?", correcta: ["mexico", "she is from mexico", "from mexico"] },
     {
       texto: "Peter is from Canada. Is he American?",
       correcta: [
@@ -36,43 +51,19 @@ export default function Tema3_Ej3() {
         "no, he is canadian",
       ],
     },
-    {
-      texto: "Where is Fatima from?",
-      correcta: ["turkey", "she is from turkey", "from turkey"],
-    },
-    {
-      texto: "Is Ali Mexican?",
-      correcta: ["no", "no, he isn't", "no, he is not"],
-    },
-    {
-      texto: "Is Laura Turkish?",
-      correcta: ["no", "no, she isn't", "no, she is not"],
-    },
-    {
-      texto: "Where is Yara from?",
-      correcta: ["colombia", "she is from colombia", "from colombia"],
-    },
-    {
-      texto: "Is Marco Mexican?",
-      correcta: ["no", "no, he isn't", "no, he is not"],
-    },
-    {
-      texto: "Where is Marco from?",
-      correcta: ["spain", "he is from spain", "from spain"],
-    },
-    {
-      texto: "Where is Yara from?",
-      correcta: ["colombia", "she is from colombia", "from colombia"],
-    },
-    {
-      texto: "Is Yara Spanish?",
-      correcta: ["no", "no, she isn't", "no, she is not"],
-    },
+    { texto: "Where is Fatima from?", correcta: ["turkey", "she is from turkey", "from turkey"] },
+    { texto: "Is Ali Mexican?", correcta: ["no", "no, he isn't", "no, he is not"] },
+    { texto: "Is Laura Turkish?", correcta: ["no", "no, she isn't", "no, she is not"] },
+    { texto: "Where is Yara from?", correcta: ["colombia", "she is from colombia", "from colombia"] },
+    { texto: "Is Marco Mexican?", correcta: ["no", "no, he isn't", "no, he is not"] },
+    { texto: "Where is Marco from?", correcta: ["spain", "he is from spain", "from spain"] },
+    { texto: "Where is Yara from?", correcta: ["colombia", "she is from colombia", "from colombia"] },
+    { texto: "Is Yara Spanish?", correcta: ["no", "no, she isn't", "no, she is not"] },
   ];
 
   const actual = ejercicios[index];
 
-  // ------------------------- GUARDAR PROGRESO -------------------------
+  // ------------------ GUARDAR PROGRESO ------------------
   const guardarProgreso = async () => {
     const completados = JSON.parse(localStorage.getItem("ejercicios_completados") || "[]");
 
@@ -99,7 +90,7 @@ export default function Tema3_Ej3() {
     }
   };
 
-  // ------------------------- VERIFICAR -------------------------
+  // ------------------ VERIFICAR ------------------
   const verificar = () => {
     const user = inputValue.trim().toLowerCase();
     if (!user) return;
@@ -115,15 +106,17 @@ export default function Tema3_Ej3() {
     }
   };
 
-  // ------------------------- SIGUIENTE -------------------------
+  // ------------------ SIGUIENTE ------------------
   const siguiente = () => {
+    stopAudio();
     setRespuesta(null);
     setInputValue("");
     setIndex((prev) => prev + 1);
   };
 
-  // ------------------------- FINALIZAR -------------------------
+  // ------------------ FINALIZAR ------------------
   const manejarFinalizacion = async () => {
+    stopAudio();
     await guardarProgreso();
     setFinalizado(true);
 
@@ -148,22 +141,24 @@ export default function Tema3_Ej3() {
             {index === 0 && (
               <div className="instruccion-box">
                 <p className="instruccion-ejercicio" style={{ fontSize: "1.2rem" }}>
-                  🎧 Listen to the audio and answer the questions.
+                  Listen to the audio and answer the questions.
                 </p>
               </div>
             )}
 
-            {/* AUDIO */}
-            <div style={{ margin: "1rem 0" }}>
-              <button
-                onClick={playAudio}
-                className="btn-audio"
-                style={{ fontSize: "1.8rem", padding: "0.6rem 1rem", borderRadius: "8px" }}
-              >
-                🔊
-              </button>
-              <audio ref={audioRef} src="/audios/sem3/anna_friends.mp3" />
-            </div>
+            {/* AUDIO SOLO EN EL PRIMER EJERCICIO */}
+            {index === 0 && (
+              <div style={{ margin: "1rem 0" }}>
+                <button
+                  onClick={playAudio}
+                  className="btn-audio"
+                  style={{ fontSize: "1.8rem", padding: "0.6rem 1rem", borderRadius: "8px" }}
+                >
+                  🔊
+                </button>
+                <audio ref={audioRef} src="/audios/sem3/anna_friends.mp3" />
+              </div>
+            )}
 
             {/* PREGUNTA */}
             <p
@@ -222,7 +217,7 @@ export default function Tema3_Ej3() {
               </p>
             )}
 
-            {/* BOTONES SIGUIENTE */}
+            {/* BOTONES SIGUIENTE / FINALIZAR */}
             <div className="botones-siguiente">
               {respuesta && index < ejercicios.length - 1 && (
                 <button

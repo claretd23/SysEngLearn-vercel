@@ -30,7 +30,7 @@ html, body {
 
 /* TÍTULO PRINCIPAL (NIVEL A1) */
 .titulo {
-  background-color: #bab9ee;  /* Fondo lila claro */
+  background-color: #d8d8d9;  /* Fondo lila claro */
   color: #676971;             /* Azul oscuro */
   font-size: 1.1rem;
   font-weight: 600;
@@ -146,9 +146,9 @@ html, body {
 
 /* Si el ejercicio está completado */
 .ejercicio-boton.completado {
-  background-color: #140181;  /* Azul oscuro */
+  background-color: #120462;  /* Azul oscuro */
   color: white;
-  border: 2px solid #4caf50;  /* Borde verde de confirmación */
+  border: 2px solid #fdfdfd;  /* Borde verde de confirmación */
 }
 
 /*  BOTÓN FLOTANTE "IR ARRIBA"*/

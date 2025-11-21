@@ -1,171 +1,167 @@
+/* === RESET PARA FULLSCREEN === */
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+/* === CONTENEDOR PRINCIPAL === */
 .main-container {
+  height: 100vh;
+  width: 100vw;
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100vh;
-  background-color: #222a5c;
-}
-
-.card {
-  background-color: white;
-  border-radius: 20px;
-  padding: 2em;
-  box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.2);
-  width: 350px;
-}
-
-.logo-image {
-  width: 120px;
-  margin-bottom: 1em;
-}
-
-.Fform {
-  display: flex;
-  flex-direction: column;
-  gap: 1em;
-}
-
-.Finput-field {
-  padding: 10px;
-  border-radius: 8px;
-  border: 1px solid #ccc;
-}
-
-.button1 {
-  background-color: #bcd03c;
-  color: white;
-  border: none;
-  padding: 10px;
-  border-radius: 8px;
-  cursor: pointer;
-}
-
-.button1:hover {
-  background-color: #9aaa2f;
-}
-
-.info-text {
-  font-size: 0.9em;
-  text-align: center;
-  margin-top: 1em;
-  color: #333;
-}
-.main-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-  background-color: #222a5c;
-}
-
-.card {
-  background-color: white;
-  border-radius: 20px;
-  padding: 2em;
-  box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.2);
-  width: 350px;
-}
-
-.logo-image {
-  width: 120px;
-  margin-bottom: 1em;
-}
-
-.Fform {
-  display: flex;
-  flex-direction: column;
-  gap: 1em;
-}
-
-.Finput-field {
-  padding: 10px;
-  border-radius: 8px;
-  border: 1px solid #ccc;
-}
-
-.button1 {
-  background-color: #bcd03c;
-  color: white;
-  border: none;
-  padding: 10px;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: background-color 0.3s, transform 0.2s;
-}
-
-.button1:hover {
-  background-color: #9aaa2f;
-  transform: scale(1.03);
-}
-
-.info-text {
-  font-size: 0.9em;
-  text-align: center;
-  margin-top: 1em;
-  color: #333;
-}
-
-/* 🔹 INTERFAZ MÓVIL */
-@media (max-width: 480px) {
-  .main-container {
-    height: auto;
-    padding: 2rem 1rem;
-    background-color: #222a5c;
-  }
-
-  .card {
-    width: 100%;
-    max-width: 340px;
-    padding: 1.5em;
-    border-radius: 16px;
-    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.25);
-  }
-
-  .logo-image {
-    width: 90px;
-    margin-bottom: 1em;
-    align-self: center;
-  }
-
-  .Finput-field {
-    font-size: 1rem;
-    padding: 12px;
-  }
-
-  .button1 {
-    padding: 12px;
-    font-size: 1rem;
-    border-radius: 10px;
-  }
-
-  .info-text {
-    font-size: 0.85em;
-    margin-top: 0.8em;
-  }
-}
-/* Estilos específicos para la página de restablecimiento de contraseña */
-.main-container {     
   background: #f0f2f5;
-  padding: 2em;
-}                 
+}
 
-.card {
-  max-width: 400px;
+/* === WRAPPER CENTRAL === */
+.login-wrapper {
+  width: 100%;
+  max-width: 420px;
+  background: #ffffff;
+  padding: 2.5em 2em;
+  border-radius: 1.5em;
+  box-shadow: 0px 4px 16px rgba(0, 0, 0, 0.15);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* =========================================================
+   LOGO GENERAL
+========================================================= */
+
+/* Contenedor del logo dentro del login */
+.Flogo {
+  display: flex;
+  justify-content: center;
   width: 100%;
 }
-.logo-image {
-  max-width: 150px;
+
+/* LOGO MÁS GRANDE EN ESCRITORIO */
+.Flogo img {
+  max-width: 230px;
+  width: 100%;
+  height: auto;
+  margin-bottom: 1.8em;
 }
-.Fform {
-  gap: 1em;
+
+/* =========================================================
+   LOGO PARA PANTALLA FORGOT PASSWORD
+========================================================= */
+.forgot-logo {
+  display: flex;
+  justify-content: center;
+  width: 100%;
 }
-.button1 {
-  background-color: #bcd03c;
+
+.forgot-logo img {
+  max-width: 200px;
+  width: 100%;
+  height: auto;
+  margin-bottom: 1.5em;
 }
-.button1:hover {
-  background-color: #9aaa2f;
+
+/* =========================================================
+   INPUTS
+========================================================= */
+.login-input {
+  width: 100%;
+  margin-bottom: 1.2em;
 }
-.info-text {
+
+.login-input label {
+  display: block;
+  margin-bottom: 0.4em;
+  font-weight: 600;
+  color: #222a5c;
+}
+
+.login-input input {
+  width: 100%;
+  padding: 0.8em;
+  border: 2px solid #d3d8e4;
+  border-radius: 0.8em;
+  outline: none;
+  transition: 0.3s;
+}
+
+.login-input input:focus {
+  border-color: #222a5c;
+}
+
+/* =========================================================
+   BOTONES
+========================================================= */
+
+.login-button {
+  width: 100%;
+  padding: 0.9em;
+  margin-top: 0.8em;
+  background: #222a5c;
+  color: white;
+  border: none;
+  border-radius: 0.8em;
+  font-size: 1em;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.login-button:hover {
+  background: #1a224c;
+}
+
+.signup-button {
+  width: 100%;
+  text-align: center;
+  margin-top: 1.2em;
+  color: #222a5c;
+  font-weight: 600;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.forgot-password {
+  margin-top: 0.8em;
   font-size: 0.9em;
   color: #222a5c;
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+/* =========================================================
+   RESPONSIVE: MÓVIL
+========================================================= */
+@media (max-width: 480px) {
+
+  .login-wrapper {
+    padding: 2em 1.5em;
+  }
+
+  /* Logo centrado y que no se haga chico */
+  .Flogo img {
+    max-width: 200px;
+    display: block;
+    margin: 0 auto 1.8em auto;
+  }
+
+  .forgot-logo img {
+    max-width: 180px;
+    margin: 0 auto 1.5em auto;
+  }
+}
+
+/* =========================================================
+   RESPONSIVE: TABLET
+========================================================= */
+@media (min-width: 481px) and (max-width: 768px) {
+
+  .Flogo img {
+    max-width: 210px;
+  }
+
+  .forgot-logo img {
+    max-width: 190px;
+  }
 }

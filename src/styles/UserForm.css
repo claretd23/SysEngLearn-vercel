@@ -48,7 +48,7 @@ html, body {
 }
 
 /* =========================================================
-   LOGO PARA PANTALLA FORGOT PASSWORD
+LOGO PARA PANTALLA FORGOT PASSWORD
 ========================================================= */
 .forgot-logo {
   display: flex;
@@ -57,7 +57,7 @@ html, body {
 }
 
 .forgot-logo img {
-  max-width: 200px;
+  max-width: 250px;
   width: 100%;
   height: auto;
   margin-bottom: 1.5em;

@@ -93,10 +93,11 @@ export default function AdminDashboard() {
 
   return (
     <div className="admin-container">
-  <button className="logout-button" onClick={logout}>Cerrar Sesión</button>
+      
 
-  <div className="card">
-    <h2 className="heading">Panel de Usuarios</h2>
+      <div className="card">
+        <button className="logout-button" onClick={logout}>Cerrar Sesión</button>
+        <h2 className="heading">Panel de Usuarios</h2>
 
         <form className="form" onSubmit={handleSubmit}>
           <input

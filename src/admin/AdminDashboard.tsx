@@ -96,56 +96,68 @@ export default function AdminDashboard() {
     setDeletingId(null);
   };
 
+  // Cerrar sesión
+  const handleLogout = () => {
+    localStorage.removeItem('token');
+    window.location.href = '/login';
+  };
+
   return (
     <div className="admin-container">
+      <button className="logout-button" onClick={handleLogout}>
+        Cerrar sesión
+      </button>
+
       <div className="card">
-        <div style={{ width: '100%' }}>
-          <div className='titulo'>
-            <h2 id="heading">USUARIOS</h2>
+        <div className="titulo">
+          <h2 id="heading">USUARIOS</h2>
+        </div>
+
+        <form className="form" onSubmit={handleSubmit}>
+          <div className="field">
+            <input
+              className="input-field"
+              name="name"
+              placeholder="Nombre"
+              value={form.name}
+              onChange={handleChange}
+              required
+            />
           </div>
 
-          <form className="form" onSubmit={handleSubmit}>
-            <div className="field">
-              <input
-                className="input-field"
-                name="name"
-                placeholder="Nombre"
-                value={form.name}
-                onChange={handleChange}
-                required
-              />
-            </div>
+          <div className="field">
+            <input
+              className="input-field"
+              name="email"
+              type="email"
+              placeholder="Correo electrónico"
+              value={form.email}
+              onChange={handleChange}
+              required
+            />
+          </div>
 
-            <div className="field">
-              <input
-                className="input-field"
-                name="email"
-                type="email"
-                placeholder="Correo electrónico"
-                value={form.email}
-                onChange={handleChange}
-                required
-              />
-            </div>
+          <div className="field">
+            <input
+              className="input-field"
+              name="password"
+              type="password"
+              placeholder="Contraseña"
+              value={form.password}
+              onChange={handleChange}
+              required
+            />
+          </div>
 
-            <div className="field">
-              <input
-                className="input-field"
-                name="password"
-                type="password"
-                placeholder="Contraseña"
-                value={form.password}
-                onChange={handleChange}
-                required
-              />
-            </div>
-
+          <div className="field">
             <select name="role" value={form.role} onChange={handleChange} className="input-field">
               <option value="user">Alumno</option>
               <option value="admin">Teacher</option>
               <option value="superadmin">SuperAdmin</option>
             </select>
+          </div>
 
+          <div className="field">
             <select
               name="level"
               value={form.level}
@@ -160,53 +172,53 @@ export default function AdminDashboard() {
               <option value="B2">B2</option>
               <option value="C1">C1</option>
             </select>
+          </div>
 
-            <div className="btn">
-              <button type="submit" className="button1" disabled={loading}>
-                {loading ? 'Agregando...' : 'Agregar Usuario'}
-              </button>
-            </div>
-          </form>
+          <div className="btn">
+            <button type="submit" className="button1" disabled={loading}>
+              {loading ? 'Agregando...' : 'Agregar Usuario'}
+            </button>
+          </div>
+        </form>
 
-          <table style={{ width: '100%', borderCollapse: 'collapse', marginTop: '2rem' }}>
-            <thead style={{ backgroundColor: '#222a5c', color: 'white' }}>
+        <table>
+          <thead>
+            <tr>
+              <th>Nombre</th>
+              <th>Email</th>
+              <th>Rol</th>
+              <th>Nivel</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody>
+            {users.length === 0 ? (
               <tr>
-                <th style={{ padding: '0.5rem', border: '1px solid #ddd' }}>Nombre</th>
-                <th style={{ padding: '0.5rem', border: '1px solid #ddd' }}>Email</th>
-                <th style={{ padding: '0.5rem', border: '1px solid #ddd' }}>Rol</th>
-                <th style={{ padding: '0.5rem', border: '1px solid #ddd' }}>Nivel</th>
-                <th style={{ padding: '0.5rem', border: '1px solid #ddd' }}>Acciones</th>
+                <td colSpan={5} style={{ textAlign: 'center', padding: '1rem' }}>
+                  No hay usuarios
+                </td>
               </tr>
-            </thead>
-            <tbody>
-              {users.length === 0 ? (
-                <tr>
-                  <td colSpan={5} style={{ textAlign: 'center', padding: '1rem' }}>
-                    No hay usuarios
+            ) : (
+              users.map((user: any) => (
+                <tr key={user._id}>
+                  <td>{user.name}</td>
+                  <td>{user.email}</td>
+                  <td>{user.role}</td>
+                  <td>{user.level || '-'}</td>
+                  <td>
+                    <button
+                      onClick={() => handleDelete(user._id)}
+                      disabled={deletingId === user._id}
+                      className="button3"
+                    >
+                      {deletingId === user._id ? 'Eliminando...' : 'Eliminar'}
+                    </button>
                   </td>
                 </tr>
-              ) : (
-                users.map((user: any) => (
-                  <tr key={user._id}>
-                    <td style={{ padding: '0.5rem', border: '1px solid #ddd' }}>{user.name}</td>
-                    <td style={{ padding: '0.5rem', border: '1px solid #ddd' }}>{user.email}</td>
-                    <td style={{ padding: '0.5rem', border: '1px solid #ddd' }}>{user.role}</td>
-                    <td style={{ padding: '0.5rem', border: '1px solid #ddd' }}>{user.level || '-'}</td>
-                    <td style={{ padding: '0.5rem', border: '1px solid #ddd' }}>
-                      <button
-                        onClick={() => handleDelete(user._id)}
-                        disabled={deletingId === user._id}
-                        className="button3"
-                      >
-                        {deletingId === user._id ? 'Eliminando...' : 'Eliminar'}
-                      </button>
-                    </td>
-                  </tr>
-                ))
-              )}
-            </tbody>
-          </table>
-        </div>
+              ))
+            )}
+          </tbody>
+        </table>
       </div>
     </div>
   );

@@ -56,8 +56,8 @@
 }
 
 .input-field:focus {
-  border-color: #bcd03c;
-  box-shadow: 0 0 8px rgba(188, 208, 60, 0.3);
+  border-color: #9aaa2f;
+  box-shadow: 0 0 8px rgba(154, 170, 47, 0.3);
   outline: none;
 }
 
@@ -73,31 +73,27 @@
 }
 
 .button1 {
-  padding: 0.6em 1.5em;
-  border-radius: 8px;
-  border: none;
-  background: linear-gradient(163deg, #eaeae7 0%, #373c5e 100%);
-  color: #fff;
-  font-size: 1em;
-  cursor: pointer;
-  transition: 0.3s ease-in-out;
+  background: linear-gradient(163deg, #222a5c 0%, #1b2049 100%);
+  color: white;
 }
+
 .button1:hover {
-  background: linear-gradient(163deg, #373c5e 0%, #ecede8 100%);
-  transform: translateY(-2px);
+  background: linear-gradient(163deg, #1b2049 0%, #222a5c 100%);
+  transform: scale(1.03);
+  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
 }
 
 .button3 {
-  background-color: #b11908;
+  background-color: #e74c3c;
   color: white;
 }
 
 .button3:hover {
-  background-color: #b11908;
+  background-color: #c0392b;
   transform: scale(1.03);
 }
 
-/* === TABLAS === */
+/* === TABLA === */
 table {
   width: 100%;
   border-collapse: collapse;
@@ -197,7 +193,6 @@ tr:hover {
     margin-top: 0.5rem;
   }
 
-  /* Tablas scroll horizontales */
   table {
     display: block;
     overflow-x: auto;

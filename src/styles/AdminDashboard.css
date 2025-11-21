@@ -9,11 +9,11 @@
   position: relative;
 }
 
-/* === BOTÓN CERRAR SESIÓN === */
+//* BOTÓN CERRAR SESIÓN FIJO */
 .logout-button {
-  position: absolute;
-  top: 1.5rem;
-  right: 2rem;
+  position: fixed; /* Cambiado de absolute a fixed */
+  top: 1rem;
+  right: 1rem;
   background-color: #9aaa2f;
   color: #fff;
   font-weight: 600;
@@ -21,6 +21,7 @@
   padding: 0.7rem 1.2rem;
   border-radius: 10px;
   cursor: pointer;
+  z-index: 1000; /* Para que siempre esté encima de todo */
   transition: all 0.3s;
 }
 
@@ -28,6 +29,7 @@
   background-color: #bcd03c;
   transform: scale(1.05);
 }
+
 
 /* === TARJETA PRINCIPAL === */
 .card {

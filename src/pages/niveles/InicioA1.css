@@ -10,6 +10,7 @@ html, body {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   display: flex;
   justify-content: center;
+  align-items: flex-start; /* 🔥 Antes no lo tenías → baja todo demasiado */
 }
 
 .pagina-wrapper {
@@ -20,7 +21,8 @@ html, body {
 .a1-container {
   width: 100%;
   max-width: 480px;
-  padding: 1.2rem;
+  padding: 0.5rem; /* 🔥 Antes era 1.2rem y empujaba hacia abajo */
+  margin-top: 0.5rem; /* 🔥 Subir todo */
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -28,29 +30,30 @@ html, body {
 
 /* LOGO */
 .logo {
-  width: 150px;
-  margin-top: 1rem;
-  margin-bottom: 0.3rem;
+  width: 130px;
+  margin-top: 0.2rem; /* 🔥 Mucho más arriba */
+  margin-bottom: 0.4rem;
 }
 
 /* TÍTULO */
 .titulo {
   background: white;
   color: #222a5c;
-  font-size: 1.4rem;
+  font-size: 1.35rem;
   font-weight: 700;
   text-align: center;
   padding: 0.4rem 1rem;
   border-radius: 14px;
   width: 90%;
   box-shadow: 0 6px 20px rgba(0,0,0,0.08);
-  margin-bottom: 1.2rem;
+  margin-top: 0.3rem;   /* 🔥 Más arriba */
+  margin-bottom: 0.9rem;
 }
 
 /* CERRAR SESIÓN */
 .cerrar-sesion-boton {
   position: fixed;
-  top: 10px;
+  top: 8px;
   right: 10px;
   background: #a92517;
   color: #fff;
@@ -63,18 +66,14 @@ html, body {
   z-index: 999;
 }
 
-.cerrar-sesion-boton:hover {
-  background: #c0392b;
-}
-
 /* TARJETA SEMANA */
 .tarjeta-semana {
   background: #fff;
   border-radius: 18px;
-  padding: 1.3rem;
+  padding: 1.2rem;
   width: 100%;
   max-width: 440px;
-  margin: auto;
+  margin-top: 0.3rem;   /* 🔥 Subir tarjeta */
   box-shadow: 0 8px 20px rgba(0,0,0,0.08);
 }
 
@@ -129,7 +128,6 @@ html, body {
   background: #e7ecff;
 }
 
-/* COMPLETADO */
 .ejercicio-boton.completado {
   background: #222a5c;
   color: white;
@@ -138,7 +136,7 @@ html, body {
 
 /* NAVEGACIÓN */
 .botones-navegacion {
-  margin-top: 1.2rem;
+  margin-top: 1rem; /* 🔥 Más arriba */
   display: flex;
   gap: 1.2rem;
 }
@@ -171,10 +169,11 @@ html, body {
 @media (min-width: 769px) {
   .a1-container {
     max-width: 900px;
+    margin-top: 1rem; /* 🔥 Más arriba */
   }
 
   .logo {
-    width: 220px;
+    width: 200px;
   }
 
   .semanas-wrapper {
@@ -192,12 +191,17 @@ html, body {
    MÓVIL
 ============================ */
 @media (max-width: 768px) {
+
+  .a1-container {
+    padding-top: 0.5rem;
+  }
+
   .logo {
-    width: 140px;
+    width: 135px;
   }
 
   .tarjeta-semana {
-    margin-top: 0.8rem;
+    margin-top: 0.4rem;
     width: 92%;
   }
 

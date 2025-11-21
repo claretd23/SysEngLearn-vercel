@@ -22,14 +22,13 @@ export default function InicioA1() {
   const [ejerciciosCompletados, setEjerciciosCompletados] = useState<string[]>([]);
   const [mostrarBoton, setMostrarBoton] = useState(false);
 
-  //  Mantiene la semana actual en localStorage
+  // Semana actual guardada
   const [semanaActual, setSemanaActual] = useState(() => {
     const semanaGuardada = localStorage.getItem("semanaActualA1");
     return semanaGuardada ? parseInt(semanaGuardada) : 0;
   });
 
   useEffect(() => {
-    // Guarda cada vez que cambia
     localStorage.setItem("semanaActualA1", semanaActual.toString());
   }, [semanaActual]);
 
@@ -40,26 +39,24 @@ export default function InicioA1() {
         const res = await fetch(`${import.meta.env.VITE_API_URL}/api/progreso/A1`, {
           headers: { Authorization: `Bearer ${token}` },
         });
-        if (!res.ok) {
-          console.error("Error al obtener progreso:", res.statusText);
-          return;
-        }
+
+        if (!res.ok) return;
+
         const data = await res.json();
+
         const ids = data.map(
-          (item: any) =>
-            `${item.nivel}-${item.semana}-${item.tema}-${item.ejercicio}`
+          (item: any) => `A1-${item.semana}-${item.tema}-${item.ejercicio}`
         );
+
         setEjerciciosCompletados(ids);
       } catch (error) {
-        console.error("Error al obtener el progreso:", error);
+        console.error("Error obteniendo progreso:", error);
       }
     };
 
     fetchProgreso();
 
-    const manejarScroll = () => {
-      setMostrarBoton(window.scrollY > 300);
-    };
+    const manejarScroll = () => setMostrarBoton(window.scrollY > 300);
     window.addEventListener("scroll", manejarScroll);
     return () => window.removeEventListener("scroll", manejarScroll);
   }, []);
@@ -84,38 +81,38 @@ export default function InicioA1() {
   return (
     <div className="pagina-wrapper">
       <div className="a1-container">
+
         <button className="cerrar-sesion-boton" onClick={cerrarSesion}>
           Cerrar sesión
         </button>
 
         <img src={logo} alt="Logo" className="logo" />
+
         <h1 className="titulo">NIVEL A1</h1>
 
-        {/* 📱 En móvil, solo muestra una semana */}
         <div className="semanas-wrapper">
           <div className="tarjeta-semana">
             <h2 className="semana-titulo">Week {semanaData.semana}</h2>
+
             <div className="temas-container">
               {semanaData.temas.map((tema, i) => {
                 const totalEjercicios = [1, 2, 3];
                 const temaIdBase = `A1-${semanaData.semana}-${i + 1}`;
-                const completados = totalEjercicios.filter((ej) =>
+                const completados = totalEjercicios.filter(ej =>
                   ejerciciosCompletados.includes(`${temaIdBase}-${ej}`)
                 );
-                const porcentaje = Math.round(
-                  (completados.length / totalEjercicios.length) * 100
-                );
+                const porcentaje = Math.round((completados.length / 3) * 100);
 
                 return (
                   <div className="tema-bloque" key={i}>
                     <p className="tema-nombre">{tema}</p>
-                    <p className="porcentaje-completado">
-                      Progress: {porcentaje}%
-                    </p>
+                    <p className="porcentaje-completado">Progress: {porcentaje}%</p>
+
                     <div className="botones-ejercicios">
-                      {totalEjercicios.map((ej) => {
+                      {totalEjercicios.map(ej => {
                         const ejercicioId = `${temaIdBase}-${ej}`;
-                        const estaCompletado = ejerciciosCompletados.includes(ejercicioId);
+                        const estaCompletado =
+                          ejerciciosCompletados.includes(ejercicioId);
 
                         return (
                           <Link
@@ -135,24 +132,17 @@ export default function InicioA1() {
           </div>
         </div>
 
-        {/* Navegación entre semanas */}
         <div className="botones-navegacion">
           {semanaActual > 0 && (
-            <button onClick={handlePrev} className="btn-nav prev">
-              ⬅️
-            </button>
+            <button onClick={handlePrev} className="btn-nav prev">⬅️</button>
           )}
           {semanaActual < semanas.length - 1 && (
-            <button onClick={handleNext} className="btn-nav next">
-            ➡️
-            </button>
+            <button onClick={handleNext} className="btn-nav next">➡️</button>
           )}
         </div>
 
         {mostrarBoton && (
-          <button className="boton-arriba" onClick={irArriba}>
-            ↑
-          </button>
+          <button className="boton-arriba" onClick={irArriba}>↑</button>
         )}
       </div>
     </div>

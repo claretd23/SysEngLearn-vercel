@@ -73,15 +73,18 @@
 }
 
 .button1 {
-  background: linear-gradient(163deg, #eff0f4 0%, #1b2049 100%);
-  color: white;
-  grid-column: span 2;
+  padding: 0.6em 1.5em;
+  border-radius: 8px;
+  border: none;
+  background: linear-gradient(163deg, #eaeae7 0%, #373c5e 100%);
+  color: #fff;
+  font-size: 1em;
+  cursor: pointer;
+  transition: 0.3s ease-in-out;
 }
-
 .button1:hover {
-  background: linear-gradient(163deg, #1b2049 0%, #f0f0f2 100%);
-  transform: scale(1.03);
-  box-shadow: 0 6px 18px rgba(0,0,0,0.1);
+  background: linear-gradient(163deg, #373c5e 0%, #ecede8 100%);
+  transform: translateY(-2px);
 }
 
 .button3 {

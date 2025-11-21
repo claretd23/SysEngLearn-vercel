@@ -14,7 +14,7 @@
   position: absolute;
   top: 1.5rem;
   right: 2rem;
-  background-color: #9aaa2f;
+  background-color: #9b0f0f;
   color: #fff;
   font-weight: 600;
   border: none;
@@ -89,7 +89,7 @@
 
 .button-add:hover {
   transform: translateY(-2px);
-  background: linear-gradient(160deg, #9aaa2f, #222a5c);
+  background: linear-gradient(160deg, #f0f1ee, #222a5c);
 }
 
 .button-delete {

@@ -99,7 +99,7 @@
   padding: 0.6em 1.5em;
   border-radius: 8px;
   border: none;
-  background: linear-gradient(163deg, #aabc36 0%, #373c5e 100%);
+  background: linear-gradient(163deg, #eaeae7 0%, #373c5e 100%);
   color: #fff;
   font-size: 1em;
   cursor: pointer;
@@ -107,7 +107,7 @@
 }
 
 .button1:hover {
-  background: linear-gradient(163deg, #373c5e 0%, #aabc36 100%);
+  background: linear-gradient(163deg, #373c5e 0%, #ecede8 100%);
   transform: translateY(-2px);
 }
 

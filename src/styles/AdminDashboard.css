@@ -1,3 +1,4 @@
+/* === RESET Y CONTENEDOR PRINCIPAL === */
 .admin-container {
   display: flex;
   justify-content: center;
@@ -5,26 +6,35 @@
   background-color: #f5f7fa;
   min-height: 100vh;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  position: relative; /* 🔹 necesario para posicionar el botón logout */
+  position: relative; /* necesario para logout */
 }
 
+/* === TARJETA PRINCIPAL === */
 .card {
   background-color: #ffffff;
   border-radius: 20px;
   padding: 2rem;
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
   width: 100%;
   max-width: 1000px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
+.card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.12);
+}
+
+/* === HEADING === */
 #heading {
   font-size: 1.8rem;
-  font-weight: bold;
+  font-weight: 700;
   text-align: center;
   color: #222a5c;
   margin-bottom: 1.5rem;
 }
 
+/* === FORMULARIO === */
 .form {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
@@ -38,37 +48,40 @@
 }
 
 .input-field {
-  padding: 0.6rem 1rem;
+  padding: 0.65rem 1rem;
   border: 1px solid #ccc;
   border-radius: 10px;
   font-size: 1rem;
-  transition: border-color 0.3s;
+  transition: border-color 0.3s, box-shadow 0.3s;
 }
 
 .input-field:focus {
   border-color: #bcd03c;
+  box-shadow: 0 0 8px rgba(188, 208, 60, 0.3);
   outline: none;
 }
 
+/* === BOTONES === */
 .button1,
 .button3 {
-  padding: 0.6rem 1.2rem;
+  padding: 0.65rem 1.2rem;
   font-size: 1rem;
   border: none;
   border-radius: 10px;
   cursor: pointer;
-  transition: background-color 0.3s, transform 0.2s;
+  transition: background-color 0.3s, transform 0.2s, box-shadow 0.2s;
 }
 
 .button1 {
-  background-color: #222a5c;
+  background: linear-gradient(163deg, #222a5c 0%, #1b2049 100%);
   color: white;
   grid-column: span 2;
 }
 
 .button1:hover {
-  background-color: #1b2049;
-  transform: scale(1.02);
+  background: linear-gradient(163deg, #1b2049 0%, #222a5c 100%);
+  transform: scale(1.03);
+  box-shadow: 0 6px 18px rgba(0,0,0,0.1);
 }
 
 .button3 {
@@ -78,14 +91,16 @@
 
 .button3:hover {
   background-color: #c0392b;
-  transform: scale(1.02);
+  transform: scale(1.03);
 }
 
+/* === TABLAS === */
 table {
   width: 100%;
   border-collapse: collapse;
   border-radius: 10px;
   overflow: hidden;
+  font-size: 0.95rem;
 }
 
 th {
@@ -106,13 +121,21 @@ tr:nth-child(even) {
 
 tr:hover {
   background-color: #f1f1f1;
+  transition: background-color 0.3s;
 }
 
 .titulo {
   background-color: #9aaa2f;
+  padding: 0.8rem;
+  border-radius: 8px;
+  color: white;
+  text-align: center;
+  font-weight: bold;
+  font-size: 1.1rem;
+  margin-bottom: 1rem;
 }
 
-/* 🔹 BOTÓN DE CERRAR SESIÓN */
+/* === BOTÓN DE CERRAR SESIÓN === */
 .logout-button {
   position: absolute;
   top: 1.5rem;
@@ -133,14 +156,12 @@ tr:hover {
   transform: scale(1.05);
 }
 
-
-/* 🎯 INTERFAZ MÓVIL ADMIN */
+/* === RESPONSIVE: TABLET === */
 @media (max-width: 768px) {
   .admin-container {
     flex-direction: column;
     align-items: center;
     padding: 1rem;
-    background-color: #f5f7fa;
   }
 
   .card {
@@ -164,7 +185,7 @@ tr:hover {
 
   .input-field {
     font-size: 0.95rem;
-    padding: 0.7rem 1rem;
+    padding: 0.65rem 1rem;
   }
 
   .button1,
@@ -173,59 +194,37 @@ tr:hover {
     margin-top: 0.5rem;
   }
 
-  /* TABLA SCROLLEABLE HORIZONTALMENTE */
+  /* Tablas scroll horizontales */
   table {
     display: block;
     overflow-x: auto;
     white-space: nowrap;
     font-size: 0.9rem;
-    border-radius: 10px;
   }
 
-  th,
-  td {
+  th, td {
     padding: 0.6rem 0.8rem;
-  }
-
-  th {
-    font-size: 0.95rem;
-  }
-
-  td {
     font-size: 0.9rem;
   }
 
-  tr:hover {
-    background-color: #eaf0d8;
-  }
-
-  /* Ajuste del color del título */
   .titulo {
-    background-color: #aabc37;
-    padding: 0.8rem;
-    border-radius: 8px;
-    color: white;
-    text-align: center;
-    font-weight: bold;
-    font-size: 1.1rem;
-    margin-bottom: 1rem;
+    font-size: 1rem;
+    padding: 0.7rem;
   }
 
-  /* 📱 Botón de logout adaptado para móvil */
   .logout-button {
     position: static;
     width: 100%;
     margin-bottom: 1rem;
     font-size: 1rem;
-    padding: 0.8rem;
-    background-color: #9aaa2f;
+    padding: 0.75rem;
   }
 }
 
-/* 📲 EXTRA PEQUEÑOS (celulares chicos) */
+/* === RESPONSIVE: MÓVIL PEQUEÑO === */
 @media (max-width: 480px) {
   .card {
-    padding: 1rem;
+    padding: 1.2rem;
   }
 
   #heading {
@@ -234,16 +233,22 @@ tr:hover {
 
   .input-field {
     font-size: 0.9rem;
+    padding: 0.6rem 0.9rem;
   }
 
   .button1,
   .button3 {
     font-size: 0.9rem;
-    padding: 0.5rem 1rem;
+    padding: 0.5rem 0.9rem;
   }
 
-  th,
-  td {
+  th, td {
     font-size: 0.85rem;
+    padding: 0.5rem 0.7rem;
+  }
+
+  .titulo {
+    font-size: 0.95rem;
+    padding: 0.6rem;
   }
 }

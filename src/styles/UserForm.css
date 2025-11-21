@@ -141,7 +141,7 @@ LOGO PARA PANTALLA FORGOT PASSWORD
 
   /* Logo centrado y que no se haga chico */
   .Flogo img {
-    max-width: 200px;
+    max-width: 250px;
     display: block;
     margin: 0 auto 1.8em auto;
   }

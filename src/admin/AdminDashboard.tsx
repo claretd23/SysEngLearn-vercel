@@ -3,9 +3,8 @@ import { AuthContext } from '../contexts/AuthContext';
 import '../styles/AdminDashboard.css';
 
 export default function AdminDashboard() {
-  const { token } = useContext(AuthContext);
+  const { token, logout } = useContext(AuthContext);
 
-  // URL de la API (usa variable de entorno en producción)
   const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
 
   const [users, setUsers] = useState<any[]>([]);
@@ -55,7 +54,6 @@ export default function AdminDashboard() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
-
     try {
       const res = await fetch(`${API_URL}/api/users/admin/create`, {
         method: 'POST',
@@ -73,7 +71,6 @@ export default function AdminDashboard() {
     } catch (error: any) {
       alert(error.message);
     }
-
     setLoading(false);
   };
 
@@ -81,7 +78,6 @@ export default function AdminDashboard() {
   const handleDelete = async (id: string) => {
     if (!window.confirm('¿Estás seguro de eliminar este usuario?')) return;
     setDeletingId(id);
-
     try {
       const res = await fetch(`${API_URL}/api/users/${id}`, {
         method: 'DELETE',
@@ -92,133 +88,108 @@ export default function AdminDashboard() {
     } catch (error: any) {
       alert(error.message);
     }
-
     setDeletingId(null);
-  };
-
-  // Cerrar sesión
-  const handleLogout = () => {
-    localStorage.removeItem('token');
-    window.location.href = '/login';
   };
 
   return (
     <div className="admin-container">
-      <button className="logout-button" onClick={handleLogout}>
-        Cerrar sesión
-      </button>
+      <button className="logout-button" onClick={logout}>Cerrar Sesión</button>
 
       <div className="card">
-        <div className="titulo">
-          <h2 id="heading">USUARIOS</h2>
-        </div>
+        <h2 className="heading">Panel de Usuarios</h2>
 
         <form className="form" onSubmit={handleSubmit}>
-          <div className="field">
-            <input
-              className="input-field"
-              name="name"
-              placeholder="Nombre"
-              value={form.name}
-              onChange={handleChange}
-              required
-            />
-          </div>
+          <input
+            className="input-field"
+            name="name"
+            placeholder="Nombre"
+            value={form.name}
+            onChange={handleChange}
+            required
+          />
+          <input
+            className="input-field"
+            name="email"
+            type="email"
+            placeholder="Correo electrónico"
+            value={form.email}
+            onChange={handleChange}
+            required
+          />
+          <input
+            className="input-field"
+            name="password"
+            type="password"
+            placeholder="Contraseña"
+            value={form.password}
+            onChange={handleChange}
+            required
+          />
+          <select name="role" value={form.role} onChange={handleChange} className="input-field">
+            <option value="user">Alumno</option>
+            <option value="admin">Teacher</option>
+            <option value="superadmin">SuperAdmin</option>
+          </select>
+          <select
+            name="level"
+            value={form.level}
+            onChange={handleChange}
+            className="input-field"
+            disabled={form.role !== 'user'}
+          >
+            <option value="">Seleccione un nivel</option>
+            <option value="A1">A1</option>
+            <option value="A2">A2</option>
+            <option value="B1">B1</option>
+            <option value="B2">B2</option>
+            <option value="C1">C1</option>
+          </select>
 
-          <div className="field">
-            <input
-              className="input-field"
-              name="email"
-              type="email"
-              placeholder="Correo electrónico"
-              value={form.email}
-              onChange={handleChange}
-              required
-            />
-          </div>
-
-          <div className="field">
-            <input
-              className="input-field"
-              name="password"
-              type="password"
-              placeholder="Contraseña"
-              value={form.password}
-              onChange={handleChange}
-              required
-            />
-          </div>
-
-          <div className="field">
-            <select name="role" value={form.role} onChange={handleChange} className="input-field">
-              <option value="user">Alumno</option>
-              <option value="admin">Teacher</option>
-              <option value="superadmin">SuperAdmin</option>
-            </select>
-          </div>
-
-          <div className="field">
-            <select
-              name="level"
-              value={form.level}
-              onChange={handleChange}
-              className="input-field"
-              disabled={form.role !== 'user'}
-            >
-              <option value="">Seleccione un nivel</option>
-              <option value="A1">A1</option>
-              <option value="A2">A2</option>
-              <option value="B1">B1</option>
-              <option value="B2">B2</option>
-              <option value="C1">C1</option>
-            </select>
-          </div>
-
-          <div className="btn">
-            <button type="submit" className="button1" disabled={loading}>
-              {loading ? 'Agregando...' : 'Agregar Usuario'}
-            </button>
-          </div>
+          <button type="submit" className="button-add" disabled={loading}>
+            {loading ? 'Agregando...' : 'Agregar Usuario'}
+          </button>
         </form>
 
-        <table>
-          <thead>
-            <tr>
-              <th>Nombre</th>
-              <th>Email</th>
-              <th>Rol</th>
-              <th>Nivel</th>
-              <th>Acciones</th>
-            </tr>
-          </thead>
-          <tbody>
-            {users.length === 0 ? (
+        <div className="table-container">
+          <table>
+            <thead>
               <tr>
-                <td colSpan={5} style={{ textAlign: 'center', padding: '1rem' }}>
-                  No hay usuarios
-                </td>
+                <th>Nombre</th>
+                <th>Email</th>
+                <th>Rol</th>
+                <th>Nivel</th>
+                <th>Acciones</th>
               </tr>
-            ) : (
-              users.map((user: any) => (
-                <tr key={user._id}>
-                  <td>{user.name}</td>
-                  <td>{user.email}</td>
-                  <td>{user.role}</td>
-                  <td>{user.level || '-'}</td>
-                  <td>
-                    <button
-                      onClick={() => handleDelete(user._id)}
-                      disabled={deletingId === user._id}
-                      className="button3"
-                    >
-                      {deletingId === user._id ? 'Eliminando...' : 'Eliminar'}
-                    </button>
+            </thead>
+            <tbody>
+              {users.length === 0 ? (
+                <tr>
+                  <td colSpan={5} className="empty">
+                    No hay usuarios
                   </td>
                 </tr>
-              ))
-            )}
-          </tbody>
-        </table>
+              ) : (
+                users.map((user: any) => (
+                  <tr key={user._id}>
+                    <td>{user.name}</td>
+                    <td>{user.email}</td>
+                    <td>{user.role}</td>
+                    <td>{user.level || '-'}</td>
+                    <td>
+                      <button
+                        className="button-delete"
+                        onClick={() => handleDelete(user._id)}
+                        disabled={deletingId === user._id}
+                      >
+                        {deletingId === user._id ? 'Eliminando...' : 'Eliminar'}
+                      </button>
+                    </td>
+                  </tr>
+                ))
+              )}
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   );

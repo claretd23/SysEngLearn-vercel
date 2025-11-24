@@ -44,10 +44,11 @@ background: linear-gradient(135deg, #f6f8fb 0%, #f0f3f9 100%);
   padding: 0.4rem 1rem;
   border-radius: 14px;
   width: 90%;
-  box-shadow: 0 6px 20px rgba(0,0,0,0.08);
+  box-shadow: none; /* ← quitar sombra */
   margin-top: 0.3rem;
   margin-bottom: 0.9rem;
 }
+
 
 /* CERRAR SESIÓN */
 .cerrar-sesion-boton {

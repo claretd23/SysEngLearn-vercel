@@ -21,7 +21,7 @@ background: linear-gradient(135deg, #f6f8fb 0%, #f0f3f9 100%);
   max-width: 480px;
   padding: 0.5rem;
   margin: 0 auto;       /*Centra todo correctamente */
-  margin-top: 0.5rem;
+  margin-top: 0.3rem; 
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -29,9 +29,9 @@ background: linear-gradient(135deg, #f6f8fb 0%, #f0f3f9 100%);
 
 /* LOGO */
 .logo {
-  width: 130px;
-  margin-top: 0.2rem;
-  margin-bottom: 0.4rem;
+  width: 110px;           /*  Más pequeño */
+  margin-top: 0.1rem;     /*  Más arriba */
+  margin-bottom: 0.2rem;  /*  Menos espacio debajo */
 }
 
 /* TÍTULO */
@@ -45,7 +45,7 @@ background: linear-gradient(135deg, #f6f8fb 0%, #f0f3f9 100%);
   border-radius: 14px;
   width: 90%;
   box-shadow: 0 5px 14px rgba(0, 0, 0, 0.15); 
-  margin-top: 0.3rem;
+  margin-top: 0.2rem; 
   margin-bottom: 0.9rem;
 }
 
@@ -199,9 +199,11 @@ background: linear-gradient(135deg, #f6f8fb 0%, #f0f3f9 100%);
   }
 
   .logo {
-    width: 135px;
+    width: 115px;         /* Tamaño equilibrado */
+    margin-top: 0.1rem;
+    margin-bottom: 0.25rem;
   }
-
+}
   .tarjeta-semana {
     width: 92%;
     margin-left: auto;   /* Centrado */

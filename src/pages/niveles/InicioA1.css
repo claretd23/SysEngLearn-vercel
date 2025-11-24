@@ -10,7 +10,7 @@ html, body {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   display: flex;
   justify-content: center;
-  align-items: flex-start; /* 🔥 Antes no lo tenías → baja todo demasiado */
+  align-items: flex-start; /*Antes no lo tenías → baja todo demasiado */
 }
 
 .pagina-wrapper {
@@ -21,8 +21,8 @@ html, body {
 .a1-container {
   width: 100%;
   max-width: 480px;
-  padding: 0.5rem; /* 🔥 Antes era 1.2rem y empujaba hacia abajo */
-  margin-top: 0.5rem; /* 🔥 Subir todo */
+  padding: 0.5rem; /*  Antes era 1.2rem y empujaba hacia abajo */
+  margin-top: 0.5rem; /* Subir todo */
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -31,7 +31,7 @@ html, body {
 /* LOGO */
 .logo {
   width: 130px;
-  margin-top: 0.2rem; /* 🔥 Mucho más arriba */
+  margin-top: 0.2rem; /*  Mucho más arriba */
   margin-bottom: 0.4rem;
 }
 
@@ -46,7 +46,7 @@ html, body {
   border-radius: 14px;
   width: 90%;
   box-shadow: 0 6px 20px rgba(0,0,0,0.08);
-  margin-top: 0.3rem;   /* 🔥 Más arriba */
+  margin-top: 0.3rem;   /*  Más arriba */
   margin-bottom: 0.9rem;
 }
 
@@ -73,7 +73,7 @@ html, body {
   padding: 1.2rem;
   width: 100%;
   max-width: 440px;
-  margin-top: 0.3rem;   /* 🔥 Subir tarjeta */
+  margin-top: 0.3rem;   /*  Subir tarjeta */
   box-shadow: 0 8px 20px rgba(0,0,0,0.08);
 }
 

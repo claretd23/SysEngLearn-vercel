@@ -547,3 +547,56 @@
   color: #e74c3c; /* rojo */
 }
 
+/* === FIX MÓVIL: Botones claros + texto oscuro === */
+@media (max-width: 768px) {
+
+  /* Texto dentro de tarjetas (títulos, instrucciones, progreso...) */
+  .tarjeta-ejercicio,
+  .tarjeta-ejercicio * {
+    color: #000 !important;   /* Todo texto negro */
+  }
+
+  /* Botones de opción */
+  .opcion-btn,
+  .matching-btn,
+  .tarjeta-ejercicio button {
+    background-color: #f3f4f6 !important; /* Gris claro */
+    color: #000 !important;               /* Texto negro */
+    border: 1px solid #d1d1d1 !important; /* Borde suave */
+  }
+
+  /* Botón principal (Comprobar / Siguiente / Reintentar) */
+  .ejercicio-btn {
+    background: #e6e9ef !important;       /* Claro */
+    color: #000 !important;
+    border: 1px solid #c7c9ce !important;
+  }
+
+  /* Botón de audio */
+  .btn-audio {
+    background-color: #e6e9ef !important;
+    color: #000 !important;
+    border: 1px solid #c7c9ce !important;
+  }
+}
+
+/* Móvil muy pequeño (≤ 480px) */
+@media (max-width: 480px) {
+
+  .opcion-btn,
+  .matching-btn,
+  .tarjeta-ejercicio button {
+    background-color: #f5f5f7 !important;
+    color: #000 !important;
+  }
+
+  .ejercicio-btn {
+    background-color: #ececf0 !important;
+    color: #000 !important;
+  }
+
+  .btn-audio {
+    background-color: #ececf0 !important;
+    color: #000 !important;
+  }
+}

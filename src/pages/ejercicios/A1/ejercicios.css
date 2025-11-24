@@ -454,44 +454,6 @@
   }
 }
 
-/* === COLORES Y ESTILO DE BOTONES EN MÓVIL === */
-@media (max-width: 768px) {
-  /* Define el color de fondo, texto y borde de todos los botones del ejercicio */
-  .tarjeta-ejercicio button,
-  .tarjeta-ejercicio .matching-btn,
-  .tarjeta-ejercicio .opcion-btn {
-    background-color: #f8f9fb !important; /* Fondo claro */
-    color: #222a5c !important; /* Texto azul oscuro (color principal de la academia) */
-    border: 1px solid #aabc36 !important; /* Borde verde de la paleta */
-    transition: all 0.25s ease-in-out; /* Transición suave al interactuar */
-  }
-
-  /* Efecto visual al pasar el dedo o presionar un botón */
-  .tarjeta-ejercicio button:hover:not(:disabled),
-  .tarjeta-ejercicio .matching-btn:hover:not(:disabled),
-  .tarjeta-ejercicio .opcion-btn:hover:not(:disabled),
-  .tarjeta-ejercicio button:active:not(:disabled) {
-    background-color: #aabc36 !important; /* Fondo verde activo */
-    color: #fff !important; /* Texto blanco */
-    border-color: #aabc36 !important; /* Mantiene el borde verde */
-  }
-
-  /* Apariencia de los botones deshabilitados (pares ya seleccionados, etc.) */
-  .tarjeta-ejercicio button:disabled,
-  .tarjeta-ejercicio .opcion-btn:disabled {
-    opacity: 0.85;
-    background-color: #d6d9e0 !important; /* Gris claro */
-    color: #555 !important; /* Texto gris oscuro */
-    border: 1px solid #ccc !important;
-  }
-
-  /* Refuerza la legibilidad de los botones pequeños */
-  .tarjeta-ejercicio button,
-  .tarjeta-ejercicio .opcion-btn {
-    font-weight: 600 !important; /* Texto seminegrita para mejor contraste */
-  }
-}
-
 /* === VERSIÓN PARA PANTALLAS MUY PEQUEÑAS === */
 @media (max-width: 480px) {
   /* Repite los estilos principales de color y tamaño, pero ajustados */

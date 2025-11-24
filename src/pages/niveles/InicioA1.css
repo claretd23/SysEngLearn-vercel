@@ -35,7 +35,7 @@ background: linear-gradient(135deg, #f6f8fb 0%, #f0f3f9 100%);
 }
 
 /* TÍTULO */
-.titulo {
+.Titulo {
   background: rgb(246, 243, 243);
   color: #0e0e0f;
   font-size: 1.35rem;
@@ -44,10 +44,11 @@ background: linear-gradient(135deg, #f6f8fb 0%, #f0f3f9 100%);
   padding: 0.4rem 1rem;
   border-radius: 14px;
   width: 90%;
-  box-shadow: none; /* ← quitar sombra */
+  box-shadow: 0 5px 14px rgba(0, 0, 0, 0.15); 
   margin-top: 0.3rem;
   margin-bottom: 0.9rem;
 }
+
 
 
 /* CERRAR SESIÓN */

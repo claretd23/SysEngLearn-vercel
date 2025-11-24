@@ -88,7 +88,7 @@ export default function InicioA1() {
 
         <img src={logo} alt="Logo" className="logo" />
 
-        <h1 className="titulo">LEVEL A1</h1>
+        <h1 className="Titulo">LEVEL A1</h1>
 
         <div className="semanas-wrapper">
           <div className="tarjeta-semana">

@@ -83,12 +83,12 @@ export default function InicioA1() {
       <div className="a1-container">
 
         <button className="cerrar-sesion-boton" onClick={cerrarSesion}>
-          Cerrar sesión
+          log out
         </button>
 
         <img src={logo} alt="Logo" className="logo" />
 
-        <h1 className="titulo">NIVEL A1</h1>
+        <h1 className="titulo">LEVEL A1</h1>
 
         <div className="semanas-wrapper">
           <div className="tarjeta-semana">

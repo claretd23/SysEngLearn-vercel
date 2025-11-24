@@ -453,6 +453,40 @@
     padding: 0.8rem !important;
   }
 }
+/* === MÓVIL: Mantener exactamente los colores de escritorio === */
+@media (max-width: 768px) {
+  /* Botones mantienen el degradado de escritorio */
+  .tarjeta-ejercicio button,
+  .tarjeta-ejercicio .matching-btn,
+  .tarjeta-ejercicio .opcion-btn {
+    background-image: linear-gradient(163deg, #606159 0%, #242a52 90%);
+    color: #ffffff;
+    border: none;
+    font-weight: 600;
+  }
+
+  .tarjeta-ejercicio button:hover:not(:disabled),
+  .tarjeta-ejercicio .matching-btn:hover:not(:disabled),
+  .tarjeta-ejercicio .opcion-btn:hover:not(:disabled) {
+    background-image: linear-gradient(163deg, #373c5e 0%, #b2b3ab 100%);
+    color: #ffffff;
+  }
+
+  /* Botones deshabilitados */
+  .tarjeta-ejercicio button:disabled,
+  .tarjeta-ejercicio .opcion-btn:disabled {
+    background: #ccc !important;
+    color: #555 !important;
+  }
+
+  /* Títulos y textos siempre visibles */
+  .titulo-ejercicio,
+  .instruccion-ejercicio,
+  .progreso-ejercicio,
+  .respuesta-feedback {
+    color: #222a5c !important;
+  }
+}
 
 /* === VERSIÓN PARA PANTALLAS MUY PEQUEÑAS === */
 @media (max-width: 480px) {

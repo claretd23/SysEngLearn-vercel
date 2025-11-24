@@ -198,12 +198,12 @@ background: linear-gradient(135deg, #f6f8fb 0%, #f0f3f9 100%);
     padding-top: 0.5rem;
   }
 
-  .logo {
-    width: 115px;         /* Tamaño equilibrado */
-    margin-top: 0.1rem;
-    margin-bottom: 0.25rem;
-  }
+.logo {
+  width: 115px;
+  margin-top: 0;
+  margin-bottom: 0.05rem;
 }
+
   .tarjeta-semana {
     width: 92%;
     margin-left: auto;   /* Centrado */

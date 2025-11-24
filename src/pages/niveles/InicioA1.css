@@ -150,6 +150,7 @@ background: linear-gradient(135deg, #f6f8fb 0%, #f0f3f9 100%);
   font-size: 1.3rem;
   border-radius: 12px;
   cursor: pointer;
+  box-shadow: 0 5px 14px rgba(0, 0, 0, 0.15); 
 }
 
 /* BOTÓN ARRIBA */

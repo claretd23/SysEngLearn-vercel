@@ -6,13 +6,9 @@ html, body {
   padding: 0;
   width: 100%;
   min-height: 100vh;
-  background: linear-gradient(135deg, #f5f7fa 0%, #e4ebf5 100%);
+background: linear-gradient(135deg, #f6f8fb 0%, #f0f3f9 100%);
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 
-  /* ❌ QUITADO: esto cortaba el fondo y lo dividía */
-  /* display: flex;
-     justify-content: center;
-     align-items: flex-start; */
 }
 
 .pagina-wrapper {
@@ -24,7 +20,7 @@ html, body {
   width: 100%;
   max-width: 480px;
   padding: 0.5rem;
-  margin: 0 auto;       /* 🟢 Centra todo correctamente */
+  margin: 0 auto;       /*Centra todo correctamente */
   margin-top: 0.5rem;
   display: flex;
   flex-direction: column;
@@ -205,8 +201,8 @@ html, body {
 
   .tarjeta-semana {
     width: 92%;
-    margin-left: auto;   /* 🟢 Centrado */
-    margin-right: auto;  /* 🟢 Centrado */
+    margin-left: auto;   /* Centrado */
+    margin-right: auto;  /* Centrado */
   }
 
   .btn-nav {

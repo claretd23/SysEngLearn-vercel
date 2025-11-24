@@ -36,8 +36,8 @@ background: linear-gradient(135deg, #f6f8fb 0%, #f0f3f9 100%);
 
 /* TÍTULO */
 .titulo {
-  background: white;
-  color: #222a5c;
+  background: rgb(246, 243, 243);
+  color: #0e0e0f;
   font-size: 1.35rem;
   font-weight: 700;
   text-align: center;

@@ -245,16 +245,13 @@ html, body {
 .respuesta-feedback.correcta {
   color: #2e9231;
 }
-
 /* Rojo de error */
 .respuesta-feedback.incorrecta {
   color: #650d07;
 }
 
-/*
-  BOTONES - helpers base conservados
-  - .botones-siguiente mantiene layout (row centrado)
-*/
+/*BOTONES - helpers base conservados
+  - .botones-siguiente mantiene layout (row centrado)*/
 .botones-siguiente {
   display: flex;
   justify-content: center;
@@ -262,7 +259,6 @@ html, body {
   align-items: center;
   margin-top: 1.8rem;
 }
-
 /* CAJA DE INSTRUCCIONES*/
 .instruccion-box {
   background: var(--azul-claro); /* #f0f4ff */
@@ -272,14 +268,12 @@ html, body {
   border-radius: 8px;
   text-align: left;
 }
-
 .instruccion-ejercicio {
   font-weight: bold;
   font-size: 1.1rem;
   color: var(--azul-oscuro);
   margin: 0;
 }
-
 /* SECCIÓN FINALIZADO */
 .finalizado {
   text-align: center;
@@ -334,13 +328,18 @@ html, body {
   margin-bottom: 1rem;
 }
 
-   /*SECCIÓN 2 — TARJETA PRINCIPAL Y ESTRUCTURA DE EJERCICIOS
+
+
+
+
+
+  /*SECCIÓN 2 — TARJETA PRINCIPAL Y ESTRUCTURA DE EJERCICIOS
   se definen:
-   - La tarjeta que contiene el ejercicio.
-   - Títulos, subtítulos y numeraciones.
-   - Contenedores internos del layout.
-   - Caja de instrucciones y espaciados.
-   - Estructura base que todos los ejercicios comparten.*/
+  - La tarjeta que contiene el ejercicio.
+  - Títulos, subtítulos y numeraciones.
+  - Contenedores internos del layout.
+  - Caja de instrucciones y espaciados.
+  - Estructura base que todos los ejercicios comparten.*/
 
 
 /*TARJETA PRINCIPAL DEL EJERCICIO (Centrada, Fondo blanco, Borde redondeado, Sombra suave)*/
@@ -357,7 +356,6 @@ html, body {
   gap: 1.5rem;
 }
 
-
 /* TÍTULO DEL EJERCICIO*/
 .titulo-ejercicio {
   font-size: 1.8rem;
@@ -367,7 +365,6 @@ html, body {
   color: #222a5c;
 }
 
-
 /* SUBTÍTULO O NOMBRE DEL TEMA */
 .subtitulo-ejercicio {
   font-size: 1.2rem;
@@ -376,7 +373,6 @@ html, body {
   color: #444;
   margin-top: -0.5rem;
 }
-
 
 /*INSTRUCCIÓN GENERAL (Caja suave con borde, Fondo muy claro para diferenciarla)*/
 .instruccion-box {
@@ -452,6 +448,12 @@ html, body {
   color: #555;
 }
 
+
+
+
+
+
+
 /*SECCIÓN 3 — BOTONES (GENERALES, OPCIONES, AUDIO Y ACCIONES)
    Aquí se incluyen TODOS los botones usados en la app:
    - Botón general (ejercicio-btn)
@@ -462,9 +464,7 @@ html, body {
    - Botón Finish / Next / Back
    Mantiene diseño actual: redondeado, limpio y moderno.*/
 
-
-/* 
-   BOTÓN GENERAL DEL EJERCICIO
+/* BOTÓN GENERAL DEL EJERCICIO
    Usado en: Finish, Next, Confirmar, Continuar */
 .ejercicio-btn {
   background: #222a5c;
@@ -483,7 +483,6 @@ html, body {
 .ejercicio-btn:hover {
   background: #1b224c;
 }
-
 
 /* BOTÓN DESHABILITADO (Se usa cuando el usuario no ha seleccionado nada.) */
 .ejercicio-btn:disabled {
@@ -533,7 +532,6 @@ html, body {
   color: #fff;
 }
 
-
 /* BOTÓN DE AUDIO
   - Reproduce los audios de los ejercicios */
 .audio-btn {
@@ -554,7 +552,6 @@ html, body {
   background: #222a5c;
   color: #fff;
 }
-
 
 /* BOTONES DE MATCHING (IZQUIERDA / DERECHA), (Para ejercicios de emparejar palabras)*/
 .match-btn {
@@ -585,6 +582,9 @@ html, body {
 }
 
 
+
+
+
 /* SECCIÓN 4 — EJERCICIOS ESPECÍFICOS
    Aquí van los estilos exclusivos de cada tipo de ejercicio:
    - Audio
@@ -596,11 +596,9 @@ html, body {
    - Horarios y tablas pequeñas
    Nada de esto afecta a otros componentes.*/
 
-
-
 /* — EJERCICIOS DE AUDIO
-   - Estructura para listas de audios
-   - Botones de reproducción*/
+  - Estructura para listas de audios
+  - Botones de reproducción*/
 
 .audio-lista {
   display: flex;
@@ -617,8 +615,6 @@ html, body {
   font-weight: 700;
   color: #222a5c;
 }
-
-
 
 /* TRUE / FALSE
    - Contenedores
@@ -638,8 +634,6 @@ html, body {
   display: flex;
   gap: 1rem;
 }
-
-
 
 /* EJERCICIOS DE MATCHING
   - Emparejar columnas izquierda / derecha*/
@@ -663,7 +657,6 @@ html, body {
   width: 100%;
   background: #ddd;
 }
-
 
 
 /*  SELECCIÓN MÚLTIPLE (CHOOSE THE CORRECT ANSWER)*/
@@ -795,14 +788,16 @@ html, body {
   outline: none;
 }
 
-/* 5 — ESTADOS DEL EJERCICIO
+
+
+
+/* SECCIÓN 5 — ESTADOS DEL EJERCICIO
    Estilos que indican visualmente:
    - Respuesta correcta
    - Respuesta incorrecta
    - Seleccionado
    - Estados finales
    - Feedback visual*/
-
 
 
 /*ESTADO: CORRECTO*/
@@ -812,7 +807,6 @@ html, body {
   color: #2b3d0b !important;
 }
 
-
 /* ESTADO: INCORRECTO */
 .incorrecto {
   background: #ffe3e3 !important;
@@ -820,16 +814,12 @@ html, body {
   color: #7a0d0d !important;
 }
 
-
-
 /* ESTADO: SELECCIONADO
    (Antes de saber si es correcto/incorrecto)*/
 .seleccionado {
   background: #e7ebff !important;
   border-color: #222a5c !important;
 }
-
-
 
 /* ESTADO ESPECIAL PARA TRUE/FALSE*/
 .boton-tf.correcto {
@@ -843,8 +833,6 @@ html, body {
   color: #fff !important;
 }
 
-
-
 /* ESTADO PARA MATCHING*/
 
 .match-btn.correcto {
@@ -855,8 +843,6 @@ html, body {
   background: #ffe3e3 !important;
   border-color: #d9534f !important;
 }
-
-
 
 /*FEEDBACK FINAL (CAJA)*/
 .feedback-final {
@@ -883,7 +869,6 @@ html, body {
   color: #7a0d0d;
 }
 
-
 /*TEXTO FINAL DE "COMPLETADO"*/
 .mensaje-completado {
   font-size: 1.45rem;
@@ -897,3 +882,140 @@ html, body {
   color: #444;
 }
 
+
+
+
+
+
+
+/* SECCIÓN 6 — ANIMACIONES Y TRANSICIONES
+Aquí solo se incluyen animaciones suaves que NO alteran
+  posiciones ni tamaños. Son 100% seguras. */
+
+/* Suaviza interacciones generales */
+button, .ejercicio-btn, .opcion-texto, .match-item {
+  transition: all 0.25s ease;
+}
+
+/* Animación suave al entrar */
+.fade-in {
+  animation: fadeIn 0.45s ease forwards;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* Animación al seleccionar respuestas */
+.seleccionado {
+  animation: pulseSelect 0.25s ease;
+}
+
+@keyframes pulseSelect {
+  0%   { transform: scale(1); }
+  50%  { transform: scale(1.03); }
+  100% { transform: scale(1); }
+}
+
+
+
+/*SECCIÓN 7.1 — RESPONSIVE 768px */
+@media (max-width: 768px) {
+
+  /* LOGO */
+  .logo {
+    margin-top: -10px !important;
+    width: 140px !important;
+  }
+
+  /* TÍTULO */
+  .titulo-ejercicio,
+  .title {
+    margin-top: -5px !important;
+    font-size: 1.6rem !important;
+    text-align: center;
+  }
+
+  /* TARJETA */
+  .tarjeta-ejercicio,
+  .card {
+    margin-top: 0.6rem !important;
+    width: 90% !important;
+    max-width: 400px !important;
+    padding: 1.2rem !important;
+  }
+
+  /* BOTONES */
+  .botones-container,
+  .tf-botones,
+  .opciones-container {
+    flex-direction: column !important;
+    gap: 0.9rem !important;
+    align-items: center;
+  }
+
+  button,
+  .ejercicio-btn {
+    width: 100% !important;
+    max-width: 280px;
+  }
+
+  /* COLUMNAS → UNA COLUMNA */
+  .col-split,
+  .columns,
+  .match-container {
+    flex-direction: column !important;
+    gap: 1.2rem;
+  }
+
+  /* IMÁGENES */
+  img,
+  .img-ejercicio {
+    max-width: 95% !important;
+    margin: 0 auto !important;
+    display: block;
+  }
+}
+
+/*SECCIÓN 7.2 — RESPONSIVE 480px*/
+@media (max-width: 480px) {
+
+  /* LOGO */
+  .logo {
+    width: 120px !important;
+    margin-top: -8px !important;
+  }
+
+  /* TÍTULO */
+  .titulo-ejercicio,
+  .title {
+    font-size: 1.45rem !important;
+  }
+
+  /* TARJETA */
+  .tarjeta-ejercicio,
+  .card {
+    padding: 1rem !important;
+    width: 92% !important;
+  }
+
+  /* TEXTO MÁS LEGIBLE */
+  p, .pregunta-texto, .opcion-texto, .dialogo-texto {
+    font-size: 1rem !important;
+  }
+
+  /* BOTONES MÁS GRANDES */
+  button,
+  .ejercicio-btn {
+    font-size: 1rem !important;
+    padding: 0.6rem 1rem !important;
+  }
+
+  /* IMÁGENES */
+  img,
+  .img-ejercicio {
+    max-width: 100% !important;
+    border-radius: 12px !important;
+  }
+}

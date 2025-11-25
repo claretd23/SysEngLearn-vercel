@@ -136,7 +136,7 @@
 
 /* Efecto al enfocar el input */
 .input-respuesta:focus {
-  border-color: #323330;
+  border-color: #eaebe8;
   box-shadow: 0 0 8px #97998eaa;
 }
 

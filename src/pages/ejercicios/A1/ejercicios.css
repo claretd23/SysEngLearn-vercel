@@ -1,549 +1,131 @@
-/* === CONTENEDOR PRINCIPAL DEL EJERCICIO === */
-.ejercicio-container {
-  width: 100vw;             /* Ocupa todo el ancho de la pantalla */
-  height: 100vh;            /* Ocupa toda la altura de la pantalla */
-  display: flex;
-  flex-direction: column;
-  justify-content: center;  /* Centra el contenido verticalmente */
-  align-items: center;      /* Centra el contenido horizontalmente */
-  padding: 2rem;
-  box-sizing: border-box;   /* Incluye padding dentro del tamaño total */
-  background: none;         /* Sin fondo */
-}
-
-/* Efecto visual al pasar el mouse sobre el contenedor */
-.ejercicio-container:hover {
-  box-shadow: 0px 0px 35px 2px rgba(51, 5, 234, 0.3);
-}
-
-/* === ENCABEZADO DEL EJERCICIO === */
-.ejercicio-header {
-  text-align: center;
-  margin-bottom: 2rem; /* Espacio inferior */
-}
-
-/* Título principal del ejercicio */
-.titulo-ejercicio {
-  font-size: 2.8rem;
-  color: #222a5c; /* Azul oscuro (color institucional) */
-  margin-bottom: 0.5rem;
-}
-
-/* Texto de progreso ("Ejercicio 2 de 10") */
-.progreso-ejercicio {
-  font-size: 1.4rem;
-  color: #4c4c4c;
-  font-weight: 500;
-}
-
-/* === TARJETA PRINCIPAL DEL EJERCICIO === */
+/* ================================
+   TARJETA PRINCIPAL DEL EJERCICIO
+   ================================ */
 .tarjeta-ejercicio {
-  width: 100%;
-  max-width: 900px;           /* Tamaño máximo */
-  min-height: 500px;          /* Altura mínima */
+  background: white;
+  border-radius: 16px;
   padding: 2rem;
-  box-shadow: 0 0 35px 2px rgba(51, 5, 234, 0.1);
-  display: flex;
-  flex-direction: column;
-  justify-content: center;    /* Centrado vertical */
-  align-items: center;        /* Centrado horizontal */
-  box-sizing: border-box;
-  background: #fff;
-  border-radius: 12px;
-  text-align: center;         /* Centra el texto */
-}
-
-/* Variante horizontal (para ejercicios con imagen/audio) */
-.horizontal-card {
-  padding: 2rem 3rem;
-}
-
-/* Contenedor para disponer imagen/audio a la izquierda y formulario a la derecha */
-.contenido-horizontal {
-  display: flex;
-  flex-direction: row;
-  gap: 3rem;                  /* Espacio entre columnas */
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  max-width: 600px;
   width: 100%;
-  justify-content: center;
-  align-items: flex-start;
+  margin: 0 auto;
+  text-align: center;
 }
 
-/* Contenedor de imagen + botón de audio */
-.imagen-audio {
+/* Contenedor general del ejercicio */
+.ejercicio-container {
   display: flex;
   flex-direction: column;
-  align-items: center;
   gap: 1.5rem;
 }
 
-/* Imagen circular del ejercicio (persona o icono) */
-.ejercicio-img {
-  width: 180px;
-  height: 180px;
-  border-radius: 50%;
-  border: 4px solid #ccc;
-  object-fit: cover;
-}
-
-/* Botón de reproducción de audio 🎧 */
-.btn-audio {
-  background-color: #222a5c;  /* Azul oscuro */
-  color: #fff;
-  border: none;
-  padding: 1rem 1.2rem;
+/* ================================
+   TEXTO DE INSTRUCCIONES
+   ================================ */
+.instruccion-box {
+  background: #f0f4ff; /* azul claro institucional */
+  padding: 1rem 1.3rem;
   border-radius: 12px;
-  font-size: 2rem;
-  cursor: pointer;
-  transition: all 0.3s;
-}
-
-/* Efecto hover del botón de audio */
-.btn-audio:hover {
-  background-color: #cbccc7;  /* gris */
-  color: #222a5c;
-  transform: scale(1.1);      /* Aumenta ligeramente el tamaño */
-}
-
-/* === FORMULARIO DE RESPUESTA === */
-.formulario-ejercicio {
-  background: #e0edf0;         /* Fondo suave */
-  padding: 2rem 2.5rem;
-  border-radius: px;           /* (Parece faltar valor) */
-  box-shadow: 0 3px 9px rgba(0, 0, 0, 0.1);
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-}
-
-/* Texto dentro del formulario */
-.formulario-ejercicio p {
-  font-weight: 600;
-  color: #222a5c;
-}
-
-/* Campo de entrada de texto (respuesta del alumno) */
-.input-respuesta {
-  width: 100%;
-  max-width: 300px;
-  padding: 10px 12px;
   font-size: 1.1rem;
-  border: 2px solid #656564;  /* gris */
-  border-radius: 8px;
-  text-align: center;
-  transition: border 0.3s, box-shadow 0.3s;
+  color: #222a5c; /* azul oscuro institucional */
+  font-weight: 500;
+  line-height: 1.4;
 }
 
-/* Efecto al enfocar el input */
-.input-respuesta:focus {
-  border-color: #eaebe8;
-  box-shadow: 0 0 8px #97998eaa;
-}
-
-/* Texto fijo (por ejemplo: “I ___ playing football”) */
-.dato-fijo {
-  display: inline-block;
-  padding: 0.5rem 1rem;
-  background: #f8f9f7;
-  border-radius: 6px;
-  border: 1px solid #ccc;
-  font-weight: 600;
-}
-
-/* === MENSAJE DE RETROALIMENTACIÓN (Correcto/Incorrecto) === */
-.respuesta-feedback {
-  font-size: 1.4rem;
-  font-weight: bold;
-  text-align: center;
-  margin-top: 1rem;
-}
-
-.respuesta-feedback.correcta {
-  color: #2e9231; /* Verde */
-}
-
-.respuesta-feedback.incorrecta {
-  color: #650d07; /* Rojo oscuro */
-}
-
-/* === BOTONES (Siguiente, Comprobar, etc.) === */
-.botones-siguiente {
-  display: flex;
-  justify-content: center;
-  gap: 1rem;
-  align-items: center;
-  margin-top: 1.8rem;
-}
-
-/* Botón principal de ejercicios */
+/* ================================
+   BOTÓN PRINCIPAL (Finish, siguiente, etc.)
+   PUNTO 1 — APLICAR COLORES
+   ================================ */
 .ejercicio-btn {
-  padding: 1rem 2rem;
+  background: #222a5c;             /* azul oscuro */
+  color: white;                    /* texto blanco */
+  padding: 0.8rem 2rem;
   border-radius: 10px;
   border: none;
-  background-image: linear-gradient(163deg, #c2c3ba 0%, #373c5e 90%);
-  color: #ffffff;
-  font-size: 1.3rem;
-  font-weight: 600;
   cursor: pointer;
-  transition: all 0.3s ease;
-}
-
-/* Efecto hover para los botones */
-.ejercicio-btn:hover {
-  background-image: linear-gradient(163deg, #373c5e 0%, #b2b3ab 100%);
-}
-
-/* === CAJA DE INSTRUCCIONES === */
-.instruccion-box {
-  background: #f0f4ff;
-  border-left: 4px solid #222a5c;
-  padding: 0.7rem 1rem;
-  margin-bottom: 1.5rem;
-  border-radius: 8px;
-  text-align: left;
-}
-
-.instruccion-ejercicio {
-  font-weight: bold;
-  font-size: 1.1rem;
-  color: #222a5c;
-  margin: 0;
-}
-
-/* === SECCIÓN FINALIZADO === */
-.finalizado {
-  text-align: center;
-  padding: 2rem;
-  color: #222a5c;
+  font-size: 1.2rem;
   font-weight: 600;
-  font-size: 1.5rem;
+  transition: 0.2s;
 }
 
-/* === DISEÑO RESPONSIVO === */
-@media (max-width: 900px) {
-  .contenido-horizontal {
-    flex-direction: column;  /* Cambia de fila a columna */
-    align-items: center;
-  }
-
-  .formulario-ejercicio {
-    width: 100%;
-    max-width: 400px;
-  }
-
-  .ejercicio-img {
-    width: 140px;
-    height: 140px;
-  }
+.ejercicio-btn:hover {
+  background: #1a214a;             /* azul oscuro más fuerte */
+  transform: translateY(-2px);     /* ligera animación */
 }
 
-/* Centrado forzado de todo el contenido en la tarjeta */
-.tarjeta-ejercicio {
-  justify-content: center !important;
-  align-items: center !important;
-  text-align: center;
-}
-
-/* === IMÁGENES CIRCULARES DENTRO DE LAS TARJETAS === */
-.tarjeta-ejercicio img {
-  width: 160px;
-  height: 160px;
-  border-radius: 50%;
-  object-fit: cover;
-  border: 4px solid #ccc;
-  margin-bottom: 1rem;
-}
-
-/* Redefinición del contenedor principal */
-.ejercicio-container {
-  display: flex;
-  justify-content: center;
+/* ================================
+   BOTÓN DE AUDIO
+   PUNTO 3 — APLICAR COLORES
+   ================================ */
+.btn-audio {
+  display: inline-flex;
   align-items: center;
-  padding: 2rem;
-}
-
-/* Reajuste de la tarjeta */
-.tarjeta-ejercicio {
-  max-width: 1000px;
-  width: 100%;
-  background: #fff;
-  border-radius: 12px;
-  padding: 2rem;
-  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-  text-align: center;
-}
-
-/* Caja de instrucciones con más margen */
-.instruccion-box {
-  margin-bottom: 2rem;
-}
-
-/* === DISEÑO PARA EJERCICIOS DE “MATCHING” === */
-.matching-container {
-  display: grid;
-  grid-template-columns: 1fr 1fr; /* Dos columnas */
-  gap: 2rem;
-  max-width: 900px;
-  margin: 0 auto;
-  align-items: start;
-}
-
-/* Título de cada columna (por ejemplo “Palabras” / “Significados”) */
-.columna-titulo {
-  text-align: center;
-  margin-bottom: 1rem;
-}
-
-/* Botones de emparejamiento */
-.matching-btn {
-  display: block;
-  margin: 0.4rem auto;
-  width: 100%;
-  min-height: 55px;
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  padding: 0.6rem;
-  font-size: 1rem;
-  text-align: center;
+  gap: 0.5rem;
+  background: #aabc36;            /* verde lima */
+  color: white;
+  padding: 0.6rem 1.2rem;
+  border-radius: 10px;
+  font-weight: 600;
+  border: none;
   cursor: pointer;
   transition: 0.2s;
-  background-color: #fff;
-  color: #000;
 }
 
-/* Estado deshabilitado de botones */
-.matching-btn:disabled {
-  cursor: not-allowed;
-  opacity: 0.8;
+.btn-audio:hover {
+  background: #94a32f;            /* verde más oscuro */
 }
 
-/* Contenedor del botón de comprobación */
-.check-container {
-  margin-top: 1.5rem;
+/* Icono dentro del botón de audio */
+.btn-audio svg {
+  width: 22px;
+  height: 22px;
+  fill: white;
 }
 
-/* Redefinición de botón principal */
-.ejercicio-btn {
-  padding: 0.8rem 2rem;
-  border-radius: 8px;
-  border: none;
-  background-image: linear-gradient(163deg, #606159 0%, #242a52 90%);
-  color: #ffffff;
+/* ================================
+   BOTONES DE OPCIÓN O MATCHING
+   PUNTO 5 — APLICAR COLORES
+   ================================ */
+.opcion-btn {
+  background: #f8f9fb;            /* gris muy claro */
+  border: 2px solid #dce2ef;      /* borde suave */
+  color: #222a5c;                 /* azul oscuro */
+  border-radius: 10px;
+  padding: 0.8rem;
   font-size: 1.1rem;
-  font-weight: 600;
   cursor: pointer;
-  transition: all 0.3s ease;
-}
-
-/* Estado deshabilitado */
-.ejercicio-btn:disabled {
-  background: #ccc;
-  cursor: not-allowed;
-}
-
-.finalizado {
-  text-align: center;
-}
-
-/* === AJUSTES DE ESPACIOS REDUCIDOS === */
-.tarjeta-ejercicio > * {
-  margin-bottom: 0.6rem; 
-}
-
-.imagenes-conversacion {
-  gap: 1rem; 
-  margin-bottom: 0.6rem;
-}
-
-.tarjeta-ejercicio img {
-  margin: 0.4rem 0.8rem;
-}
-
-.input-respuesta {
-  padding: 8px 12px;
-  margin: 0.4rem 0 0.8rem 0;
-}
-
-.ejercicio-btn {
-  padding: 0.6rem 1.4rem;
-  font-size: 1rem;
-  margin-top: 0.5rem;
-}
-
-.botones-siguiente {
-  margin-top: 0.8rem;
-  gap: 0.8rem;
-}
-
-.btn-audio {
-  margin: 0.5rem 0;
-}
-
-.instruccion-box {
-  margin-bottom: 1rem; 
-}
-/* === RESPONSIVE ESPECÍFICO PARA MATCHING (botones .opcion-btn) === */
-@media (max-width: 768px) {
-  /* Solo aplica estos estilos cuando hay botones de opción dentro de la tarjeta */
-  .tarjeta-ejercicio:has(.opcion-btn) {
-    padding: 1rem; /* Reduce el padding para ahorrar espacio en pantallas pequeñas */
-    min-height: auto; /* Elimina la altura mínima para que el contenedor se ajuste al contenido */
-  }
-
-  /* Ajusta el tamaño del título en ejercicios con botones */
-  .tarjeta-ejercicio:has(.opcion-btn) .titulo-ejercicio {
-    font-size: 2rem; /* Tamaño moderado para buena lectura sin ocupar mucho espacio */
-  }
-
-  /* Ajusta las instrucciones del ejercicio */
-  .tarjeta-ejercicio:has(.opcion-btn) .instruccion-ejercicio {
-    font-size: 1rem; /* Texto un poco más pequeño */
-    text-align: center; /* Centra el texto para mejor presentación en móvil */
-  }
-
-  /* Tamaño y espaciado de los botones de opción */
-  .tarjeta-ejercicio:has(.opcion-btn) .opcion-btn {
-    min-width: 120px !important; /* Ancho mínimo cómodo para tocar en móvil */
-    font-size: 0.85rem !important; /* Letra más compacta */
-    padding: 0.4rem 0.6rem !important; /* Botones más pequeños y fáciles de ajustar en la pantalla */
-    margin: 0.25rem !important; /* Espaciado mínimo entre botones */
-    white-space: normal !important; /* Permite salto de línea si el texto es largo */
-    line-height: 1.2; /* Mantiene la altura de línea compacta */
-  }
-
-  /* Espaciado entre los botones de navegación (Siguiente, Reintentar, etc.) */
-  .tarjeta-ejercicio:has(.opcion-btn) .botones-siguiente {
-    margin-top: 0.8rem !important;
-  }
-
-  /* Ajuste general de los botones de acción (ejercicio-btn) */
-  .tarjeta-ejercicio:has(.opcion-btn) .ejercicio-btn {
-    font-size: 1rem !important;
-    padding: 0.6rem 1.4rem !important;
-  }
-
-  /* Estilo del texto cuando se finaliza el ejercicio */
-  .tarjeta-ejercicio:has(.opcion-btn) .finalizado {
-    font-size: 1.1rem !important;
-    padding: 1.5rem !important;
-  }
-}
-
-/* === PANTALLAS PEQUEÑAS (<480px) === */
-@media (max-width: 480px) {
-  /* Reduce aún más el tamaño del título */
-  .tarjeta-ejercicio:has(.opcion-btn) .titulo-ejercicio {
-    font-size: 1.6rem;
-  }
-
-  /* Texto de instrucciones más pequeño para pantallas muy reducidas */
-  .tarjeta-ejercicio:has(.opcion-btn) .instruccion-ejercicio {
-    font-size: 0.9rem !important;
-  }
-
-  /* Botones todavía más compactos para teléfonos pequeños */
-  .tarjeta-ejercicio:has(.opcion-btn) .opcion-btn {
-    min-width: 100px !important;
-    font-size: 0.8rem !important;
-    padding: 0.35rem 0.5rem !important;
-  }
-
-  /* Disminuye el padding general de la tarjeta */
-  .tarjeta-ejercicio:has(.opcion-btn) {
-    padding: 0.8rem !important;
-  }
-}
-
-/* === COLORES Y ESTILO DE BOTONES EN MÓVIL === */
-@media (max-width: 768px) {
-  /* Define el color de fondo, texto y borde de todos los botones del ejercicio */
-  .tarjeta-ejercicio button,
-  .tarjeta-ejercicio .matching-btn,
-  .tarjeta-ejercicio .opcion-btn {
-    background-color: #f8f9fb !important; /* Fondo claro */
-    color: #222a5c !important; /* Texto azul oscuro (color principal de la academia) */
-    border: 1px solid #aabc36 !important; /* Borde verde de la paleta */
-    transition: all 0.25s ease-in-out; /* Transición suave al interactuar */
-  }
-
-  /* Efecto visual al pasar el dedo o presionar un botón */
-  .tarjeta-ejercicio button:hover:not(:disabled),
-  .tarjeta-ejercicio .matching-btn:hover:not(:disabled),
-  .tarjeta-ejercicio .opcion-btn:hover:not(:disabled),
-  .tarjeta-ejercicio button:active:not(:disabled) {
-    background-color: #aabc36 !important; /* Fondo verde activo */
-    color: #fff !important; /* Texto blanco */
-    border-color: #aabc36 !important; /* Mantiene el borde verde */
-  }
-
-  /* Apariencia de los botones deshabilitados (pares ya seleccionados, etc.) */
-  .tarjeta-ejercicio button:disabled,
-  .tarjeta-ejercicio .opcion-btn:disabled {
-    opacity: 0.85;
-    background-color: #d6d9e0 !important; /* Gris claro */
-    color: #555 !important; /* Texto gris oscuro */
-    border: 1px solid #ccc !important;
-  }
-
-  /* Refuerza la legibilidad de los botones pequeños */
-  .tarjeta-ejercicio button,
-  .tarjeta-ejercicio .opcion-btn {
-    font-weight: 600 !important; /* Texto seminegrita para mejor contraste */
-  }
-}
-
-/* === VERSIÓN PARA PANTALLAS MUY PEQUEÑAS === */
-@media (max-width: 480px) {
-  /* Repite los estilos principales de color y tamaño, pero ajustados */
-  .tarjeta-ejercicio button,
-  .tarjeta-ejercicio .matching-btn,
-  .tarjeta-ejercicio .opcion-btn {
-    background-color: #f8f9fb !important;
-    color: #222a5c !important;
-    border: 1px solid #aabc36 !important;
-    font-size: 0.85rem !important; /* Letra más pequeña */
-    padding: 0.4rem 0.6rem !important; /* Botones compactos */
-  }
-}
-
-/* === Enlaces dentro de textos informativos (como mensajes finales o ayudas) === */
-.info-text a:hover {
-  color: #737fa1; /* Cambia a un azul más claro al pasar el mouse */
-}
-
-
-
-/* === IMÁGENES RECTANGULARES (EJERCICIOS CON ILUSTRACIONES, EJ: GATO EN LAS CAJAS) === */
-.tarjeta-ejercicio img.imagen-completa {
   width: 100%;
-  max-width: 350px;       /* Tamaño máximo para mantener buena proporción */
-  height: auto;
-  border-radius: 10px;    /* Bordes suaves, no circulares */
-  object-fit: contain;    /* Muestra la imagen completa sin recortar */
-  border: none;           /* Sin borde gris */
-  margin: 1rem auto;
-  background-color: #fff; /* Fondo neutro por si la imagen tiene transparencia */
+  transition: 0.3s;
 }
 
-/* Ajuste responsivo */
-@media (max-width: 768px) {
-  .tarjeta-ejercicio img.imagen-completa {
-    max-width: 280px;
+.opcion-btn:hover {
+  border-color: #aabc36;          /* resaltado verde lima */
+  background: #f0f4ff;            /* azul claro */
+}
+
+/* Opción seleccionada */
+.opcion-btn.seleccionada {
+  background: #aabc36;            /* verde lima */
+  color: white;
+  border-color: #8ea028;
+}
+
+/* ================================
+   RESPONSIVE: Para pantallas chicas
+   ================================ */
+@media (max-width: 480px) {
+  .tarjeta-ejercicio {
+    padding: 1.4rem;
+    margin-top: 1rem;
+  }
+
+  .ejercicio-btn {
+    width: 100%;
+    font-size: 1.1rem;
+  }
+
+  .btn-audio {
+    width: 100%;
+    justify-content: center;
   }
 }
-
-/* === FEEDBACK === */
-.respuesta-feedback {
-  font-size: 1.3rem;
-  margin-top: 1rem;
-  font-weight: 500;
-}
-
-.respuesta-feedback.correcta {
-  color: #2ecc71; /* verde */
-}
-
-.respuesta-feedback.incorrecta {
-  color: #e74c3c; /* rojo */
-}
-

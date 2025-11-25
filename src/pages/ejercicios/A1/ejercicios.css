@@ -1,131 +1,899 @@
-/* ================================
-   TARJETA PRINCIPAL DEL EJERCICIO
-   ================================ */
-.tarjeta-ejercicio {
-  background: white;
-  border-radius: 16px;
-  padding: 2rem;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-  max-width: 600px;
-  width: 100%;
-  margin: 0 auto;
-  text-align: center;
+/* SECCIÓN 1 — ESTILOS BASE Y LAYOUT GLOBAL
+  - Variables de colores (centralizadas para mantener coherencia)
+  - Reset/box-sizing
+  - Reglas generales de tipografía y contenedores base*/
+:root {
+  /* Colores principales */
+  --azul-oscuro: #222a5c;      /* color institucional principal */
+  --verde-lima: #aabc36;       /* acento (verde lima) */
+  --azul-claro: #f0f4ff;       /* fondo/instrucciones */
+  --gris-claro: #f8f9fb;
+  --gris-med: #c2c3ba;
+  --gris-dark: #656564;
+  --negro-trans: rgba(0,0,0,0.1);
+  --sombra-strong: rgba(0,0,0,0.12);
+
+  /* Tipografías / medidas */
+  --base-font-size: 16px;
+  --radius-lg: 12px;
+  --radius-md: 8px;
 }
 
-/* Contenedor general del ejercicio */
+/*Mantiene los estilos de navegador razonables*/
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Evita márgenes inesperados en body */
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  font-size: var(--base-font-size);
+  font-family: "Inter", "Helvetica Neue", Arial, sans-serif; /* respetar stack */
+  color: var(--azul-oscuro);
+  background: transparent; /* no forzamos fondo global */
+}
+
+/* Clases pequeñas reutilizables */
+
+/* Centrados comunes */
+.u-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+/* Espaciado vertical reutilizable */
+.u-gap-lg { gap: 1.5rem; }
+.u-gap-md { gap: 1rem; }
+.u-gap-sm { gap: 0.5rem; }
+/* Texto truncado (útil para títulos largos) */
+.u-truncate {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+/* Botón base reducido (no reemplaza .ejercicio-btn) */
+.btn-base {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  cursor: pointer;
+  border-radius: 8px;
+  transition: transform 0.18s ease, background-color 0.18s ease;
+}
+
+/* Sombra ligera reutilizable */
+.shadow-light {
+  box-shadow: 0 4px 12px var(--negro-trans);
+}
+
+/*  CONTENEDOR PRINCIPAL DEL EJERCICIO */
+
+
 .ejercicio-container {
+  width: 100vw;             /* Ocupa todo el ancho de la pantalla (intencional) */
+  height: 100vh;            /* Ocupa toda la altura de la pantalla (intencional) */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;  /* Centra verticalmente todo el conjunto */
+  align-items: center;      /* Centra horizontalmente */
+  padding: 2rem;
+  box-sizing: border-box;
+  background: none;         /* Se deja transparente para que la app controle el fondo */
+  /* Nota: mantener vista full-screen facilita ejercicios centrados */
+}
+
+/* Hover visual si quieres efecto en escritorio (no rompe layout) */
+.ejercicio-container:hover {
+  box-shadow: 0px 0px 35px 2px rgba(51, 5, 234, 0.03); /* suavizado respecto al original */
+}
+
+/* -------------------------
+   ENCABEZADO Y TIPOGRAFÍA DEL EJERCICIO
+   ------------------------- */
+.ejercicio-header {
+  text-align: center;
+  margin-bottom: 2rem; /* espacio inferior consistente */
+}
+
+/* Título principal, conserva tamaño 2.8rem para escritorio */
+.titulo-ejercicio {
+  font-size: 2.8rem;
+  color: var(--azul-oscuro);
+  margin-bottom: 0.5rem;
+  line-height: 1.05;
+}
+
+/* Texto de progreso (Ejercicio X de Y) */
+.progreso-ejercicio {
+  font-size: 1.4rem;
+  color: #4c4c4c; /* gris específico heredado del diseño original */
+  font-weight: 500;
+}
+
+/* TARJETA PRINCIPAL (contenedor visual del ejercicio)*/
+.tarjeta-ejercicio {
+  width: 100%;
+  max-width: 900px;           /* Tamaño máximo mantenido */
+  min-height: 500px;          /* Altura mínima mantenida */
+  padding: 2rem;
+  box-shadow: 0 0 35px 2px rgba(51, 5, 234, 0.06); /* sombra coherente con original */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  box-sizing: border-box;
+  background: #ffffff;
+  border-radius: var(--radius-lg);
+  text-align: center;
+  /* antialiasing y optimizaciones visuales */
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Variante horizontal (preservada) */
+.horizontal-card {
+  padding: 2rem 3rem;
+}
+
+/* Contenedor para diseño con imagen y formulario lado a lado */
+.contenido-horizontal {
+  display: flex;
+  flex-direction: row;
+  gap: 3rem;
+  width: 100%;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+/*
+  REGLAS PARA IMÁGENES / AVATAR DENTRO DE TARJETA
+  - Se mantienen tamaños originales para no romper layout*/
+.ejercicio-img {
+  width: 180px;
+  height: 180px;
+  border-radius: 50%;
+  border: 4px solid #ccc;
+  object-fit: cover;
+  display: block;
+}
+
+/* Tarjeta: imágenes circulares internas (preservadas) */
+.tarjeta-ejercicio img {
+  width: 160px;
+  height: 160px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 4px solid #ccc;
+  margin-bottom: 1rem;
+}
+
+/* Imágenes rectangulares (ej: ilustraciones en ejercicios) */
+.tarjeta-ejercicio img.imagen-completa {
+  width: 100%;
+  max-width: 350px;
+  height: auto;
+  border-radius: 10px;
+  object-fit: contain;
+  border: none;
+  margin: 1rem auto;
+  background-color: #fff;
+}
+
+/* 
+  FORMULARIO DE RESPUESTA (mantener estructura)
+  - Conserva background y paddings */
+.formulario-ejercicio {
+  background: #e0edf0;
+  padding: 2rem 2.5rem;
+  border-radius: var(--radius-md);
+  box-shadow: 0 3px 9px rgba(0, 0, 0, 0.1);
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+/* Texto dentro del formulario (preservado) */
+.formulario-ejercicio p {
+  font-weight: 600;
+  color: var(--azul-oscuro);
+}
+
+/* Campo de entrada principal (preservado) */
+.input-respuesta {
+  width: 100%;
+  max-width: 300px;
+  padding: 10px 12px;
+  font-size: 1.1rem;
+  border: 2px solid var(--gris-dark);
+  border-radius: 8px;
+  text-align: center;
+  transition: border 0.3s, box-shadow 0.3s;
+}
+
+.input-respuesta:focus {
+  border-color: #eaebe8;
+  box-shadow: 0 0 8px #97998eaa;
+}
+
+/* Texto fijo (por ejemplo: “I ___ playing football”) */
+.dato-fijo {
+  display: inline-block;
+  padding: 0.5rem 1rem;
+  background: #f8f9f7;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  font-weight: 600;
+}
+
+/* FEEDBACK (correcto / incorrecto)
+  - variables conservadas pero con comentarios*/
+.respuesta-feedback {
+  font-size: 1.4rem;
+  font-weight: bold;
+  text-align: center;
+  margin-top: 1rem;
+}
+
+/* Verde de éxito */
+.respuesta-feedback.correcta {
+  color: #2e9231;
+}
+
+/* Rojo de error */
+.respuesta-feedback.incorrecta {
+  color: #650d07;
+}
+
+/*
+  BOTONES - helpers base conservados
+  - .botones-siguiente mantiene layout (row centrado)
+*/
+.botones-siguiente {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  align-items: center;
+  margin-top: 1.8rem;
+}
+
+/* CAJA DE INSTRUCCIONES*/
+.instruccion-box {
+  background: var(--azul-claro); /* #f0f4ff */
+  border-left: 4px solid var(--azul-oscuro);
+  padding: 0.7rem 1rem;
+  margin-bottom: 1.5rem;
+  border-radius: 8px;
+  text-align: left;
+}
+
+.instruccion-ejercicio {
+  font-weight: bold;
+  font-size: 1.1rem;
+  color: var(--azul-oscuro);
+  margin: 0;
+}
+
+/* SECCIÓN FINALIZADO */
+.finalizado {
+  text-align: center;
+  padding: 2rem;
+  color: var(--azul-oscuro);
+  font-weight: 600;
+  font-size: 1.5rem;
+}
+
+/* UTILIDADES FINALES: pequeños ajustes que no cambian el diseño
+  - espaciados, margenes y pequeñas correcciones*/
+
+/* Asegura que dentro de tarjeta los elementos tengan separación consistente */
+.tarjeta-ejercicio > * {
+  margin-bottom: 0.6rem;
+}
+/* Ajustes para imágenes en conversaciones */
+.imagenes-conversacion {
+  gap: 1rem;
+  margin-bottom: 0.6rem;
+}
+
+/* Margen de imagenes internas (conservado) */
+.tarjeta-ejercicio img {
+  margin: 0.4rem 0.8rem;
+}
+
+/* Reaplicación controlada de padding en inputs (no cambia visual) */
+.input-respuesta {
+  padding: 8px 12px;
+  margin: 0.4rem 0 0.8rem 0;
+}
+
+/* Ajustes de botónes creados originalmente (se preservan al final para evitar conflictos) */
+.ejercicio-btn {
+  padding: 0.6rem 1.4rem;
+  font-size: 1rem;
+  margin-top: 0.5rem;
+}
+
+/* Ajuste del espacio entre botones de navegación */
+.botones-siguiente {
+  margin-top: 0.8rem;
+  gap: 0.8rem;
+}
+/* Conservamos el margen en btn-audio para no romper espacios ya creados */
+.btn-audio {
+  margin: 0.5rem 0;
+}
+/* Reafirmamos margin en instruccion-box (último override seguro) */
+.instruccion-box {
+  margin-bottom: 1rem;
+}
+
+   /*SECCIÓN 2 — TARJETA PRINCIPAL Y ESTRUCTURA DE EJERCICIOS
+  se definen:
+   - La tarjeta que contiene el ejercicio.
+   - Títulos, subtítulos y numeraciones.
+   - Contenedores internos del layout.
+   - Caja de instrucciones y espaciados.
+   - Estructura base que todos los ejercicios comparten.*/
+
+
+/*TARJETA PRINCIPAL DEL EJERCICIO (Centrada, Fondo blanco, Borde redondeado, Sombra suave)*/
+.tarjeta-ejercicio {
+  background: #ffffff;
+  max-width: 650px;
+  width: 90%;
+  margin: 2rem auto;
+  padding: 2rem;
+  border-radius: 18px;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.08);
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
 }
 
-/* ================================
-   TEXTO DE INSTRUCCIONES
-   ================================ */
-.instruccion-box {
-  background: #f0f4ff; /* azul claro institucional */
-  padding: 1rem 1.3rem;
-  border-radius: 12px;
-  font-size: 1.1rem;
-  color: #222a5c; /* azul oscuro institucional */
-  font-weight: 500;
-  line-height: 1.4;
+
+/* TÍTULO DEL EJERCICIO*/
+.titulo-ejercicio {
+  font-size: 1.8rem;
+  font-weight: 700;
+  text-align: center;
+  margin-bottom: 0.5rem;
+  color: #222a5c;
 }
 
-/* ================================
-   BOTÓN PRINCIPAL (Finish, siguiente, etc.)
-   PUNTO 1 — APLICAR COLORES
-   ================================ */
+
+/* SUBTÍTULO O NOMBRE DEL TEMA */
+.subtitulo-ejercicio {
+  font-size: 1.2rem;
+  text-align: center;
+  font-weight: 500;
+  color: #444;
+  margin-top: -0.5rem;
+}
+
+
+/*INSTRUCCIÓN GENERAL (Caja suave con borde, Fondo muy claro para diferenciarla)*/
+.instruccion-box {
+  background: #f7f9ff;
+  border-left: 4px solid #aabc36;
+  padding: 1rem 1.2rem;
+  border-radius: 12px;
+  font-size: 1.05rem;
+  color: #333;
+  line-height: 1.5;
+}
+
+/*CONTENEDOR GENERAL DEL EJERCICIO
+   - Envuelve las preguntas, botones, imágenes, audios, etc. */
+.ejercicio-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1.4rem;
+}
+
+/* FILA O "ROW" PARA DISTRIBUIR ELEMENTOS
+   Ejemplo: opciones a la izquierda / imagen a la derecha. */
+.ej-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1.2rem;
+}
+
+/*COLUMNA GENÉRICA
+   Ideal cuando un ejercicio requiere dividir contenido.*/
+.ej-col {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+/* CAJA DE PREGUNTA O ENUNCIADO*/
+.pregunta-texto {
+  font-size: 1.15rem;
+  font-weight: 500;
+  color: #222;
+  line-height: 1.5;
+}
+
+/* SEPARADOR SUAVE ENTRE BLOQUES
+   (Se usa en ejercicios con múltiples secciones) */
+.ej-separador {
+  height: 1px;
+  width: 100%;
+  background: #e4e7f1;
+  margin: 0.5rem 0;
+}
+
+/*
+  CONTENEDOR FINALIZADO
+  Cuando el usuario ya terminó el ejercicio. (Mantiene exactamente la estética que ya tiene.) */
+.finalizado {
+  text-align: center;
+  font-size: 1.4rem;
+  font-weight: 600;
+  padding: 2rem 1rem;
+  color: #222a5c;
+}
+
+
+/* TEXTO DE FELICITACIÓN*/
+.finalizado small {
+  display: block;
+  margin-top: 1rem;
+  font-size: 1rem;
+  color: #555;
+}
+
+/*SECCIÓN 3 — BOTONES (GENERALES, OPCIONES, AUDIO Y ACCIONES)
+   Aquí se incluyen TODOS los botones usados en la app:
+   - Botón general (ejercicio-btn)
+   - Botón de selección de respuesta
+   - Botones de audio
+   - Botones True/False
+   - Botones de matching (izquierda/derecha)
+   - Botón Finish / Next / Back
+   Mantiene diseño actual: redondeado, limpio y moderno.*/
+
+
+/* 
+   BOTÓN GENERAL DEL EJERCICIO
+   Usado en: Finish, Next, Confirmar, Continuar */
 .ejercicio-btn {
-  background: #222a5c;             /* azul oscuro */
-  color: white;                    /* texto blanco */
-  padding: 0.8rem 2rem;
-  border-radius: 10px;
+  background: #222a5c;
+  color: #ffffff;
+  font-size: 1.15rem;
+  padding: 0.8rem 1.8rem;
+  border-radius: 14px;
   border: none;
   cursor: pointer;
-  font-size: 1.2rem;
+  display: inline-block;
+  text-align: center;
   font-weight: 600;
-  transition: 0.2s;
+  transition: all 0.2s ease;
 }
 
 .ejercicio-btn:hover {
-  background: #1a214a;             /* azul oscuro más fuerte */
-  transform: translateY(-2px);     /* ligera animación */
+  background: #1b224c;
 }
 
-/* ================================
-   BOTÓN DE AUDIO
-   PUNTO 3 — APLICAR COLORES
-   ================================ */
-.btn-audio {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-  background: #aabc36;            /* verde lima */
-  color: white;
-  padding: 0.6rem 1.2rem;
-  border-radius: 10px;
-  font-weight: 600;
-  border: none;
-  cursor: pointer;
-  transition: 0.2s;
+
+/* BOTÓN DESHABILITADO (Se usa cuando el usuario no ha seleccionado nada.) */
+.ejercicio-btn:disabled {
+  background: #b7b7b7;
+  cursor: not-allowed;
 }
 
-.btn-audio:hover {
-  background: #94a32f;            /* verde más oscuro */
-}
-
-/* Icono dentro del botón de audio */
-.btn-audio svg {
-  width: 22px;
-  height: 22px;
-  fill: white;
-}
-
-/* ================================
-   BOTONES DE OPCIÓN O MATCHING
-   PUNTO 5 — APLICAR COLORES
-   ================================ */
-.opcion-btn {
-  background: #f8f9fb;            /* gris muy claro */
-  border: 2px solid #dce2ef;      /* borde suave */
-  color: #222a5c;                 /* azul oscuro */
-  border-radius: 10px;
-  padding: 0.8rem;
+/* BOTÓN DE OPCIÓN (SELECCIÓN MULTIPLE)
+  - Cuadros o rectángulos que el usuario puede elegir.
+  - Se aplican a ejercicios tipo A, B, C...*/
+.opcion-boton {
+  background: #f1f4ff;
+  border: 2px solid transparent;
+  padding: 0.9rem 1.2rem;
+  border-radius: 12px;
   font-size: 1.1rem;
   cursor: pointer;
+  text-align: left;
+  transition: all 0.2s ease;
+  color: #222;
+}
+
+.opcion-boton:hover {
+  background: #e7ebff;
+}
+
+.opcion-boton.seleccionada {
+  border-color: #aabc36;
+  background: #e9f3c7;
+}
+
+/* BOTONES TRUE / FALSE*/
+.boton-tf {
+  padding: 0.7rem 1.4rem;
+  font-size: 1.1rem;
+  border-radius: 12px;
+  border: 2px solid #222a5c;
+  cursor: pointer;
+  background: #ffffff;
+  transition: all 0.2s ease;
+}
+.boton-tf:hover {
+  background: #f0f2ff;
+}
+.boton-tf.seleccionado {
+  background: #222a5c;
+  color: #fff;
+}
+
+
+/* BOTÓN DE AUDIO
+  - Reproduce los audios de los ejercicios */
+.audio-btn {
+  background: #f7f9ff;
+  border: 2px solid #222a5c;
+  color: #222a5c;
+  padding: 0.6rem 1rem;
+  font-size: 1.05rem;
+  border-radius: 12px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.2s ease;
+}
+.audio-btn:hover {
+  background: #eef1ff;
+}
+.audio-btn.reproduciendo {
+  background: #222a5c;
+  color: #fff;
+}
+
+
+/* BOTONES DE MATCHING (IZQUIERDA / DERECHA), (Para ejercicios de emparejar palabras)*/
+.match-btn {
+  padding: 0.85rem 1.1rem;
+  background: #f8f8f8;
+  border: 2px solid #d1d1d1;
+  border-radius: 12px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.match-btn:hover {
+  background: #ececec;
+}
+
+.match-btn.seleccionado {
+  border-color: #aabc36;
+  background: #f4fadf;
+}
+
+/* CONTENEDOR DE BOTONES CENTRADOS
+  Usado para ubicar Finish / Next / Continuar.*/
+.btn-center {
+  display: flex;
+  justify-content: center;
+  margin-top: 1rem;
+}
+
+
+/* SECCIÓN 4 — EJERCICIOS ESPECÍFICOS
+   Aquí van los estilos exclusivos de cada tipo de ejercicio:
+   - Audio
+   - True/False
+   - Matching
+   - Selección múltiple
+   - Imágenes / diálogos
+   - Conversaciones (speakers + fotos)
+   - Horarios y tablas pequeñas
+   Nada de esto afecta a otros componentes.*/
+
+
+
+/* — EJERCICIOS DE AUDIO
+   - Estructura para listas de audios
+   - Botones de reproducción*/
+
+.audio-lista {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+.audio-item {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+.audio-numero {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #222a5c;
+}
+
+
+
+/* TRUE / FALSE
+   - Contenedores
+   - Botones posicionados correctamente*/
+
+.tf-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+}
+.tf-pregunta {
+  font-size: 1.15rem;
+  font-weight: 500;
+  color: #222;
+}
+.tf-botones {
+  display: flex;
+  gap: 1rem;
+}
+
+
+
+/* EJERCICIOS DE MATCHING
+  - Emparejar columnas izquierda / derecha*/
+.match-container {
+  display: flex;
+  gap: 1.5rem;
+}
+.match-col {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+}
+.match-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.match-linea {
+  height: 1px;
   width: 100%;
-  transition: 0.3s;
+  background: #ddd;
 }
 
-.opcion-btn:hover {
-  border-color: #aabc36;          /* resaltado verde lima */
-  background: #f0f4ff;            /* azul claro */
+
+
+/*  SELECCIÓN MÚLTIPLE (CHOOSE THE CORRECT ANSWER)*/
+.opciones-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+.opcion-texto {
+  font-size: 1.1rem;
+  color: #222;
+  line-height: 1.4;
 }
 
-/* Opción seleccionada */
-.opcion-btn.seleccionada {
-  background: #aabc36;            /* verde lima */
-  color: white;
-  border-color: #8ea028;
+
+/* LISTAS NUMERADAS (1., 2., 3.)*/
+.lista-numerada {
+  display: flex;
+  flex-direction: column;
+  gap: 1.4rem;
+}
+.lista-item {
+  display: flex;
+  gap: 0.8rem;
+  align-items: flex-start;
+}
+.lista-numero {
+  font-weight: bold;
+  color: #222a5c;
 }
 
-/* ================================
-   RESPONSIVE: Para pantallas chicas
-   ================================ */
-@media (max-width: 480px) {
-  .tarjeta-ejercicio {
-    padding: 1.4rem;
-    margin-top: 1rem;
-  }
 
-  .ejercicio-btn {
-    width: 100%;
-    font-size: 1.1rem;
-  }
-
-  .btn-audio {
-    width: 100%;
-    justify-content: center;
-  }
+/*  EJERCICIOS CON IMÁGENES*/
+.img-container {
+  width: 100%;
+  display: flex;
+  justify-content: center;
 }
+.img-ejercicio {
+  max-width: 100%;
+  border-radius: 14px;
+}
+
+
+/*CONVERSACIONES / SPEAKERS
+  - Imagen del hablante
+  - Nombre
+  - Caja del diálogo*/
+
+.speaker-box {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+.speaker-item {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+.speaker-img {
+  width: 65px;
+  height: 65px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid #222a5c;
+}
+.speaker-nombre {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #222a5c;
+}
+.dialogo-texto {
+  background: #f7f9ff;
+  padding: 1rem 1.2rem;
+  border-radius: 14px;
+  line-height: 1.5;
+  border-left: 4px solid #aabc36;
+}
+
+
+
+/* EJERCICIOS DE HORARIOS
+   - Línea de tiempo
+   - Tablas pequeñas*/
+
+.horario-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+.horario-item {
+  background: #f7f9ff;
+  padding: 0.8rem 1rem;
+  border-radius: 12px;
+  border-left: 4px solid #222a5c;
+}
+.horario-texto {
+  font-size: 1.1rem;
+}
+
+
+/* EJERCICIOS DE COLUMNAS ESPECIALES
+   - Pregunta + opciones a la derecha*/
+
+.col-split {
+  display: flex;
+  gap: 1.8rem;
+  justify-content: space-between;
+}
+.col-split .pregunta-texto {
+  flex: 2;
+}
+.col-split .opciones-container {
+  flex: 1;
+}
+
+
+
+/* PREGUNTA + INPUT (algunos ejercicios)*/
+.input-respuesta {
+  padding: 0.65rem 1rem;
+  border-radius: 10px;
+  border: 2px solid #ddd;
+  font-size: 1.1rem;
+  width: 100%;
+}
+.input-respuesta:focus {
+  border-color: #222a5c;
+  outline: none;
+}
+
+/* 5 — ESTADOS DEL EJERCICIO
+   Estilos que indican visualmente:
+   - Respuesta correcta
+   - Respuesta incorrecta
+   - Seleccionado
+   - Estados finales
+   - Feedback visual*/
+
+
+
+/*ESTADO: CORRECTO*/
+.correcto {
+  background: #e9f5d7 !important;
+  border-color: #aabc36 !important;
+  color: #2b3d0b !important;
+}
+
+
+/* ESTADO: INCORRECTO */
+.incorrecto {
+  background: #ffe3e3 !important;
+  border-color: #d9534f !important;
+  color: #7a0d0d !important;
+}
+
+
+
+/* ESTADO: SELECCIONADO
+   (Antes de saber si es correcto/incorrecto)*/
+.seleccionado {
+  background: #e7ebff !important;
+  border-color: #222a5c !important;
+}
+
+
+
+/* ESTADO ESPECIAL PARA TRUE/FALSE*/
+.boton-tf.correcto {
+  background: #aabc36 !important;
+  border-color: #8ca22d !important;
+  color: #fff !important;
+}
+.boton-tf.incorrecto {
+  background: #d9534f !important;
+  border-color: #b14740 !important;
+  color: #fff !important;
+}
+
+
+
+/* ESTADO PARA MATCHING*/
+
+.match-btn.correcto {
+  background: #e9f5d7 !important;
+  border-color: #aabc36 !important;
+}
+.match-btn.incorrecto {
+  background: #ffe3e3 !important;
+  border-color: #d9534f !important;
+}
+
+
+
+/*FEEDBACK FINAL (CAJA)*/
+.feedback-final {
+  background: #f7f9ff;
+  padding: 1.4rem 1.6rem;
+  border-left: 5px solid #222a5c;
+  border-radius: 14px;
+  font-size: 1.2rem;
+  margin-top: 1.5rem;
+  color: #333;
+  line-height: 1.6;
+  text-align: center;
+}
+/* Mensaje de éxito */
+.feedback-final.exito {
+  border-left-color: #aabc36;
+  background: #f3fae6;
+  color: #2d4709;
+}
+/* Mensaje de error */
+.feedback-final.error {
+  border-left-color: #d9534f;
+  background: #ffe6e6;
+  color: #7a0d0d;
+}
+
+
+/*TEXTO FINAL DE "COMPLETADO"*/
+.mensaje-completado {
+  font-size: 1.45rem;
+  font-weight: 700;
+  color: #222a5c;
+  text-align: center;
+  margin-top: 2rem;
+}
+.mensaje-completado small {
+  font-size: 1rem;
+  color: #444;
+}
+

@@ -203,7 +203,7 @@ html, body {
 /* Texto dentro del formulario (preservado) */
 .formulario-ejercicio p {
   font-weight: 600;
-  color: var(--azul-oscuro);
+  color: var(--gris-claro);
 }
 
 /* Campo de entrada principal (preservado) */
@@ -212,7 +212,7 @@ html, body {
   max-width: 300px;
   padding: 10px 12px;
   font-size: 1.1rem;
-  border: 2px solid var(--gris-claro);
+  border: 2px solid var(--gris-dark);
   border-radius: 8px;
   text-align: center;
   transition: border 0.3s, box-shadow 0.3s;

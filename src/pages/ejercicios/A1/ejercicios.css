@@ -19,6 +19,11 @@
   --radius-md: 8px;
 }
 
+input, textarea, select {
+  color-scheme: light;
+}
+
+
 /*Mantiene los estilos de navegador razonables*/
 *,
 *::before,
@@ -203,7 +208,7 @@ html, body {
 /* Texto dentro del formulario (preservado) */
 .formulario-ejercicio p {
   font-weight: 600;
-  color: var(--gris-claro);
+  color: var(--azul-oscuro);
 }
 
 /* Campo de entrada principal (preservado) */

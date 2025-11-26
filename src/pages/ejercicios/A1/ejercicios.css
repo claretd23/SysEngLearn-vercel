@@ -979,3 +979,78 @@ button, .ejercicio-btn, .opcion-texto, .match-item {
 }
 
 
+/* ============================================================
+   💚 MATCHING (Emparejar palabras)
+============================================================ */
+
+/* ⬆️ Contenedor principal */
+.matching-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+  width: 100%;
+}
+
+/* 🔵 Cada fila de matching */
+.match-line {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  width: 100%;
+}
+
+/* 🟩 Botones de opciones */
+.matching-btn {
+  background-color: #ffffff;
+  color: #222a5c;
+  border: 2px solid #bcd03c;
+  padding: 0.9rem 1.2rem;
+  border-radius: 12px;
+  text-align: center;
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+  width: 100%;
+}
+
+/* 🟦 Al seleccionar una opción */
+.matching-btn.selected {
+  background-color: #bcd03c;
+  color: #222a5c;
+  border-color: #9aaa2f;
+}
+
+/* 🔴 Correcto */
+.matching-btn.correct {
+  background-color: #aabc37 !important;
+  color: white !important;
+  border-color: #222a5c !important;
+}
+
+/* ⚫ Incorrecto */
+.matching-btn.incorrect {
+  background-color: #ffdddd !important;
+  color: #222a5c !important;
+  border-color: #ff6b6b !important;
+}
+
+/* =============================
+   📱 Responsivo (móvil)
+============================= */
+@media (max-width: 768px) {
+  .matching-container {
+    gap: 1rem;
+  }
+
+  .match-line {
+    grid-template-columns: 1fr;
+    gap: 0.8rem;
+  }
+
+  .matching-btn {
+    font-size: 1rem;
+    padding: 0.8rem;
+  }
+}

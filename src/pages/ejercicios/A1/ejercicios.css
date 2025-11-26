@@ -921,101 +921,115 @@ button, .ejercicio-btn, .opcion-texto, .match-item {
 
 
 /*SECCIÓN 7.1 — RESPONSIVE 768px */
+/* ============================
+   6. RESPONSIVE (768px)
+============================ */
 @media (max-width: 768px) {
 
-  /* LOGO */
+  /* Ajuste general del contenedor */
+  .exercise-container {
+    padding-top: 0.5rem;
+  }
+
+  /* Ajusta el logo al tamaño del login */
   .logo {
-    margin-top: -10px !important;
-    width: 140px !important;
+    width: 115px;
+    margin-top: 0;
+    margin-bottom: 0.3rem;
   }
 
-  /* TÍTULO */
-  .titulo-ejercicio,
-  .title {
-    margin-top: -5px !important;
-    font-size: 1.6rem !important;
-    text-align: center;
+  /* Tarjeta principal del ejercicio */
+  .exercise-card {
+    width: 92%;
+    margin-left: auto;
+    margin-right: auto;
   }
 
-  /* TARJETA */
-  .tarjeta-ejercicio,
-  .card {
-    margin-top: 0.6rem !important;
-    width: 90% !important;
-    max-width: 400px !important;
-    padding: 1.2rem !important;
+  /* Ajustar texto o títulos dentro de tarjeta */
+  .exercise-title {
+    font-size: 1.1rem;
+    margin-top: 0.3rem;
   }
 
-  /* BOTONES */
-  .botones-container,
-  .tf-botones,
-  .opciones-container {
-    flex-direction: column !important;
-    gap: 0.9rem !important;
-    align-items: center;
+  /* Botones principales del ejercicio */
+  .exercise-btn,
+  .exercise-option {
+    width: 80%;
+    margin-left: auto;
+    margin-right: auto;
   }
 
-  button,
-  .ejercicio-btn {
-    width: 100% !important;
-    max-width: 280px;
+  /* Acomodar imágenes o audios si los hay */
+  .exercise-img,
+  .speaker-img {
+    width: 85px;
+    height: auto;
   }
 
-  /* COLUMNAS → UNA COLUMNA */
-  .col-split,
-  .columns,
-  .match-container {
-    flex-direction: column !important;
-    gap: 1.2rem;
+  /* Para que los botones NO se peguen */
+  .exercise-buttons {
+    gap: 0.7rem;
   }
 
-  /* IMÁGENES */
-  img,
-  .img-ejercicio {
-    max-width: 95% !important;
-    margin: 0 auto !important;
-    display: block;
+  /* Evita que la tarjeta se vaya muy abajo */
+  .exercise-section {
+    margin-top: 0.8rem;
   }
 }
 
+
 /*SECCIÓN 7.2 — RESPONSIVE 480px*/
+/* ============================
+   7. RESPONSIVE (480px)
+============================ */
 @media (max-width: 480px) {
 
-  /* LOGO */
+  /* Contenedor general */
+  .exercise-container {
+    padding-top: 0.3rem;
+  }
+
+  /* Logo más pequeño pero sin desaparecer */
   .logo {
-    width: 120px !important;
-    margin-top: -8px !important;
+    width: 95px;
+    margin-top: 0;
+    margin-bottom: 0.2rem;
   }
 
-  /* TÍTULO */
-  .titulo-ejercicio,
-  .title {
-    font-size: 1.45rem !important;
+  /* Tarjeta del ejercicio centrada */
+  .exercise-card {
+    width: 94%;
+    padding: 1rem;
   }
 
-  /* TARJETA */
-  .tarjeta-ejercicio,
-  .card {
-    padding: 1rem !important;
-    width: 92% !important;
+  /* Título del ejercicio */
+  .exercise-title {
+    font-size: 1rem;
+    margin-bottom: 0.5rem;
   }
 
-  /* TEXTO MÁS LEGIBLE */
-  p, .pregunta-texto, .opcion-texto, .dialogo-texto {
-    font-size: 1rem !important;
+  /* Botones principales */
+  .exercise-btn,
+  .exercise-option {
+    width: 90%;
+    font-size: 1rem;
+    padding: 0.6rem 1rem;
   }
 
-  /* BOTONES MÁS GRANDES */
-  button,
-  .ejercicio-btn {
-    font-size: 1rem !important;
-    padding: 0.6rem 1rem !important;
+  /* Acomodar botones en columna (por si están uno al lado del otro) */
+  .exercise-buttons {
+    flex-direction: column;
+    gap: 0.6rem;
   }
 
-  /* IMÁGENES */
-  img,
-  .img-ejercicio {
-    max-width: 100% !important;
-    border-radius: 12px !important;
+  /* Imágenes o fotos de hablantes */
+  .exercise-img,
+  .speaker-img {
+    width: 70px;
+  }
+
+  /* Para evitar que la tarjeta se vaya muy abajo */
+  .exercise-section {
+    margin-top: 0.5rem;
   }
 }

@@ -19,7 +19,7 @@
   --radius-md: 8px;
 }
 
-input, textarea, select, button {
+input, textarea, select {
   color-scheme: light;
 }
 

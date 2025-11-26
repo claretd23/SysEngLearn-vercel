@@ -3,7 +3,6 @@
   - Reset/box-sizing
   - Reglas generales de tipografía y contenedores base*/
 :root {
-  color-scheme: only light;
   /* Colores principales */
   --azul-oscuro: #222a5c;      /* color institucional principal */
   --verde-lima: #aabc36;       /* acento (verde lima) */
@@ -87,6 +86,7 @@ html, body {
   padding: 2rem;
   box-sizing: border-box;
   background: none;         /* Se deja transparente para que la app controle el fondo */
+  background: #f6f8fb !important;
   /* Nota: mantener vista full-screen facilita ejercicios centrados */
 }
 
@@ -963,7 +963,7 @@ button, .ejercicio-btn, .opcion-texto, .match-item {
   /* Acomodar imágenes o audios si los hay */
   .exercise-img,
   .speaker-img {
-    width: 70px;
+    width: 85px;
     height: auto;
   }
 
@@ -979,78 +979,44 @@ button, .ejercicio-btn, .opcion-texto, .match-item {
 }
 
 
-/* ============================================================
-   💚 MATCHING (Emparejar palabras)
-============================================================ */
+/*SECCIÓN 7.2 — RESPONSIVE 480px*/
+@media (max-width: 480px) {
 
-/* ⬆️ Contenedor principal */
-.matching-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 1.5rem;
-  width: 100%;
-}
-
-/* 🔵 Cada fila de matching */
-.match-line {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 1rem;
-  width: 100%;
-}
-
-/* 🟩 Botones de opciones */
-.matching-btn {
-  background-color: #ffffff;
-  color: #222a5c;
-  border: 2px solid #bcd03c;
-  padding: 0.9rem 1.2rem;
-  border-radius: 12px;
-  text-align: center;
-  font-size: 1.1rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.2s ease-in-out;
-  width: 100%;
-}
-
-/* 🟦 Al seleccionar una opción */
-.matching-btn.selected {
-  background-color: #bcd03c;
-  color: #222a5c;
-  border-color: #9aaa2f;
-}
-
-/* 🔴 Correcto */
-.matching-btn.correct {
-  background-color: #aabc37 !important;
-  color: white !important;
-  border-color: #222a5c !important;
-}
-
-/* ⚫ Incorrecto */
-.matching-btn.incorrect {
-  background-color: #ffdddd !important;
-  color: #222a5c !important;
-  border-color: #ff6b6b !important;
-}
-
-/* =============================
-   📱 Responsivo (móvil)
-============================= */
-@media (max-width: 768px) {
-  .matching-container {
-    gap: 1rem;
+  /* LOGO */
+  .logo {
+    width: 120px !important;
+    margin-top: -8px !important;
   }
 
-  .match-line {
-    grid-template-columns: 1fr;
-    gap: 0.8rem;
+  /* TÍTULO */
+  .titulo-ejercicio,
+  .title {
+    font-size: 1.45rem !important;
   }
 
-  .matching-btn {
-    font-size: 1rem;
-    padding: 0.8rem;
+  /* TARJETA */
+  .tarjeta-ejercicio,
+  .card {
+    padding: 1rem !important;
+    width: 92% !important;
+  }
+
+  /* TEXTO MÁS LEGIBLE */
+  p, .pregunta-texto, .opcion-texto, .dialogo-texto {
+    font-size: 1rem !important;
+  }
+
+  /* BOTONES MÁS GRANDES */
+  button,
+  .ejercicio-btn {
+    font-size: 1rem !important;
+    padding: 0.6rem 1rem !important;
+  }
+
+  /* IMÁGENES */
+  img,
+  .img-ejercicio {
+    max-width: 100% !important;
+    border-radius: 12px !important;
   }
 }

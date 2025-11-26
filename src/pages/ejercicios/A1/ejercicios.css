@@ -3,6 +3,7 @@
   - Reset/box-sizing
   - Reglas generales de tipografía y contenedores base*/
 :root {
+  color-scheme: only light;
   /* Colores principales */
   --azul-oscuro: #222a5c;      /* color institucional principal */
   --verde-lima: #aabc36;       /* acento (verde lima) */

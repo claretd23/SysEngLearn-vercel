@@ -509,6 +509,7 @@ html, body {
   text-align: left;
   transition: all 0.2s ease;
   color: #222;
+  color-scheme: light;
 }
 
 .opcion-boton:hover {

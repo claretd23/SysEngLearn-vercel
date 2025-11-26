@@ -963,7 +963,7 @@ button, .ejercicio-btn, .opcion-texto, .match-item {
   /* Acomodar imágenes o audios si los hay */
   .exercise-img,
   .speaker-img {
-    width: 85px;
+    width: 70px;
     height: auto;
   }
 

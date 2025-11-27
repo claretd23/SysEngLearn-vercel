@@ -122,15 +122,16 @@ export default function Tema3_Ej2() {
 
             {!respuesta && (
               <div
-                className="opciones-ejercicio"
-                style={{
-                  display: "flex",
-                  justifyContent: "center",
-                  alignItems: "stretch",
-                  gap: "1rem",
-                  margin: "1.5rem 0",
-                }}
-              >
+  className="open-answer-wrapper"
+  style={{
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "stretch",
+    gap: "1rem",
+    margin: "1.5rem 0",
+  }}
+>
+
                 <input
                   type="text"
                   value={inputValue}

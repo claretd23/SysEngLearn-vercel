@@ -120,23 +120,29 @@ export default function Tema3_Ej1() {
 
             {!respuesta && (
               <div
-                className="open-answer-wrapper"
-                style={{
-                  display: "flex",
-                  justifyContent: "center",
-                  alignItems: "stretch",
-                  gap: "1rem",
-                  margin: "1.5rem 0",
-                }}
-              >
+  className="open-answer-wrapper"
+  style={{
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "stretch",
+    gap: "1rem",
+    margin: "1.5rem 0",
+  }}
+>
+
                 <input
                   type="text"
                   value={inputValue}
                   onChange={(e) => setInputValue(e.target.value)}
                   className="input-respuesta"
                   placeholder="am / is / are"
-                  style={{ fontSize: "1.2rem", padding: "0.6rem 1rem" }}
-
+                  style={{
+                    fontSize: "1.3rem",
+                    padding: "0.8rem 1rem",
+                    flex: 1,
+                    borderRadius: "8px",
+                    border: "1px solid #ccc",
+                  }}
                 />
                 <button
                   onClick={verificar}

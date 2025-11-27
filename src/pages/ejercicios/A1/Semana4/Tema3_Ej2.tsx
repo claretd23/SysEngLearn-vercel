@@ -145,7 +145,10 @@ export default function Tema3_Ej2() {
         </p>
       )}
         {respuesta && (
-          <div style={{ display: "flex", justifyContent: "center", gap: "1rem", marginTop: "1rem" }}>
+<div
+  className="open-answer-wrapper"
+  style={{ display: "flex", justifyContent: "center", gap: "1rem", margin: "1rem 0" }}
+>
             <button
               onClick={siguiente}
               className="ejercicio-btn"

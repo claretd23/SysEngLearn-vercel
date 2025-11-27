@@ -152,6 +152,7 @@ export default function Tema2_Ej1() {
         {/* Input y botón */}
         {!respuesta && (
           <div
+          className="open-answer-wrapper"
             style={{
               display: "flex",
               justifyContent: "center",

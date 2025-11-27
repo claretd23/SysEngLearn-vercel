@@ -180,47 +180,51 @@ export default function Tema3_Ej3() {
           <audio key={i} ref={(el) => (audioRefs.current[i] = el)} src={src} />
         ))}
 
-        {/* Input + Check alineados */}
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            gap: "1rem",
-            margin: "1.5rem 0",
-          }}
-        >
-          {!respuesta && (
-            <>
-              <input
-                type="text"
-                value={inputValue}
-                onChange={(e) => setInputValue(e.target.value)}
-                className="input-respuesta"
-                placeholder="Write the ordinal number..."
-                style={{
-                  fontSize: "1.3rem",
-                  padding: "0.8rem 1rem",
-                  flex: 1,
-                  borderRadius: "8px",
-                  border: "1px solid #ccc",
-                }}
-              />
-              <button
-                onClick={verificar}
-                className="ejercicio-btn"
-                style={{ fontSize: "1.2rem", padding: "0.6rem 1rem" }}
-              >
-                Check
-              </button>
-            </>
-          )}
-        </div>
+  <div
+  className="open-answer-wrapper"
+  style={{
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    gap: "1rem",
+    margin: "1.5rem 0",
+  }}
+>
+  {!respuesta && (
+    <>
+      <input
+        type="text"
+        value={inputValue}
+        onChange={(e) => setInputValue(e.target.value)}
+        className="input-respuesta"
+        placeholder="Write the ordinal number..."
+        style={{
+          fontSize: "1.3rem",
+          padding: "0.8rem 1rem",
+          flex: 1,
+          borderRadius: "8px",
+          border: "1px solid #ccc",
+        }}
+      />
+      <button
+        onClick={verificar}
+        className="ejercicio-btn"
+        style={{
+          fontSize: "1.3rem",
+          padding: "0.8rem 2rem",
+          borderRadius: "8px",
+        }}
+      >
+        Check
+      </button>
+    </>
+  )}
+</div>
 
         {/* Feedback de respuesta */}
         {respuesta && (
           <p
-            className="open-answer-wrapper"
+            className="respuesta-feedback"
             style={{
               fontSize: "1.3rem",
               margin: "1rem 0",

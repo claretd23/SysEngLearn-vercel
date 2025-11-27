@@ -107,13 +107,13 @@ export default function Tema3_Ej1() {
             </p>
 
             {!respuesta && (
-              <div
+               <div
                 className="open-answer-wrapper"
                 style={{
                   display: "flex",
                   justifyContent: "center",
-                  alignItems: "stretch",
-                  gap: "1rem",
+                  alignItems: "center",
+                  gap: "1.2rem",
                   margin: "1.5rem 0",
                 }}
               >
@@ -123,14 +123,7 @@ export default function Tema3_Ej1() {
                   onChange={(e) => setInputValue(e.target.value)}
                   className="input-respuesta"
                   placeholder="Write the word (e.g. first, second, third...)"
-                  style={{
-                    fontSize: "1.3rem",
-                    padding: "0.8rem 1rem",
-                    flex: 1,
-                    borderRadius: "8px",
-                    border: "1px solid #ccc",
-                    textAlign: "center",
-                  }}
+                  style={{ fontSize: "1.2rem", padding: "0.6rem 1rem" }}
                 />
                 <button
                   onClick={verificar}

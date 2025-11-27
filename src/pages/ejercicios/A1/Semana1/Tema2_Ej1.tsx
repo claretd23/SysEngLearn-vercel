@@ -130,7 +130,7 @@ export default function Tema1_Ej1() {
 
             {!respuesta && (
               <div
-                className="opciones-ejercicio"
+                className="open-answer-wrapper"
                 style={{
                   display: "flex",
                   justifyContent: "center",

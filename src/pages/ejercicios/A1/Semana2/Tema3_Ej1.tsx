@@ -135,13 +135,8 @@ export default function Tema3_Ej1() {
                   onChange={(e) => setInputValue(e.target.value)}
                   className="input-respuesta"
                   placeholder="am / is / are"
-                  style={{
-          fontSize: "1.3rem",
-          padding: "0.8rem 1rem",
-          flex: 1,
-          borderRadius: "8px",
-          border: "1px solid #ccc",
-        }}
+                  style={{ fontSize: "1.2rem", padding: "0.6rem 1rem" }}
+
                 />
                 <button
                   onClick={verificar}

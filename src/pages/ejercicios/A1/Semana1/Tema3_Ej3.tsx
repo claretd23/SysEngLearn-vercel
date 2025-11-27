@@ -209,11 +209,7 @@ export default function Tema3_Ej3() {
               <button
                 onClick={verificar}
                 className="ejercicio-btn"
-                style={{
-                  fontSize: "1.3rem",
-                  padding: "0.8rem 2rem",
-                  borderRadius: "8px",
-                }}
+                style={{ fontSize: "1.2rem", padding: "0.6rem 1rem" }}
               >
                 Check
               </button>

@@ -136,12 +136,12 @@ export default function Tema3_Ej1() {
                   className="input-respuesta"
                   placeholder="am / is / are"
                   style={{
-                    fontSize: "1.3rem",
-                    padding: "0.8rem 1rem",
-                    flex: 1,
-                    borderRadius: "8px",
-                    border: "1px solid #ccc",
-                  }}
+          fontSize: "1.3rem",
+          padding: "0.8rem 1rem",
+          flex: 1,
+          borderRadius: "8px",
+          border: "1px solid #ccc",
+        }}
                 />
                 <button
                   onClick={verificar}

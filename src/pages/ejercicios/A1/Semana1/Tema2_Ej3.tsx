@@ -118,7 +118,7 @@ export default function Tema1_Ej3_Listening() {
             {/* Campo de texto y botón Check */}
             {!respuesta && (
               <div
-                className="opciones-ejercicio"
+                className="open-answer-wrapper"
                 style={{
                   display: "flex",
                   justifyContent: "center",

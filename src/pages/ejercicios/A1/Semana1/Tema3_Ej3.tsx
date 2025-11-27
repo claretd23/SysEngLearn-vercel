@@ -224,7 +224,7 @@ export default function Tema3_Ej3() {
         {/* Feedback de respuesta */}
         {respuesta && (
           <p
-            className="respuesta-feedback"
+            className="open-answer-wrapper"
             style={{
               fontSize: "1.3rem",
               margin: "1rem 0",

@@ -165,9 +165,7 @@ background: linear-gradient(135deg, #f6f8fb 0%, #f0f3f9 100%);
   font-size: 1.3rem;
 }
 
-/* ============================
-   ESCRITORIO
-============================ */
+/* ESCRITORIO */
 @media (min-width: 769px) {
   .a1-container {
     max-width: 900px;
@@ -189,9 +187,7 @@ background: linear-gradient(135deg, #f6f8fb 0%, #f0f3f9 100%);
   }
 }
 
-/* ============================
-   MÓVIL
-============================ */
+/* MÓVIL */
 @media (max-width: 768px) {
 
   .a1-container {

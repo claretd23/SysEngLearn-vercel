@@ -33,16 +33,16 @@ input, textarea, select {
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* Evita márgenes inesperados en body */
 html, body {
   margin: 0;
   padding: 0;
   height: 100%;
   font-size: var(--base-font-size);
-  font-family: "Inter", "Helvetica Neue", Arial, sans-serif; /* respetar stack */
+  font-family: "Inter", "Helvetica Neue", Arial, sans-serif;
   color: var(--azul-oscuro);
-  background: transparent; /* no forzamos fondo global */
+  background: #f0f4ff !important; /* <-- Fondo original del A1 restaurado */
 }
+
 
 /* Clases pequeñas reutilizables */
 
@@ -1219,4 +1219,14 @@ button, .ejercicio-btn, .opcion-texto, .match-item {
     padding: 0.9rem 1.1rem;
     border-radius: 12px;
   }
+}
+
+/* Evita que el ejercicio se mueva (no sube ni baja) */
+.ejercicio-container {
+  overflow: hidden !important;
+  position: fixed !important;
+  top: 0;
+  left: 0;
+  width: 100vw !important;
+  height: 100vh !important;
 }

@@ -210,23 +210,3 @@ background: linear-gradient(135deg, #f6f8fb 0%, #f0f3f9 100%);
     width: 80%;
   }
 }
-/* === RESET PARA REVERTIR ESTILOS DE ejercicos.css === */
-
-.pagina-wrapper,
-.pagina-wrapper * {
-  font-size: initial !important;
-  margin: initial !important;
-  padding: initial !important;
-  box-sizing: border-box;
-  line-height: normal !important;
-}
-
-.a1-container h1,
-.a1-container h2,
-.a1-container p,
-.a1-container button,
-.a1-container .tema-bloque {
-  font-size: revert !important;
-  margin: revert !important;
-  padding: revert !important;
-}

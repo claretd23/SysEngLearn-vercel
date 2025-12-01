@@ -1,0 +1,11 @@
+/* Limpia TODAS las locuras que los ejercicios dejan en el body */
+html, body {
+  padding: 0 !important;
+  margin: 0 !important;
+  transform: none !important;
+  zoom: 100% !important;
+  font-size: 16px !important;
+  height: auto !important;
+  width: 100% !important;
+  overflow-x: hidden !important;
+}

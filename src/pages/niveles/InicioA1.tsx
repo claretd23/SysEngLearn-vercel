@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import "./InicioA1.css";
 import logo from "../../assets/LG.svg";
 import { Link } from "react-router-dom";
+import "./reset-ejercicios.css";
+
 
 const semanas = [
   { semana: 1, temas: ["ABC", "NUMBERS", "ORDINAL NUMBERS"] },

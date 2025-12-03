@@ -1024,25 +1024,21 @@ button, .ejercicio-btn, .opcion-texto, .match-item {
     max-width: 100% !important;
     border-radius: 12px !important;
   }
-}
-
-/* ===========================
-   ARREGLOS MÓVILES: MATCH, IMÁGENES Y BLOQUES QUE SALEN
+}/* ===========================
+   SIN SCROLL EN NINGUNA PARTE
    =========================== */
 
-/* Asegura que la tarjeta no permita overflow visual en móviles:
-   mantiene la tarjeta fija y permite scroll interno si hace falta */
+/* Tarjeta fija, sin scroll */
 .tarjeta-ejercicio {
   position: relative;
   max-height: calc(100vh - 6rem);
-  overflow: hidden !important;   /* elimina todo el scroll */
-  -webkit-overflow-scrolling: auto;
+  overflow: hidden !important; /* 🔹 evita cualquier scroll */
 }
 
-/* Match: permite wrap, columnas responsivas y botones que no se desbordan */
+/* Ajustes responsivos para evitar que nada se salga */
 .match-container {
   display: flex;
-  flex-wrap: wrap; /* permite que las columnas bajen en pantallas pequeñas */
+  flex-wrap: wrap;
   gap: 0.75rem;
   align-items: flex-start;
   justify-content: space-between;
@@ -1050,15 +1046,12 @@ button, .ejercicio-btn, .opcion-texto, .match-item {
   box-sizing: border-box;
 }
 
-/* Cada columna ocupa como mínimo un tamaño razonable pero puede reducirse */
 .match-col {
-  flex: 1 1 45%; /* crece, encoge, base 45% (2 cols en desktop, 1 en móvil) */
-  min-width: 160px;
+  flex: 1 1 45%;
+  min-width: 150px;
   max-width: 100%;
-  box-sizing: border-box;
 }
 
-/* Ítem de match: que el contenido se adapte dentro del espacio */
 .match-item {
   display: flex;
   gap: 0.5rem;
@@ -1068,33 +1061,23 @@ button, .ejercicio-btn, .opcion-texto, .match-item {
   padding: 0.35rem 0.25rem;
 }
 
-/* Botón/ítem dentro de matching: ocupa el ancho disponible, no desborda texto */
+/* Botones totalmente adaptables */
 .match-btn {
   flex: 1 1 auto;
-  min-width: 0; /* muy importante para que el texto no fuerce el ancho */
+  min-width: 0;
   width: 100%;
-  box-sizing: border-box;
-  white-space: normal; /* permite saltos de línea */
-  text-align: left;
+  white-space: normal;
   padding: 0.6rem 0.9rem;
-  font-size: 0.98rem;
+  font-size: 0.95rem;
   overflow: hidden;
+  text-align: left;
 }
 
-/* Oculta líneas decorativas muy largas en móvil para evitar overflow */
 .match-linea {
-  display: none;
+  display: none; /* 🔹 evita desbordes */
 }
 
-/* Para items que incluyen texto largo: truncado seguro y tooltip opcional */
-.match-btn .texto-largo {
-  display: block;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-/* IMÁGENES/OPCIONES con wrap y tamaño máximo para móviles */
+/* Imágenes 100% adaptables */
 .img-opciones {
   display: flex;
   flex-wrap: wrap;
@@ -1103,128 +1086,89 @@ button, .ejercicio-btn, .opcion-texto, .match-item {
 }
 
 .img-opcion {
-  width: calc(50% - 0.6rem); /* 2 por fila en móvil por defecto */
-  max-width: 200px;
-  min-width: 120px;
-  height: auto;
+  width: calc(50% - 0.6rem);
+  max-width: 180px;
+  min-width: 100px;
 }
 
-/* Forzar que las imágenes respeten el contenedor */
 .img-opcion img {
   width: 100%;
   height: auto;
   object-fit: cover;
 }
 
-/* Conversaciones: reducir avatars y burbujas en pantallas pequeñas */
+/* Conversaciones */
 .conversacion-item img,
 .speaker-img {
-  width: 52px;
-  height: 52px;
+  width: 45px;
+  height: 45px;
 }
 
 .conversacion-burbuja,
 .dialogo-texto {
   max-width: 100%;
-  font-size: 0.98rem;
+  font-size: 0.95rem;
 }
 
-/* Botones principales: full width en móvil para evitar que se salgan */
+/* Botón adaptativo */
 .ejercicio-btn {
-  box-sizing: border-box;
   min-width: 0;
+  width: 100%;
 }
 
 /* ===========================
-   MEDIA QUERIES: ajustes finos para 768 y 480
+   MEDIA QUERIES
    =========================== */
 
 @media (max-width: 768px) {
-
-  /* Tarjeta: menos padding, evitar scroll horizontal */
   .tarjeta-ejercicio {
-    padding: 1rem;
-    max-height: calc(100vh - 4rem);
+    padding: 0.8rem;
+    max-height: calc(100vh - 3.5rem);
   }
 
-  /* Force match columns a una sola columna si el espacio es reducido */
   .match-col {
     flex: 1 1 100%;
     min-width: 0;
   }
 
-  .match-item {
-    gap: 0.4rem;
-  }
-
-  .match-btn {
-    font-size: 1rem;
-    padding: 0.55rem 0.75rem;
-  }
-
   .img-opcion {
-    width: calc(33.333% - 0.6rem); /* 3 por fila en tablet pequeño */
-    min-width: 90px;
+    width: calc(33.33% - 0.6rem);
+    min-width: 80px;
   }
 
-  /* Reduce tamaño de títulos para evitar empujar contenido */
-  .titulo-ejercicio { font-size: 1.6rem; }
-  .subtitulo-ejercicio { font-size: 1.03rem; }
+  .titulo-ejercicio { font-size: 1.5rem; }
+  .subtitulo-ejercicio { font-size: 1rem; }
 }
 
 @media (max-width: 480px) {
 
-  /* En pantallas muy pequeñas, una sola columna para todo */
-  .match-container { gap: 0.5rem; }
-  .match-col { flex: 1 1 100%; padding: 0; }
-  .match-btn { font-size: 0.98rem; padding: 0.5rem 0.65rem; }
+  .img-opcion {
+    width: calc(50% - 0.5rem);
+    min-width: 90px;
+  }
 
-  /* Imágenes: 2 por fila en móvil muy pequeño */
-  .img-opcion { width: calc(50% - 0.5rem); min-width: 100px; }
+  .tarjeta-ejercicio {
+    padding: 0.7rem;
+    max-height: calc(100vh - 3rem);
+  }
 
-  /* Ajustes para evitar scroll vertical excesivo */
-  .tarjeta-ejercicio { max-height: calc(100vh - 3.2rem); padding: 0.85rem; }
-  .ej-row { gap: 0.6rem; flex-direction: column; }
+  .ej-row { flex-direction: column; gap: 0.5rem; }
 
-  /* Evita márgenes grandes en botones */
-  .botones-siguiente { gap: 0.5rem; margin-top: 0.6rem; }
-
-  /* Asegura inputs y botones no se desborden */
-  .input-respuesta, .ejercicio-btn, .opcion-boton, .audio-btn {
+  .input-respuesta,
+  .ejercicio-btn,
+  .opcion-boton,
+  .audio-btn {
     width: 100%;
-    min-width: 0;
-    box-sizing: border-box;
-  }
-}
-/* === INPUT FULL WIDTH + BOTÓN ABAJO EN MÓVIL (GLOBAL) === */
-@media (max-width: 768px) {
-  .open-answer-wrapper {
-    width: 100%;
-    display: flex;
-    flex-direction: column;  /* 🔹 Uno arriba y otro abajo */
-    align-items: center;
-    gap: 0.8rem;
-  }
-
-  .open-answer-wrapper input[type="text"] {
-    width: 90%;              /* 🔹 Ocupa casi toda la pantalla */
-    font-size: 1.2rem;
-    padding: 0.9rem 1.1rem;
-    border-radius: 12px;
-  }
-
-  .open-answer-wrapper button {
-    width: 60%;              /* 🔹 Botón abajo */
-    font-size: 1.2rem;
-    padding: 0.9rem 1.1rem;
-    border-radius: 12px;
   }
 }
 
-/* Evita que el ejercicio se mueva (no sube ni baja) */
+/* ===========================
+   CONTENEDOR PRINCIPAL SIN SCROLL GLOBAL
+   =========================== */
+
 .ejercicio-container {
-  overflow: hidden !important;
-  position: fixed !important;
+  overflow: hidden !important;  /* 🔹 SIN SCROLL GLOBAL */
+  position: fixed !important;   /* 🔹 evita movimiento vertical */
   top: 0;
   left: 0;
   width: 100vw !important;

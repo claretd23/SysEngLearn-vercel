@@ -360,7 +360,12 @@ html, body {
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
+
+  /* 👇 Estos evitan que el contenido se corte */
+  min-height: auto;
+  height: auto;
 }
+
 
 /* TÍTULO DEL EJERCICIO*/
 .titulo-ejercicio {

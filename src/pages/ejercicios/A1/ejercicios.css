@@ -1034,9 +1034,9 @@ button, .ejercicio-btn, .opcion-texto, .match-item {
    mantiene la tarjeta fija y permite scroll interno si hace falta */
 .tarjeta-ejercicio {
   position: relative;
-  max-height: calc(100vh - 6rem); /* deja espacio para header/márgenes */
-  overflow: auto; /* evita que el contenido salga de la tarjeta */
-  -webkit-overflow-scrolling: touch;
+  max-height: calc(100vh - 6rem);
+  overflow: hidden !important;   /* elimina todo el scroll */
+  -webkit-overflow-scrolling: auto;
 }
 
 /* Match: permite wrap, columnas responsivas y botones que no se desbordan */

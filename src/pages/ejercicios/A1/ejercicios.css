@@ -1032,8 +1032,9 @@ button, .ejercicio-btn, .opcion-texto, .match-item {
 .tarjeta-ejercicio {
   position: relative;
   max-height: calc(100vh - 6rem);
-  overflow: hidden !important; /* 🔹 evita cualquier scroll */
+  overflow: hidden !important;  /* NO scroll interno */
 }
+
 
 /* Ajustes responsivos para evitar que nada se salga */
 .match-container {

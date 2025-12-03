@@ -1175,3 +1175,20 @@ button, .ejercicio-btn, .opcion-texto, .match-item {
   width: 100vw !important;
   height: 100vh !important;
 }
+/* === FIX DEFINITIVO: evitar scroll en móviles y escritorio === */
+
+/* Quita scroll global */
+html, body {
+  overflow: hidden !important;
+  overscroll-behavior: none;
+}
+
+/* La tarjeta NO debe scrollear */
+.tarjeta-ejercicio {
+  overflow: hidden !important;
+}
+
+/* Contenedor principal NUNCA hace scroll */
+.ejercicio-container {
+  overflow: hidden !important;
+}
